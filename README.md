@@ -75,7 +75,7 @@ Then following the steps above to bootstrap (one time) and load the database.
 
 The Play app can be run in the usual way. From the root of the repository:
 
-    sbt "project guiApp" run
+    sbt run
     
 or in the sbt shell. The app listens to port 9000.
 
@@ -83,7 +83,7 @@ or in the sbt shell. The app listens to port 9000.
 
 The front end is built with webpack. To start the webpack-dev-server, run
 
-    cd gui/gui
+    cd gui
     npm start
     
 from the root of the repository. The webpack-dev-server listens to port 9001 and proxies API requests to port 9000.
