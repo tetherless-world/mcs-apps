@@ -1,7 +1,16 @@
+*.bloop
 /gui/dist/
 node_modules/
 /gui/package-lock.json
+/.idea/
+*.iml
 /logs/
+.metals/
+*.pyc
+/project/project/
+/project/target/
+/project/metals.sbt
+.python-version
 /target/
 /test/integration/cypress/plugins/
 /test/integration/cypress/videos/
