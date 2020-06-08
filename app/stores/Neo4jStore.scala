@@ -59,12 +59,18 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
     }
   }
 
-  override final def getEdgesByObject(objectNodeId: String): List[Edge] = {
+  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge] = {
     withSession { session =>
       session.readTransaction { transaction => {
         val result =
           transaction.run(
-            s"MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId}) RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString};",
+            s"""
+               |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+               |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+               |ORDER BY type(edge), subject.id, edge
+               |SKIP ${offset}
+               |LIMIT ${limit}
+               |""".stripMargin,
             Map(
               "objectNodeId" -> objectNodeId
             ).asJava.asInstanceOf[java.util.Map[String, Object]]
@@ -76,12 +82,18 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
   }
 
 
-  override final def getEdgesBySubject(subjectNodeId: String): List[Edge] = {
+  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge] = {
     withSession { session =>
       session.readTransaction { transaction => {
         val result =
           transaction.run(
-            s"MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node) RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString};",
+            s"""
+               |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+               |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+               |ORDER BY type(edge), object.id, edge
+               |SKIP ${offset}
+               |LIMIT ${limit}
+               |""".stripMargin,
             Map(
               "subjectNodeId" -> subjectNodeId
             ).asJava.asInstanceOf[java.util.Map[String, Object]]

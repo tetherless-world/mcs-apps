@@ -6,22 +6,37 @@ trait StoreBehaviors extends Matchers { this: WordSpec =>
   def store(sut: Store) {
     "get edges by object" in {
       for (node <- TestData.nodes) {
-        val edges = sut.getEdgesByObject(node.id)
-        if (!edges.isEmpty) {
-          val edgeWithObject = edges.find(edge => edge.`object` == node.id)
-          edgeWithObject should not equal (None)
-        }
+        val edges = sut.getEdgesByObject(limit = 1, offset = 0, objectNodeId = node.id)
+        edges.size should be(1)
+        val edge = edges(0)
+        edge.`object` should equal(node.id)
       }
+    }
+
+    "page edges by object" in {
+      val node = TestData.nodes(0)
+      val expected = TestData.edges.filter(edge => edge.`object` == node.id).sortBy(edge => (edge.subject, edge.predicate))
+      expected.size should be > 10
+      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesByObject(limit = 1, offset = offset, objectNodeId = node.id)).sortBy(edge => (edge.subject, edge.predicate)).toList
+      actual should equal(expected)
     }
 
     "get edges by subject" in {
       val node = TestData.nodes(0)
-      val edges = sut.getEdgesBySubject(node.id)
-      edges should not be empty
-      for (edge <- edges) {
-        edge.subject should equal(node.id)
-      }
+      val edges = sut.getEdgesBySubject(limit = 1, offset = 0, subjectNodeId = node.id)
+      edges.size should be(1)
+      val edge = edges(0)
+      edge.subject should equal(node.id)
     }
+
+    "page edges by subject" in {
+      val node = TestData.nodes(0)
+      val expected = TestData.edges.filter(edge => edge.subject == node.id).sortBy(edge => (edge.predicate, edge.`object`))
+      expected.size should be > 10
+      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
+      actual should equal(expected)
+    }
+
 
     "get matching nodes by label" in {
       val expected = TestData.nodes(0)

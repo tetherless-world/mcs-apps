@@ -20,11 +20,11 @@ class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
   final override def getDatasources: List[String] =
     this.datasources
 
-  final override def getEdgesByObject(objectNodeId: String): List[Edge] =
-    edges.filter(edge => edge.`object` == objectNodeId)
+  final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge] =
+    edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
 
-  final override def getEdgesBySubject(subjectNodeId: String): List[Edge] =
-    edges.filter(edge => edge.subject == subjectNodeId)
+  final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge] =
+    edges.filter(edge => edge.subject == subjectNodeId).drop(offset).take(limit)
 
   final override def getNodeById(id: String): Option[Node] =
     nodesById.get(id)

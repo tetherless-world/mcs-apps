@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Build and test
           command: |
-            cp -p -R /tmp/workspace/dist/gui gui/public
+            cp -p -R /tmp/workspace/dist/gui public
             sbt test playUpdateSecret dist
             cd target/universal && unzip -qq mcs-portal-app*.zip && rm mcs-portal-app*.zip && mkdir ~/dist && mv mcs-portal-app-*-SNAPSHOT ~/dist/app
       - store_test_results:

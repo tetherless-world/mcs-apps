@@ -5,7 +5,7 @@ query NodePageQuery(
 ) {
   nodeById(id: $id) {
     ...NodeFieldsFragment
-    subjectOfEdges {
+    subjectOfEdges(limit: 100, offset: 0) {
       object
       objectNode {
         id

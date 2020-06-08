@@ -11,14 +11,14 @@ trait Store {
   def getDatasources: List[String]
 
   /**
-   * Get all of the edges that have the given node ID as an object.
+   * Get edges that have the given node ID as an object.
    */
-  def getEdgesByObject(objectNodeId: String): List[Edge]
+  def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge]
 
   /**
-   * Get all of the edges that have the given node ID as a subject.
+   * Get edges that have the given node ID as a subject.
    */
-  def getEdgesBySubject(subjectNodeId: String): List[Edge]
+  def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge]
 
   /**
    * Fulltext search nodes.

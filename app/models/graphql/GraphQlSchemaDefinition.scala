@@ -24,10 +24,10 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = _.value.label),
-    Field("objectOfEdges", ListType(EdgeType), resolve = ctx => ctx.ctx.store.getEdgesByObject(ctx.value.id)),
+    Field("objectOfEdges", ListType(EdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.store.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
     Field("other", OptionType(StringType), resolve = _.value.other),
     Field("pos", OptionType(StringType), resolve = _.value.pos),
-    Field("subjectOfEdges", ListType(EdgeType), resolve = ctx => ctx.ctx.store.getEdgesBySubject(ctx.value.id))
+    Field("subjectOfEdges", ListType(EdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.store.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
   ))
 
   val IdArgument = Argument("id", StringType)

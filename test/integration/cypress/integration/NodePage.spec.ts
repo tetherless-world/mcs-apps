@@ -6,11 +6,11 @@ context("Node page", () => {
   beforeEach(() => page.visit());
 
   it("should have the node label in its card title", () => {
-    page.nodeTitle.should("have.text", "Test node 0 (r)");
+    page.nodeTitle.should("contain", "Test node 0");
   });
 
   it("should show edges by predicate", () => {
-    page.edgeList("/r/IsA").edges.contains("Test node 776");
+    page.edgeList("/r/IsA").edges.contains("Test node 414");
   });
 
   it("should show the node datasource", () => {

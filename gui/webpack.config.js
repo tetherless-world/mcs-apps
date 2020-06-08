@@ -14,7 +14,7 @@ module.exports = function (env, argv) {
   return merge(configBase(env, argv), configDevServer(distPath), {
     context: path.join(__dirname, "src"),
     entry: {
-      "mowgli-gui": "./ts/main.tsx",
+      "mcs-portal-gui": "./ts/main.tsx",
     },
     output: {
       path: distPath,
