@@ -1,0 +1,11 @@
+/.circleci/
+/etl/
+/.git/
+/gui/data/
+/gui/gui/dist/
+/.idea/
+LICENSE/
+**/.pytest_cache/
+README.md
+**/node_modules/
+**/target/
