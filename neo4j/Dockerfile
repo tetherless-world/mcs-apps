@@ -5,6 +5,6 @@ ENV NEO4JLABS_PLUGINS "[\"apoc\"]"
 ENV NEO4J_dbms_memory_pagecache_size 4G
 ENV NEO4J_dbms_memory_heap_max__size 4G
 
-COPY /gui/conf/cypher ./cypher/
-COPY /gui/neo4j/cypher ./cypher/
+COPY /conf/cypher ./cypher/
+COPY /neo4j/cypher ./cypher/
 #RUN find ./cypher/
