@@ -6,7 +6,7 @@ export class Hrefs {
   }
 
   static get gitHub() {
-    return "https://github.com/tetherless-world/mowgli";
+    return "https://github.com/tetherless-world/mcs-portal";
   }
 
   static get home() {
