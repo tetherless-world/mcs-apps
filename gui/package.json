@@ -1,7 +1,7 @@
 {
-  "name": "mowgli-gui",
+  "name": "mcs-portal-gui",
   "version": "1.0.0",
-  "description": "MOWGLI Graphical User Interface",
+  "description": "MCS Portal",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -45,7 +45,7 @@
     "webpack-merge": "^4.2.2"
   },
   "license": "Apache-2.0",
-  "repository": "https://github.com/tetherless-world/mowgli.git",
+  "repository": "https://github.com/tetherless-world/mcs-portal.git",
   "scripts": {
     "build": "webpack --mode production -p",
     "generate": "graphql-codegen --config graphql-codegen-config.yml && node_modules/.bin/apollo codegen:generate --endpoint http://localhost:9000/api/graphql --target=typescript --includes=src/ts/**/*.graphql,src/ts/**/*.ts --tagName=gql --addTypename --globalTypesFile=src/ts/api/graphqlGlobalTypes.ts types",

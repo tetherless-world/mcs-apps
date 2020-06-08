@@ -61,11 +61,7 @@ export const HomePage: React.FunctionComponent = () => {
         <Grid container direction="column" spacing={3}>
           <Grid item>
             <Typography variant="h2" className={classes.title}>
-              MOWGLI
-            </Typography>
-            <Typography variant="body1">
-              DARPA Machine Common Sense (MCS) Multi-modal Open World Grounded
-              Learning and Inference (MOWGLI)
+              MCS Portal
             </Typography>
           </Grid>
           <Grid item>

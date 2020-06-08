@@ -32,7 +32,7 @@ export const Navbar: React.FunctionComponent<{}> = () => {
     <AppBar className={classes.navbar} position="static" data-cy="navbar">
       <Toolbar>
         <Button href={Hrefs.home} className={classes.brand}>
-          <Typography variant="h6">MOWGLI</Typography>
+          <Typography variant="h6">MCS Portal</Typography>
         </Button>
         <NodeSearchBox showIcon={true} />
       </Toolbar>
