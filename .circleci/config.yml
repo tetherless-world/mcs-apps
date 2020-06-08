@@ -1,89 +1,6 @@
 version: 2.1
 jobs:
-  etl-py:
-    docker:
-      - image: circleci/python:3.8
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - pip_cache-{{ checksum "etl/requirements.txt" }}
-            - pip_cache
-      - run:
-          name: Install mandatory dependencies
-          command: pip install -r etl/requirements.txt
-      - run:
-          name: Run tests without optional dependencies
-          command: |
-            cd etl
-            mkdir test-results
-            # In a stable build results will be overwritten by the run with optional dependencies,
-            # but if one of these tests fails, we still want them.
-            pytest --junitxml=test-results/junit.xml
-      - run:
-          name: Install optional dependencies
-          command: |
-            pip install bsddb3 plyvel
-      - save_cache:
-          paths:
-            - ~/.cache/pip
-          key: pip_cache-{{ checksum "etl/requirements.txt"}}
-      - run:
-          name: Run tests with optional dependencies
-          command: |
-            cd etl
-            pytest --junitxml=test-results/junit.xml
-      - store_test_results:
-          path: test-results
-      - restore_cache:
-          keys:
-            - etl-data-{{ checksum "etl/mowgli_etl/pipeline/rpi_combined/rpi_combined_pipeline.py" }}
-      - run:
-          name: Generate RPI combined CSKG CSV (master branch only)
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd etl
-              mkdir -p cskg
-              python -m mowgli_etl.cli etl rpi_combined --data-dir-path cskg
-            fi
-      #      - run:
-      #          name: Generate RPI combined CSKG RDF (master branch only)
-      #          command: |
-      #            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #              python3 -m mowgli_etl.cli etl rdf --data-dir-path cskg --nodes-csv-file-path cskg/rpi_combined/loaded/nodes.csv --edges-csv-file-path cskg/rpi_combined/loaded/edges.csv --pipeline-id rpi-combined-rdf
-      #            fi
-      - save_cache:
-          key: etl-data-{{ checksum "etl/mowgli_etl/pipeline/rpi_combined/rpi_combined_pipeline.py" }}
-          paths:
-            - etl/cskg/extracted
-      - run:
-          name: Archive artifacts (master branch only)
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd etl/cskg
-              for dir in `ls`; do
-                mv "$dir/loaded/"*.csv "$dir/" || true
-                mv "$dir/loaded/"*.trig "$dir/" || true
-                mv "$dir/loaded/"*.ttl "$dir/" || true
-                rm -fr "$dir/extracted" "$dir/transformed" "$dir/loaded"
-              done
-              cd ..
-              tar -cvjSf cskg.tar.bz2 cskg
-            else
-              touch cskg.tar.bz2
-            fi
-      - run:
-          name: Upload CSKG to Drive (master branch only)
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd etl
-              service_file_path="service_file_key.json"
-              cat \<<< "$GCLOUD_SERVICE_KEY" > "$service_file_path"
-              python3 -m mowgli_etl.cli drive-upload --file-path=cskg.tar.bz2  --file-id="$CSKG_FILE_ID" --service-account-file="$service_file_path"
-            fi
-      - store_artifacts:
-          path: cskg.tar.bz2
-  gui-docker:
+  docker:
     docker:
       - image: circleci/python:3.8
     steps:
@@ -92,13 +9,11 @@ jobs:
       - run:
           name: Build
           command: |
-            cd gui
             docker-compose build
       - run:
           name: Run
           background: true
           command: |
-            cd gui
             docker-compose up --abort-on-container-exit
       - run:
           name: Wait for the server to start
@@ -107,12 +22,10 @@ jobs:
       - run:
           name: Bootstrap the database
           command: |
-            cd gui
             script/bootstrap-neo4j
       - run:
           name: Load the database
           command: |
-            cd gui
             bzip2 -d -f conf/test_data/edges.csv.bz2 > conf/test_data/edges.csv
             bzip2 -d -f conf/test_data/nodes.csv.bz2 > conf/test_data/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
@@ -123,7 +36,6 @@ jobs:
       - run:
           name: Test that the database is loaded
           command: |
-            cd gui
             # Copy a file in in order to use -f
             # If we cat the Cypher into the docker exec then the cypher-shell doesn't print anything.
             echo "MATCH (n) RETURN COUNT(n);" >test-neo4j.cypher
@@ -132,8 +44,8 @@ jobs:
       - run:
           name: Test that the user interface is up
           command: |
-            docker exec mowgli-gui-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
-  gui-scala:
+            docker exec mcs-portal-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
+  scala:
     docker:
       - image: circleci/openjdk:11
       - image: neo4j:4.0.4
@@ -147,96 +59,88 @@ jobs:
       - checkout
       - restore_cache:
           key: sbt-cache-v1
-      # Can't call docker-exec on secondary images.
-      #      - run:
-      #          name: Bootstrap neo4j
-      #          command: |
-      #            gui/script/bootstrap-neo4j
       - run:
           name: Build and test
           command: |
-            cp -p -R /tmp/workspace/dist/gui-gui gui/public
+            cp -p -R /tmp/workspace/dist/gui gui/public
             sbt test "project guiApp" playUpdateSecret dist
-            cd gui/target/universal && unzip -qq mowgli-gui-app*.zip && rm mowgli-gui-app*.zip && mkdir ~/dist && mv mowgli-gui-app-*-SNAPSHOT ~/dist/gui-app
+            cd target/universal && unzip -qq mcs-portal-app*.zip && rm mcs-portal-app*.zip && mkdir ~/dist && mv mcs-portal-app-*-SNAPSHOT ~/dist/app
       - store_test_results:
-          path: gui/target/test-reports
+          path: target/test-reports
       - persist_to_workspace:
           root: ~/
           paths:
-            - dist/gui-app
+            - dist/app
       - save_cache:
           key: sbt-cache-v1
           paths:
             - "~/.ivy2/cache"
             - "~/.m2"
             - "~/.sbt"
-  gui-ts:
+  ts:
     working_directory: ~/project
     docker:
       - image: circleci/node:12
     steps:
       - checkout
       - restore_cache:
-          key: ts-dependency-cache-v1-{{ checksum "gui/gui/package.json" }}
+          key: ts-dependency-cache-v1-{{ checksum "gui/package.json" }}
       - run:
           name: Install dependencies
           command: |
-            cd gui/gui
+            cd gui
             npm install
       - save_cache:
-          key: ts-dependency-cache-v1-{{ checksum "gui/gui/package.json" }}
+          key: ts-dependency-cache-v1-{{ checksum "gui/package.json" }}
           paths:
-            - gui/gui/node_modules
+            - gui/node_modules
       - run:
           name: Build
           command: |
-            cd gui/gui
+            cd gui
             npm run build
             mkdir ~/dist
-            mv dist ~/dist/gui-gui
+            mv dist ~/dist/gui
       - persist_to_workspace:
           root: ~/
           paths:
-            - dist/gui-gui
+            - dist/gui
 orbs:
   cypress: cypress-io/cypress@1
 workflows:
   version: 2
-  etl:
-    jobs:
-      - etl-py
-  gui:
+  build:
     jobs:
       - cypress/install:
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "gui/test/integration/package.json" }}'
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
           requires:
-            - gui-scala
-          working_directory: gui/test/integration
+            - scala
+          working_directory: test/integration
       - cypress/run:
           attach-workspace: true
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "gui/test/integration/package.json" }}'
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
           post-steps:
             - store_test_results:
-                path: gui/test/integration/results
+                path: test/integration/results
             - store_artifacts:
-                path: gui/test/integration/cypress/screenshots
+                path: test/integration/cypress/screenshots
             - store_artifacts:
-                path: gui/test/integration/cypress/videos
+                path: test/integration/cypress/videos
           requires:
             - cypress/install
           start: |
             pwd
             cp ~/project/.circleci/cypress.json .
             apt-get update && apt-get install -y default-jre
-            cd ~/dist/gui-app
-            bin/mowgli-gui-app -DtestIntegration
+            cd ~/dist/app
+            bin/mcs-portal-app -DtestIntegration
           wait-on: "http-get://localhost:9000/index.html"
-          working_directory: gui/test/integration
-      - gui-docker:
+          working_directory: test/integration
+      - docker:
           filters:
             branches:
               only: master
-      - gui-scala:
+      - scala:
           requires:
-            - gui-ts
-      - gui-ts
+            - ts
+      - ts
