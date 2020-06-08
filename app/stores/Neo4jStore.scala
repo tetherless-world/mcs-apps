@@ -119,7 +119,7 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
     }
   }
 
-  final override def getMatchingNodes(limit: Int, offset: Int, text: String): List[Node] =
+  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] =
     withSession { session =>
       session.readTransaction { transaction =>
         val result =
@@ -137,7 +137,7 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
       }
     }
 
-  final override def getMatchingNodesCount(text: String): Int =
+  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int =
     withSession { session =>
       session.readTransaction { transaction =>
         val result =

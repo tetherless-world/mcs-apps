@@ -29,12 +29,12 @@ class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
   final override def getNodeById(id: String): Option[Node] =
     nodesById.get(id)
 
-  final override def getMatchingNodes(limit: Int, offset: Int, text: String): List[Node] = {
+  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] = {
     val results = lucene.query().filter(text).limit(limit).offset(offset).search()
     results.results.toList.map(searchResult => nodesById(searchResult(luceneNodeIdField)))
   }
 
-  final override def getMatchingNodesCount(text: String): Int = {
+  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int = {
     val results = lucene.query().filter(text).search()
     results.total.intValue
   }
