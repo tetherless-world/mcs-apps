@@ -6,4 +6,4 @@ GET         /api/graphql-schema             controllers.graphql.GraphQlControlle
 
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
-GET         /$path<.*>    controllers.test.GenericTestController.frontEndPath(path)
+GET         /$path<.*>    controllers.test.TestController.frontEndPath(path)
