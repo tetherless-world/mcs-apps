@@ -8,40 +8,43 @@ import {DatasourcesQuery} from "api/queries/types/DatasourcesQuery";
 import * as DatasourcesQueryDocument from "api/queries/DatasourcesQuery.graphql";
 
 export const DatasourceSelect: React.FunctionComponent<{
-  value?: string[];
-  onChange?: (newValues: string[]) => void;
+  value?: string;
+  onChange?: (newValue: string) => void;
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
   const {data} = useQuery<DatasourcesQuery>(DatasourcesQueryDocument);
   const datasources = data?.datasources;
 
-  const [selectedDatasources, setSelectedDatasources] = React.useState<
-    string[]
-  >(value || []);
+  const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
+    value || ""
+  );
 
   if (!datasources) return null;
 
   return (
     <Paper variant="outlined" square style={style} data-cy="datasourceSelect">
       <Select
-        multiple
         displayEmpty
-        value={selectedDatasources}
+        value={selectedDatasource}
         onChange={(event: React.ChangeEvent<{value: unknown}>) => {
-          const values = event.target.value as string[];
-          setSelectedDatasources(values);
-          if (onChange) onChange(values);
+          const value = event.target.value as string;
+
+          setSelectedDatasource(value);
+          if (onChange) onChange(value);
         }}
         renderValue={(selected) => (
           <span style={{marginLeft: "5px"}} data-cy="value">
-            {(selected as string[]).length === 0 ? (
+            {(selected as string).length === 0 ? (
               <React.Fragment>All datasources</React.Fragment>
             ) : (
-              (selected as string[]).join(", ")
+              (selected as string)
             )}
           </span>
         )}
       >
+        <MenuItem value="" data-cy="allDatasourcesSelectMenuItem">
+          All datasources
+        </MenuItem>
         {datasources.map((datasource) => (
           <MenuItem
             key={datasource}

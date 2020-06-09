@@ -49,7 +49,7 @@ export const NodeSearchBox: React.FunctionComponent<{
     text: value || "",
   });
 
-  const [datasources, setDatasources] = React.useState<string[]>([]);
+  const [datasource, setDatasource] = React.useState<string>("");
 
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
@@ -124,9 +124,9 @@ export const NodeSearchBox: React.FunctionComponent<{
     // Call throttled query with new search text
     throttledQuery.current(
       {
-        text: `label:${search.text} ${datasources
-          .map((d) => "datasource:" + d)
-          .join(" ")}`,
+        text:
+          `label:${search.text}` +
+          (datasource.length > 0 ? `datasource:${datasource}` : ""),
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
         withCount: false,
@@ -145,7 +145,7 @@ export const NodeSearchBox: React.FunctionComponent<{
     return () => {
       active = false;
     };
-  }, [search.text, datasources, throttledQuery]);
+  }, [search.text, datasource, throttledQuery]);
 
   return (
     <form
@@ -215,9 +215,9 @@ export const NodeSearchBox: React.FunctionComponent<{
       ></Autocomplete>
       <DatasourceSelect
         style={{display: "inline-flex", verticalAlign: "top"}}
-        value={datasources}
-        onChange={(newDatasources: string[]) => {
-          setDatasources(newDatasources);
+        value={datasource}
+        onChange={(newDatasource: string) => {
+          setDatasource(newDatasource);
         }}
       ></DatasourceSelect>
     </form>
