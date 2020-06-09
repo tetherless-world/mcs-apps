@@ -10,20 +10,20 @@ import scala.util.Random
 class MemStore extends Store {
   private var edges: List[Edge] = List()
   private var nodes: List[Node] = List()
-  private val lucene = new DirectLucene(List("datasource", "id", "label"))
+  private val lucene = new DirectLucene(List("datasource", "id", "label"), autoCommit = false)
   private val luceneNodeDatasourceField = lucene.create.field[String]("datasource", fullTextSearchable = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
   private val luceneNodeLabelField = lucene.create.field[String]("label", fullTextSearchable = true)
-  nodes.foreach(node => {
-    lucene.doc().fields(luceneNodeDatasourceField(node.datasource), luceneNodeIdField(node.id), luceneNodeLabelField(node.label)).index()
-  })
-  private val nodesById = nodes.map(node => (node.id, node)).toMap
+  private var nodesById: Map[String, Node] = Map()
   private val random = new Random()
-  private val datasources = nodes.flatMap(_.datasource.split(",")).distinct
+  private var datasources: List[String] = List()
 
   final override def clear(): Unit = {
+    datasources = List()
     edges = List()
+    lucene.deleteAll()
     nodes = List()
+    nodesById = Map()
   }
 
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
@@ -85,6 +85,13 @@ class MemStore extends Store {
 
   final override def putNodes(nodes: Traversable[Node]): Unit = {
     this.nodes = nodes.toList
+    this.nodesById = this.nodes.map(node => (node.id, node)).toMap
+    this.datasources = this.nodes.flatMap(_.datasource.split(",")).distinct
+    lucene.deleteAll()
+    this.nodes.foreach(node => {
+      lucene.doc().fields(luceneNodeDatasourceField(node.datasource), luceneNodeIdField(node.id), luceneNodeLabelField(node.label)).index()
+    })
+    lucene.commit()
   }
 
   private def toSearchTerms(filters: Option[NodeFilters], text: String): List[SearchTerm] = {
