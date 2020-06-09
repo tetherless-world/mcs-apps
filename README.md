@@ -1,9 +1,8 @@
-# Common Sense Knowledge Graph (CSKG) Graphical User Interface (GUI)
+# Machine Common Sense portal
 
-The CSKG GUI is a standard three-tier web application:
-- Database: neo4j
-- Middleware: Play framework web application in Scala
-- Front end: TypeScript+React
+Portal for exploring knowledge graphs of common sense, benchmark questions, and question-answering processes.
+
+This work is supported by the [DARPA Machine Common Sense (MCS)](https://www.darpa.mil/program/machine-common-sense") program.
 
 # Running the application
 
@@ -56,13 +55,24 @@ You can specify Lucene-style queries such as `id:"someid"` or `datasource:someda
 
 # Developing
 
+The portal is a standard three-tier web application:
+- Database: neo4j
+- Middleware: Play framework web application in Scala
+- Front end: TypeScript+React
+
 ## Database
+
+### Running the database locally
 
 You can run the neo4j database locally with Docker:
 
     docker-compose up neo4j
     
 Then following the steps above to bootstrap (one time) and load the database.
+    
+### Using the shared database (RPI only)
+
+There is a shared neo4j instance on the RPI network at `128.113.12.49`. In order to use this, add an entry to your `/etc/hosts` file (or Windows equivalent) mapping that IP to the name `neo4j`:
     
 ## Middleware
 
