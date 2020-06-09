@@ -4,8 +4,8 @@ POST        /api/graphql                    controllers.graphql.GraphQlControlle
 GET         /api/graphql-schema             controllers.graphql.GraphQlController.renderSchema
 
 # Import
-PUT         /api/import/edges/:edgesCsvFileName                controllers.admin.AdminController.putEdges(edgesCsvFileName: String)
-PUT         /api/import/nodes/:nodesCsvFileName                controllers.admin.AdminController.putNodes(nodesCsvFileName: String)
+PUT         /api/import/edges/:edgesCsvFileName                controllers.import_.ImportController.putEdges(edgesCsvFileName: String)
+PUT         /api/import/nodes/:nodesCsvFileName                controllers.import_.ImportController.putNodes(nodesCsvFileName: String)
 
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
