@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
-import {Paper, InputAdornment, InputBase} from "@material-ui/core";
+import {Paper, InputAdornment, InputBase, IconButton} from "@material-ui/core";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
@@ -153,7 +153,7 @@ export const NodeSearchBox: React.FunctionComponent<{
       onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        onSubmit!(selectedSearchResult || search.text);
+        onSubmit(selectedSearchResult || search.text);
       }}
     >
       <Autocomplete
@@ -191,7 +191,15 @@ export const NodeSearchBox: React.FunctionComponent<{
               startAdornment={
                 showIcon ? (
                   <InputAdornment position="end" style={{marginRight: "8px"}}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={() =>
+                        onSubmit(selectedSearchResult || search.text)
+                      }
+                    >
+                      <FontAwesomeIcon icon={faSearch} />
+                    </IconButton>
                   </InputAdornment>
                 ) : null
               }
