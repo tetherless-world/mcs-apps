@@ -1,5 +1,4 @@
 /data/
-/data/
-/import/*.csv
+/import/
 /logs/
 /plugins/
