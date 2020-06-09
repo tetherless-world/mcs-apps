@@ -8,6 +8,47 @@ import org.neo4j.driver.{AuthTokens, GraphDatabase, Record, Result, Session, Tra
 import scala.io.Source
 import scala.collection.JavaConverters._
 
+final case class CypherBinding(variableName: String, value: Any)
+final case class CypherFilter(cypher: String, binding: Option[CypherBinding] = None)
+final case class CypherFilters(filters: List[CypherFilter]) {
+  def toCypherBindingsMap: Map[String, Any] =
+    filters.flatMap(filter => filter.binding).map(binding => (binding.variableName -> binding.value)).toMap
+
+  def toCypherString: String =
+    if (!filters.isEmpty) {
+      s"WHERE ${filters.map(filter => filter.cypher).mkString(" AND ")}"
+    } else {
+      ""
+    }
+}
+object CypherFilters {
+  def apply(nodeFilters: Option[NodeFilters]): CypherFilters =
+    if (nodeFilters.isDefined) {
+      apply(nodeFilters.get)
+    } else {
+      CypherFilters(List())
+    }
+
+  def apply(nodeFilters: NodeFilters): CypherFilters =
+    if (nodeFilters.datasource.isDefined) {
+      CypherFilters(toCypherFilters(bindingVariableNamePrefix = "nodeDatasource", property = "node.datasource", stringFilter = nodeFilters.datasource.get))
+    } else {
+      CypherFilters(List())
+    }
+
+  private def toCypherFilters(bindingVariableNamePrefix: String, property: String, stringFilter: StringFilter): List[CypherFilter] = {
+    stringFilter.exclude.getOrElse(List()).zipWithIndex.map(excludeWithIndex => {
+      val bindingVariableName = s"${bindingVariableNamePrefix}Exclude${excludeWithIndex._2}"
+      CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = excludeWithIndex._1)), cypher = s"NOT ${property} = $$${bindingVariableName}")
+    }) ++
+      stringFilter.include.getOrElse(List()).zipWithIndex.map(includeWithIndex => {
+        val bindingVariableName = s"${bindingVariableNamePrefix}Include${includeWithIndex._2}"
+        CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = includeWithIndex._1)), cypher = s"${property} = $$${bindingVariableName}")
+      })
+  }
+}
+
+
 class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("datasource", "other", "weight")
@@ -104,6 +145,49 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
     }
   }
 
+  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] = {
+    val cypherFilters = CypherFilters(filters)
+
+    withSession { session =>
+      session.readTransaction { transaction =>
+        val result =
+          transaction.run(
+            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
+               |RETURN ${nodePropertyNamesString}
+               |${cypherFilters.toCypherString}
+               |SKIP ${offset}
+               |LIMIT ${limit}
+               |""".stripMargin,
+            (Map(
+              "text" -> text
+            ) ++ cypherFilters.toCypherBindingsMap).asJava.asInstanceOf[java.util.Map[String, Object]]
+          )
+        getNodesFromRecords(result)
+      }
+    }
+  }
+
+  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int = {
+    val cypherFilters = CypherFilters(filters)
+
+    withSession { session =>
+      session.readTransaction { transaction =>
+        val result =
+          transaction.run(
+            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
+               |${cypherFilters.toCypherString}
+               |RETURN COUNT(node)
+               |""".stripMargin,
+            (Map(
+              "text" -> text
+            ) ++ cypherFilters.toCypherBindingsMap).asJava.asInstanceOf[java.util.Map[String, Object]]
+          )
+        val record = result.single()
+        record.get("COUNT(node)").asInt()
+      }
+    }
+  }
+
   override final def getNodeById(id: String): Option[Node] = {
     withSession { session =>
       session.readTransaction { transaction => {
@@ -118,41 +202,6 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
       }
     }
   }
-
-  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        val result =
-          transaction.run(
-            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
-              |RETURN ${nodePropertyNamesString}
-              |SKIP ${offset}
-              |LIMIT ${limit}
-              |""".stripMargin,
-            Map(
-              "text" -> text
-            ).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-          getNodesFromRecords(result)
-      }
-    }
-
-  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        val result =
-          transaction.run(
-            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
-               |RETURN COUNT(node)
-               |""".stripMargin,
-            Map(
-              "text" -> text
-            ).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-        val record = result.single()
-        record.get("COUNT(node)").asInt()
-      }
-    }
 
   private def getEdgeFromRecord(record: Record): Edge = {
     val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]

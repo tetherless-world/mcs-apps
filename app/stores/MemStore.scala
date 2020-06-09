@@ -86,8 +86,8 @@ class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
     }
   }
 
-  private def toSearchTerms(filters: NodeFilters): List[(SearchTerm, Condition)] = {
-    filters.datasource.map(datasource => toSearchTerms(luceneNodeDatasourceField, datasource)).getOrElse(List())
+  private def toSearchTerms(nodeFilters: NodeFilters): List[(SearchTerm, Condition)] = {
+    nodeFilters.datasource.map(datasource => toSearchTerms(luceneNodeDatasourceField, datasource)).getOrElse(List())
   }
 
   private def toSearchTerms(field: Field[String], stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
