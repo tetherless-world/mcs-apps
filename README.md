@@ -87,7 +87,17 @@ The Play app can be run in the usual way. From the root of the repository:
 
     sbt run
     
-or in the sbt shell. The app listens to port 9000.
+or in the sbt shell. The app listens to port 9000. It expects to be able to reach the database via the Bolt protocol at `neo4j:7687`.
+
+#### Running with test data
+
+The app can use an in-memory test data store (`MemStore`) with synthetic data in lieu of connecting to neo4j:
+
+    sbt -DtestIntegration run
+    
+The same system property can be set in an IntelliJ run configuration.
+
+Integration testing uses this test data store instead of neo4j.
 
 ### Front end
 
