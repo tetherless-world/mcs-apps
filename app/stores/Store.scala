@@ -23,12 +23,12 @@ trait Store {
   /**
    * Fulltext search nodes.
    */
-  def getMatchingNodes(limit: Int, offset: Int, text: String): List[Node]
+  def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node]
 
   /**
    * Get count of fulltext search results.
    */
-  def getMatchingNodesCount(text: String): Int;
+  def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int;
 
   /**
    * Get a node by ID.
