@@ -7,7 +7,7 @@ import play.api.mvc.InjectedController
 import stores.{Store, TestStore}
 
 @Singleton
-class TestController @Inject()(assets: Assets, assetsFinder: AssetsFinder, environment: Environment, store: Store) extends InjectedController {
+class TestController @Inject()(assets: Assets) extends InjectedController {
   def frontEndPath(path: String) = {
     if (path.endsWith(".css") || path.endsWith(".html") || path.endsWith(".ico") || path.endsWith(".js")) {
       // If the path has a file extension, assume it's a file and not a React URL
