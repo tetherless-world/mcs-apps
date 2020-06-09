@@ -49,18 +49,22 @@ object CypherFilters {
 }
 
 
-class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
+final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("datasource", "other", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
   private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
 
-  final def bootstrap(): Unit = {
-    val bootstrapCypherStatements =
-      withResource(getClass.getResourceAsStream("/cypher/bootstrap.cypher")) { inputStream =>
-        Source.fromInputStream(inputStream).getLines().toList
-      }
+  if (!hasConstraints) {
+    bootstrap()
+  }
+
+  private final def bootstrap(): Unit = {
+    val bootstrapCypherStatements = List(
+      """CALL db.index.fulltext.createNodeIndex("node",["Node"],["datasource", "id", "label"]);""",
+      """CREATE CONSTRAINT node_id_constraint ON (n:Node) ASSERT n.id IS UNIQUE;"""
+    )
 
     withSession { session =>
       session.writeTransaction { transaction =>
@@ -73,20 +77,18 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
   }
 
   final def clear(): Unit = {
-    val clearCypherString =
-      withResource(getClass.getResourceAsStream("/cypher/clear.cypher")) { inputStream =>
-        Source.fromInputStream(inputStream).mkString
-      }
-
     withSession { session =>
       session.writeTransaction { transaction =>
-        transaction.run(clearCypherString)
+        transaction.run(
+          """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
+            |YIELD batches, total RETURN batches, total
+            |""".stripMargin)
         transaction.commit()
       }
     }
   }
 
-  final def hasConstraints: Boolean = {
+  private final def hasConstraints: Boolean = {
     withSession { session =>
       session.readTransaction { transaction =>
         val result =
@@ -284,7 +286,7 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
       }
     }
 
-  final def putEdges(edges: List[Edge]): Unit = {
+  final override def putEdges(edges: Traversable[Edge]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (edge <- edges) {
@@ -313,7 +315,7 @@ class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store
 //    }
   }
 
-  final def putNodes(nodes: List[Node]): Unit = {
+  final override def putNodes(nodes: Traversable[Node]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (node <- nodes) {

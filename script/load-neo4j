@@ -1,2 +1,3 @@
 #!/bin/bash
-docker exec neo4j cypher-shell -f cypher/load.cypher --non-interactive -p nC1aB4mji623s2Zs -u neo4j
+docker exec neo4j cypher-shell -f cypher/load-nodes.cypher --non-interactive -p nC1aB4mji623s2Zs -u neo4j
+docker exec neo4j cypher-shell -f cypher/load-edges.cypher --non-interactive -p nC1aB4mji623s2Zs -u neo4j

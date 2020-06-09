@@ -8,8 +8,8 @@ class TestStoreSpec extends WordSpec with Matchers {
   "Test store" can {
     "instantiate with data" in {
       val store = new TestStore()
-      store.edges should not be empty
-      store.nodes should not be empty
+      store.getTotalEdgesCount should be > 0
+      store.getTotalNodesCount should be > 0
     }
   }
 }

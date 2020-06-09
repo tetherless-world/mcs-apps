@@ -7,7 +7,9 @@ import models.cskg.{Edge, Node}
 
 import scala.util.Random
 
-class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
+class MemStore extends Store {
+  private var edges: List[Edge] = List()
+  private var nodes: List[Node] = List()
   private val lucene = new DirectLucene(List("datasource", "id", "label"))
   private val luceneNodeDatasourceField = lucene.create.field[String]("datasource", fullTextSearchable = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
@@ -18,6 +20,11 @@ class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
   private val nodesById = nodes.map(node => (node.id, node)).toMap
   private val random = new Random()
   private val datasources = nodes.flatMap(_.datasource.split(",")).distinct
+
+  final override def clear(): Unit = {
+    edges = List()
+    nodes = List()
+  }
 
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
 //    if (filters.isDefined) {
@@ -71,6 +78,14 @@ class MemStore(val edges: List[Edge], val nodes: List[Node]) extends Store {
 
   final override def getTotalNodesCount: Int =
     nodes.size
+
+  final override def putEdges(edges: Traversable[Edge]): Unit = {
+    this.edges = edges.toList
+  }
+
+  final override def putNodes(nodes: Traversable[Node]): Unit = {
+    this.nodes = nodes.toList
+  }
 
   private def toSearchTerms(filters: Option[NodeFilters], text: String): List[SearchTerm] = {
     val textSearchTerm = string2ParsableSearchTerm(text)
