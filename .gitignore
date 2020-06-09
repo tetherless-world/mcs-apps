@@ -1,6 +1,8 @@
 *.bloop
-/gui/dist/
+/data/neo4j/
+/data/app/import/*.csv
 node_modules/
+/gui/dist/
 /gui/package-lock.json
 /.idea/
 *.iml

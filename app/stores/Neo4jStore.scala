@@ -2,8 +2,10 @@ package stores
 import java.util
 
 import com.google.inject.Inject
+import javax.inject.Singleton
 import models.cskg.{Edge, Node}
 import org.neo4j.driver.{AuthTokens, GraphDatabase, Record, Result, Session, Transaction, Values}
+import org.slf4j.LoggerFactory
 
 import scala.io.Source
 import scala.collection.JavaConverters._
@@ -48,31 +50,54 @@ object CypherFilters {
   }
 }
 
-
+@Singleton
 final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
+  private var bootstrapped: Boolean = false
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("datasource", "other", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
+  private val logger = LoggerFactory.getLogger(getClass)
   private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
 
-  if (!hasConstraints) {
-    bootstrap()
-  }
+  bootstrapStore()
 
-  private final def bootstrap(): Unit = {
-    val bootstrapCypherStatements = List(
-      """CALL db.index.fulltext.createNodeIndex("node",["Node"],["datasource", "id", "label"]);""",
-      """CREATE CONSTRAINT node_id_constraint ON (n:Node) ASSERT n.id IS UNIQUE;"""
-    )
-
-    withSession { session =>
-      session.writeTransaction { transaction =>
-        for (bootstrapCypherStatement <- bootstrapCypherStatements) {
-          transaction.run(bootstrapCypherStatement)
-        }
-        transaction.commit()
+  private def bootstrapStore(): Unit = {
+    this.synchronized {
+      if (bootstrapped) {
+        return
       }
+
+      withSession { session =>
+        val hasConstraints =
+          session.readTransaction { transaction =>
+            val result =
+              transaction.run("CALL db.constraints")
+            result.hasNext
+          }
+
+        if (hasConstraints) {
+          logger.info("neo4j indices already exist")
+          bootstrapped = true
+          return
+        }
+
+        logger.info("bootstrapping neo4j indices")
+
+        val bootstrapCypherStatements = List(
+          """CALL db.index.fulltext.createNodeIndex("node",["Node"],["datasource", "id", "label"]);""",
+          """CREATE CONSTRAINT node_id_constraint ON (n:Node) ASSERT n.id IS UNIQUE;"""
+        )
+
+        session.writeTransaction { transaction =>
+          for (bootstrapCypherStatement <- bootstrapCypherStatements) {
+            transaction.run(bootstrapCypherStatement)
+          }
+          transaction.commit()
+        }
+      }
+
+      logger.info("bootstrapped neo4j indices")
     }
   }
 
@@ -80,24 +105,10 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     withSession { session =>
       session.writeTransaction { transaction =>
         transaction.run(
-          """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
+          """CALL apoc.periodic.iterate("MATCH (n) return n", "DELETE n", {batchSize:1000})
             |YIELD batches, total RETURN batches, total
             |""".stripMargin)
         transaction.commit()
-      }
-    }
-  }
-
-  private final def hasConstraints: Boolean = {
-    withSession { session =>
-      session.readTransaction { transaction =>
-        val result =
-          transaction.run("CALL db.constraints")
-        val hasConstraints = result.hasNext
-        while (result.hasNext) {
-          result.next()
-        }
-        hasConstraints
       }
     }
   }

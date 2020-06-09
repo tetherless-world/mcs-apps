@@ -1,16 +1,20 @@
 version: "3"
 services:
-  mcs-portal-app:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: mcs-portal-app
-  mcs-portal-gui:
+    volumes:
+      - ./data/app:/app/data/app
+  gui:
     build:
       # Use the same context to share a .dockerignore
       context: .
       dockerfile: gui/Dockerfile
     container_name: mcs-portal-gui
+    depends_on:
+      - app
     ports:
       - 127.0.0.1:8080:80
   neo4j:
