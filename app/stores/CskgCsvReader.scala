@@ -18,14 +18,11 @@ abstract class CskgCsvReader[T] {
 
   def read(filePath: Path): Stream[T] = {
     val fileInputStream = new FileInputStream(filePath.toFile)
-    try {
-      if (filePath.getFileName.endsWith(".bz2")) {
-        readCompressed(fileInputStream)
-      } else {
-        read(fileInputStream)
-      }
-    } finally {
-      fileInputStream.close()
+    // CSVReader will close the input stream
+    if (filePath.getFileName.endsWith(".bz2")) {
+      readCompressed(fileInputStream)
+    } else {
+      read(fileInputStream)
     }
   }
 
@@ -40,10 +37,6 @@ abstract class CskgCsvReader[T] {
 
   def readCompressed(inputStream: InputStream): Stream[T] = {
     val bz2InputStream = new CompressorStreamFactory().createCompressorInputStream(inputStream)
-//    try {
       read(bz2InputStream)
-//    } finally {
-//      bz2InputStream.close()
-//    }
   }
 }
