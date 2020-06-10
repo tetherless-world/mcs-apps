@@ -1,4 +1,4 @@
-query DataSummary {
+query DataSummaryQuery {
   datasources
   totalNodesCount
   totalEdgesCount
