@@ -6,9 +6,8 @@ import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSch
 import models.cskg.{Edge, Node}
 import models.path.Path
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import sangria.macros.derive.deriveInputObjectType
+import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
-import sangria.macros.derive.deriveObjectType
 import stores.{NodeFilters, StringFilter}
 
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
@@ -35,7 +34,11 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("pos", OptionType(StringType), resolve = _.value.pos),
     Field("subjectOfEdges", ListType(EdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.store.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
   ))
-  val PathType = deriveObjectType[GraphQlSchemaContext, Path]()
+  val PathType = deriveObjectType[GraphQlSchemaContext, Path](
+    AddFields(
+      Field("edges", ListType(EdgeType), resolve = _.value.edges)
+    )
+  )
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder

@@ -13,7 +13,7 @@ import scala.io.Source
 
 object TestData {
   private val logger = LoggerFactory.getLogger(getClass)
-  private val nodesById = deduplicateNodes(sortNodes(readNodes()))
+  val nodesById = deduplicateNodes(sortNodes(readNodes()))
   val nodes = nodesById.values.toList
   val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(readEdges()), nodesById))
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
