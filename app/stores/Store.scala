@@ -2,6 +2,7 @@ package stores
 
 import com.google.inject.ImplementedBy
 import models.cskg.{Edge, Node}
+import models.path.Path
 
 @ImplementedBy(classOf[Neo4jStore])
 trait Store {
@@ -35,6 +36,10 @@ trait Store {
    */
   def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int;
 
+  def getPaths: List[Path]
+
+  def getPathById(id: String): Option[Path]
+
   /**
    * Get a node by ID.
    */
@@ -64,4 +69,9 @@ trait Store {
    * Put the given nodes to the store
    */
   def putNodes(nodes: Traversable[Node]): Unit
+
+  /**
+   * Put the given paths to the store
+   */
+  def putPaths(paths: Traversable[Path]): Unit
 }
