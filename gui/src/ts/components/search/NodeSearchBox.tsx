@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as _ from "lodash";
-import {Paper, InputAdornment, InputBase} from "@material-ui/core";
+import {Paper, InputAdornment, InputBase, IconButton} from "@material-ui/core";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {GraphQLError} from "graphql";
 import {
@@ -16,6 +16,8 @@ import * as NodeSearchResultsPageQueryDocument from "api/queries/NodeSearchResul
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {Node} from "models/Node";
 import {DatasourceSelect} from "components/search/DatasourceSelect";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {StringFilter} from "api/graphqlGlobalTypes";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -29,15 +31,15 @@ export const NodeSearchBox: React.FunctionComponent<{
   placeholder?: string;
   showIcon?: boolean;
   onSubmit?: (value: string | Node) => void;
-  style?: React.CSSProperties;
+  autocompleteStyle?: React.CSSProperties;
   value?: string;
-  onChange?: (value: string | Node) => void;
+  onChange?: (value: NodeSearchVariables | Node | null) => void;
 }> = ({
   autoFocus,
   onSubmit: onSubmitUserDefined,
   showIcon = false,
   placeholder,
-  style,
+  autocompleteStyle,
   value,
   onChange,
 }) => {
@@ -45,36 +47,71 @@ export const NodeSearchBox: React.FunctionComponent<{
 
   const apolloClient = useApolloClient();
 
-  const [search, setSearch] = React.useState<{text: string}>({
+  // Search represents state of node label search and filters
+  const [search, setSearch] = React.useState<NodeSearchVariables>({
     text: value || "",
+    filters: {},
   });
 
-  const [datasources, setDatasources] = React.useState<string[]>([]);
+  // selectedSearchResult represents the autocomplete search
+  // suggestion that the user is currently highlighting
+  const [
+    selectedSearchResult,
+    setSelectedSearchResult,
+  ] = React.useState<Node | null>(null);
 
+  // The user can submit either
+  // 1) a free text label search
+  //    -> redirect to NodeSearchResultsPage
+  // 2) a Node from the autcomplete search suggestions
+  //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
     : (value: string | Node) => {
         if (typeof value === "string") {
           if (value.length === 0) return;
 
-          history.push(Hrefs.nodeSearch({text: value}));
+          history.push(
+            Hrefs.nodeSearch({
+              text: value,
+              filters: search.filters,
+            })
+          );
         } else {
           history.push(Hrefs.node(value.id));
         }
       };
 
-  const [
-    selectedSearchResult,
-    setSelectedSearchResult,
-  ] = React.useState<Node | null>(null);
+  // If onChange is provided, call with updates
+  // to `search` and `selectedSearchResult`
+  React.useEffect(() => {
+    if (!onChange) return;
 
-  const [searchErrors, setSearchErrors] = React.useState<
-    readonly GraphQLError[] | undefined
-  >(undefined);
+    // User highlight new autocomplete suggestion
+    if (selectedSearchResult) {
+      onChange(selectedSearchResult);
+      return;
+    }
+
+    // Empty text search update
+    if (search.text.length === 0) {
+      onChange(null);
+      return;
+    }
+
+    // Free text search update
+    onChange(search);
+  }, [selectedSearchResult, search]);
+
+  // Next section handles search autocomplete suggestions
 
   const [searchResults, setSearchResults] = React.useState<Node[]>([]);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const [searchErrors, setSearchErrors] = React.useState<
+    readonly GraphQLError[] | undefined
+  >(undefined);
 
   // Query server for search results to display
   // Is throttled so server request is only sent
@@ -112,21 +149,18 @@ export const NodeSearchBox: React.FunctionComponent<{
     )
   );
 
-  // Execute this block of code when the text input value changes
+  // When the user types, call the throttled query with
+  // new search text
   React.useEffect(() => {
     let active = true;
 
     // If text input is empty, skip query
-    if (search.text.length === 0) {
-      return;
-    }
+    if (search.text.length === 0) return;
 
-    // Call throttled query with new search text
     throttledQuery.current(
       {
-        text: `label:${search.text} ${datasources
-          .map((d) => "datasource:" + d)
-          .join(" ")}`,
+        text: `label:${search.text}`,
+        filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
         withCount: false,
@@ -145,7 +179,7 @@ export const NodeSearchBox: React.FunctionComponent<{
     return () => {
       active = false;
     };
-  }, [search.text, datasources, throttledQuery]);
+  }, [search, throttledQuery]);
 
   return (
     <form
@@ -153,11 +187,11 @@ export const NodeSearchBox: React.FunctionComponent<{
       onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        onSubmit!(selectedSearchResult || search.text);
+        onSubmit(selectedSearchResult || search.text);
       }}
     >
       <Autocomplete
-        style={{display: "inline-flex", verticalAlign: "top"}}
+        style={{verticalAlign: "top", ...autocompleteStyle}}
         getOptionLabel={(option: Node | string) =>
           typeof option === "string" ? option : option.label!
         }
@@ -170,14 +204,12 @@ export const NodeSearchBox: React.FunctionComponent<{
         inputValue={search.text}
         onInputChange={(_, newInputValue: string) => {
           setSearch((prevSearch) => ({...prevSearch, text: newInputValue}));
-          if (onChange && !selectedSearchResult) onChange(newInputValue);
         }}
         onHighlightChange={(_, option: Node | null) => {
-          if (onChange) onChange(option || search.text);
           setSelectedSearchResult(option);
         }}
         renderInput={(params) => (
-          <Paper variant="outlined" square style={style}>
+          <Paper variant="outlined" square>
             <InputBase
               autoFocus={autoFocus}
               inputProps={{
@@ -191,7 +223,15 @@ export const NodeSearchBox: React.FunctionComponent<{
               startAdornment={
                 showIcon ? (
                   <InputAdornment position="end" style={{marginRight: "8px"}}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={() =>
+                        onSubmit(selectedSearchResult || search.text)
+                      }
+                    >
+                      <FontAwesomeIcon icon={faSearch} />
+                    </IconButton>
                   </InputAdornment>
                 ) : null
               }
@@ -200,16 +240,22 @@ export const NodeSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(node) => (
-          <a href={Hrefs.node(node.id)}>
+          <Link to={Hrefs.node(node.id)}>
             {node.label} - {node.datasource}
-          </a>
+          </Link>
         )}
       ></Autocomplete>
       <DatasourceSelect
         style={{display: "inline-flex", verticalAlign: "top"}}
-        value={datasources}
-        onChange={(newDatasources: string[]) => {
-          setDatasources(newDatasources);
+        value={search.filters.datasource || undefined}
+        onChange={(datasource: StringFilter) => {
+          setSearch((prev) => ({
+            ...prev,
+            filters: {
+              ...prev.filters,
+              datasource,
+            },
+          }));
         }}
       ></DatasourceSelect>
     </form>

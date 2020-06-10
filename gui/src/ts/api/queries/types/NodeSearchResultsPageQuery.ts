@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { NodeFilters } from "./../../graphqlGlobalTypes";
+
 // ====================================================
 // GraphQL query operation: NodeSearchResultsPageQuery
 // ====================================================
@@ -22,6 +24,7 @@ export interface NodeSearchResultsPageQuery {
 }
 
 export interface NodeSearchResultsPageQueryVariables {
+  filters: NodeFilters;
   limit: number;
   offset: number;
   text: string;

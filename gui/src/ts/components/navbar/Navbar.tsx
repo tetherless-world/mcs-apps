@@ -12,6 +12,7 @@ import {
 import {NodeSearchBox} from "components/search/NodeSearchBox";
 
 import {Hrefs} from "Hrefs";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -31,10 +32,13 @@ export const Navbar: React.FunctionComponent<{}> = () => {
   return (
     <AppBar className={classes.navbar} position="static" data-cy="navbar">
       <Toolbar>
-        <Button href={Hrefs.home} className={classes.brand}>
+        <Button component={Link} to={Hrefs.home} className={classes.brand}>
           <Typography variant="h6">MCS Portal</Typography>
         </Button>
-        <NodeSearchBox showIcon={true} />
+        <NodeSearchBox
+          showIcon={true}
+          autocompleteStyle={{display: "inline-flex"}}
+        />
       </Toolbar>
     </AppBar>
   );

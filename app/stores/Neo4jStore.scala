@@ -167,8 +167,8 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
         val result =
           transaction.run(
             s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
-               |RETURN ${nodePropertyNamesString}
                |${cypherFilters.toCypherString}
+               |RETURN ${nodePropertyNamesString}
                |SKIP ${offset}
                |LIMIT ${limit}
                |""".stripMargin,

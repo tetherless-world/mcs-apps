@@ -30,6 +30,12 @@ export class NodeSearchInput {
     return new NodeSearchSuggestionLink(index, this.parentSelector);
   }
 
+  selectAllDatasources() {
+    cy.get(this.parentSelector + " [data-cy=datasourceSelect]").click();
+
+    cy.get("[data-cy=allDatasourcesSelectMenuItem]").click();
+  }
+
   selectDatasource(label: string) {
     cy.get(this.parentSelector + " [data-cy=datasourceSelect]").click();
 

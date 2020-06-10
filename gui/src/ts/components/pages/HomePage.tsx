@@ -16,9 +16,10 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+const isNode = (obj: NodeSearchVariables | Node): obj is Node =>
+  (obj as Node).id !== undefined;
+
 export const HomePage: React.FunctionComponent = () => {
   const classes = useStyles();
 
@@ -41,19 +45,12 @@ export const HomePage: React.FunctionComponent = () => {
 
   const {data} = useQuery<HomePageQuery>(HomePageQueryDocument);
 
-  const [search, setSearch] = React.useState<{value: string | Node}>({
-    value: "",
-  });
+  const [search, setSearch] = React.useState<NodeSearchVariables | Node | null>(
+    null
+  );
 
-  const onSearchInputChange = (newValue: string | Node) => {
-    setSearch((prevSearch) => ({...prevSearch, value: newValue}));
-  };
-
-  // const searchText = (text: string) => {
-  //   if (text.length === 0) return;
-
-  //   history.push(Hrefs.nodeSearch({text}));
-  // };
+  const onSearchChange = (newValue: NodeSearchVariables | Node | null) =>
+    setSearch(newValue);
 
   return (
     <Frame>
@@ -66,42 +63,45 @@ export const HomePage: React.FunctionComponent = () => {
           </Grid>
           <Grid item>
             {data && (
-              <Typography>
-                Search{" "}
-                <strong data-cy="totalNodeCount">
-                  {data.totalNodesCount} nodes
-                </strong>{" "}
-                with{" "}
-                <strong data-cy="totalEdgeCount">
-                  {data.totalEdgesCount} relationships
-                </strong>
-              </Typography>
-            )}
-            <NodeSearchBox
-              autoFocus
-              placeholder="Search a word"
-              showIcon={true}
-              onChange={onSearchInputChange}
-            />
-            <br />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                if (typeof search.value === "string") {
-                  if (search.value.length === 0) return;
+              <React.Fragment>
+                <Typography>
+                  Search{" "}
+                  <strong data-cy="totalNodeCount">
+                    {data.totalNodesCount} nodes
+                  </strong>{" "}
+                  with{" "}
+                  <strong data-cy="totalEdgeCount">
+                    {data.totalEdgesCount} relationships
+                  </strong>
+                </Typography>
 
-                  history.push(Hrefs.nodeSearch({text: search.value}));
-                } else {
-                  history.push(Hrefs.node(search.value.id));
-                }
-              }}
-            >
-              Search
-            </Button>
-            <Button color="primary" href={Hrefs.randomNode}>
-              Show me something interesting
-            </Button>
+                <NodeSearchBox
+                  autoFocus
+                  placeholder="Search a word or try a query"
+                  showIcon={true}
+                  onChange={onSearchChange}
+                />
+                <br />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    if (search === null) {
+                      return;
+                    } else if (isNode(search)) {
+                      history.push(Hrefs.node(search.id));
+                    } else {
+                      history.push(Hrefs.nodeSearch(search));
+                    }
+                  }}
+                >
+                  Search
+                </Button>
+                <Button color="primary" component={Link} to={Hrefs.randomNode}>
+                  Show me something interesting
+                </Button>
+              </React.Fragment>
+            )}
           </Grid>
         </Grid>
       </Container>
