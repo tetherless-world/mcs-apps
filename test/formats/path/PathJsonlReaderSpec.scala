@@ -17,6 +17,10 @@ class PathJsonlReaderSpec extends WordSpec with Matchers {
           path.id should not be empty
           path.datasource should not be empty
           path.path should not be empty
+          path.path.size % 2 should be (1)
+          val pathEdges = path.edges
+          pathEdges(0).subject should be(path.path(0))
+          pathEdges(pathEdges.length - 1).`object` should be (path.path(path.path.length - 1))
         }
       } finally {
         inputStream.close()
