@@ -1,4 +1,5 @@
-query HomePageQuery {
+query DataSummary {
+  datasources
   totalNodesCount
   totalEdgesCount
 }

@@ -1,9 +1,6 @@
 import * as React from "react";
 
 import {NodeSearchBox} from "components/search/NodeSearchBox";
-import {HomePageQuery} from "api/queries/types/HomePageQuery";
-import {useQuery} from "@apollo/react-hooks";
-import * as HomePageQueryDocument from "api/queries/HomePageQuery.graphql";
 import {Frame} from "components/frame/Frame";
 import {Node} from "models/Node";
 
@@ -20,6 +17,7 @@ import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {DataSummaryContext} from "DataSummaryProvider";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -43,7 +41,7 @@ export const HomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const {data} = useQuery<HomePageQuery>(HomePageQueryDocument);
+  const data = React.useContext(DataSummaryContext);
 
   const [search, setSearch] = React.useState<NodeSearchVariables | Node | null>(
     null

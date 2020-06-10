@@ -2,12 +2,8 @@ import * as React from "react";
 
 import {useQuery} from "@apollo/react-hooks";
 
-import {DatasourcesQuery} from "api/queries/types/DatasourcesQuery";
-import * as DatasourcesQueryDocument from "api/queries/DatasourcesQuery.graphql";
-
-interface DataSummary {
-  datasources: string[];
-}
+import {DataSummary} from "api/queries/types/DataSummary";
+import * as DataSummaryQueryDocument from "api/queries/DataSummaryQuery.graphql";
 
 export const DataSummaryContext = React.createContext<DataSummary | undefined>(
   undefined
@@ -15,7 +11,7 @@ export const DataSummaryContext = React.createContext<DataSummary | undefined>(
 
 export const DataSummaryProvider: React.FunctionComponent = ({children}) => {
   // Initial expensive load for static data
-  const {data} = useQuery<DatasourcesQuery>(DatasourcesQueryDocument);
+  const {data} = useQuery<DataSummary>(DataSummaryQueryDocument);
 
   return (
     <DataSummaryContext.Provider value={data}>
