@@ -1,0 +1,4 @@
+#!/bin/bash
+docker exec mcs-portal-app curl -XDELETE -s http://localhost:9000/api/import/
+docker exec mcs-portal-app curl -XPUT -s http://localhost:9000/api/import/nodes/nodes.csv
+docker exec mcs-portal-app curl -XPUT -s http://localhost:9000/api/import/edges/edges.csv

@@ -17,25 +17,13 @@ In the current directory:
 
     docker-compose up
 
-## Bootstrapping the database
-
-After starting the application, run
-
-    script/bootstrap-neo4j
-
 ## Loading the database
 
-After starting the application, copy a CSKG `nodes.csv` and `edges.csv` into `data/neo4j/import`. There is a small test data set in `conf/test_data`.
+After starting the application, copy a CSKG `nodes.csv` and `edges.csv` into `data/app/import`.
  
 Then run:
 
-    script/load-neo4j
-
-## Clearing the database
-
-After starting the application, run
-
-    script/clear-neo4j
+    script/import-cskg
     
 ## Viewing the application
 

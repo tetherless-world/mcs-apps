@@ -6,6 +6,11 @@ import models.cskg.{Edge, Node}
 @ImplementedBy(classOf[Neo4jStore])
 trait Store {
   /**
+   * Clear the store
+   */
+  def clear()
+
+  /**
    * Get all datasources
    */
   def getDatasources: List[String]
@@ -49,4 +54,14 @@ trait Store {
    * Get total number of nodes.
    */
   def getTotalNodesCount: Int;
+
+  /**
+   * Put the given edges to the store
+   */
+  def putEdges(edges: Traversable[Edge]): Unit
+
+  /**
+   * Put the given nodes to the store
+   */
+  def putNodes(nodes: Traversable[Node]): Unit
 }

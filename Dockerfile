@@ -11,11 +11,14 @@ RUN sbt playUpdateSecret dist
 # Deployment
 FROM ubuntu:18.04
 
-RUN apt-get update && apt-get install -y default-jre-headless unzip
+RUN apt-get update && apt-get install -y curl default-jre-headless unzip
 
 COPY --from=build /app/target/universal/mcs-portal-app-1.0.0-SNAPSHOT.zip /
 RUN unzip -q mcs-portal-app-1.0.0-SNAPSHOT.zip && mv /mcs-portal-app-1.0.0-SNAPSHOT /app && chmod +x /app/bin/mcs-portal-app
 
+COPY /docker-entrypoint.sh /
+
 EXPOSE 9000
 
-ENTRYPOINT ["/app/bin/mcs-portal-app"]
+WORKDIR /app
+ENTRYPOINT ["/docker-entrypoint.sh"]
