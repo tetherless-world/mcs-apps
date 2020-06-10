@@ -2,7 +2,6 @@ import * as React from "react";
 
 import {NodeSearchBox} from "components/search/NodeSearchBox";
 import {Frame} from "components/frame/Frame";
-import {Node} from "models/Node";
 
 import {
   Grid,
@@ -16,8 +15,9 @@ import {
 import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
-import {NodeSearchVariables} from "models/NodeSearchVariables";
+
 import {DataSummaryContext} from "DataSummaryProvider";
+import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-type NodeSearchAutocompleteValue = NodeSearchVariables | Node;
-
 export const HomePage: React.FunctionComponent = () => {
   const classes = useStyles();
 
@@ -42,13 +40,9 @@ export const HomePage: React.FunctionComponent = () => {
 
   const data = React.useContext(DataSummaryContext);
 
-  const [
-    search,
-    setSearch,
-  ] = React.useState<NodeSearchAutocompleteValue | null>(null);
+  const [search, setSearch] = React.useState<NodeSearchBoxValue>(null);
 
-  const onSearchChange = (newValue: NodeSearchAutocompleteValue | null) =>
-    setSearch(newValue);
+  const onSearchChange = (newValue: NodeSearchBoxValue) => setSearch(newValue);
 
   const onSearchSubmit = () => {
     if (search === null) {
@@ -57,9 +51,14 @@ export const HomePage: React.FunctionComponent = () => {
 
     switch (search.__typename) {
       case "Node":
-        return history.push(Hrefs.node(search.id));
+        history.push(Hrefs.node(search.id));
+        break;
       case "NodeSearchVariables":
-        return history.push(Hrefs.nodeSearch(search));
+        history.push(Hrefs.nodeSearch(search));
+        break;
+      default:
+        const _exhaustiveCheck: never = search;
+        _exhaustiveCheck;
     }
   };
 

@@ -18,6 +18,7 @@ import {Node} from "models/Node";
 import {DatasourceSelect} from "components/search/DatasourceSelect";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
+import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -26,14 +27,21 @@ const THROTTLE_WAIT_DURATION = 500;
 // Maximum number of suggestions to show
 const MAXIMUM_SUGGESTIONS = 5;
 
+interface NodeSearchTextValue {
+  __typename: "string";
+  value: string;
+}
+
+type NodeSearchAutocompleteValue = NodeSearchTextValue | Node;
+
 export const NodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
   placeholder?: string;
   showIcon?: boolean;
-  onSubmit?: (value: string | Node) => void;
+  onSubmit?: (value: NodeSearchAutocompleteValue) => void;
   autocompleteStyle?: React.CSSProperties;
   value?: string;
-  onChange?: (value: NodeSearchVariables | Node | null) => void;
+  onChange?: (value: NodeSearchBoxValue) => void;
 }> = ({
   autoFocus,
   onSubmit: onSubmitUserDefined,
@@ -68,21 +76,26 @@ export const NodeSearchBox: React.FunctionComponent<{
   //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
-    : (value: string | Node) => {
-        if (typeof value === "string") {
-          if (value.length === 0) {
+    : (value: NodeSearchAutocompleteValue) => {
+        if (value.__typename === "string") {
+          const text = value.value;
+
+          if (text.length === 0) {
             return;
           }
 
           history.push(
             Hrefs.nodeSearch({
               __typename: "NodeSearchVariables",
-              text: value,
+              text,
               filters: search.filters,
             })
           );
-        } else {
+        } else if (value.__typename === "Node") {
           history.push(Hrefs.node(value.id));
+        } else {
+          const _exhaustiveCheck: never = value;
+          _exhaustiveCheck;
         }
       };
 
@@ -191,13 +204,21 @@ export const NodeSearchBox: React.FunctionComponent<{
     };
   }, [search, throttledQuery]);
 
+  // If user a search suggestion is highlighted submit Node
+  // else submit search text
+  const handleSubmit = () => {
+    onSubmit(
+      selectedSearchResult || {__typename: "string", value: search.text}
+    );
+  };
+
   return (
     <form
       data-cy="nodeSearchBox"
       onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        onSubmit(selectedSearchResult || search.text);
+        handleSubmit();
       }}
     >
       <Autocomplete
@@ -236,9 +257,7 @@ export const NodeSearchBox: React.FunctionComponent<{
                     <IconButton
                       color="primary"
                       size="small"
-                      onClick={() =>
-                        onSubmit(selectedSearchResult || search.text)
-                      }
+                      onClick={() => handleSubmit()}
                     >
                       <FontAwesomeIcon icon={faSearch} />
                     </IconButton>
