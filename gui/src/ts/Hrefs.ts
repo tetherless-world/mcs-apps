@@ -19,8 +19,13 @@ export class Hrefs {
   }
 
   static nodeSearch(kwds?: NodeSearchVariables) {
+    if (!kwds) {
+      return "/node/search";
+    }
+
+    const {__typename, ...searchVariables} = kwds;
     return (
-      "/node/search" + (kwds ? qs.stringify(kwds, {addQueryPrefix: true}) : "")
+      "/node/search" + qs.stringify(searchVariables, {addQueryPrefix: true})
     );
   }
 
