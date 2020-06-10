@@ -69,7 +69,9 @@ export const NodeSearchBox: React.FunctionComponent<{
     ? onSubmitUserDefined
     : (value: string | Node) => {
         if (typeof value === "string") {
-          if (value.length === 0) return;
+          if (value.length === 0) {
+            return;
+          }
 
           history.push(
             Hrefs.nodeSearch({
@@ -85,7 +87,9 @@ export const NodeSearchBox: React.FunctionComponent<{
   // If onChange is provided, call with updates
   // to `search` and `selectedSearchResult`
   React.useEffect(() => {
-    if (!onChange) return;
+    if (!onChange) {
+      return;
+    }
 
     // User highlight new autocomplete suggestion
     if (selectedSearchResult) {
@@ -155,7 +159,9 @@ export const NodeSearchBox: React.FunctionComponent<{
     let active = true;
 
     // If text input is empty, skip query
-    if (search.text.length === 0) return;
+    if (search.text.length === 0) {
+      return;
+    }
 
     throttledQuery.current(
       {
@@ -166,7 +172,9 @@ export const NodeSearchBox: React.FunctionComponent<{
         withCount: false,
       },
       ({matchingNodes}, errors) => {
-        if (!active) return;
+        if (!active) {
+          return;
+        }
 
         if (errors !== searchErrors) {
           setSearchErrors(errors);

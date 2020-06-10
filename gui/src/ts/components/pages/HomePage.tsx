@@ -52,6 +52,16 @@ export const HomePage: React.FunctionComponent = () => {
   const onSearchChange = (newValue: NodeSearchVariables | Node | null) =>
     setSearch(newValue);
 
+  const onSearchSubmit = () => {
+    if (search === null) {
+      return;
+    } else if (isNode(search)) {
+      history.push(Hrefs.node(search.id));
+    } else {
+      history.push(Hrefs.nodeSearch(search));
+    }
+  };
+
   return (
     <Frame>
       <Container maxWidth="md" className={classes.container}>
@@ -85,15 +95,7 @@ export const HomePage: React.FunctionComponent = () => {
                 <Button
                   color="primary"
                   variant="contained"
-                  onClick={() => {
-                    if (search === null) {
-                      return;
-                    } else if (isNode(search)) {
-                      history.push(Hrefs.node(search.id));
-                    } else {
-                      history.push(Hrefs.nodeSearch(search));
-                    }
-                  }}
+                  onClick={onSearchSubmit}
                 >
                   Search
                 </Button>

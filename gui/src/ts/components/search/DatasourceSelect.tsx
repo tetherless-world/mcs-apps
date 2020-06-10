@@ -17,7 +17,9 @@ export const DatasourceSelect: React.FunctionComponent<{
     value?.include?.[0] || ""
   );
 
-  if (!datasources) return null;
+  if (!datasources) {
+    return null;
+  }
 
   return (
     <Paper variant="outlined" square style={style} data-cy="datasourceSelect">
@@ -28,7 +30,10 @@ export const DatasourceSelect: React.FunctionComponent<{
           const value = event.target.value as string;
 
           setSelectedDatasource(value);
-          if (onChange) onChange(value.length > 0 ? {include: [value]} : {});
+
+          if (onChange) {
+            onChange(value.length > 0 ? {include: [value]} : {});
+          }
         }}
         renderValue={(selected) => (
           <span style={{marginLeft: "5px"}} data-cy="value">
