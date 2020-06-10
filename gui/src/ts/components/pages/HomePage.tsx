@@ -33,8 +33,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const isNode = (obj: NodeSearchVariables | Node): obj is Node =>
-  (obj as Node).id !== undefined;
+type NodeSearchAutocompleteValue = NodeSearchVariables | Node;
 
 export const HomePage: React.FunctionComponent = () => {
   const classes = useStyles();
@@ -43,20 +42,24 @@ export const HomePage: React.FunctionComponent = () => {
 
   const data = React.useContext(DataSummaryContext);
 
-  const [search, setSearch] = React.useState<NodeSearchVariables | Node | null>(
-    null
-  );
+  const [
+    search,
+    setSearch,
+  ] = React.useState<NodeSearchAutocompleteValue | null>(null);
 
-  const onSearchChange = (newValue: NodeSearchVariables | Node | null) =>
+  const onSearchChange = (newValue: NodeSearchAutocompleteValue | null) =>
     setSearch(newValue);
 
   const onSearchSubmit = () => {
     if (search === null) {
       return;
-    } else if (isNode(search)) {
-      history.push(Hrefs.node(search.id));
-    } else {
-      history.push(Hrefs.nodeSearch(search));
+    }
+
+    switch (search.__typename) {
+      case "Node":
+        return history.push(Hrefs.node(search.id));
+      case "NodeSearchVariables":
+        return history.push(Hrefs.nodeSearch(search));
     }
   };
 

@@ -49,6 +49,7 @@ export const NodeSearchBox: React.FunctionComponent<{
 
   // Search represents state of node label search and filters
   const [search, setSearch] = React.useState<NodeSearchVariables>({
+    __typename: "NodeSearchVariables",
     text: value || "",
     filters: {},
   });
@@ -75,6 +76,7 @@ export const NodeSearchBox: React.FunctionComponent<{
 
           history.push(
             Hrefs.nodeSearch({
+              __typename: "NodeSearchVariables",
               text: value,
               filters: search.filters,
             })

@@ -19,6 +19,8 @@ import {NodeFilters} from "api/graphqlGlobalTypes";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
 
 class QueryStringNodeSearchVariables implements NodeSearchVariables {
+  public readonly __typename = "NodeSearchVariables";
+
   private constructor(
     public readonly text: string,
     public readonly filters: NodeFilters = {datasource: null},
