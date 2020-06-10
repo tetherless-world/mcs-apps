@@ -1,11 +1,7 @@
 import * as React from "react";
 
 import {NodeSearchBox} from "components/search/NodeSearchBox";
-import {HomePageQuery} from "api/queries/types/HomePageQuery";
-import {useQuery} from "@apollo/react-hooks";
-import * as HomePageQueryDocument from "api/queries/HomePageQuery.graphql";
 import {Frame} from "components/frame/Frame";
-import {Node} from "models/Node";
 
 import {
   Grid,
@@ -16,9 +12,12 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
+
+import {DataSummaryContext} from "DataSummaryProvider";
+import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -39,21 +38,29 @@ export const HomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const {data} = useQuery<HomePageQuery>(HomePageQueryDocument);
+  const data = React.useContext(DataSummaryContext);
 
-  const [search, setSearch] = React.useState<{value: string | Node}>({
-    value: "",
-  });
+  const [search, setSearch] = React.useState<NodeSearchBoxValue>(null);
 
-  const onSearchInputChange = (newValue: string | Node) => {
-    setSearch((prevSearch) => ({...prevSearch, value: newValue}));
+  const onSearchChange = (newValue: NodeSearchBoxValue) => setSearch(newValue);
+
+  const onSearchSubmit = () => {
+    if (search === null) {
+      return;
+    }
+
+    switch (search.__typename) {
+      case "Node":
+        history.push(Hrefs.node(search.id));
+        break;
+      case "NodeSearchVariables":
+        history.push(Hrefs.nodeSearch(search));
+        break;
+      default:
+        const _exhaustiveCheck: never = search;
+        _exhaustiveCheck;
+    }
   };
-
-  // const searchText = (text: string) => {
-  //   if (text.length === 0) return;
-
-  //   history.push(Hrefs.nodeSearch({text}));
-  // };
 
   return (
     <Frame>
@@ -66,42 +73,37 @@ export const HomePage: React.FunctionComponent = () => {
           </Grid>
           <Grid item>
             {data && (
-              <Typography>
-                Search{" "}
-                <strong data-cy="totalNodeCount">
-                  {data.totalNodesCount} nodes
-                </strong>{" "}
-                with{" "}
-                <strong data-cy="totalEdgeCount">
-                  {data.totalEdgesCount} relationships
-                </strong>
-              </Typography>
-            )}
-            <NodeSearchBox
-              autoFocus
-              placeholder="Search a word"
-              showIcon={true}
-              onChange={onSearchInputChange}
-            />
-            <br />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                if (typeof search.value === "string") {
-                  if (search.value.length === 0) return;
+              <React.Fragment>
+                <Typography>
+                  Search{" "}
+                  <strong data-cy="totalNodeCount">
+                    {data.totalNodesCount} nodes
+                  </strong>{" "}
+                  with{" "}
+                  <strong data-cy="totalEdgeCount">
+                    {data.totalEdgesCount} relationships
+                  </strong>
+                </Typography>
 
-                  history.push(Hrefs.nodeSearch({text: search.value}));
-                } else {
-                  history.push(Hrefs.node(search.value.id));
-                }
-              }}
-            >
-              Search
-            </Button>
-            <Button color="primary" href={Hrefs.randomNode}>
-              Show me something interesting
-            </Button>
+                <NodeSearchBox
+                  autoFocus
+                  placeholder="Search a word or try a query"
+                  showIcon={true}
+                  onChange={onSearchChange}
+                />
+                <br />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={onSearchSubmit}
+                >
+                  Search
+                </Button>
+                <Button color="primary" component={Link} to={Hrefs.randomNode}>
+                  Show me something interesting
+                </Button>
+              </React.Fragment>
+            )}
           </Grid>
         </Grid>
       </Container>

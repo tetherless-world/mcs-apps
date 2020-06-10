@@ -15,16 +15,15 @@ import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import {ApolloException} from "@tetherless-world/twxplore-base";
-
-interface NodeSearchVariables {
-  text: string;
-  offset?: number;
-  limit?: number;
-}
+import {NodeFilters} from "api/graphqlGlobalTypes";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
 
 class QueryStringNodeSearchVariables implements NodeSearchVariables {
+  public readonly __typename = "NodeSearchVariables";
+
   private constructor(
     public readonly text: string,
+    public readonly filters: NodeFilters = {datasource: null},
     public readonly offset: number = 0,
     public readonly limit: number = 10
   ) {}
@@ -34,19 +33,26 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
   }
 
   get object() {
-    return {text: this.text, offset: this.offset, limit: this.limit};
+    return {
+      text: this.text,
+      filters: this.filters,
+      offset: this.offset,
+      limit: this.limit,
+    };
   }
 
   static parse(queryString: string) {
-    const {text, offset, limit} = (qs.parse(queryString, {
+    const {text, filters, offset, limit} = (qs.parse(queryString, {
       ignoreQueryPrefix: true,
     }) as unknown) as {
       text: string;
+      filters: NodeFilters;
       offset: string;
       limit: string;
     };
     return new QueryStringNodeSearchVariables(
       text,
+      filters,
       offset === undefined ? undefined : +offset,
       limit === undefined ? undefined : +limit
     );
@@ -56,9 +62,10 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
     return qs.stringify(this.object, {addQueryPrefix: true});
   }
 
-  replace({text, offset, limit}: Partial<NodeSearchVariables>) {
+  replace({text, filters, offset, limit}: Partial<NodeSearchVariables>) {
     return new QueryStringNodeSearchVariables(
       text !== undefined ? text : this.text,
+      filters !== undefined ? filters : this.filters,
       offset !== undefined ? offset : this.offset,
       limit !== undefined ? limit : this.limit
     );
@@ -96,7 +103,7 @@ export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   return (
     <Frame>
       <Grid container spacing={3}>
-        <Grid item xs={8} data-cy="visualizationContainer">
+        <Grid item md={8} data-cy="visualizationContainer">
           <ReactLoader loaded={!loading}>
             <Typography variant="h6">
               {count || "No"} results for "{searchVariables.text}"
