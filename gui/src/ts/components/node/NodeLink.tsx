@@ -4,11 +4,13 @@ import {Link} from "react-router-dom";
 
 export const NodeLink: React.FunctionComponent<{
   node: {id: string; label: string | null; pos: string | null};
-}> = ({node}) => {
+  datasource?: string;
+}> = ({node, datasource}) => {
   return (
     <Link to={Hrefs.node(node.id)}>
       {(node.label ? node.label : node.id) +
-        (node.pos ? " (" + node.pos + ")" : "")}
+        (node.pos ? " (" + node.pos + ")" : "") +
+        (datasource ? " - " + datasource : "")}
     </Link>
   );
 };

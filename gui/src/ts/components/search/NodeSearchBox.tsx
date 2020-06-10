@@ -4,7 +4,7 @@ import {Paper, InputAdornment, InputBase, IconButton} from "@material-ui/core";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {useHistory, Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {GraphQLError} from "graphql";
 import {
@@ -19,6 +19,7 @@ import {DatasourceSelect} from "components/search/DatasourceSelect";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
 import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
+import {NodeLink} from "components/node/NodeLink";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -270,9 +271,7 @@ export const NodeSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(node) => (
-          <Link to={Hrefs.node(node.id)}>
-            {node.label} - {node.datasource}
-          </Link>
+          <NodeLink node={node} datasource={node.datasource} />
         )}
       ></Autocomplete>
       <DatasourceSelect
