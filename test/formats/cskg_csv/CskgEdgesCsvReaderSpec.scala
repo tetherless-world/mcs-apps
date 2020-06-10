@@ -1,6 +1,4 @@
-package stores
-
-import java.io.InputStreamReader
+package formats.cskg_csv
 
 import org.scalatest.{Matchers, WordSpec}
 

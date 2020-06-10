@@ -1,7 +1,6 @@
-package stores
+package formats.cskg_csv
 
 import com.github.tototoshi.csv._
-import models.cskg
 import models.cskg.Edge
 
 final class CskgEdgesCsvReader extends CskgCsvReader[Edge] {

@@ -2,6 +2,7 @@ package stores
 
 import java.io.InputStreamReader
 
+import formats.cskg_csv.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import models.cskg.{Edge, Node}
 
 import scala.collection.mutable

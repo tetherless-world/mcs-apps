@@ -1,9 +1,8 @@
-package stores
+package formats.cskg_csv
 
-import java.io.{FileInputStream, InputStream, InputStreamReader, Reader, UnsupportedEncodingException}
+import java.io.{FileInputStream, InputStream, InputStreamReader, Reader}
 import java.nio.file.Path
 
-import com.github.tototoshi.csv.CSVReader.open
 import com.github.tototoshi.csv.{CSVFormat, CSVReader, TSVFormat}
 import org.apache.commons.compress.compressors.CompressorStreamFactory
 import org.apache.commons.lang3.StringUtils

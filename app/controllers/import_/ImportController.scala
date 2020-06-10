@@ -3,11 +3,12 @@ package controllers.import_
 import java.nio.file.Paths
 
 import controllers.Assets
+import formats.cskg_csv.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
-import stores.{CskgEdgesCsvReader, CskgNodesCsvReader, Store}
+import stores.Store
 
 @Singleton
 class ImportController @Inject()(configuration: Configuration, store: Store) extends InjectedController {
