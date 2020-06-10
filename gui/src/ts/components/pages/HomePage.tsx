@@ -63,42 +63,45 @@ export const HomePage: React.FunctionComponent = () => {
           </Grid>
           <Grid item>
             {data && (
-              <Typography>
-                Search{" "}
-                <strong data-cy="totalNodeCount">
-                  {data.totalNodesCount} nodes
-                </strong>{" "}
-                with{" "}
-                <strong data-cy="totalEdgeCount">
-                  {data.totalEdgesCount} relationships
-                </strong>
-              </Typography>
+              <React.Fragment>
+                <Typography>
+                  Search{" "}
+                  <strong data-cy="totalNodeCount">
+                    {data.totalNodesCount} nodes
+                  </strong>{" "}
+                  with{" "}
+                  <strong data-cy="totalEdgeCount">
+                    {data.totalEdgesCount} relationships
+                  </strong>
+                </Typography>
+
+                <NodeSearchBox
+                  autoFocus
+                  placeholder="Search a word or try a query"
+                  showIcon={true}
+                  onChange={onSearchChange}
+                />
+                <br />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    if (search === null) {
+                      return;
+                    } else if (isNode(search)) {
+                      history.push(Hrefs.node(search.id));
+                    } else {
+                      history.push(Hrefs.nodeSearch(search));
+                    }
+                  }}
+                >
+                  Search
+                </Button>
+                <Button color="primary" component={Link} to={Hrefs.randomNode}>
+                  Show me something interesting
+                </Button>
+              </React.Fragment>
             )}
-            <NodeSearchBox
-              autoFocus
-              placeholder="Search a word or try a query"
-              showIcon={true}
-              onChange={onSearchChange}
-            />
-            <br />
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                if (search === null) {
-                  return;
-                } else if (isNode(search)) {
-                  history.push(Hrefs.node(search.id));
-                } else {
-                  history.push(Hrefs.nodeSearch(search));
-                }
-              }}
-            >
-              Search
-            </Button>
-            <Button color="primary" component={Link} to={Hrefs.randomNode}>
-              Show me something interesting
-            </Button>
           </Grid>
         </Grid>
       </Container>
