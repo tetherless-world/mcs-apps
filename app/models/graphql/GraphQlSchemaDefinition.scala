@@ -1,11 +1,10 @@
 package models.graphql
 
-import io.circe.{Decoder, DecodingFailure, HCursor}
+import io.circe.{Decoder}
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
 import models.cskg.{Edge, Node}
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import sangria.macros.derive._
 import sangria.macros.derive.deriveInputObjectType
 import sangria.marshalling.circe._
 import stores.{NodeFilters, StringFilter}

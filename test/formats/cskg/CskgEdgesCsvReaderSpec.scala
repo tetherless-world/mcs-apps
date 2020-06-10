@@ -1,4 +1,4 @@
-package formats.cskg_csv
+package formats.cskg
 
 import org.scalatest.{Matchers, WordSpec}
 

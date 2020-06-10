@@ -1,4 +1,4 @@
-package formats.cskg_csv
+package formats.cskg
 
 import com.github.tototoshi.csv._
 import models.cskg

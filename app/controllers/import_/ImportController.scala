@@ -3,7 +3,7 @@ package controllers.import_
 import java.nio.file.Paths
 
 import controllers.Assets
-import formats.cskg_csv.{CskgEdgesCsvReader, CskgNodesCsvReader}
+import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.http.HttpEntity

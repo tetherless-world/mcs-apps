@@ -1,4 +1,4 @@
-package formats.cskg_csv
+package formats.cskg
 
 import java.io.{FileInputStream, InputStream, InputStreamReader, Reader}
 import java.nio.file.Path
