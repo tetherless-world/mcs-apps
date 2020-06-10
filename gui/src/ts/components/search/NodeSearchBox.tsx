@@ -4,7 +4,7 @@ import {Paper, InputAdornment, InputBase, IconButton} from "@material-ui/core";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {GraphQLError} from "graphql";
 import {
@@ -240,9 +240,9 @@ export const NodeSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(node) => (
-          <a href={Hrefs.node(node.id)}>
+          <Link to={Hrefs.node(node.id)}>
             {node.label} - {node.datasource}
-          </a>
+          </Link>
         )}
       ></Autocomplete>
       <DatasourceSelect

@@ -16,7 +16,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
@@ -96,7 +96,7 @@ export const HomePage: React.FunctionComponent = () => {
             >
               Search
             </Button>
-            <Button color="primary" href={Hrefs.randomNode}>
+            <Button color="primary" component={Link} to={Hrefs.randomNode}>
               Show me something interesting
             </Button>
           </Grid>

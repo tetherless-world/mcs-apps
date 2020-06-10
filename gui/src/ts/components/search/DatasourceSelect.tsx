@@ -2,18 +2,15 @@ import * as React from "react";
 
 import {Select, MenuItem, Paper} from "@material-ui/core";
 
-import {useQuery} from "@apollo/react-hooks";
-
-import {DatasourcesQuery} from "api/queries/types/DatasourcesQuery";
-import * as DatasourcesQueryDocument from "api/queries/DatasourcesQuery.graphql";
 import {StringFilter} from "api/graphqlGlobalTypes";
+import {DataSummaryContext} from "DataSummaryProvider";
 
 export const DatasourceSelect: React.FunctionComponent<{
   value?: StringFilter;
   onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
-  const {data} = useQuery<DatasourcesQuery>(DatasourcesQueryDocument);
+  const data = React.useContext(DataSummaryContext);
   const datasources = data?.datasources;
 
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
