@@ -148,7 +148,7 @@ export const NodeSearchBox: React.FunctionComponent<{
 
     throttledQuery.current(
       {
-        text: `label:${search.text}`,
+        text: `${search.text}`,
         filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
