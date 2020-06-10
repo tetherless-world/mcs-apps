@@ -69,35 +69,13 @@ export const NodeSearchBox: React.FunctionComponent<{
     setSelectedSearchResult,
   ] = React.useState<Node | null>(null);
 
-  // The user can submit either
-  // 1) a free text label search
-  //    -> redirect to NodeSearchResultsPage
-  // 2) a Node from the autcomplete search suggestions
-  //    -> redirect to NodePage
-  const onSubmit = onSubmitUserDefined
-    ? onSubmitUserDefined
-    : (value: NodeSearchAutocompleteValue) => {
-        if (value.__typename === "string") {
-          const text = value.value;
+  const [searchResults, setSearchResults] = React.useState<Node[]>([]);
 
-          if (text.length === 0) {
-            return;
-          }
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-          history.push(
-            Hrefs.nodeSearch({
-              __typename: "NodeSearchVariables",
-              text,
-              filters: search.filters,
-            })
-          );
-        } else if (value.__typename === "Node") {
-          history.push(Hrefs.node(value.id));
-        } else {
-          const _exhaustiveCheck: never = value;
-          _exhaustiveCheck;
-        }
-      };
+  const [searchErrors, setSearchErrors] = React.useState<
+    readonly GraphQLError[] | undefined
+  >(undefined);
 
   // If onChange is provided, call with updates
   // to `search` and `selectedSearchResult`
@@ -121,16 +99,6 @@ export const NodeSearchBox: React.FunctionComponent<{
     // Free text search update
     onChange(search);
   }, [selectedSearchResult, search]);
-
-  // Next section handles search autocomplete suggestions
-
-  const [searchResults, setSearchResults] = React.useState<Node[]>([]);
-
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  const [searchErrors, setSearchErrors] = React.useState<
-    readonly GraphQLError[] | undefined
-  >(undefined);
 
   // Query server for search results to display
   // Is throttled so server request is only sent
@@ -204,6 +172,36 @@ export const NodeSearchBox: React.FunctionComponent<{
     };
   }, [search, throttledQuery]);
 
+  // The user can submit either
+  // 1) a free text label search
+  //    -> redirect to NodeSearchResultsPage
+  // 2) a Node from the autcomplete search suggestions
+  //    -> redirect to NodePage
+  const onSubmit = onSubmitUserDefined
+    ? onSubmitUserDefined
+    : (value: NodeSearchAutocompleteValue) => {
+        if (value.__typename === "string") {
+          const text = value.value;
+
+          if (text.length === 0) {
+            return;
+          }
+
+          history.push(
+            Hrefs.nodeSearch({
+              __typename: "NodeSearchVariables",
+              text,
+              filters: search.filters,
+            })
+          );
+        } else if (value.__typename === "Node") {
+          history.push(Hrefs.node(value.id));
+        } else {
+          const _exhaustiveCheck: never = value;
+          _exhaustiveCheck;
+        }
+      };
+
   // If user a search suggestion is highlighted submit Node
   // else submit search text
   const handleSubmit = () => {
@@ -234,7 +232,10 @@ export const NodeSearchBox: React.FunctionComponent<{
         noOptionsText="No results"
         inputValue={search.text}
         onInputChange={(_, newInputValue: string) => {
-          setSearch((prevSearch) => ({...prevSearch, text: newInputValue}));
+          setSearch((prevSearch) => ({
+            ...prevSearch,
+            text: newInputValue,
+          }));
         }}
         onHighlightChange={(_, option: Node | null) => {
           setSelectedSearchResult(option);
