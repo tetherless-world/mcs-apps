@@ -4,6 +4,7 @@ import java.util
 import com.google.inject.Inject
 import javax.inject.Singleton
 import models.cskg.{Edge, Node}
+import models.path.Path
 import org.neo4j.driver.{AuthTokens, GraphDatabase, Record, Result, Session, Transaction, Values}
 import org.slf4j.LoggerFactory
 
@@ -258,6 +259,10 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private def getNodesFromRecords(result: Result): List[Node] =
     result.asScala.toList.map(record => getNodeFromRecord(record))
 
+  override def getPaths: List[Path] = List()
+
+  override def getPathById(id: String): Option[Path] = None
+
   final override def getRandomNode: Node =
     withSession { session =>
       session.readTransaction { transaction => {
@@ -351,6 +356,8 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
 //      throw new IllegalStateException(s"some nodes were not put correctly: expected ${nodes.size}, actual ${storedNodesCount}")
 //    }
   }
+
+  override def putPaths(paths: Traversable[Path]): Unit = {}
 
   private def withSession[V](f: Session => V): V =
     withResource[Session, V](driver.session())(f)

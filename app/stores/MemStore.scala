@@ -4,17 +4,20 @@ import com.outr.lucene4s._
 import com.outr.lucene4s.field.Field
 import com.outr.lucene4s.query.{Condition, GroupedSearchTerm, SearchTerm}
 import models.cskg.{Edge, Node}
+import models.path.Path
 
 import scala.util.Random
 
 class MemStore extends Store {
   private var edges: List[Edge] = List()
-  private var nodes: List[Node] = List()
   private val lucene = new DirectLucene(List("datasource", "id", "label"), autoCommit = false)
   private val luceneNodeDatasourceField = lucene.create.field[String]("datasource", fullTextSearchable = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
   private val luceneNodeLabelField = lucene.create.field[String]("label", fullTextSearchable = true)
+  private var nodes: List[Node] = List()
   private var nodesById: Map[String, Node] = Map()
+  private var paths: List[Path] = List()
+  private var pathsById: Map[String, Path] = Map()
   private val random = new Random()
   private var datasources: List[String] = List()
 
@@ -24,6 +27,8 @@ class MemStore extends Store {
     lucene.deleteAll()
     nodes = List()
     nodesById = Map()
+    paths = List()
+    pathsById = Map()
   }
 
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
@@ -70,6 +75,12 @@ class MemStore extends Store {
     results.total.intValue
   }
 
+  final override def getPaths =
+    paths
+
+  override def getPathById(id: String): Option[Path] =
+    pathsById.get(id)
+
   override def getRandomNode: Node =
     nodes(random.nextInt(nodes.size))
 
@@ -92,6 +103,12 @@ class MemStore extends Store {
       lucene.doc().fields(luceneNodeDatasourceField(node.datasource), luceneNodeIdField(node.id), luceneNodeLabelField(node.label)).index()
     })
     lucene.commit()
+  }
+
+
+  override def putPaths(paths: Traversable[Path]): Unit = {
+    this.paths = paths.toList
+    this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }
 
   private def toSearchTerms(filters: Option[NodeFilters], text: String): List[SearchTerm] = {

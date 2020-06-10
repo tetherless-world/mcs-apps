@@ -1,12 +1,12 @@
 package models.graphql
 
-import io.circe.{Decoder, DecodingFailure, HCursor}
+import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
 import models.cskg.{Edge, Node}
+import models.path.Path
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import sangria.macros.derive._
-import sangria.macros.derive.deriveInputObjectType
+import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
 import stores.{NodeFilters, StringFilter}
 
@@ -34,12 +34,15 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("pos", OptionType(StringType), resolve = _.value.pos),
     Field("subjectOfEdges", ListType(EdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.store.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
   ))
+  val PathType = deriveObjectType[GraphQlSchemaContext, Path](
+    AddFields(
+      Field("edges", ListType(EdgeType), resolve = _.value.edges)
+    )
+  )
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
-//  implicit val optionStringFilterDecoder: Decoder[Option[StringFilter]] = deriveDecoder
   implicit val nodeFiltersDecoder: Decoder[NodeFilters] = deriveDecoder
-//  implicit val optionNodeFiltersDecoder: Decoder[Option[NodeFilters]] = deriveDecoder
   // Input object types
   implicit val StringFilterType = deriveInputObjectType[StringFilter]()
   implicit val NodeFiltersType = deriveInputObjectType[NodeFilters]()
@@ -53,6 +56,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("datasources", ListType(StringType), resolve = ctx => ctx.ctx.store.getDatasources),
     Field("matchingNodes", ListType(NodeType), arguments = NodeFiltersArgument :: LimitArgument :: OffsetArgument :: TextArgument :: Nil, resolve = ctx => ctx.ctx.store.getMatchingNodes(filters = ctx.args.arg(NodeFiltersArgument), limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), text = ctx.args.arg(TextArgument))),
     Field("matchingNodesCount", IntType, arguments = NodeFiltersArgument :: TextArgument :: Nil, resolve = ctx => ctx.ctx.store.getMatchingNodesCount(filters = ctx.args.arg(NodeFiltersArgument), text = ctx.args.arg(TextArgument))),
+    Field("paths", ListType(PathType), resolve = ctx => ctx.ctx.store.getPaths),
+    Field("pathById", OptionType(PathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.store.getPathById(ctx.args.arg(IdArgument))),
     Field("nodeById", OptionType(NodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.store.getNodeById(ctx.args.arg(IdArgument))),
     Field("randomNode", NodeType, resolve = ctx => ctx.ctx.store.getRandomNode),
     Field("totalEdgesCount", IntType, resolve = ctx => ctx.ctx.store.getTotalEdgesCount),

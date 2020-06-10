@@ -117,5 +117,18 @@ trait StoreBehaviors extends Matchers { this: WordSpec =>
       )
       actualCount should equal(0)
     }
+
+    "get paths" in {
+      sut.getPaths.sortBy(path => path.id) should equal(TestData.paths.sortBy(path => path.id))
+    }
+
+    "get a path by id" in {
+      val expected = TestData.paths(0)
+      sut.getPathById(expected.id) should equal(Some(expected))
+    }
+
+    "return None for a non-extant path" in {
+      sut.getPathById("nonextant") should equal(None)
+    }
   }
 }
