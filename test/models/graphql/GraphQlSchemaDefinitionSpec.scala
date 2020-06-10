@@ -121,6 +121,39 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
         s"""{"data":{"totalNodesCount":${nodeCount},"totalEdgesCount":${edgeCount}}}"""
       ))
     }
+
+    "get paths" in {
+      val query =
+        graphql"""
+          query PathsQuery {
+            paths {
+              id
+            }
+          }
+        """
+
+      val result = Json.stringify(executeQuery(query))
+      for (path <- TestData.paths) {
+        result must include(path.id)
+      }
+    }
+
+    "get path by id" in {
+      val query =
+        graphql"""
+          query PathQuery($$id: String!) {
+            pathById(id: $$id) {
+                path
+            }
+          }
+        """
+
+      val path = TestData.paths(0)
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("id" -> path.id)))
+      for (pathComponent <- path.path) {
+        result must include(pathComponent)
+      }
+    }
   }
 
   def executeQuery(query: Document, vars: JsObject = Json.obj()) = {
