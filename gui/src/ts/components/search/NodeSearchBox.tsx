@@ -16,6 +16,8 @@ import * as NodeSearchResultsPageQueryDocument from "api/queries/NodeSearchResul
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {Node} from "models/Node";
 import {DatasourceSelect} from "components/search/DatasourceSelect";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {StringFilter} from "api/graphqlGlobalTypes";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -29,15 +31,15 @@ export const NodeSearchBox: React.FunctionComponent<{
   placeholder?: string;
   showIcon?: boolean;
   onSubmit?: (value: string | Node) => void;
-  style?: React.CSSProperties;
+  autocompleteStyle?: React.CSSProperties;
   value?: string;
-  onChange?: (value: string | Node) => void;
+  onChange?: (value: NodeSearchVariables | Node | null) => void;
 }> = ({
   autoFocus,
   onSubmit: onSubmitUserDefined,
   showIcon = false,
   placeholder,
-  style,
+  autocompleteStyle,
   value,
   onChange,
 }) => {
@@ -45,36 +47,71 @@ export const NodeSearchBox: React.FunctionComponent<{
 
   const apolloClient = useApolloClient();
 
-  const [search, setSearch] = React.useState<{text: string}>({
+  // Search represents state of node label search and filters
+  const [search, setSearch] = React.useState<NodeSearchVariables>({
     text: value || "",
+    filters: {},
   });
 
-  const [datasource, setDatasource] = React.useState<string>("");
+  // selectedSearchResult represents the autocomplete search
+  // suggestion that the user is currently highlighting
+  const [
+    selectedSearchResult,
+    setSelectedSearchResult,
+  ] = React.useState<Node | null>(null);
 
+  // The user can submit either
+  // 1) a free text label search
+  //    -> redirect to NodeSearchResultsPage
+  // 2) a Node from the autcomplete search suggestions
+  //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
     : (value: string | Node) => {
         if (typeof value === "string") {
           if (value.length === 0) return;
 
-          history.push(Hrefs.nodeSearch({text: value}));
+          history.push(
+            Hrefs.nodeSearch({
+              text: value,
+              filters: search.filters,
+            })
+          );
         } else {
           history.push(Hrefs.node(value.id));
         }
       };
 
-  const [
-    selectedSearchResult,
-    setSelectedSearchResult,
-  ] = React.useState<Node | null>(null);
+  // If onChange is provided, call with updates
+  // to `search` and `selectedSearchResult`
+  React.useEffect(() => {
+    if (!onChange) return;
 
-  const [searchErrors, setSearchErrors] = React.useState<
-    readonly GraphQLError[] | undefined
-  >(undefined);
+    // User highlight new autocomplete suggestion
+    if (selectedSearchResult) {
+      onChange(selectedSearchResult);
+      return;
+    }
+
+    // Empty text search update
+    if (search.text.length === 0) {
+      onChange(null);
+      return;
+    }
+
+    // Free text search update
+    onChange(search);
+  }, [selectedSearchResult, search]);
+
+  // Next section handles search autocomplete suggestions
 
   const [searchResults, setSearchResults] = React.useState<Node[]>([]);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const [searchErrors, setSearchErrors] = React.useState<
+    readonly GraphQLError[] | undefined
+  >(undefined);
 
   // Query server for search results to display
   // Is throttled so server request is only sent
@@ -112,21 +149,18 @@ export const NodeSearchBox: React.FunctionComponent<{
     )
   );
 
-  // Execute this block of code when the text input value changes
+  // When the user types, call the throttled query with
+  // new search text
   React.useEffect(() => {
     let active = true;
 
     // If text input is empty, skip query
-    if (search.text.length === 0) {
-      return;
-    }
+    if (search.text.length === 0) return;
 
-    // Call throttled query with new search text
     throttledQuery.current(
       {
-        text:
-          `label:${search.text}` +
-          (datasource.length > 0 ? `datasource:${datasource}` : ""),
+        text: `label:${search.text}`,
+        filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
         withCount: false,
@@ -145,7 +179,7 @@ export const NodeSearchBox: React.FunctionComponent<{
     return () => {
       active = false;
     };
-  }, [search.text, datasource, throttledQuery]);
+  }, [search, throttledQuery]);
 
   return (
     <form
@@ -157,7 +191,7 @@ export const NodeSearchBox: React.FunctionComponent<{
       }}
     >
       <Autocomplete
-        style={{display: "inline-flex", verticalAlign: "top"}}
+        style={{verticalAlign: "top", ...autocompleteStyle}}
         getOptionLabel={(option: Node | string) =>
           typeof option === "string" ? option : option.label!
         }
@@ -170,14 +204,12 @@ export const NodeSearchBox: React.FunctionComponent<{
         inputValue={search.text}
         onInputChange={(_, newInputValue: string) => {
           setSearch((prevSearch) => ({...prevSearch, text: newInputValue}));
-          if (onChange && !selectedSearchResult) onChange(newInputValue);
         }}
         onHighlightChange={(_, option: Node | null) => {
-          if (onChange) onChange(option || search.text);
           setSelectedSearchResult(option);
         }}
         renderInput={(params) => (
-          <Paper variant="outlined" square style={style}>
+          <Paper variant="outlined" square>
             <InputBase
               autoFocus={autoFocus}
               inputProps={{
@@ -215,9 +247,15 @@ export const NodeSearchBox: React.FunctionComponent<{
       ></Autocomplete>
       <DatasourceSelect
         style={{display: "inline-flex", verticalAlign: "top"}}
-        value={datasource}
-        onChange={(newDatasource: string) => {
-          setDatasource(newDatasource);
+        value={search.filters.datasource || undefined}
+        onChange={(datasource: StringFilter) => {
+          setSearch((prev) => ({
+            ...prev,
+            filters: {
+              ...prev.filters,
+              datasource,
+            },
+          }));
         }}
       ></DatasourceSelect>
     </form>

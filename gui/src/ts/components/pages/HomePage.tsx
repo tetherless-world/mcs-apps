@@ -19,6 +19,7 @@ import {
 import {useHistory} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+const isNode = (obj: NodeSearchVariables | Node): obj is Node =>
+  (obj as Node).id !== undefined;
+
 export const HomePage: React.FunctionComponent = () => {
   const classes = useStyles();
 
@@ -41,19 +45,12 @@ export const HomePage: React.FunctionComponent = () => {
 
   const {data} = useQuery<HomePageQuery>(HomePageQueryDocument);
 
-  const [search, setSearch] = React.useState<{value: string | Node}>({
-    value: "",
-  });
+  const [search, setSearch] = React.useState<NodeSearchVariables | Node | null>(
+    null
+  );
 
-  const onSearchInputChange = (newValue: string | Node) => {
-    setSearch((prevSearch) => ({...prevSearch, value: newValue}));
-  };
-
-  // const searchText = (text: string) => {
-  //   if (text.length === 0) return;
-
-  //   history.push(Hrefs.nodeSearch({text}));
-  // };
+  const onSearchChange = (newValue: NodeSearchVariables | Node | null) =>
+    setSearch(newValue);
 
   return (
     <Frame>
@@ -79,21 +76,21 @@ export const HomePage: React.FunctionComponent = () => {
             )}
             <NodeSearchBox
               autoFocus
-              placeholder="Search a word"
+              placeholder="Search a word or try a query"
               showIcon={true}
-              onChange={onSearchInputChange}
+              onChange={onSearchChange}
             />
             <br />
             <Button
               color="primary"
               variant="contained"
               onClick={() => {
-                if (typeof search.value === "string") {
-                  if (search.value.length === 0) return;
-
-                  history.push(Hrefs.nodeSearch({text: search.value}));
+                if (search === null) {
+                  return;
+                } else if (isNode(search)) {
+                  history.push(Hrefs.node(search.id));
                 } else {
-                  history.push(Hrefs.node(search.value.id));
+                  history.push(Hrefs.nodeSearch(search));
                 }
               }}
             >

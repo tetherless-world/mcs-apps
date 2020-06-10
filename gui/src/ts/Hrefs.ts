@@ -1,4 +1,5 @@
 import * as qs from "qs";
+import {NodeSearchVariables} from "models/NodeSearchVariables";
 
 export class Hrefs {
   static get contact() {
@@ -17,7 +18,7 @@ export class Hrefs {
     return "/node/" + encodeURI(id);
   }
 
-  static nodeSearch(kwds?: {text: string}) {
+  static nodeSearch(kwds?: NodeSearchVariables) {
     return (
       "/node/search" + (kwds ? qs.stringify(kwds, {addQueryPrefix: true}) : "")
     );

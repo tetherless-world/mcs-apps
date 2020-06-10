@@ -6,17 +6,18 @@ import {useQuery} from "@apollo/react-hooks";
 
 import {DatasourcesQuery} from "api/queries/types/DatasourcesQuery";
 import * as DatasourcesQueryDocument from "api/queries/DatasourcesQuery.graphql";
+import {StringFilter} from "api/graphqlGlobalTypes";
 
 export const DatasourceSelect: React.FunctionComponent<{
-  value?: string;
-  onChange?: (newValue: string) => void;
+  value?: StringFilter;
+  onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
   const {data} = useQuery<DatasourcesQuery>(DatasourcesQueryDocument);
   const datasources = data?.datasources;
 
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
-    value || ""
+    value?.include?.[0] || ""
   );
 
   if (!datasources) return null;
@@ -30,7 +31,7 @@ export const DatasourceSelect: React.FunctionComponent<{
           const value = event.target.value as string;
 
           setSelectedDatasource(value);
-          if (onChange) onChange(value);
+          if (onChange) onChange(value.length > 0 ? {include: [value]} : {});
         }}
         renderValue={(selected) => (
           <span style={{marginLeft: "5px"}} data-cy="value">

@@ -34,7 +34,10 @@ export const Navbar: React.FunctionComponent<{}> = () => {
         <Button href={Hrefs.home} className={classes.brand}>
           <Typography variant="h6">MCS Portal</Typography>
         </Button>
-        <NodeSearchBox showIcon={true} />
+        <NodeSearchBox
+          showIcon={true}
+          autocompleteStyle={{display: "inline-flex"}}
+        />
       </Toolbar>
     </AppBar>
   );
