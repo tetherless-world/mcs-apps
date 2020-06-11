@@ -280,7 +280,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
-          s"""MATCH (subject:Node)-[path:PATH {id: $id}]->(object:Node)
+          s"""MATCH (subject:Node)-[path:PATH {id: $$id}]->(object:Node)
              |RETURN ${objectNodePropertyNamesString}, ${subjectNodePropertyNamesString}, ${pathPropertyNamesString}
              |""".stripMargin,
           queryParameters(Map("id" -> id))
@@ -309,14 +309,14 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   final override def getTotalNodesCount: Int =
     withSession { session =>
       session.readTransaction { transaction =>
-        transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt()
+        transaction.run("MATCH (n:Node) RETURN COUNT(n) as count").single().get("count").asInt()
       }
     }
 
   final def isEmpty: Boolean =
     withSession { session =>
       session.readTransaction { transaction =>
-        transaction.run("MATCH (n) RETURN n LIMIT 1;").hasNext
+        transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
       }
     }
 
