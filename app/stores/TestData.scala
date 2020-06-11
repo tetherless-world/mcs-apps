@@ -12,6 +12,10 @@ import scala.collection.mutable
 import scala.io.Source
 
 object TestData {
+  val EdgesCsvBz2ResourceName = "/test_data/edges.csv.bz2"
+  val NodesCsvBz2ResourceName = "/test_data/nodes.csv.bz2"
+  val PathsJsonlResourceName = "/test_data/paths.jsonl"
+
   private val logger = LoggerFactory.getLogger(getClass)
   val nodesById = deduplicateNodes(sortNodes(readNodes()))
   val nodes = nodesById.values.toList
@@ -33,7 +37,7 @@ object TestData {
     nodes.map(node => (node.id, node)).toMap
 
   private def readEdges(): List[Edge] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/edges.csv.bz2")
+    val inputStream = getClass.getResourceAsStream(EdgesCsvBz2ResourceName)
     try {
       new CskgEdgesCsvReader().readCompressed(inputStream).toList
     } finally {
@@ -42,7 +46,7 @@ object TestData {
   }
 
   private def readNodes(): List[Node] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/nodes.csv.bz2")
+    val inputStream = getClass.getResourceAsStream(NodesCsvBz2ResourceName)
     try {
       new CskgNodesCsvReader().readCompressed(inputStream).toList
     } finally {
@@ -51,7 +55,7 @@ object TestData {
   }
 
   private def readPaths(): List[Path] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/paths.jsonl")
+    val inputStream = getClass.getResourceAsStream(PathsJsonlResourceName)
     try {
       new PathJsonlReader().read(Source.fromInputStream(inputStream, "UTF-8")).toList
     } finally {

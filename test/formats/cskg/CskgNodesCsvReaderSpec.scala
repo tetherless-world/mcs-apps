@@ -1,13 +1,14 @@
 package formats.cskg
 
 import org.scalatest.{Matchers, WordSpec}
+import stores.TestData
 
 class CskgNodesCsvReaderSpec extends WordSpec with Matchers {
   "CSKG nodes CSV reader" can {
     val sut = new CskgNodesCsvReader()
 
     "read the test data" in {
-      val inputStream = getClass.getResourceAsStream("/test_data/nodes.csv.bz2")
+      val inputStream = getClass.getResourceAsStream(TestData.NodesCsvBz2ResourceName)
       try {
         val nodes = sut.readCompressed(inputStream).toList
         nodes.size should be > 0

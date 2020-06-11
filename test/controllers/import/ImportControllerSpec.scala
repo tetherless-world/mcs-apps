@@ -38,6 +38,15 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
 //      bodyText must be("ok")
       store.isEmpty must be(true)
     }
+
+    "put nodes to the store" in {
+      store.isEmpty must be(true)
+      TestData.
+      val result = sut.putNodes()(FakeRequest())
+      val bodyText = contentAsString(result)
+      //      bodyText must be("ok")
+      store.isEmpty must be(true)
+    }
   }
 
 }
