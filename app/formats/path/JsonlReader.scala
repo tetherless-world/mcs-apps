@@ -8,15 +8,14 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-abstract class JsonlReader[T] {
+abstract class JsonlReader[T](source: Source) extends AutoCloseable {
   private val logger = LoggerFactory.getLogger(getClass)
 
-  final def read(jsonlFilePath: java.nio.file.Path): Stream[T] = {
-    read(Source.fromFile(jsonlFilePath.toFile))
-  }
+  final override def close(): Unit =
+    source.close()
 
-  final def read(jsonlSource: Source): Stream[T] = {
-    read(jsonlSource.getLines().toStream.flatMap(line => {
+  final def toStream: Stream[T] =
+    toStream(source.getLines().toStream.flatMap(line => {
       val parseResult = parse(line)
       parseResult match {
         case Left(parsingFailure) => {
@@ -28,7 +27,6 @@ abstract class JsonlReader[T] {
         }
       }
     }))
-  }
 
-  def read(jsonl: Stream[Json]): Stream[T]
+  protected def toStream(jsonl: Stream[Json]): Stream[T]
 }

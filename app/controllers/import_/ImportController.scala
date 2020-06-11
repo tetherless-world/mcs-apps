@@ -2,6 +2,7 @@ package controllers.import_
 
 import java.nio.file.Paths
 
+import akka.stream.OverflowStrategy
 import controllers.Assets
 import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.path.PathJsonlReader
@@ -9,10 +10,12 @@ import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
-import stores.Store
+import stores.{Store, WithResource}
+
+import scala.io.Source
 
 @Singleton
-class ImportController(importDirectoryPath: java.nio.file.Path, store: Store) extends InjectedController {
+class ImportController(importDirectoryPath: java.nio.file.Path, store: Store) extends InjectedController with WithResource {
   @Inject
   def this(configuration: Configuration, store: Store) =
     this(Paths.get(configuration.get[String]("importDirectoryPath")), store)
@@ -23,20 +26,23 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: Store) ex
   }
 
   def putEdges(edgesCsvFileName: String) = Action {
-    val edges = new CskgEdgesCsvReader().read(importDirectoryPath.resolve(edgesCsvFileName))
-    store.putEdges(edges)
-    Ok("")
+    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve(edgesCsvFileName))) { reader =>
+      store.putEdges(reader.toStream)
+      Ok("")
+    }
   }
 
   def putNodes(nodesCsvFileName: String) = Action {
-    val nodes = new CskgNodesCsvReader().read(importDirectoryPath.resolve(nodesCsvFileName))
-    store.putNodes(nodes)
-    Ok("")
+    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve(nodesCsvFileName))) { reader =>
+      store.putNodes(reader.toStream)
+      Ok("")
+    }
   }
 
   def putPaths(pathsJsonlFileName: String) = Action {
-    val paths = new PathJsonlReader().read(importDirectoryPath.resolve(pathsJsonlFileName))
-    store.putPaths(paths)
-    Ok("")
+    withResource(new PathJsonlReader(Source.fromFile(importDirectoryPath.resolve(pathsJsonlFileName).toFile))) { reader =>
+      store.putPaths(reader.toStream)
+      Ok("")
+    }
   }
 }

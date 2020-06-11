@@ -357,7 +357,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
 
-  final def isEmpty: Boolean =
+  final override def isEmpty: Boolean =
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0

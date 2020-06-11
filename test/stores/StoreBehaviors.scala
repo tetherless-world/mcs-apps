@@ -130,5 +130,11 @@ trait StoreBehaviors extends Matchers { this: WordSpec =>
     "return None for a non-extant path" in {
       sut.getPathById("nonextant") should equal(None)
     }
+
+    "check if is empty" in {
+      sut.isEmpty should be(false)
+      sut.clear()
+      sut.isEmpty should be(true)
+    }
   }
 }

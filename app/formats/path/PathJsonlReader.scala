@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-final class PathJsonlReader extends JsonlReader[Path] {
+final class PathJsonlReader(source: Source) extends JsonlReader[Path](source) {
   private val pathDecoder: Decoder[Path] = deriveDecoder
   private val logger = LoggerFactory.getLogger(getClass)
 
-  final override def read(jsonl: Stream[Json]): Stream[Path] = {
+  final protected override def toStream(jsonl: Stream[Json]): Stream[Path] = {
     jsonl.flatMap(json => {
       val decodeResult = pathDecoder.decodeJson(json)
       decodeResult match {

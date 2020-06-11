@@ -60,6 +60,8 @@ trait Store {
    */
   def getTotalNodesCount: Int;
 
+  def isEmpty: Boolean
+
   /**
    * Put the given edges to the store
    */

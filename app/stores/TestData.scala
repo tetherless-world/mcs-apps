@@ -1,6 +1,6 @@
 package stores
 
-import java.io.InputStreamReader
+import java.io.{BufferedInputStream, InputStream, InputStreamReader}
 
 import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.path.PathJsonlReader
@@ -11,7 +11,11 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable
 import scala.io.Source
 
-object TestData {
+object TestData extends WithResource {
+  val EdgesCsvBz2ResourceName = "/test_data/edges.csv.bz2"
+  val NodesCsvBz2ResourceName = "/test_data/nodes.csv.bz2"
+  val PathsJsonlResourceName = "/test_data/paths.jsonl"
+
   private val logger = LoggerFactory.getLogger(getClass)
   val nodesById = deduplicateNodes(sortNodes(readNodes()))
   val nodes = nodesById.values.toList
@@ -32,30 +36,33 @@ object TestData {
   private def deduplicateNodes(nodes: List[Node]): Map[String, Node] =
     nodes.map(node => (node.id, node)).toMap
 
+  def getEdgesCsvResourceAsStream(): InputStream =
+    getResourceAsStream(EdgesCsvBz2ResourceName)
+
+  def getNodesCsvResourceAsStream(): InputStream =
+    getResourceAsStream(NodesCsvBz2ResourceName)
+
+  def getPathsJsonlResourceAsStream(): InputStream =
+    getResourceAsStream(PathsJsonlResourceName)
+
+  private def getResourceAsStream(resourceName: String) =
+    new BufferedInputStream(getClass.getResourceAsStream(resourceName))
+
   private def readEdges(): List[Edge] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/edges.csv.bz2")
-    try {
-      new CskgEdgesCsvReader().readCompressed(inputStream).toList
-    } finally {
-      inputStream.close()
+    withResource(CskgEdgesCsvReader.open(getEdgesCsvResourceAsStream())) { reader =>
+      reader.toStream.toList
     }
   }
 
   private def readNodes(): List[Node] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/nodes.csv.bz2")
-    try {
-      new CskgNodesCsvReader().readCompressed(inputStream).toList
-    } finally {
-      inputStream.close()
+    withResource(CskgNodesCsvReader.open(getNodesCsvResourceAsStream())) { reader =>
+      reader.toStream.toList
     }
   }
 
   private def readPaths(): List[Path] = {
-    val inputStream = getClass.getResourceAsStream("/test_data/paths.jsonl")
-    try {
-      new PathJsonlReader().read(Source.fromInputStream(inputStream, "UTF-8")).toList
-    } finally {
-      inputStream.close()
+    withResource(new PathJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+      reader.toStream.toList
     }
   }
 

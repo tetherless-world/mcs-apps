@@ -90,6 +90,9 @@ class MemStore extends Store {
   final override def getTotalNodesCount: Int =
     nodes.size
 
+  override def isEmpty: Boolean =
+    edges.isEmpty && nodes.isEmpty && paths.isEmpty
+
   final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
     this.edges = edges.toList
   }
