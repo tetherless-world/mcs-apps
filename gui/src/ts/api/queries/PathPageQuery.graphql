@@ -1,0 +1,22 @@
+#import "./NodeFieldsFragment.graphql"
+query PathPageQuery {
+  paths {
+    datasource
+    id
+    path
+    edges {
+      datasource
+      object
+      objectNode {
+        ...NodeFieldsFragment
+      }
+      other
+      predicate
+      subject
+      subjectNode {
+        ...NodeFieldsFragment
+      }
+      weight
+    }
+  }
+}

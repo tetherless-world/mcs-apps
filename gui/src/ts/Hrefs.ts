@@ -29,6 +29,10 @@ export class Hrefs {
     );
   }
 
+  static get paths() {
+    return "/path";
+  }
+
   static get randomNode() {
     return "/randomNode";
   }
