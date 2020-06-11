@@ -51,6 +51,25 @@ object CypherFilters {
   }
 }
 
+final case class PathRecord(
+                            datasource: String,
+                            objectNodeId: String,
+                            pathEdgeIndex: Int,
+                            pathEdgePredicate: String,
+                            pathId: String,
+                            subjectNodeId: String
+                           ) {
+  def toEdge: Edge =
+    Edge(
+      datasource = datasource,
+      `object` = objectNodeId,
+      other = None,
+      predicate = pathEdgePredicate,
+      subject = subjectNodeId,
+      weight = None
+    )
+}
+
 @Singleton
 final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
   private var bootstrapped: Boolean = false
@@ -60,10 +79,8 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val logger = LoggerFactory.getLogger(getClass)
   private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
-  private val objectNodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "objectNode." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
-  private val subjectNodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "subjectNode." + nodePropertyName).mkString(", ")
 
   private implicit class RecordWrapper(record: Record) {
     def toEdge: Edge = {
@@ -89,6 +106,17 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
         pos = Option(recordMap("node.pos"))
       )
     }
+
+    def toPathRecord: PathRecord = {
+      PathRecord(
+        datasource = record.get("path.datasource").asString(),
+        objectNodeId = record.get("objectNode.id").asString(),
+        pathId = record.get("path.id").asString(),
+        pathEdgeIndex = record.get("path.pathEdgeIndex").asInt(),
+        pathEdgePredicate = record.get("path.pathEdgePredicate").asString(),
+        subjectNodeId = record.get("subjectNode.id").asString()
+      )
+    }
   }
 
   private implicit class ResultsWrapper(result: Result) {
@@ -99,11 +127,16 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       result.asScala.toList.map(record => record.toNode)
 
     def toPaths: List[Path] = {
-      while (result.hasNext) {
-        val record = result.next()
-        System.out.println(record.asMap())
-      }
-      List()
+      result.asScala.toList.map(record => record.toPathRecord).groupBy(pathRecord => pathRecord.pathId).map(pathRecordsEntry =>
+        pathRecordsEntry match {
+          case (pathId, pathRecords) =>
+            Path(
+              datasource = pathRecords(0).datasource,
+              edges = pathRecords.sortBy(pathRecord => pathRecord.pathEdgeIndex).map(pathRecord => pathRecord.toEdge),
+              id = pathId
+            )
+        }
+      ).toList
     }
   }
 
@@ -151,12 +184,17 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   final def clear(): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
+        // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
         transaction.run(
-          """CALL apoc.periodic.iterate("MATCH (n) return n", "DELETE n", {batchSize:1000})
+          """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
             |YIELD batches, total RETURN batches, total
             |""".stripMargin)
         transaction.commit()
       }
+    }
+    while (!isEmpty) {
+      logger.info("waiting for neo4j to clear")
+      Thread.sleep(100)
     }
   }
 
@@ -269,8 +307,8 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
-          s"""MATCH (subject:Node)-[path:PATH]->(object:Node)
-            |RETURN ${objectNodePropertyNamesString}, ${subjectNodePropertyNamesString}, ${pathPropertyNamesString}
+          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
+            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
             |""".stripMargin
         ).toPaths
       }
@@ -280,8 +318,8 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
-          s"""MATCH (subject:Node)-[path:PATH {id: $$id}]->(object:Node)
-             |RETURN ${objectNodePropertyNamesString}, ${subjectNodePropertyNamesString}, ${pathPropertyNamesString}
+          s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
+             |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
              |""".stripMargin,
           queryParameters(Map("id" -> id))
         ).toPaths.headOption
@@ -302,7 +340,13 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   final override def getTotalEdgesCount: Int =
     withSession { session =>
       session.readTransaction { transaction =>
-        transaction.run("MATCH ()-[r]->() RETURN COUNT(r) as count").single().get("count").asInt()
+        transaction.run(
+          """
+            |MATCH (subject:Node)-[r]->(object:Node)
+            |WHERE NOT type(r) = "PATH"
+            |RETURN COUNT(r) as count
+            |""".stripMargin
+        ).single().get("count").asInt()
       }
     }
 
@@ -320,7 +364,10 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
 
-  final override def putEdges(edges: Traversable[Edge]): Unit = {
+  private def queryParameters(map: Map[String, Any]) =
+    map.asJava.asInstanceOf[java.util.Map[String, Object]]
+
+  final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (edge <- edges) {
@@ -345,10 +392,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  private def queryParameters(map: Map[String, Any]) =
-    map.asJava.asInstanceOf[java.util.Map[String, Object]]
-
-  final override def putNodes(nodes: Traversable[Node]): Unit = {
+  final override def putNodes(nodes: TraversableOnce[Node]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (node <- nodes) {
@@ -370,7 +414,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override def putPaths(paths: Traversable[Path]): Unit = {
+  override def putPaths(paths: TraversableOnce[Path]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (path <- paths) {

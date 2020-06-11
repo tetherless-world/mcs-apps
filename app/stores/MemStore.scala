@@ -90,11 +90,11 @@ class MemStore extends Store {
   final override def getTotalNodesCount: Int =
     nodes.size
 
-  final override def putEdges(edges: Traversable[Edge]): Unit = {
+  final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
     this.edges = edges.toList
   }
 
-  final override def putNodes(nodes: Traversable[Node]): Unit = {
+  final override def putNodes(nodes: TraversableOnce[Node]): Unit = {
     this.nodes = nodes.toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
     this.datasources = this.nodes.flatMap(_.datasource.split(",")).distinct
@@ -106,7 +106,7 @@ class MemStore extends Store {
   }
 
 
-  override def putPaths(paths: Traversable[Path]): Unit = {
+  override def putPaths(paths: TraversableOnce[Path]): Unit = {
     this.paths = paths.toList
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }
