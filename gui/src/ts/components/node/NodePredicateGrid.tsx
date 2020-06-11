@@ -40,7 +40,7 @@ const EdgeList: React.FunctionComponent<{
   );
 };
 
-export const NodeConceptNetView: React.FunctionComponent<{
+export const NodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
   };

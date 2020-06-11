@@ -18,8 +18,8 @@ import {FatalErrorModal} from "components/error/FatalErrorModal";
 import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
-import {NodeConceptNetView} from "components/node/NodeConceptNetView";
-import {NodeWikidataView} from "components/node/NodeWikidataView";
+import {NodePredicateGrid} from "components/node/NodePredicateGrid";
+import {NodePredicateList} from "components/node/NodePredicateList";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -38,8 +38,6 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   const location = useLocation();
   const {path, url} = match;
   const nodeId = match.params.nodeId;
-
-  // const [tabState, setTabState] = React.useState<string>(location.pathname);
 
   // const classes = useStyles();
 
@@ -95,35 +93,45 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
     }
   }
 
+  class TabRoute {
+    constructor(private relPath: string, public label: string) {}
+    url() {
+      return url + this.relPath;
+    }
+    path() {
+      return path + this.relPath;
+    }
+  }
+
+  const tabRoutes = {
+    grid: new TabRoute("", "Predicate Grid"),
+    list: new TabRoute("/list", "Predicate List"),
+  };
+
   return (
     <Frame>
       <Grid container direction="column">
-        <Tabs
-          value={location.pathname}
-          aria-label="nav tabs example"
-        >
-          <Tab component={Link} value={url} to={url} label="ConceptNet Style" />
-          <Tab
-            component={Link}
-            value={`${url}/wikidata`}
-            to={`${url}/wikidata`}
-            label="Wikidata Style"
-          />
+        <Tabs value={location.pathname}>
+          {Object.values(tabRoutes).map((tabRoute) => (
+            <Tab
+              component={Link}
+              value={tabRoute.url()}
+              to={tabRoute.url()}
+              key={tabRoute.url()}
+              label={tabRoute.label}
+            />
+          ))}
         </Tabs>
 
         <Grid item container>
           <Grid item xs={10}>
             <h2 data-cy="node-title">{title}</h2>
             <Switch>
-              <Route exact path={path}>
-                <NodeConceptNetView
-                  predicateSubjects={predicateSubjects}
-                />
+              <Route exact path={tabRoutes.grid.path()}>
+                <NodePredicateGrid predicateSubjects={predicateSubjects} />
               </Route>
-              <Route path={`${path}/wikidata`}>
-                <NodeWikidataView
-                  predicateSubjects={predicateSubjects}
-                />
+              <Route path={tabRoutes.list.path()}>
+                <NodePredicateList predicateSubjects={predicateSubjects} />
               </Route>
             </Switch>
           </Grid>

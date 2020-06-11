@@ -26,17 +26,17 @@ const useStyles = makeStyles(() =>
         padding: "16px",
       },
       "&:last-child > *": {
-        paddingBottom: "24px"
-      }
+        paddingBottom: "24px",
+      },
     },
     edgeListTitle: {
       flex: "0 0 16em",
-      background: "#F4F4F4"
+      background: "#F4F4F4",
     },
   })
 );
 
-const WikidataEdgeList: React.FunctionComponent<{
+const PredicateEdgeList: React.FunctionComponent<{
   edges: NodePageQuery_nodeById_subjectOfEdges[];
   predicate: string;
 }> = ({edges, predicate}) => {
@@ -59,7 +59,7 @@ const WikidataEdgeList: React.FunctionComponent<{
   );
 };
 
-export const NodeWikidataView: React.FunctionComponent<{
+export const NodePredicateList: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
   };
@@ -67,7 +67,7 @@ export const NodeWikidataView: React.FunctionComponent<{
   return (
     <React.Fragment>
       {Object.keys(predicateSubjects).map((predicate) => (
-        <WikidataEdgeList
+        <PredicateEdgeList
           edges={predicateSubjects[predicate]!}
           predicate={predicate}
           key={predicate}
