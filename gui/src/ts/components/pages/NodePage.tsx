@@ -39,7 +39,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   const {path, url} = match;
   const nodeId = match.params.nodeId;
 
-  const [tabState, setTabState] = React.useState<string>(location.pathname);
+  // const [tabState, setTabState] = React.useState<string>(location.pathname);
 
   // const classes = useStyles();
 
@@ -99,8 +99,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
     <Frame>
       <Grid container direction="column">
         <Tabs
-          value={tabState}
-          onChange={(event, newValue) => setTabState(newValue)}
+          value={location.pathname}
           aria-label="nav tabs example"
         >
           <Tab component={Link} value={url} to={url} label="ConceptNet Style" />
@@ -122,7 +121,9 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
                 />
               </Route>
               <Route path={`${path}/wikidata`}>
-                <NodeWikidataView />
+                <NodeWikidataView
+                  predicateSubjects={predicateSubjects}
+                />
               </Route>
             </Switch>
           </Grid>
