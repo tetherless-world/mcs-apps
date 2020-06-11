@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: mcs-portal-app
     volumes:
-      - ./data/app:/app/data/app
+      - ./data:/app/data
   gui:
     build:
       # Use the same context to share a .dockerignore
@@ -26,7 +26,12 @@ services:
       - 7474:7474 # HTTP
       - 7687:7687 # Bolt
     volumes:
-      - ./data/neo4j/data:/data
-      - ./data/neo4j/logs:/logs
-      - ./data/neo4j/import:/var/lib/neo4j/import
-      - ./data/neo4j/plugins:/plugins
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+      - neo4j-plugins:/plugins
+volumes:
+  neo4j-data:
+  neo4j-import:
+  neo4j-logs:
+  neo4j-plugins:
