@@ -1,6 +1,5 @@
 *.bloop
-/data/neo4j/
-/data/app/import/*.csv
+/data/import/*.csv
 node_modules/
 /gui/dist/
 /gui/package-lock.json

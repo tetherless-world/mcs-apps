@@ -63,15 +63,15 @@ trait Store {
   /**
    * Put the given edges to the store
    */
-  def putEdges(edges: Traversable[Edge]): Unit
+  def putEdges(edges: TraversableOnce[Edge]): Unit
 
   /**
    * Put the given nodes to the store
    */
-  def putNodes(nodes: Traversable[Node]): Unit
+  def putNodes(nodes: TraversableOnce[Node]): Unit
 
   /**
    * Put the given paths to the store
    */
-  def putPaths(paths: Traversable[Path]): Unit
+  def putPaths(paths: TraversableOnce[Path]): Unit
 }

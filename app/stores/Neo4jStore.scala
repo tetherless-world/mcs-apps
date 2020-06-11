@@ -51,6 +51,25 @@ object CypherFilters {
   }
 }
 
+final case class PathRecord(
+                            datasource: String,
+                            objectNodeId: String,
+                            pathEdgeIndex: Int,
+                            pathEdgePredicate: String,
+                            pathId: String,
+                            subjectNodeId: String
+                           ) {
+  def toEdge: Edge =
+    Edge(
+      datasource = datasource,
+      `object` = objectNodeId,
+      other = None,
+      predicate = pathEdgePredicate,
+      subject = subjectNodeId,
+      weight = None
+    )
+}
+
 @Singleton
 final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
   private var bootstrapped: Boolean = false
@@ -60,6 +79,66 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val logger = LoggerFactory.getLogger(getClass)
   private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
+  private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
+  private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
+
+  private implicit class RecordWrapper(record: Record) {
+    def toEdge: Edge = {
+      val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
+      Edge(
+        datasource = recordMap("edge.datasource").asInstanceOf[String],
+        `object` = recordMap("object.id").asInstanceOf[String],
+        other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
+        predicate = recordMap("type(edge)").asInstanceOf[String],
+        subject = recordMap("subject.id").asInstanceOf[String],
+        weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].floatValue())
+      )
+    }
+
+    def toNode: Node = {
+      val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
+      Node(
+        aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
+        datasource = recordMap("node.datasource"),
+        id = recordMap("node.id"),
+        label = recordMap("node.label"),
+        other = Option(recordMap("node.other")),
+        pos = Option(recordMap("node.pos"))
+      )
+    }
+
+    def toPathRecord: PathRecord = {
+      PathRecord(
+        datasource = record.get("path.datasource").asString(),
+        objectNodeId = record.get("objectNode.id").asString(),
+        pathId = record.get("path.id").asString(),
+        pathEdgeIndex = record.get("path.pathEdgeIndex").asInt(),
+        pathEdgePredicate = record.get("path.pathEdgePredicate").asString(),
+        subjectNodeId = record.get("subjectNode.id").asString()
+      )
+    }
+  }
+
+  private implicit class ResultsWrapper(result: Result) {
+    def toEdges: List[Edge] =
+      result.asScala.toList.map(record => record.toEdge)
+
+    def toNodes: List[Node] =
+      result.asScala.toList.map(record => record.toNode)
+
+    def toPaths: List[Path] = {
+      result.asScala.toList.map(record => record.toPathRecord).groupBy(pathRecord => pathRecord.pathId).map(pathRecordsEntry =>
+        pathRecordsEntry match {
+          case (pathId, pathRecords) =>
+            Path(
+              datasource = pathRecords(0).datasource,
+              edges = pathRecords.sortBy(pathRecord => pathRecord.pathEdgeIndex).map(pathRecord => pathRecord.toEdge),
+              id = pathId
+            )
+        }
+      ).toList
+    }
+  }
 
   bootstrapStore()
 
@@ -105,55 +184,67 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   final def clear(): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
+        // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
         transaction.run(
-          """CALL apoc.periodic.iterate("MATCH (n) return n", "DELETE n", {batchSize:1000})
+          """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
             |YIELD batches, total RETURN batches, total
             |""".stripMargin)
         transaction.commit()
       }
     }
+    while (!isEmpty) {
+      logger.info("waiting for neo4j to clear")
+      Thread.sleep(100)
+    }
   }
+
+  final override def getDatasources: List[String] =
+    withSession { session =>
+      session.readTransaction { transaction =>
+        val result =
+          transaction.run("MATCH (node:Node) RETURN DISTINCT node.datasource AS datasources")
+        val datasourceValues = result.asScala.toList.map(_.get("datasources").asString)
+        // Returns list of datasource values which can contain multiple datasources
+        // so need to extract unique datasources
+        datasourceValues.flatMap(_.split(",")).distinct
+      }
+    }
 
   override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge] = {
     withSession { session =>
       session.readTransaction { transaction => {
-        val result =
-          transaction.run(
-            s"""
-               |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
-               |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-               |ORDER BY type(edge), subject.id, edge
-               |SKIP ${offset}
-               |LIMIT ${limit}
-               |""".stripMargin,
-            Map(
-              "objectNodeId" -> objectNodeId
-            ).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-        getEdgesFromRecords(result)
+        transaction.run(
+          s"""
+             |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+             |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+             |ORDER BY type(edge), subject.id, edge
+             |SKIP ${offset}
+             |LIMIT ${limit}
+             |""".stripMargin,
+          queryParameters(Map(
+            "objectNodeId" -> objectNodeId
+          ))
+        ).toEdges
       }
       }
     }
   }
 
-
   override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge] = {
     withSession { session =>
       session.readTransaction { transaction => {
-        val result =
-          transaction.run(
-            s"""
-               |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
-               |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-               |ORDER BY type(edge), object.id, edge
-               |SKIP ${offset}
-               |LIMIT ${limit}
-               |""".stripMargin,
-            Map(
-              "subjectNodeId" -> subjectNodeId
-            ).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-        getEdgesFromRecords(result)
+        transaction.run(
+          s"""
+             |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+             |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+             |ORDER BY type(edge), object.id, edge
+             |SKIP ${offset}
+             |LIMIT ${limit}
+             |""".stripMargin,
+          queryParameters(Map(
+            "subjectNodeId" -> subjectNodeId
+          ))
+        ).toEdges
       }
       }
     }
@@ -164,19 +255,17 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
 
     withSession { session =>
       session.readTransaction { transaction =>
-        val result =
-          transaction.run(
-            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
-               |${cypherFilters.toCypherString}
-               |RETURN ${nodePropertyNamesString}
-               |SKIP ${offset}
-               |LIMIT ${limit}
-               |""".stripMargin,
-            (Map(
-              "text" -> text
-            ) ++ cypherFilters.toCypherBindingsMap).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-        getNodesFromRecords(result)
+        transaction.run(
+          s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
+             |${cypherFilters.toCypherString}
+             |RETURN ${nodePropertyNamesString}
+             |SKIP ${offset}
+             |LIMIT ${limit}
+             |""".stripMargin,
+          queryParameters(Map(
+            "text" -> text
+          ) ++ cypherFilters.toCypherBindingsMap)
+        ).toNodes
       }
     }
   }
@@ -192,9 +281,9 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
                |${cypherFilters.toCypherString}
                |RETURN COUNT(node)
                |""".stripMargin,
-            (Map(
+            queryParameters(Map(
               "text" -> text
-            ) ++ cypherFilters.toCypherBindingsMap).asJava.asInstanceOf[java.util.Map[String, Object]]
+            ) ++ cypherFilters.toCypherBindingsMap)
           )
         val record = result.single()
         record.get("COUNT(node)").asInt()
@@ -205,73 +294,45 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   override final def getNodeById(id: String): Option[Node] = {
     withSession { session =>
       session.readTransaction { transaction => {
-        val result =
-          transaction.run(
-            s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
-            Map("id" -> id).asJava.asInstanceOf[java.util.Map[String, Object]]
-          )
-        val nodes = getNodesFromRecords(result)
-        nodes.headOption
+        transaction.run(
+          s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
+          queryParameters(Map("id" -> id))
+        ).toNodes.headOption
       }
       }
     }
   }
 
-  private def getEdgeFromRecord(record: Record): Edge = {
-    val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
-    Edge(
-      datasource = recordMap("edge.datasource").asInstanceOf[String],
-      `object` = recordMap("object.id").asInstanceOf[String],
-      other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
-      predicate = recordMap("type(edge)").asInstanceOf[String],
-      subject = recordMap("subject.id").asInstanceOf[String],
-      weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].floatValue())
-    )
-  }
-
-  private def getEdgesFromRecords(result: Result): List[Edge] =
-    result.asScala.toList.map(record => getEdgeFromRecord(record))
-
-  final override def getDatasources: List[String] =
+  override def getPaths: List[Path] =
     withSession { session =>
       session.readTransaction { transaction =>
-        val result =
-          transaction.run("MATCH (node:Node) RETURN DISTINCT node.datasource AS datasources")
-        val datasourceValues = result.asScala.toList.map(_.get("datasources").asString)
-        // Returns list of datasource values which can contain multiple datasources
-        // so need to extract unique datasources
-        datasourceValues.flatMap(_.split(",")).distinct
+        transaction.run(
+          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
+            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
+            |""".stripMargin
+        ).toPaths
       }
     }
 
-  private def getNodeFromRecord(record: Record): Node = {
-    val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
-    Node(
-      aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
-      datasource = recordMap("node.datasource"),
-      id = recordMap("node.id"),
-      label = recordMap("node.label"),
-      other = Option(recordMap("node.other")),
-      pos = Option(recordMap("node.pos"))
-    )
+  override def getPathById(id: String): Option[Path] = {
+    withSession { session =>
+      session.readTransaction { transaction =>
+        transaction.run(
+          s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
+             |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
+             |""".stripMargin,
+          queryParameters(Map("id" -> id))
+        ).toPaths.headOption
+      }
+    }
   }
-
-  private def getNodesFromRecords(result: Result): List[Node] =
-    result.asScala.toList.map(record => getNodeFromRecord(record))
-
-  override def getPaths: List[Path] = List()
-
-  override def getPathById(id: String): Option[Path] = None
 
   final override def getRandomNode: Node =
     withSession { session =>
       session.readTransaction { transaction => {
-        val result =
-          transaction.run(
-            s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
-          )
-        val nodes = getNodesFromRecords(result)
-        nodes.head
+        transaction.run(
+          s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
+        ).toNodes.head
       }
       }
     }
@@ -279,30 +340,34 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   final override def getTotalEdgesCount: Int =
     withSession { session =>
       session.readTransaction { transaction =>
-        val result = transaction.run("MATCH ()-[r]->() RETURN COUNT(r) as count")
-        val record = result.single()
-        record.get("count").asInt()
+        transaction.run(
+          """
+            |MATCH (subject:Node)-[r]->(object:Node)
+            |WHERE NOT type(r) = "PATH"
+            |RETURN COUNT(r) as count
+            |""".stripMargin
+        ).single().get("count").asInt()
       }
     }
 
   final override def getTotalNodesCount: Int =
     withSession { session =>
       session.readTransaction { transaction =>
-        val result = transaction.run("MATCH (n) RETURN COUNT(n) as count")
-        val record = result.single()
-        record.get("count").asInt()
+        transaction.run("MATCH (n:Node) RETURN COUNT(n) as count").single().get("count").asInt()
       }
     }
 
   final def isEmpty: Boolean =
     withSession { session =>
       session.readTransaction { transaction =>
-        val result = transaction.run("MATCH (n) RETURN n LIMIT 1;")
-        !result.hasNext
+        transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
       }
     }
 
-  final override def putEdges(edges: Traversable[Edge]): Unit = {
+  private def queryParameters(map: Map[String, Any]) =
+    map.asJava.asInstanceOf[java.util.Map[String, Object]]
+
+  final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (edge <- edges) {
@@ -312,52 +377,70 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
               |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
               |REMOVE rel.noOp
               |""".stripMargin,
-            Map(
+            queryParameters(Map(
               "datasource" -> edge.datasource,
               "object" -> edge.`object`,
               "other" -> edge.other.getOrElse(null),
               "predicate" -> edge.predicate,
               "subject" -> edge.subject,
               "weight" -> edge.weight.getOrElse(null)
-            ).asJava.asInstanceOf[util.Map[String, Object]]
+            ))
           )
         }
         transaction.commit()
       }
     }
-//    val storedEdgesCount = getTotalEdgesCount
-//    if (storedEdgesCount != edges.size) {
-//      throw new IllegalStateException(s"some edges were not put correctly: expected ${edges.size}, actual ${storedEdgesCount}")
-//    }
   }
 
-  final override def putNodes(nodes: Traversable[Node]): Unit = {
+  final override def putNodes(nodes: TraversableOnce[Node]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (node <- nodes) {
           //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
           transaction.run(
             "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
-            Map(
+            queryParameters(Map(
               "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
               "datasource" -> node.datasource,
               "id" -> node.id,
               "label" -> node.label,
               "pos" -> node.pos.getOrElse(null),
               "other" -> node.other.getOrElse(null)
-            ).asJava.asInstanceOf[java.util.Map[String, Object]]
+            ))
           )
         }
         transaction.commit()
       }
     }
-//    val storedNodesCount = getTotalNodesCount
-//    if (storedNodesCount != nodes.size) {
-//      throw new IllegalStateException(s"some nodes were not put correctly: expected ${nodes.size}, actual ${storedNodesCount}")
-//    }
   }
 
-  override def putPaths(paths: Traversable[Path]): Unit = {}
+  override def putPaths(paths: TraversableOnce[Path]): Unit = {
+    withSession { session =>
+      session.writeTransaction { transaction =>
+        for (path <- paths) {
+          for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
+            val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
+            transaction.run(
+              """
+                |MATCH (subject:Node), (object: Node)
+                |WHERE subject.id = $subject AND object.id = $object
+                |CREATE (subject)-[path:PATH {datasource: $pathDatasource, id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate}]->(object)
+                |""".stripMargin,
+              queryParameters(Map(
+                "object" -> pathEdge.`object`,
+                "pathDatasource" -> path.datasource,
+                "pathEdgeIndex" -> pathEdgeIndex,
+                "pathId" -> path.id,
+                "pathEdgePredicate" -> pathEdge.predicate,
+                "subject" -> pathEdge.subject
+              ))
+            )
+          }
+        }
+        transaction.commit()
+      }
+    }
+  }
 
   private def withSession[V](f: Session => V): V =
     withResource[Session, V](driver.session())(f)

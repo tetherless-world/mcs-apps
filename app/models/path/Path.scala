@@ -13,3 +13,12 @@ final case class Path(datasource: String, id: String, path: List[String]) {
     ).toList
   }
 }
+
+object Path {
+  def apply(datasource: String, edges: List[Edge], id: String): Path =
+    Path(
+      datasource = datasource,
+      id = id,
+      path = List(edges(0).subject) ++ edges.flatMap(edge => List(edge.predicate, edge.`object`))
+    )
+}

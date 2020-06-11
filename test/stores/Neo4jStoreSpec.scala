@@ -21,6 +21,7 @@ class Neo4jStoreSpec extends WordSpec with StoreBehaviors with BeforeAndAfterAll
     }
     sut.putNodes(TestData.nodes)
     sut.putEdges(TestData.edges)
+    sut.putPaths(TestData.paths)
   }
 
   if (inTestingEnvironment) {
