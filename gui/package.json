@@ -15,6 +15,7 @@
     "@types/react-loader": "2.4.4",
     "@types/react-router": "^5.1.7",
     "@types/react-router-dom": "^5.1.5",
+    "d3": "^5.16.0",
     "graphql": "^14.3.1",
     "qs": "^6.9.4",
     "react-loader": "2.4.7",
