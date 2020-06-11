@@ -6,6 +6,8 @@ import {useQuery} from "@apollo/react-hooks";
 import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
 import * as d3 from "d3";
 import {Node} from "models/Node";
+import {FatalErrorModal} from "components/error/FatalErrorModal";
+import {ApolloException} from "@tetherless-world/twxplore-base";
 
 interface PathNode extends d3.SimulationNodeDatum, Node {
   pathId: string;
@@ -14,8 +16,12 @@ interface PathNode extends d3.SimulationNodeDatum, Node {
 interface PathEdge extends d3.SimulationLinkDatum<PathNode> {}
 
 export const PathPage: React.FunctionComponent = () => {
-  const {data} = useQuery<PathPageQuery>(PathPageDocument);
+  const {data, error} = useQuery<PathPageQuery>(PathPageDocument);
   // console.dir(data);
+
+  if (error) {
+    return <FatalErrorModal exception={new ApolloException(error)} />;
+  }
 
   const pathGraphData = React.useMemo<{
     nodes: PathNode[];
