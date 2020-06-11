@@ -174,7 +174,6 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       """
 
       val path = TestData.paths(0)
-      val pathEdges = path.edges
       val result = Json.stringify(executeQuery(query, vars = Json.obj("id" -> path.id)))
       for (pathEdge <- path.edges) {
         val presentEdge = TestData.edges.find(edge => edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`)
