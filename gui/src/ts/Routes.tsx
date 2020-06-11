@@ -6,6 +6,7 @@ import {NoRoute} from "./components/error/NoRoute";
 import {HomePage} from "./components/pages/HomePage";
 import {Hrefs} from "./Hrefs";
 import {RandomNodePage} from "./components/pages/RandomNodePage";
+import {PathPage} from "components/pages/PathPage";
 
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>
@@ -15,6 +16,7 @@ export const Routes: React.FunctionComponent = () => (
         path={Hrefs.nodeSearch()}
       ></Route>
       <Route component={NodePage} path="/node/" />
+      <Route exact component={PathPage} path={Hrefs.paths} />
       <Route exact component={RandomNodePage} path={Hrefs.randomNode} />
       <Route exact component={HomePage} path={Hrefs.home}></Route>
       <Route component={NoRoute} />
