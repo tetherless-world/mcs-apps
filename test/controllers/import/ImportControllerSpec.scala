@@ -41,15 +41,38 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
       store.isEmpty must be(true)
     }
 
+    "put edges to the store" in {
+      store.getTotalEdgesCount must be (0)
+      store.putNodes(TestData.nodes)
+      val sourceFilePath = new File(getClass.getResource(TestData.EdgesCsvBz2ResourceName).toURI).toPath
+      val destFilePath = importDirectoryPath.resolve(sourceFilePath.getFileName)
+      Files.copy(sourceFilePath, destFilePath)
+      val result = sut.putEdges(destFilePath.getFileName.toString)(FakeRequest())
+      //      val bodyText = contentAsString(result)
+      //      //      bodyText must be("ok")
+      store.getTotalEdgesCount must be (TestData.edges.length)
+    }
+
+    "put paths to the store" in {
+      store.getPaths.length must be (0)
+      val sourceFilePath = new File(getClass.getResource(TestData.PathsJsonlResourceName).toURI).toPath
+      val destFilePath = importDirectoryPath.resolve(sourceFilePath.getFileName)
+      Files.copy(sourceFilePath, destFilePath)
+      val result = sut.putPaths(destFilePath.getFileName.toString)(FakeRequest())
+      //      val bodyText = contentAsString(result)
+      //      //      bodyText must be("ok")
+      store.getPaths.length must be (TestData.paths.length)
+    }
+
     "put nodes to the store" in {
-      store.isEmpty must be(true)
+      store.getTotalNodesCount must be (0)
       val sourceFilePath = new File(getClass.getResource(TestData.NodesCsvBz2ResourceName).toURI).toPath
       val destFilePath = importDirectoryPath.resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putNodes(destFilePath.getFileName.toString)(FakeRequest())
 //      val bodyText = contentAsString(result)
 //      //      bodyText must be("ok")
-      store.isEmpty must be(false)
+      store.getTotalNodesCount must be (TestData.nodes.length)
     }
   }
 

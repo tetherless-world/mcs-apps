@@ -8,8 +8,6 @@ import org.apache.commons.compress.compressors.{CompressorException, CompressorS
 import org.apache.commons.lang3.StringUtils
 
 abstract class CskgCsvReader[T](protected val csvReader: CSVReader) extends AutoCloseable {
-  private implicit val csvFormat: CSVFormat = new TSVFormat {}
-
   override def close(): Unit =
     csvReader.close()
 
@@ -22,6 +20,8 @@ abstract class CskgCsvReader[T](protected val csvReader: CSVReader) extends Auto
 }
 
 object CskgCsvReader {
+  private implicit val csvFormat: CSVFormat = new TSVFormat {}
+
   def openCsvReader(filePath: Path): CSVReader = {
     // Need to buffer the file input stream so that the compressor factory can check it
     val inputStream = new BufferedInputStream(new FileInputStream(filePath.toFile))
