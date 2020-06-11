@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.mutable
 import scala.io.Source
 
-object TestData {
+object TestData extends WithResource {
   val EdgesCsvBz2ResourceName = "/test_data/edges.csv.bz2"
   val NodesCsvBz2ResourceName = "/test_data/nodes.csv.bz2"
   val PathsJsonlResourceName = "/test_data/paths.jsonl"
@@ -49,29 +49,20 @@ object TestData {
     new BufferedInputStream(getClass.getResourceAsStream(resourceName))
 
   private def readEdges(): List[Edge] = {
-    val inputStream = getEdgesCsvResourceAsStream()
-    try {
-      new CskgEdgesCsvReader().read(inputStream).toList
-    } finally {
-      inputStream.close()
+    withResource(CskgEdgesCsvReader.open(getEdgesCsvResourceAsStream())) { reader =>
+      reader.toStream.toList
     }
   }
 
   private def readNodes(): List[Node] = {
-    val inputStream = getNodesCsvResourceAsStream()
-    try {
-      new CskgNodesCsvReader().read(inputStream).toList
-    } finally {
-      inputStream.close()
+    withResource(CskgNodesCsvReader.open(getNodesCsvResourceAsStream())) { reader =>
+      reader.toStream.toList
     }
   }
 
   private def readPaths(): List[Path] = {
-    val inputStream = getPathsJsonlResourceAsStream()
-    try {
-      new PathJsonlReader().read(Source.fromInputStream(inputStream, "UTF-8")).toList
-    } finally {
-      inputStream.close()
+    withResource(new PathJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+      reader.toStream.toList
     }
   }
 

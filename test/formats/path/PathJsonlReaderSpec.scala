@@ -1,18 +1,15 @@
 package formats.path
 
 import org.scalatest.{Matchers, WordSpec}
-import stores.TestData
+import stores.{TestData, WithResource}
 
 import scala.io.Source
 
-class PathJsonlReaderSpec extends WordSpec with Matchers {
+class PathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "Path .jsonl reader" can {
-    val sut = new PathJsonlReader()
-
     "read the test data" in {
-      val inputStream = TestData.getPathsJsonlResourceAsStream()
-      try {
-        val paths = sut.read(Source.fromInputStream(inputStream, "UTF-8")).toList
+      withResource(new PathJsonlReader(Source.fromInputStream(TestData.getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+        val paths = reader.toStream.toList
         paths.size should be > 0
         for (path <- paths) {
           path.id should not be empty
@@ -23,8 +20,6 @@ class PathJsonlReaderSpec extends WordSpec with Matchers {
           pathEdges(0).subject should be(path.path(0))
           pathEdges(pathEdges.length - 1).`object` should be (path.path(path.path.length - 1))
         }
-      } finally {
-        inputStream.close()
       }
     }
   }
