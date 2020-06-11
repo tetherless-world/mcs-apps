@@ -13,10 +13,9 @@ import {NodeTable} from "components/data/NodeTable";
 import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
-import {FatalErrorModal} from "components/error/FatalErrorModal";
-import {ApolloException} from "@tetherless-world/twxplore-base";
 import {NodeFilters} from "api/graphqlGlobalTypes";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
 
 class QueryStringNodeSearchVariables implements NodeSearchVariables {
   public readonly __typename = "NodeSearchVariables";
@@ -89,7 +88,7 @@ export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   });
 
   if (error) {
-    return <FatalErrorModal exception={new ApolloException(error)} />;
+    return <ApolloErrorHandler error={error} />;
   }
 
   if (loading && count !== null) {
