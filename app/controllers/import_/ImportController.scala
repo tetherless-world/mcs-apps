@@ -12,7 +12,7 @@ import play.api.mvc.InjectedController
 import stores.Store
 
 @Singleton
-class ImportController @Inject()(importDirectoryPath: java.nio.file.Path, store: Store) extends InjectedController {
+class ImportController(importDirectoryPath: java.nio.file.Path, store: Store) extends InjectedController {
   @Inject
   def this(configuration: Configuration, store: Store) =
     this(Paths.get(configuration.get[String]("importDirectoryPath")), store)

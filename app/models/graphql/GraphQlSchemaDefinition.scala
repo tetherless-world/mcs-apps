@@ -17,11 +17,13 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   lazy val EdgeType: ObjectType[GraphQlSchemaContext, Edge] = ObjectType("Edge", () => fields[GraphQlSchemaContext, Edge](
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("object", StringType, resolve = _.value.`object`),
-    Field("objectNode", OptionType(NodeType), resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.`object`)),
+    // Assume the edge is not dangling
+    Field("objectNode", NodeType, resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.`object`).head),
     Field("other", OptionType(StringType), resolve = _.value.other),
-    Field("predicate", OptionType(StringType), resolve = _.value.predicate),
+    Field("predicate", StringType, resolve = _.value.predicate),
     Field("subject", StringType, resolve = _.value.subject),
-    Field("subjectNode", OptionType(NodeType), resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.subject)),
+    // Assume the edge is not dangling
+    Field("subjectNode", NodeType, resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.subject).head),
     Field("weight", OptionType(FloatType), resolve = _.value.weight)
   ))
   lazy val NodeType: ObjectType[GraphQlSchemaContext, Node] = ObjectType("Node", () => fields[GraphQlSchemaContext, Node](

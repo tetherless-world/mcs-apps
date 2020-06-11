@@ -30,11 +30,11 @@ export interface PathPageQuery_paths_edges {
   __typename: "Edge";
   datasource: string;
   object: string;
-  objectNode: PathPageQuery_paths_edges_objectNode | null;
+  objectNode: PathPageQuery_paths_edges_objectNode;
   other: string | null;
-  predicate: string | null;
+  predicate: string;
   subject: string;
-  subjectNode: PathPageQuery_paths_edges_subjectNode | null;
+  subjectNode: PathPageQuery_paths_edges_subjectNode;
   weight: number | null;
 }
 
