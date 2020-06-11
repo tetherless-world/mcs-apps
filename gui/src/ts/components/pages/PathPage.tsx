@@ -8,6 +8,7 @@ import * as d3 from "d3";
 import {Node} from "models/Node";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import {ApolloException} from "@tetherless-world/twxplore-base";
+import * as ReactLoader from "react-loader";
 
 interface PathNode extends d3.SimulationNodeDatum, Node {
   pathId: string;
@@ -34,15 +35,12 @@ export const PathPage: React.FunctionComponent = () => {
       path.edges.forEach((edge) => {
         if (
           edge.subjectNode &&
-          nodes.find((node) => node.id === edge.subject) === undefined
+          !nodes.some((node) => node.id === edge.subject)
         ) {
           nodes.push({...edge.subjectNode, pathId: path.id});
         }
 
-        if (
-          edge.objectNode &&
-          nodes.find((node) => node.id === edge.object) === undefined
-        ) {
+        if (edge.objectNode && !nodes.some((node) => node.id === edge.object)) {
           nodes.push({...edge.objectNode, pathId: path.id});
         }
 
@@ -59,13 +57,15 @@ export const PathPage: React.FunctionComponent = () => {
 
   return (
     <Frame>
-      <ForceDirectedGraph
-        {...pathGraphData}
-        width={500}
-        height={500}
-        nodeIdFunction={(node) => node.id}
-        nodeGroupFunction={(node) => node.pathId}
-      />
+      <ReactLoader loaded={!data}>
+        <ForceDirectedGraph
+          {...pathGraphData}
+          width={500}
+          height={500}
+          nodeIdFunction={(node) => node.id}
+          nodeGroupFunction={(node) => node.pathId}
+        />
+      </ReactLoader>
     </Frame>
   );
 };
