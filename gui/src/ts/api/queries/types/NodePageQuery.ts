@@ -16,8 +16,8 @@ export interface NodePageQuery_nodeById_subjectOfEdges_objectNode {
 export interface NodePageQuery_nodeById_subjectOfEdges {
   __typename: "Edge";
   object: string;
-  objectNode: NodePageQuery_nodeById_subjectOfEdges_objectNode | null;
-  predicate: string | null;
+  objectNode: NodePageQuery_nodeById_subjectOfEdges_objectNode;
+  predicate: string;
 }
 
 export interface NodePageQuery_nodeById {
