@@ -15,7 +15,7 @@ export const Routes: React.FunctionComponent = () => (
         component={NodeSearchResultsPage}
         path={Hrefs.nodeSearch()}
       ></Route>
-      <Route component={NodePage} path="/node/" />
+      <Route component={NodePage} path="/node/:nodeId" />
       <Route exact component={PathPage} path={Hrefs.paths} />
       <Route exact component={RandomNodePage} path={Hrefs.randomNode} />
       <Route exact component={HomePage} path={Hrefs.home}></Route>
