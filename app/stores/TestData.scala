@@ -1,6 +1,6 @@
 package stores
 
-import java.io.InputStreamReader
+import java.io.{BufferedInputStream, InputStream, InputStreamReader}
 
 import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.path.PathJsonlReader
@@ -36,26 +36,38 @@ object TestData {
   private def deduplicateNodes(nodes: List[Node]): Map[String, Node] =
     nodes.map(node => (node.id, node)).toMap
 
+  def getEdgesCsvResourceAsStream(): InputStream =
+    getResourceAsStream(EdgesCsvBz2ResourceName)
+
+  def getNodesCsvResourceAsStream(): InputStream =
+    getResourceAsStream(NodesCsvBz2ResourceName)
+
+  def getPathsJsonlResourceAsStream(): InputStream =
+    getResourceAsStream(PathsJsonlResourceName)
+
+  private def getResourceAsStream(resourceName: String) =
+    new BufferedInputStream(getClass.getResourceAsStream(resourceName))
+
   private def readEdges(): List[Edge] = {
-    val inputStream = getClass.getResourceAsStream(EdgesCsvBz2ResourceName)
+    val inputStream = getEdgesCsvResourceAsStream()
     try {
-      new CskgEdgesCsvReader().readCompressed(inputStream).toList
+      new CskgEdgesCsvReader().read(inputStream).toList
     } finally {
       inputStream.close()
     }
   }
 
   private def readNodes(): List[Node] = {
-    val inputStream = getClass.getResourceAsStream(NodesCsvBz2ResourceName)
+    val inputStream = getNodesCsvResourceAsStream()
     try {
-      new CskgNodesCsvReader().readCompressed(inputStream).toList
+      new CskgNodesCsvReader().read(inputStream).toList
     } finally {
       inputStream.close()
     }
   }
 
   private def readPaths(): List[Path] = {
-    val inputStream = getClass.getResourceAsStream(PathsJsonlResourceName)
+    val inputStream = getPathsJsonlResourceAsStream()
     try {
       new PathJsonlReader().read(Source.fromInputStream(inputStream, "UTF-8")).toList
     } finally {

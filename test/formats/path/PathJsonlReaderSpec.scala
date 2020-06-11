@@ -1,6 +1,7 @@
 package formats.path
 
 import org.scalatest.{Matchers, WordSpec}
+import stores.TestData
 
 import scala.io.Source
 
@@ -9,7 +10,7 @@ class PathJsonlReaderSpec extends WordSpec with Matchers {
     val sut = new PathJsonlReader()
 
     "read the test data" in {
-      val inputStream = getClass.getResourceAsStream("/test_data/paths.jsonl")
+      val inputStream = TestData.getPathsJsonlResourceAsStream()
       try {
         val paths = sut.read(Source.fromInputStream(inputStream, "UTF-8")).toList
         paths.size should be > 0
