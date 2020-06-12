@@ -1,5 +1,7 @@
-package stores
+package stores.kg
 
-final case class NodeFilters(
+import stores.StringFilter
+
+final case class KgNodeFilters(
                             datasource: Option[StringFilter]
                             )

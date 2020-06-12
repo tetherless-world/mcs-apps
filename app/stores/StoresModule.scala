@@ -2,6 +2,7 @@ package stores
 
 import com.google.inject.AbstractModule
 import org.slf4j.LoggerFactory
+import stores.kg.{KgStore, Neo4jStore, TestKgStore}
 
 final class StoresModule extends AbstractModule {
   private val logger = LoggerFactory.getLogger(classOf[StoresModule])
@@ -10,11 +11,11 @@ final class StoresModule extends AbstractModule {
     val storeClass =
       if (System.getProperty("testIntegration") != null) {
         logger.info("using test store from local data")
-        classOf[TestStore]
+        classOf[TestKgStore]
       } else {
         logger.info("using neo4j store")
         classOf[Neo4jStore]
       }
-    bind(classOf[Store]).to(storeClass)
+    bind(classOf[KgStore]).to(storeClass)
   }
 }

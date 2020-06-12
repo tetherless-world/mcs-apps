@@ -1,14 +1,12 @@
-package stores
-import java.util
+package stores.kg
 
 import com.google.inject.Inject
 import javax.inject.Singleton
-import models.cskg.{Edge, Node}
-import models.path.Path
-import org.neo4j.driver.{AuthTokens, GraphDatabase, Record, Result, Session, Transaction, Values}
+import models.kg.{KgEdge, KgNode, KgPath}
+import org.neo4j.driver._
 import org.slf4j.LoggerFactory
+import stores.{Neo4jStoreConfiguration, StringFilter, WithResource}
 
-import scala.io.Source
 import scala.collection.JavaConverters._
 
 final case class CypherBinding(variableName: String, value: Any)
@@ -25,14 +23,14 @@ final case class CypherFilters(filters: List[CypherFilter]) {
     }
 }
 object CypherFilters {
-  def apply(nodeFilters: Option[NodeFilters]): CypherFilters =
+  def apply(nodeFilters: Option[KgNodeFilters]): CypherFilters =
     if (nodeFilters.isDefined) {
       apply(nodeFilters.get)
     } else {
       CypherFilters(List())
     }
 
-  def apply(nodeFilters: NodeFilters): CypherFilters =
+  def apply(nodeFilters: KgNodeFilters): CypherFilters =
     if (nodeFilters.datasource.isDefined) {
       CypherFilters(toCypherFilters(bindingVariableNamePrefix = "nodeDatasource", property = "node.datasource", stringFilter = nodeFilters.datasource.get))
     } else {
@@ -59,8 +57,8 @@ final case class PathRecord(
                             pathId: String,
                             subjectNodeId: String
                            ) {
-  def toEdge: Edge =
-    Edge(
+  def toEdge: KgEdge =
+    KgEdge(
       datasource = datasource,
       `object` = objectNodeId,
       other = None,
@@ -71,7 +69,7 @@ final case class PathRecord(
 }
 
 @Singleton
-final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends Store with WithResource {
+final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends KgStore with WithResource {
   private var bootstrapped: Boolean = false
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("datasource", "other", "weight")
@@ -83,9 +81,9 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
 
   private implicit class RecordWrapper(record: Record) {
-    def toEdge: Edge = {
+    def toEdge: KgEdge = {
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
-      Edge(
+      KgEdge(
         datasource = recordMap("edge.datasource").asInstanceOf[String],
         `object` = recordMap("object.id").asInstanceOf[String],
         other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
@@ -95,9 +93,9 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       )
     }
 
-    def toNode: Node = {
+    def toNode: KgNode = {
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
-      Node(
+      KgNode(
         aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
         datasource = recordMap("node.datasource"),
         id = recordMap("node.id"),
@@ -120,17 +118,17 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   }
 
   private implicit class ResultsWrapper(result: Result) {
-    def toEdges: List[Edge] =
+    def toEdges: List[KgEdge] =
       result.asScala.toList.map(record => record.toEdge)
 
-    def toNodes: List[Node] =
+    def toNodes: List[KgNode] =
       result.asScala.toList.map(record => record.toNode)
 
-    def toPaths: List[Path] = {
+    def toPaths: List[KgPath] = {
       result.asScala.toList.map(record => record.toPathRecord).groupBy(pathRecord => pathRecord.pathId).map(pathRecordsEntry =>
         pathRecordsEntry match {
           case (pathId, pathRecords) =>
-            Path(
+            KgPath(
               datasource = pathRecords(0).datasource,
               edges = pathRecords.sortBy(pathRecord => pathRecord.pathEdgeIndex).map(pathRecord => pathRecord.toEdge),
               id = pathId
@@ -210,7 +208,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
 
-  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge] = {
+  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] = {
     withSession { session =>
       session.readTransaction { transaction => {
         transaction.run(
@@ -230,7 +228,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge] = {
+  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] = {
     withSession { session =>
       session.readTransaction { transaction => {
         transaction.run(
@@ -250,7 +248,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] = {
+  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: String): List[KgNode] = {
     val cypherFilters = CypherFilters(filters)
 
     withSession { session =>
@@ -270,7 +268,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int = {
+  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: String): Int = {
     val cypherFilters = CypherFilters(filters)
 
     withSession { session =>
@@ -291,7 +289,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override final def getNodeById(id: String): Option[Node] = {
+  override final def getNodeById(id: String): Option[KgNode] = {
     withSession { session =>
       session.readTransaction { transaction => {
         transaction.run(
@@ -303,7 +301,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override def getPaths: List[Path] =
+  override def getPaths: List[KgPath] =
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
@@ -314,7 +312,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
 
-  override def getPathById(id: String): Option[Path] = {
+  override def getPathById(id: String): Option[KgPath] = {
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
@@ -327,7 +325,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  final override def getRandomNode: Node =
+  final override def getRandomNode: KgNode =
     withSession { session =>
       session.readTransaction { transaction => {
         transaction.run(
@@ -367,7 +365,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private def queryParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
-  final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
+  final override def putEdges(edges: TraversableOnce[KgEdge]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (edge <- edges) {
@@ -392,7 +390,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  final override def putNodes(nodes: TraversableOnce[Node]): Unit = {
+  final override def putNodes(nodes: TraversableOnce[KgNode]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (node <- nodes) {
@@ -414,7 +412,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override def putPaths(paths: TraversableOnce[Path]): Unit = {
+  override def putPaths(paths: TraversableOnce[KgPath]): Unit = {
     withSession { session =>
       session.writeTransaction { transaction =>
         for (path <- paths) {

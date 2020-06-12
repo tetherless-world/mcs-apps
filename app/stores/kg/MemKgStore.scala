@@ -1,23 +1,23 @@
-package stores
+package stores.kg
 
 import com.outr.lucene4s._
 import com.outr.lucene4s.field.Field
-import com.outr.lucene4s.query.{Condition, GroupedSearchTerm, SearchTerm}
-import models.cskg.{Edge, Node}
-import models.path.Path
+import com.outr.lucene4s.query.{Condition, SearchTerm}
+import models.kg.{KgEdge, KgNode, KgPath}
+import stores.StringFilter
 
 import scala.util.Random
 
-class MemStore extends Store {
-  private var edges: List[Edge] = List()
+class MemKgStore extends KgStore {
+  private var edges: List[KgEdge] = List()
   private val lucene = new DirectLucene(List("datasource", "id", "label"), autoCommit = false)
   private val luceneNodeDatasourceField = lucene.create.field[String]("datasource", fullTextSearchable = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
   private val luceneNodeLabelField = lucene.create.field[String]("label", fullTextSearchable = true)
-  private var nodes: List[Node] = List()
-  private var nodesById: Map[String, Node] = Map()
-  private var paths: List[Path] = List()
-  private var pathsById: Map[String, Path] = Map()
+  private var nodes: List[KgNode] = List()
+  private var nodesById: Map[String, KgNode] = Map()
+  private var paths: List[KgPath] = List()
+  private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var datasources: List[String] = List()
 
@@ -56,21 +56,21 @@ class MemStore extends Store {
   final override def getDatasources: List[String] =
     this.datasources
 
-  final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[Edge] =
+  final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
     edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
 
-  final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[Edge] =
+  final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
     edges.filter(edge => edge.subject == subjectNodeId).drop(offset).take(limit)
 
-  final override def getNodeById(id: String): Option[Node] =
+  final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getMatchingNodes(filters: Option[NodeFilters], limit: Int, offset: Int, text: String): List[Node] = {
+  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: String): List[KgNode] = {
     val results = lucene.query().filter(toSearchTerms(filters, text):_*).limit(limit).offset(offset).search()
     results.results.toList.map(searchResult => nodesById(searchResult(luceneNodeIdField)))
   }
 
-  final override def getMatchingNodesCount(filters: Option[NodeFilters], text: String): Int = {
+  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: String): Int = {
     val results = lucene.query().filter(toSearchTerms(filters, text):_*).search()
     results.total.intValue
   }
@@ -78,10 +78,10 @@ class MemStore extends Store {
   final override def getPaths =
     paths
 
-  override def getPathById(id: String): Option[Path] =
+  override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
 
-  override def getRandomNode: Node =
+  override def getRandomNode: KgNode =
     nodes(random.nextInt(nodes.size))
 
   final override def getTotalEdgesCount: Int =
@@ -93,11 +93,11 @@ class MemStore extends Store {
   override def isEmpty: Boolean =
     edges.isEmpty && nodes.isEmpty && paths.isEmpty
 
-  final override def putEdges(edges: TraversableOnce[Edge]): Unit = {
+  final override def putEdges(edges: TraversableOnce[KgEdge]): Unit = {
     this.edges = edges.toList
   }
 
-  final override def putNodes(nodes: TraversableOnce[Node]): Unit = {
+  final override def putNodes(nodes: TraversableOnce[KgNode]): Unit = {
     this.nodes = nodes.toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
     this.datasources = this.nodes.flatMap(_.datasource.split(",")).distinct
@@ -109,12 +109,12 @@ class MemStore extends Store {
   }
 
 
-  override def putPaths(paths: TraversableOnce[Path]): Unit = {
+  override def putPaths(paths: TraversableOnce[KgPath]): Unit = {
     this.paths = paths.toList
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }
 
-  private def toSearchTerms(filters: Option[NodeFilters], text: String): List[SearchTerm] = {
+  private def toSearchTerms(filters: Option[KgNodeFilters], text: String): List[SearchTerm] = {
     val textSearchTerm = string2ParsableSearchTerm(text)
     if (filters.isDefined) {
       val filterSearchTerms = toSearchTerms(filters.get)
@@ -128,7 +128,7 @@ class MemStore extends Store {
     }
   }
 
-  private def toSearchTerms(nodeFilters: NodeFilters): List[(SearchTerm, Condition)] = {
+  private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
     nodeFilters.datasource.map(datasource => toSearchTerms(luceneNodeDatasourceField, datasource)).getOrElse(List())
   }
 

@@ -1,6 +1,6 @@
-package models.cskg
+package models.kg
 
-final case class Node(
+final case class KgNode(
                        aliases: Option[List[String]], // No default values so the compiler can check missing fields on construction
                        datasource: String,
                        id: String,

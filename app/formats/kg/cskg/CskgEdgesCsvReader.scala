@@ -1,15 +1,15 @@
-package formats.cskg
+package formats.kg.cskg
 
 import java.io.InputStream
 import java.nio.file.Path
 
 import com.github.tototoshi.csv._
-import models.cskg.Edge
+import models.kg.KgEdge
 
-final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[Edge](csvReader) {
-  def toStream: Stream[Edge] =
+final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdge](csvReader) {
+  def toStream: Stream[KgEdge] =
     csvReader.toStreamWithHeaders.map(row =>
-      Edge(
+      KgEdge(
         datasource = row("datasource"),
         `object` = row("object"),
         other = row.getNonBlank("other"),

@@ -4,20 +4,21 @@ import java.nio.file.Paths
 
 import akka.stream.OverflowStrategy
 import controllers.Assets
-import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.path.PathJsonlReader
+import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
+import formats.kg.path.PathJsonlReader
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
-import stores.{Store, WithResource}
+import stores.WithResource
+import stores.kg.KgStore
 
 import scala.io.Source
 
 @Singleton
-class ImportController(importDirectoryPath: java.nio.file.Path, store: Store) extends InjectedController with WithResource {
+class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) extends InjectedController with WithResource {
   @Inject
-  def this(configuration: Configuration, store: Store) =
+  def this(configuration: Configuration, store: KgStore) =
     this(Paths.get(configuration.get[String]("importDirectoryPath")), store)
 
   def clear() = Action {

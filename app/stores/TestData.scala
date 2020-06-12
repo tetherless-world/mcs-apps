@@ -2,10 +2,9 @@ package stores
 
 import java.io.{BufferedInputStream, InputStream, InputStreamReader}
 
-import formats.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.path.PathJsonlReader
-import models.cskg.{Edge, Node}
-import models.path.Path
+import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
+import formats.kg.path.PathJsonlReader
+import models.kg.{KgEdge, KgNode, KgPath}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
@@ -24,7 +23,7 @@ object TestData extends WithResource {
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
   val paths = validatePaths(edges, nodesById, readPaths())
 
-  private def checkDuplicateEdges(edges: List[Edge]): List[Edge] = {
+  private def checkDuplicateEdges(edges: List[KgEdge]): List[KgEdge] = {
     // Default toMap duplicate handling = use later key
     val deduplicatedEdges = edges.map(edge => ((edge.subject, edge.predicate, edge.`object`) -> edge)).toMap.values.toList
     if (deduplicatedEdges.size != edges.size) {
@@ -33,7 +32,7 @@ object TestData extends WithResource {
     edges
   }
 
-  private def deduplicateNodes(nodes: List[Node]): Map[String, Node] =
+  private def deduplicateNodes(nodes: List[KgNode]): Map[String, KgNode] =
     nodes.map(node => (node.id, node)).toMap
 
   def getEdgesCsvResourceAsStream(): InputStream =
@@ -48,25 +47,25 @@ object TestData extends WithResource {
   private def getResourceAsStream(resourceName: String) =
     new BufferedInputStream(getClass.getResourceAsStream(resourceName))
 
-  private def readEdges(): List[Edge] = {
+  private def readEdges(): List[KgEdge] = {
     withResource(CskgEdgesCsvReader.open(getEdgesCsvResourceAsStream())) { reader =>
       reader.toStream.toList
     }
   }
 
-  private def readNodes(): List[Node] = {
+  private def readNodes(): List[KgNode] = {
     withResource(CskgNodesCsvReader.open(getNodesCsvResourceAsStream())) { reader =>
       reader.toStream.toList
     }
   }
 
-  private def readPaths(): List[Path] = {
+  private def readPaths(): List[KgPath] = {
     withResource(new PathJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
       reader.toStream.toList
     }
   }
 
-  private def checkDanglingEdges(edges: List[Edge], nodesById: Map[String, Node]): List[Edge] = {
+  private def checkDanglingEdges(edges: List[KgEdge], nodesById: Map[String, KgNode]): List[KgEdge] = {
     val nonDanglingEdges = edges.filter(edge => nodesById.contains(edge.subject) && nodesById.contains(edge.`object`))
     if (nonDanglingEdges.size != edges.size) {
       throw new IllegalArgumentException(s"${edges.size - nonDanglingEdges.size} dangling edges")
@@ -74,13 +73,13 @@ object TestData extends WithResource {
     edges
   }
 
-  private def sortNodes(nodes: List[Node]) =
+  private def sortNodes(nodes: List[KgNode]) =
     nodes.sortBy(node => node.id)
 
-  private def sortEdges(edges: List[Edge]) =
+  private def sortEdges(edges: List[KgEdge]) =
     edges.sortBy(edge => (edge.subject, edge.predicate, edge.`object`))
 
-  private def validatePaths(edges: List[Edge], nodesById: Map[String, Node], paths: List[Path]): List[Path] = {
+  private def validatePaths(edges: List[KgEdge], nodesById: Map[String, KgNode], paths: List[KgPath]): List[KgPath] = {
     paths.map(path => {
       val pathEdges = path.edges
       for (pathEdge <- pathEdges) {

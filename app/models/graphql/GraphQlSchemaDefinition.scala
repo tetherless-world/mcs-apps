@@ -3,18 +3,18 @@ package models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.cskg.{Edge, Node}
-import models.path.Path
+import models.kg.{KgEdge, KgNode, KgPath}
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
-import stores.{NodeFilters, StringFilter}
+import stores.StringFilter
+import stores.kg.KgNodeFilters
 
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Object types
   // Can't use deriveObjectType because we need to define node and edge recursively
   // https://github.com/sangria-graphql/sangria/issues/54
-  lazy val EdgeType: ObjectType[GraphQlSchemaContext, Edge] = ObjectType("Edge", () => fields[GraphQlSchemaContext, Edge](
+  lazy val EdgeType: ObjectType[GraphQlSchemaContext, KgEdge] = ObjectType("Edge", () => fields[GraphQlSchemaContext, KgEdge](
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("object", StringType, resolve = _.value.`object`),
     // Assume the edge is not dangling
@@ -26,7 +26,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("subjectNode", NodeType, resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.subject).head),
     Field("weight", OptionType(FloatType), resolve = _.value.weight)
   ))
-  lazy val NodeType: ObjectType[GraphQlSchemaContext, Node] = ObjectType("Node", () => fields[GraphQlSchemaContext, Node](
+  lazy val NodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("Node", () => fields[GraphQlSchemaContext, KgNode](
     Field("aliases", OptionType(ListType(StringType)), resolve = _.value.aliases),
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("id", StringType, resolve = _.value.id),
@@ -36,7 +36,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("pos", OptionType(StringType), resolve = _.value.pos),
     Field("subjectOfEdges", ListType(EdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.store.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
   ))
-  val PathType = deriveObjectType[GraphQlSchemaContext, Path](
+  val PathType = deriveObjectType[GraphQlSchemaContext, KgPath](
     AddFields(
       Field("edges", ListType(EdgeType), resolve = _.value.edges)
     )
@@ -44,10 +44,10 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
-  implicit val nodeFiltersDecoder: Decoder[NodeFilters] = deriveDecoder
+  implicit val nodeFiltersDecoder: Decoder[KgNodeFilters] = deriveDecoder
   // Input object types
   implicit val StringFilterType = deriveInputObjectType[StringFilter]()
-  implicit val NodeFiltersType = deriveInputObjectType[NodeFilters]()
+  implicit val NodeFiltersType = deriveInputObjectType[KgNodeFilters]()
 
   // Argument types
   val IdArgument = Argument("id", StringType)

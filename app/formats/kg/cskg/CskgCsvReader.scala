@@ -1,4 +1,4 @@
-package formats.cskg
+package formats.kg.cskg
 
 import java.io.{BufferedInputStream, FileInputStream, InputStream, InputStreamReader, Reader}
 import java.nio.file.Path

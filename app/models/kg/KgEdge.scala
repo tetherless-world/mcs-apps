@@ -1,6 +1,6 @@
-package models.cskg
+package models.kg
 
-final case class Edge(
+final case class KgEdge(
                       datasource: String,
                       `object`: String,
                       other: Option[String], // No default values so the compiler can check missing fields on construction

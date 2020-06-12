@@ -1,12 +1,12 @@
-package stores
+package stores.kg
 
 import java.net.InetAddress
 
-import org.neo4j.driver.exceptions.ClientException
-import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, WordSpec}
 import org.slf4j.LoggerFactory
+import stores.{Neo4jStoreConfiguration, TestData}
 
-class Neo4jStoreSpec extends WordSpec with StoreBehaviors with BeforeAndAfterAll {
+class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
   val logger = LoggerFactory.getLogger(getClass)
   val sut = new Neo4jStore(new Neo4jStoreConfiguration(password = "nC1aB4mji623s2Zs", uri = "bolt://neo4j:7687", user = "neo4j"))
   val neo4jHostAddress = InetAddress.getByName("neo4j").getHostAddress

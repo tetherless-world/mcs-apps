@@ -1,4 +1,4 @@
-package formats.cskg
+package formats.kg.cskg
 
 import org.scalatest.{Matchers, WordSpec}
 import stores.{TestData, WithResource}

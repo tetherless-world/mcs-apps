@@ -7,7 +7,8 @@ import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
-import stores.{TestData, TestStore}
+import stores.TestData
+import stores.kg.TestKgStore
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -190,7 +191,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
   def executeQuery(query: Document, vars: JsObject = Json.obj()) = {
     val futureResult = Executor.execute(GraphQlSchemaDefinition.schema, query,
       variables = vars,
-      userContext = new GraphQlSchemaContext(FakeRequest(), new TestStore())
+      userContext = new GraphQlSchemaContext(FakeRequest(), new TestKgStore())
     )
     Await.result(futureResult, 10.seconds)
   }

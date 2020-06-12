@@ -1,9 +1,10 @@
-package stores
+package stores.kg
 
 import org.scalatest.{Matchers, WordSpec}
+import stores.{StringFilter, TestData}
 
-trait StoreBehaviors extends Matchers { this: WordSpec =>
-  def store(sut: Store) {
+trait KgStoreBehaviors extends Matchers { this: WordSpec =>
+  def store(sut: KgStore) {
     "get edges by object" in {
       for (node <- TestData.nodes) {
         val edges = sut.getEdgesByObject(limit = 1, offset = 0, objectNodeId = node.id)
@@ -112,7 +113,7 @@ trait StoreBehaviors extends Matchers { this: WordSpec =>
       val countBeforeFilters = sut.getMatchingNodesCount(filters = None, text = text)
       countBeforeFilters should be > 0
       val actualCount = sut.getMatchingNodesCount(
-        filters = Some(NodeFilters(datasource = Some(StringFilter(exclude = Some(List(TestData.nodes(0).datasource)), include = None)))),
+        filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = Some(List(TestData.nodes(0).datasource)), include = None)))),
         text = "Test"
       )
       actualCount should equal(0)

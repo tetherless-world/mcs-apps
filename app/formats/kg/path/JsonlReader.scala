@@ -1,9 +1,7 @@
-package formats.path
+package formats.kg.path
 
-import io.circe.{Decoder, Json}
-import io.circe.generic.semiauto.deriveDecoder
+import io.circe.Json
 import io.circe.parser._
-import models.path.Path
 import org.slf4j.LoggerFactory
 
 import scala.io.Source

@@ -1,16 +1,16 @@
-package formats.cskg
+package formats.kg.cskg
 
 import java.io.InputStream
 import java.nio.file.Path
 
 import com.github.tototoshi.csv._
-import models.cskg
-import models.cskg.Node
+import models.kg
+import models.kg.KgNode
 
-final class CskgNodesCsvReader(csvReader: CSVReader) extends CskgCsvReader[Node](csvReader) {
-  def toStream: Stream[Node] =
+final class CskgNodesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgNode](csvReader) {
+  def toStream: Stream[KgNode] =
     csvReader.toStreamWithHeaders.map(row =>
-      cskg.Node(
+      kg.KgNode(
         aliases = row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList),
         datasource = row("datasource"),
         id = row("id"),

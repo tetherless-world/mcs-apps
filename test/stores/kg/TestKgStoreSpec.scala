@@ -1,13 +1,11 @@
-package stores
-
-import java.io.InputStreamReader
+package stores.kg
 
 import org.scalatest.{Matchers, WordSpec}
 
-class TestStoreSpec extends WordSpec with Matchers {
+class TestKgStoreSpec extends WordSpec with Matchers {
   "Test store" can {
     "instantiate with data" in {
-      val store = new TestStore()
+      val store = new TestKgStore()
       store.getTotalEdgesCount should be > 0
       store.getTotalNodesCount should be > 0
     }

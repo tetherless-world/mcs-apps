@@ -4,7 +4,7 @@ import controllers.{Assets, AssetsFinder}
 import javax.inject.{Inject, Singleton}
 import play.api.Environment
 import play.api.mvc.InjectedController
-import stores.{Store, TestStore}
+import stores.kg.TestKgStore
 
 @Singleton
 class TestController @Inject()(assets: Assets) extends InjectedController {
