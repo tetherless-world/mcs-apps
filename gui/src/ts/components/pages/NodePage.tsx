@@ -9,7 +9,7 @@ import {
 import * as NodePageQueryDocument from "api/queries/NodePageQuery.graphql";
 import {
   NodePageQuery,
-  NodePageQuery_nodeById_subjectOfEdges,
+  NodePageQuery_kg_nodeById_subjectOfEdges,
   NodePageQueryVariables,
 } from "api/queries/types/NodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
@@ -21,6 +21,7 @@ import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
 import {NodePredicateGrid} from "components/node/NodePredicateGrid";
 import {NodePredicateList} from "components/node/NodePredicateList";
 import * as _ from "lodash";
+import {kgId} from "api/kgId";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   const {data, error, loading} = useQuery<
     NodePageQuery,
     NodePageQueryVariables
-  >(NodePageQueryDocument, {variables: {id: nodeId}});
+  >(NodePageQueryDocument, {variables: {kgId, nodeId}});
 
   if (error) {
     return <FatalErrorModal exception={new ApolloException(error)} />;
@@ -59,7 +60,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
     throw new EvalError();
   }
 
-  const node = data.nodeById;
+  const node = data.kg.nodeById;
   if (!node) {
     return (
       <Frame>
@@ -78,7 +79,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   }
 
   const predicateSubjects: {
-    [index: string]: NodePageQuery_nodeById_subjectOfEdges[];
+    [index: string]: NodePageQuery_kg_nodeById_subjectOfEdges[];
   } = {};
   for (const edge of node.subjectOfEdges) {
     if (!edge.objectNode) {

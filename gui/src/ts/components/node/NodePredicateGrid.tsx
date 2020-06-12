@@ -1,4 +1,4 @@
-import {NodePageQuery_nodeById_subjectOfEdges} from "api/queries/types/NodePageQuery";
+import {NodePageQuery_kg_nodeById_subjectOfEdges} from "api/queries/types/NodePageQuery";
 import {
   Card,
   CardHeader,
@@ -10,11 +10,10 @@ import {
 import * as React from "react";
 import {NodeLink} from "./NodeLink";
 
-
 const EdgeList: React.FunctionComponent<{
-  edges: NodePageQuery_nodeById_subjectOfEdges[];
+  edges: NodePageQuery_kg_nodeById_subjectOfEdges[];
   predicate: string;
-  datasource: string
+  datasource: string;
 }> = ({edges, predicate, datasource}) => {
   return (
     <Card>
@@ -38,9 +37,9 @@ const EdgeList: React.FunctionComponent<{
 
 export const NodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
-    [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
+    [predicate: string]: NodePageQuery_kg_nodeById_subjectOfEdges[];
   };
-  datasource: string
+  datasource: string;
 }> = ({predicateSubjects, datasource}) => {
   return (
     <Grid container spacing={4}>

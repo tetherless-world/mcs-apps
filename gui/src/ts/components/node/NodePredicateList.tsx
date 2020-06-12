@@ -1,4 +1,4 @@
-import {NodePageQuery_nodeById_subjectOfEdges} from "api/queries/types/NodePageQuery";
+import {NodePageQuery_kg_nodeById_subjectOfEdges} from "api/queries/types/NodePageQuery";
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() =>
 );
 
 const PredicateEdgeList: React.FunctionComponent<{
-  edges: NodePageQuery_nodeById_subjectOfEdges[];
+  edges: NodePageQuery_kg_nodeById_subjectOfEdges[];
   predicate: string;
   datasource: string;
 }> = ({edges, predicate, datasource}) => {
@@ -62,7 +62,7 @@ const PredicateEdgeList: React.FunctionComponent<{
 
 export const NodePredicateList: React.FunctionComponent<{
   predicateSubjects: {
-    [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
+    [predicate: string]: NodePageQuery_kg_nodeById_subjectOfEdges[];
   };
   datasource: string;
 }> = ({predicateSubjects, datasource}) => {
