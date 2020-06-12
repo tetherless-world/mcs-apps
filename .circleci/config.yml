@@ -141,6 +141,8 @@ workflows:
           filters:
             branches:
               only: master
+          post-steps:
+            -slack/status
       - scala:
           requires:
             - ts
