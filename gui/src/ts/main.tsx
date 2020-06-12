@@ -11,8 +11,6 @@ import {DataSummaryProvider} from "./DataSummaryProvider";
 // Logger
 const logger = new ConsoleLogger();
 
-FAIL
-
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <ApolloHooksProvider client={apolloClient}>
