@@ -113,6 +113,9 @@ workflows:
           requires:
             - scala
           working_directory: test/integration
+          post-steps:
+            - slack/status:
+                fail_only: true
       - cypress/run:
           attach-workspace: true
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
@@ -141,4 +144,10 @@ workflows:
       - scala:
           requires:
             - ts
-      - ts
+          post-steps:
+            - slack/status:
+                fail_only: true
+      - ts:
+          post-steps:
+            - slack/status:
+                fail_only: true
