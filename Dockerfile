@@ -21,4 +21,6 @@ COPY /docker-entrypoint.sh /
 EXPOSE 9000
 
 WORKDIR /app
+RUN mkdir -p data/import/kg
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
