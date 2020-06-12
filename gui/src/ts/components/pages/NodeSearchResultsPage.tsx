@@ -13,16 +13,17 @@ import {NodeTable} from "components/data/NodeTable";
 import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
-import {NodeFilters} from "api/graphqlGlobalTypes";
+import {KgNodeFilters} from "api/graphqlGlobalTypes";
 import {NodeSearchVariables} from "models/NodeSearchVariables";
 import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
+import {kgId} from "../../api/kgId";
 
 class QueryStringNodeSearchVariables implements NodeSearchVariables {
   public readonly __typename = "NodeSearchVariables";
 
   private constructor(
     public readonly text: string,
-    public readonly filters: NodeFilters = {datasource: null},
+    public readonly filters: KgNodeFilters = {datasource: null},
     public readonly offset: number = 0,
     public readonly limit: number = 10
   ) {}
@@ -45,7 +46,7 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
       ignoreQueryPrefix: true,
     }) as unknown) as {
       text: string;
-      filters: NodeFilters;
+      filters: KgNodeFilters;
       offset: string;
       limit: string;
     };
@@ -84,7 +85,7 @@ export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     NodeSearchResultsPageQuery,
     NodeSearchResultsPageQueryVariables
   >(NodeSearchResultsPageQueryDocument, {
-    variables: {...searchVariables.object, withCount: count === null},
+    variables: {kgId, ...searchVariables.object, withCount: count === null},
   });
 
   if (error) {
@@ -95,8 +96,8 @@ export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     setCount(null);
   }
 
-  if (data?.matchingNodesCount && count === null) {
-    setCount(data.matchingNodesCount);
+  if (data?.kg.matchingNodesCount && count === null) {
+    setCount(data.kg.matchingNodesCount);
   }
 
   return (
@@ -109,7 +110,7 @@ export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
             </Typography>
             {count && (
               <NodeTable
-                nodes={data?.matchingNodes || []}
+                nodes={data?.kg.matchingNodes || []}
                 rowsPerPage={searchVariables.limit}
                 count={count}
                 page={searchVariables.page}

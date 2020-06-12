@@ -27,7 +27,7 @@ export const RandomNodePage: React.FunctionComponent = () => {
     throw new EvalError();
   }
 
-  const randomNodeId = data.randomNode.id;
+  const randomNodeId = data.kg.randomNode.id;
 
   history.push(Hrefs.node(randomNodeId));
   return <React.Fragment />;

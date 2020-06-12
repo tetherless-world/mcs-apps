@@ -1,9 +1,9 @@
-import {NodeFilters} from "api/graphqlGlobalTypes";
+import {KgNodeFilters} from "api/graphqlGlobalTypes";
 
 export interface NodeSearchVariables {
   __typename: "NodeSearchVariables";
   text: string;
-  filters: NodeFilters;
+  filters: KgNodeFilters;
   offset?: number;
   limit?: number;
 }

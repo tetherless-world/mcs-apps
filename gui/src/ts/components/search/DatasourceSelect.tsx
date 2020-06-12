@@ -11,7 +11,7 @@ export const DatasourceSelect: React.FunctionComponent<{
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
   const data = React.useContext(DataSummaryContext);
-  const datasources = data?.datasources;
+  const datasources = data?.kg.datasources;
 
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
     value?.include?.[0] || ""

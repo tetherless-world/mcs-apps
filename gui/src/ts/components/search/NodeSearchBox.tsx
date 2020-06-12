@@ -20,6 +20,7 @@ import {NodeSearchVariables} from "models/NodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
 import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
 import {NodeLink} from "components/node/NodeLink";
+import {kgId} from "../../api/kgId";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -149,13 +150,14 @@ export const NodeSearchBox: React.FunctionComponent<{
 
     throttledQuery.current(
       {
+        kgId,
         text: `${search.text}`,
         filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
         withCount: false,
       },
-      ({matchingNodes}, errors) => {
+      ({kg}, errors) => {
         if (!active) {
           return;
         }
@@ -164,7 +166,7 @@ export const NodeSearchBox: React.FunctionComponent<{
           setSearchErrors(errors);
         }
 
-        setSearchResults(matchingNodes);
+        setSearchResults(kg.matchingNodes);
       }
     );
 

@@ -77,11 +77,11 @@ export const HomePage: React.FunctionComponent = () => {
                 <Typography>
                   Search{" "}
                   <strong data-cy="totalNodeCount">
-                    {data.totalNodesCount} nodes
+                    {data.kg.totalNodesCount} nodes
                   </strong>{" "}
                   with{" "}
                   <strong data-cy="totalEdgeCount">
-                    {data.totalEdgesCount} relationships
+                    {data.kg.totalEdgesCount} relationships
                   </strong>
                 </Typography>
 

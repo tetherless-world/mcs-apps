@@ -30,7 +30,7 @@ export const PathPage: React.FunctionComponent = () => {
     const nodes: PathNode[] = [];
     const links: PathEdge[] = [];
 
-    data?.paths.forEach((path) => {
+    data?.kg.paths.forEach((path) => {
       path.edges.forEach((edge) => {
         if (
           edge.subjectNode &&
