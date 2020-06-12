@@ -52,10 +52,10 @@ export const HomePage: React.FunctionComponent = () => {
 
     switch (search.__typename) {
       case "KgNode":
-        history.push(Hrefs.node(search.id));
+        history.push(Hrefs.kg.node(search.id));
         break;
       case "KgNodeSearchVariables":
-        history.push(Hrefs.nodeSearch(search));
+        history.push(Hrefs.kg.nodeSearch(search));
         break;
       default:
         const _exhaustiveCheck: never = search;
@@ -100,7 +100,11 @@ export const HomePage: React.FunctionComponent = () => {
                 >
                   Search
                 </Button>
-                <Button color="primary" component={Link} to={Hrefs.randomNode}>
+                <Button
+                  color="primary"
+                  component={Link}
+                  to={Hrefs.kg.randomNode}
+                >
                   Show me something interesting
                 </Button>
               </React.Fragment>

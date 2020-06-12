@@ -191,14 +191,14 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           }
 
           history.push(
-            Hrefs.nodeSearch({
+            Hrefs.kg.nodeSearch({
               __typename: "KgNodeSearchVariables",
               text,
               filters: search.filters,
             })
           );
         } else if (value.__typename === "KgNode") {
-          history.push(Hrefs.node(value.id));
+          history.push(Hrefs.kg.node(value.id));
         } else {
           const _exhaustiveCheck: never = value;
           _exhaustiveCheck;
