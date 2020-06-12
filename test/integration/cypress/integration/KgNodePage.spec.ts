@@ -1,7 +1,7 @@
 import {KgNodePage, KgNodePageTab} from "../support/page_files/KgNodePage";
 
 context("KG node page", () => {
-  const page = new KgNodePage("gui_test_data:0");
+  const page = new KgNodePage("portal_test_data:0");
 
   beforeEach(() => page.visit());
 
@@ -15,7 +15,7 @@ context("KG node page", () => {
   });
 
   it("should show the node datasource", () => {
-    page.datasource.should("have.text", "gui_test_data");
+    page.datasource.should("have.text", "portal_test_data");
   });
 
   it("should have the grid tab selected by default", () => {

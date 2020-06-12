@@ -12,7 +12,7 @@ context("Navigate to test KgNodePage from HomePage using search", () => {
   });
 
   afterEach(() => {
-    const nodePage = new KgNodePage("gui_test_data:0");
+    const nodePage = new KgNodePage("portal_test_data:0");
 
     nodePage.assertLoaded();
   });
