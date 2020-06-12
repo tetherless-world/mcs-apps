@@ -20,7 +20,7 @@ import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
 import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
 import {KgNodeLink} from "components/node/KgNodeLink";
-import {kgId} from "../../api/kgId";
+import {kgId} from "api/kgId";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests

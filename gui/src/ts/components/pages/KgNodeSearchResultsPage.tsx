@@ -15,8 +15,8 @@ import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {KgNodeFilters} from "api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
-import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
-import {kgId} from "../../api/kgId";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import {kgId} from "api/kgId";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   public readonly __typename = "KgNodeSearchVariables";

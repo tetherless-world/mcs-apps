@@ -4,10 +4,10 @@ import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
 import {RandomKgNodePageQuery} from "api/queries/types/RandomKgNodePageQuery";
 import * as RandomKgNodePageQueryDocument from "api/queries/RandomKgNodePageQuery.graphql";
-import {Hrefs} from "../../Hrefs";
+import {Hrefs} from "Hrefs";
 import {useHistory} from "react-router-dom";
-import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
-import {kgId} from "../../api/kgId";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import {kgId} from "api/kgId";
 
 export const RandomKgNodePage: React.FunctionComponent = () => {
   const {data, error, loading} = useQuery<RandomKgNodePageQuery>(

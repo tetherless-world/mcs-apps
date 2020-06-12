@@ -7,6 +7,7 @@ import {HomePage} from "./components/pages/HomePage";
 import {Hrefs} from "./Hrefs";
 import {RandomKgNodePage} from "./components/pages/RandomKgNodePage";
 import {KgPathPage} from "components/pages/KgPathPage";
+import {kgId} from "api/kgId";
 
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>

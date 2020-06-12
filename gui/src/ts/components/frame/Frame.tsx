@@ -2,7 +2,7 @@ import * as React from "react";
 import {Navbar} from "components/navbar/Navbar";
 
 import {makeStyles, createStyles, Grid} from "@material-ui/core";
-import {Footer} from "../footer/Footer";
+import {Footer} from "components/footer/Footer";
 
 import * as ReactLoader from "react-loader";
 import {KgDataSummaryContext} from "KgDataSummaryProvider";
