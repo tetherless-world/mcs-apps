@@ -27,21 +27,21 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
   }
 
   def putEdges(edgesCsvFileName: String) = Action {
-    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve(edgesCsvFileName))) { reader =>
+    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
       store.putEdges(reader.toStream)
       Ok("")
     }
   }
 
   def putNodes(nodesCsvFileName: String) = Action {
-    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve(nodesCsvFileName))) { reader =>
+    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve(nodesCsvFileName))) { reader =>
       store.putNodes(reader.toStream)
       Ok("")
     }
   }
 
   def putPaths(pathsJsonlFileName: String) = Action {
-    withResource(new KgPathJsonlReader(Source.fromFile(importDirectoryPath.resolve(pathsJsonlFileName).toFile))) { reader =>
+    withResource(new KgPathJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
       store.putPaths(reader.toStream)
       Ok("")
     }
