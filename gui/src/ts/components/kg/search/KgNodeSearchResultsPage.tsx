@@ -8,7 +8,7 @@ import {
   KgNodeSearchResultsPageQueryVariables,
 } from "api/queries/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
-import {KgNodeTable} from "components/kg/KgNodeTable";
+import {KgNodeTable} from "components/kg/node/KgNodeTable";
 
 import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
