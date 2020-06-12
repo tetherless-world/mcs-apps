@@ -25,8 +25,8 @@ jobs:
             bzip2 -d -f conf/test_data/edges.csv.bz2 > conf/test_data/edges.csv
             bzip2 -d -f conf/test_data/nodes.csv.bz2 > conf/test_data/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker cp conf/test_data/edges.csv mcs-portal-app:/app/data/app/import/edges.csv
-            docker cp conf/test_data/nodes.csv mcs-portal-app:/app/data/app/import/nodes.csv
+            docker cp conf/test_data/edges.csv mcs-portal-app:/app/data/import/edges.csv
+            docker cp conf/test_data/nodes.csv mcs-portal-app:/app/data/import/nodes.csv
             rm conf/test_data/*.csv
             script/import-cskg
       - run:
