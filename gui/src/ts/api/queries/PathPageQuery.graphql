@@ -1,22 +1,25 @@
 #import "./NodeFieldsFragment.graphql"
-query PathPageQuery {
-  paths {
-    datasource
-    id
-    path
-    edges {
+
+query PathPageQuery($kgId: String!) {
+  kg(id: $kgId) {
+    paths {
       datasource
-      object
-      objectNode {
-        ...NodeFieldsFragment
+      id
+      path
+      edges {
+        datasource
+        object
+        objectNode {
+          ...NodeFieldsFragment
+        }
+        other
+        predicate
+        subject
+        subjectNode {
+          ...NodeFieldsFragment
+        }
+        weight
       }
-      other
-      predicate
-      subject
-      subjectNode {
-        ...NodeFieldsFragment
-      }
-      weight
     }
   }
 }

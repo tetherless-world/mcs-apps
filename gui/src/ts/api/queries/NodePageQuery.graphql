@@ -1,18 +1,21 @@
 #import "./NodeFieldsFragment.graphql"
 
 query NodePageQuery(
-  $id: String!
+  $kgId: String!,
+  $nodeId: String!
 ) {
-  nodeById(id: $id) {
-    ...NodeFieldsFragment
-    subjectOfEdges(limit: 100, offset: 0) {
-      object
-      objectNode {
-        id
-        label
-        pos
+  kg(id: $kgId) {
+    nodeById(id: $nodeId) {
+      ...NodeFieldsFragment
+      subjectOfEdges(limit: 100, offset: 0) {
+        object
+        objectNode {
+          id
+          label
+          pos
+        }
+        predicate
       }
-      predicate
     }
   }
 }

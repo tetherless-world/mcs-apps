@@ -1,5 +1,7 @@
-query DataSummaryQuery {
-  datasources
-  totalNodesCount
-  totalEdgesCount
+query DataSummaryQuery($kgId: String!) {
+  kg(id: $kgId) {
+    datasources
+    totalNodesCount
+    totalEdgesCount
+  }
 }

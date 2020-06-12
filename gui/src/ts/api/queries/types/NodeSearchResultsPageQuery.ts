@@ -2,13 +2,13 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { NodeFilters } from "./../../graphqlGlobalTypes";
+import { KgNodeFilters } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: NodeSearchResultsPageQuery
 // ====================================================
 
-export interface NodeSearchResultsPageQuery_matchingNodes {
+export interface NodeSearchResultsPageQuery_kg_matchingNodes {
   __typename: "Node";
   aliases: string[] | null;
   datasource: string;
@@ -18,13 +18,19 @@ export interface NodeSearchResultsPageQuery_matchingNodes {
   pos: string | null;
 }
 
-export interface NodeSearchResultsPageQuery {
-  matchingNodes: NodeSearchResultsPageQuery_matchingNodes[];
+export interface NodeSearchResultsPageQuery_kg {
+  __typename: "Kg";
+  matchingNodes: NodeSearchResultsPageQuery_kg_matchingNodes[];
   matchingNodesCount: number;
 }
 
+export interface NodeSearchResultsPageQuery {
+  kg: NodeSearchResultsPageQuery_kg;
+}
+
 export interface NodeSearchResultsPageQueryVariables {
-  filters: NodeFilters;
+  filters: KgNodeFilters;
+  kgId: string;
   limit: number;
   offset: number;
   text: string;

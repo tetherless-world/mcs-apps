@@ -1,5 +1,7 @@
-query RandomNodePageQuery {
-  randomNode {
-    id
+query RandomNodePageQuery($kgId: String!) {
+  kg(id: $kgId) {
+    randomNode {
+      id
+    }
   }
 }

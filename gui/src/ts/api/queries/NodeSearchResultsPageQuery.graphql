@@ -1,18 +1,21 @@
 #import "./NodeFieldsFragment.graphql"
 query NodeSearchResultsPageQuery(
-  $filters: NodeFilters!
+  $filters: KgNodeFilters!
+  $kgId: String!
   $limit: Int!
   $offset: Int!
   $text: String!
   $withCount: Boolean!
 ) {
-  matchingNodes(
-    filters: $filters
-    limit: $limit
-    offset: $offset
-    text: $text
-  ) {
-    ...NodeFieldsFragment
+  kg(id: $kgId) {
+    matchingNodes(
+      filters: $filters
+      limit: $limit
+      offset: $offset
+      text: $text
+    ) {
+      ...NodeFieldsFragment
+    }
+    matchingNodesCount(filters: $filters, text: $text) @include(if: $withCount)
   }
-  matchingNodesCount(filters: $filters, text: $text) @include(if: $withCount)
 }

@@ -6,7 +6,7 @@
 // START Enums and Input Objects
 //==============================================================
 
-export interface NodeFilters {
+export interface KgNodeFilters {
   datasource?: StringFilter | null;
 }
 
