@@ -1,0 +1,8 @@
+fragment KgNodeFieldsFragment on KgNode {
+  aliases
+  datasource
+  id
+  label
+  other
+  pos
+}

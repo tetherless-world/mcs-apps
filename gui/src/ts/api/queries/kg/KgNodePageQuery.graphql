@@ -1,0 +1,21 @@
+#import "./KgNodeFieldsFragment.graphql"
+
+query KgNodePageQuery(
+  $kgId: String!,
+  $nodeId: String!
+) {
+  kg(id: $kgId) {
+    nodeById(id: $nodeId) {
+      ...KgNodeFieldsFragment
+      subjectOfEdges(limit: 100, offset: 0) {
+        object
+        objectNode {
+          id
+          label
+          pos
+        }
+        predicate
+      }
+    }
+  }
+}

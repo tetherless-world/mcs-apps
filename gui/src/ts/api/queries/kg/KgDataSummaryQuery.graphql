@@ -1,0 +1,7 @@
+query KgDataSummaryQuery($kgId: String!) {
+  kg(id: $kgId) {
+    datasources
+    totalNodesCount
+    totalEdgesCount
+  }
+}

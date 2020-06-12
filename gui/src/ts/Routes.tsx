@@ -1,23 +1,28 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {NodeSearchResultsPage} from "./components/pages/NodeSearchResultsPage";
+import {KgNodeSearchResultsPage} from "components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
-import {NodePage} from "./components/pages/NodePage";
-import {NoRoute} from "./components/error/NoRoute";
-import {HomePage} from "./components/pages/HomePage";
-import {Hrefs} from "./Hrefs";
-import {RandomNodePage} from "./components/pages/RandomNodePage";
-import {PathPage} from "components/pages/PathPage";
+import {KgNodePage} from "components/kg/node/KgNodePage";
+import {NoRoute} from "components/error/NoRoute";
+import {HomePage} from "components/HomePage";
+import {Hrefs} from "Hrefs";
+import {RandomKgNodePage} from "components/kg/node/RandomKgNodePage";
+import {KgPathPage} from "components/kg/path/KgPathPage";
+import {kgId} from "api/kgId";
 
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
       <Route
-        component={NodeSearchResultsPage}
-        path={Hrefs.nodeSearch()}
+        component={KgNodeSearchResultsPage}
+        path={Hrefs.kg(kgId).nodeSearch()}
       ></Route>
-      <Route component={NodePage} path="/node/:nodeId" />
-      <Route exact component={PathPage} path={Hrefs.paths} />
-      <Route exact component={RandomNodePage} path={Hrefs.randomNode} />
+      <Route component={KgNodePage} path="/kg/:kgId/node/:nodeId" />
+      <Route exact component={KgPathPage} path={Hrefs.kg(kgId).paths} />
+      <Route
+        exact
+        component={RandomKgNodePage}
+        path={Hrefs.kg(kgId).randomNode}
+      />
       <Route exact component={HomePage} path={Hrefs.home}></Route>
       <Route component={NoRoute} />
     </Switch>

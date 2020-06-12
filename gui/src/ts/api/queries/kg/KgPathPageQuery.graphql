@@ -1,0 +1,25 @@
+#import "./KgNodeFieldsFragment.graphql"
+
+query KgPathPageQuery($kgId: String!) {
+  kg(id: $kgId) {
+    paths {
+      datasource
+      id
+      path
+      edges {
+        datasource
+        object
+        objectNode {
+          ...KgNodeFieldsFragment
+        }
+        other
+        predicate
+        subject
+        subjectNode {
+          ...KgNodeFieldsFragment
+        }
+        weight
+      }
+    }
+  }
+}

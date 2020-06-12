@@ -1,0 +1,22 @@
+#import "./KgNodeFieldsFragment.graphql"
+
+query KgNodeSearchResultsPageQuery(
+  $filters: KgNodeFilters!
+  $kgId: String!
+  $limit: Int!
+  $offset: Int!
+  $text: String!
+  $withCount: Boolean!
+) {
+  kg(id: $kgId) {
+    matchingNodes(
+      filters: $filters
+      limit: $limit
+      offset: $offset
+      text: $text
+    ) {
+      ...KgNodeFieldsFragment
+    }
+    matchingNodesCount(filters: $filters, text: $text) @include(if: $withCount)
+  }
+}
