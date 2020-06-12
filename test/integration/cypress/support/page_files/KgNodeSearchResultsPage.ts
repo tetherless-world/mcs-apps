@@ -1,42 +1,42 @@
 import {Page} from "./Page";
 
-class NodeResultsTable {
+class KgNodeResultsTable {
   get() {
     return cy.get("[data-cy=matchingNodesTable]");
   }
 
-  row(index: number): NodeResultsTableRow {
-    return new NodeResultsTableRow(index, this);
+  row(index: number): KgNodeResultsTableRow {
+    return new KgNodeResultsTableRow(index, this);
   }
 }
 
-class NodeResultsTableRow {
+class KgNodeResultsTableRow {
   constructor(
     private readonly index: number,
-    private readonly table: NodeResultsTable
+    private readonly table: KgNodeResultsTable
   ) {}
 
   get() {
     return this.table.get().find("tbody>tr").eq(this.index);
   }
 
-  readonly nodeLink = new NodeResultsNodeTableRowNodeLink(this);
+  readonly nodeLink = new KgNodeResultsNodeTableRowKgNodeLink(this);
 }
 
-class NodeResultsNodeTableRowNodeLink {
-  constructor(private readonly row: NodeResultsTableRow) {}
+class KgNodeResultsNodeTableRowKgNodeLink {
+  constructor(private readonly row: KgNodeResultsTableRow) {}
 
   click() {
     this.row.get().find("a").click();
   }
 }
 
-export class NodeSearchResultsPage extends Page {
+export class KgNodeSearchResultsPage extends Page {
   constructor(private readonly search: string) {
     super();
   }
 
-  readonly nodeResultsTable = new NodeResultsTable();
+  readonly resultsTable = new KgNodeResultsTable();
 
   get relativeUrl() {
     return "/node/search?text=" + encodeURIComponent(this.search);

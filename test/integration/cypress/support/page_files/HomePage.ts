@@ -1,5 +1,5 @@
 import {Page} from "./Page";
-import {NodeSearchInput} from "./NodeSearchBox";
+import {KgNodeSearchBox} from "./KgNodeSearchBox";
 
 export class HomePage extends Page {
   get totalNodeCount() {
@@ -11,7 +11,7 @@ export class HomePage extends Page {
   }
 
   get search() {
-    return new NodeSearchInput(this.frame.bodySelector);
+    return new KgNodeSearchBox(this.frame.bodySelector);
   }
 
   readonly relativeUrl: string = "/";

@@ -1,8 +1,8 @@
-import {NodeSearchResultsPage} from "../support/page_files/NodeSearchResultsPage";
-import {KgNodePage} from "../support/page_files/NodePage";
+import {KgNodeSearchResultsPage} from "../support/page_files/KgNodeSearchResultsPage";
+import {KgNodePage} from "../support/page_files/KgNodePage";
 import {HomePage} from "../support/page_files/HomePage";
 
-context("Navigate to test NodePage from HomePage using search", () => {
+context("Navigate to test KgNodePage from HomePage using search", () => {
   const homePage = new HomePage();
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ context("Navigate to test NodePage from HomePage using search", () => {
   it("Use all results to reach node page", () => {
     homePage.search.enter();
 
-    const nodeSearchResultsPage = new NodeSearchResultsPage("Test node 0");
+    const nodeSearchResultsPage = new KgNodeSearchResultsPage("Test node 0");
 
     nodeSearchResultsPage.assertLoaded();
 
@@ -32,6 +32,6 @@ context("Navigate to test NodePage from HomePage using search", () => {
       '1000 results for "Test node 0"'
     );
 
-    nodeSearchResultsPage.nodeResultsTable.row(0).nodeLink.click();
+    nodeSearchResultsPage.resultsTable.row(0).nodeLink.click();
   });
 });

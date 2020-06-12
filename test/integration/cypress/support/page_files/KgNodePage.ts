@@ -16,7 +16,7 @@ class EdgeList {
   }
 }
 
-export enum NodePageTab {
+export enum KgNodePageTab {
   PredicateGrid = "predicate-grid",
   PredicateList = "predicate-list",
 }
@@ -35,7 +35,7 @@ export class KgNodePage extends Page {
     });
   }
 
-  assertTabSelected(tab: NodePageTab) {
+  assertTabSelected(tab: KgNodePageTab) {
     return this.tab(tab).should("have.class", "Mui-selected");
   }
 
@@ -43,7 +43,7 @@ export class KgNodePage extends Page {
     return cy.get(this.frame.selector + " [data-cy=node-datasource]");
   }
 
-  private tab(tab: NodePageTab) {
+  private tab(tab: KgNodePageTab) {
     return cy.get(`${this.frame.selector} [data-cy=${tab}]`);
   }
 
@@ -63,7 +63,7 @@ export class KgNodePage extends Page {
     return cy.get(this.frame.selector + " [data-cy=node-title]");
   }
 
-  selectTab(tab: NodePageTab) {
+  selectTab(tab: KgNodePageTab) {
     return this.tab(tab).click();
   }
 

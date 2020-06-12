@@ -1,4 +1,4 @@
-import {KgNodePage, NodePageTab} from "../support/page_files/KgNodePage";
+import {KgNodePage, KgNodePageTab} from "../support/page_files/KgNodePage";
 
 context("KG node page", () => {
   const page = new KgNodePage("gui_test_data:0");
@@ -19,11 +19,11 @@ context("KG node page", () => {
   });
 
   it("should have the grid tab selected by default", () => {
-    page.assertTabSelected(NodePageTab.PredicateGrid);
+    page.assertTabSelected(KgNodePageTab.PredicateGrid);
   });
 
   it("should route to the predicate list when the tab is clicked", () => {
-    page.selectTab(NodePageTab.PredicateList);
+    page.selectTab(KgNodePageTab.PredicateList);
     page.assertListLoaded();
   });
 

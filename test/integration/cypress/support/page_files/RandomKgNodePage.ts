@@ -1,5 +1,5 @@
 import {Page} from "./Page";
 
-export class RandomNodePage extends Page {
+export class RandomKgNodePage extends Page {
   readonly relativeUrl = "/randomNode";
 }
