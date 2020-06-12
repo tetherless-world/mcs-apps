@@ -142,7 +142,7 @@ workflows:
             branches:
               only: master
           post-steps:
-            -slack/status
+            - slack/status
       - scala:
           requires:
             - ts
