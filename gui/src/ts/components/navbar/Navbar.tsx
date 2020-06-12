@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {KgNodeSearchBox} from "components/search/KgNodeSearchBox";
+import {KgNodeSearchBox} from "components/kg/search/KgNodeSearchBox";
 
 import {Hrefs} from "Hrefs";
 import {Link} from "react-router-dom";

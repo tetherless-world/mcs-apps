@@ -8,7 +8,7 @@ import {
   KgNodeSearchResultsPageQueryVariables,
 } from "api/queries/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
-import {NodeTable} from "components/data/NodeTable";
+import {KgNodeTable} from "components/kg/KgNodeTable";
 
 import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
@@ -111,7 +111,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
               {count || "No"} results for "{searchVariables.text}"
             </Typography>
             {count && (
-              <NodeTable
+              <KgNodeTable
                 nodes={data?.kg.matchingNodes || []}
                 rowsPerPage={searchVariables.limit}
                 count={count}
