@@ -26,15 +26,24 @@ export class NodePage extends Page {
     super();
   }
 
+  readonly relativeUrl = "/node/" + encodeURI(this.nodeId);
+  readonly listRelUrl = this.relativeUrl + "/list";
+
+  assertListLoaded() {
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq(this.listRelUrl);
+    });
+  }
+
   assertTabSelected(tab: NodePageTab) {
-    return this.getTab(tab).should("have.class", "Mui-selected");
+    return this.tab(tab).should("have.class", "Mui-selected");
   }
 
   get datasource() {
     return cy.get(this.frame.selector + " [data-cy=node-datasource]");
   }
 
-  getTab(tab: NodePageTab) {
+  private tab(tab: NodePageTab) {
     return cy.get(`${this.frame.selector} [data-cy=${tab}]`);
   }
 
@@ -54,9 +63,12 @@ export class NodePage extends Page {
     return cy.get(this.frame.selector + " [data-cy=node-title]");
   }
 
-  readonly relativeUrl = "/node/" + encodeURI(this.nodeId);
-
   selectTab(tab: NodePageTab) {
-    return this.getTab(tab).click();
+    return this.tab(tab).click();
+  }
+
+  visitList() {
+    cy.visit(this.listRelUrl);
+    this.assertListLoaded();
   }
 }

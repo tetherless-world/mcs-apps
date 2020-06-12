@@ -11,7 +11,7 @@ context("Node page", () => {
 
   it("should show edges by predicate", () => {
     // TODO: use fixture to get this
-    page.gridEdgeList("\\/r\\/AtLocation").list.should('exist')
+    page.gridEdgeList("\\/r\\/AtLocation").list.should("exist");
   });
 
   it("should show the node datasource", () => {
@@ -19,19 +19,16 @@ context("Node page", () => {
   });
 
   it("should have the grid tab selected by default", () => {
-    page.assertTabSelected(NodePageTab.PredicateGrid)
-  })
+    page.assertTabSelected(NodePageTab.PredicateGrid);
+  });
 
   it("should route to the predicate list when the tab is clicked", () => {
-    page.getTab(NodePageTab.PredicateList).click()
-    cy.location().should((loc) => {
-      expect(loc.pathname).to.eq(`${page.relativeUrl}/list`)
-    })
-  })
+    page.selectTab(NodePageTab.PredicateList);
+    page.assertListLoaded();
+  });
 
   it("should contain predicate lists in the list tab", () => {
-    page.visit("/list")
-    page.listEdgeList("\\/r\\/AtLocation").list.should('exist')
-
-  })
+    page.visitList();
+    page.listEdgeList("\\/r\\/AtLocation").list.should("exist");
+  });
 });

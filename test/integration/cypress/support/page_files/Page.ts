@@ -5,8 +5,8 @@ export abstract class Page {
     return Cypress.config().baseUrl + this.relativeUrl;
   }
 
-  assertLoaded(subpath: string = "") {
-    cy.url().should("eq", this.absoluteUrl + subpath);
+  assertLoaded() {
+    cy.url().should("eq", this.absoluteUrl);
   }
 
   readonly frame = {
@@ -21,8 +21,8 @@ export abstract class Page {
 
   abstract readonly relativeUrl: string;
 
-  visit(subpath: string = "") {
-    cy.visit(this.relativeUrl + subpath);
-    this.assertLoaded(subpath);
+  visit() {
+    cy.visit(this.relativeUrl);
+    this.assertLoaded();
   }
 }
