@@ -6,8 +6,8 @@ import {useQuery} from "@apollo/react-hooks";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
-} from "api/queries/types/KgNodeSearchResultsPageQuery";
-import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
+} from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
+import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "components/kg/node/KgNodeTable";
 
 import * as ReactLoader from "react-loader";

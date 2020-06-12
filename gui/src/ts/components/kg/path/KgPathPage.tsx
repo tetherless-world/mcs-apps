@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Frame} from "components/frame/Frame";
-import * as KgPathPageQueryDocument from "api/queries/KgPathPageQuery.graphql";
-import {KgPathPageQuery} from "api/queries/types/KgPathPageQuery";
+import * as KgPathPageQueryDocument from "api/queries/kg/KgPathPageQuery.graphql";
+import {KgPathPageQuery} from "api/queries/kg/types/KgPathPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
 import * as d3 from "d3";

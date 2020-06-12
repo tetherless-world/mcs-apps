@@ -10,9 +10,9 @@ import {GraphQLError} from "graphql";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
-} from "api/queries/types/KgNodeSearchResultsPageQuery";
+} from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
+import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "models/kg/KgNode";
 import {KgDatasourceSelect} from "components/kg/search/KgDatasourceSelect";

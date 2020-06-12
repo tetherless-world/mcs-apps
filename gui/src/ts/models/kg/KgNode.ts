@@ -1,3 +1,3 @@
-import {KgNodeFieldsFragment} from "api/queries/types/KgNodeFieldsFragment";
+import {KgNodeFieldsFragment} from "api/queries/kg/types/KgNodeFieldsFragment";
 
 export type KgNode = KgNodeFieldsFragment;

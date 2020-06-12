@@ -6,12 +6,12 @@ import {
   Switch,
   useLocation,
 } from "react-router-dom";
-import * as NodePageQueryDocument from "api/queries/KgNodePageQuery.graphql";
+import * as NodePageQueryDocument from "api/queries/kg/KgNodePageQuery.graphql";
 import {
   KgNodePageQuery,
   KgNodePageQuery_kg_nodeById_subjectOfEdges,
   KgNodePageQueryVariables,
-} from "api/queries/types/KgNodePageQuery";
+} from "api/queries/kg/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {ApolloException} from "@tetherless-world/twxplore-base";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
