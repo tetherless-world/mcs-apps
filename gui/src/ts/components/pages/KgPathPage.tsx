@@ -7,7 +7,7 @@ import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
 import * as d3 from "d3";
 import {KgNode} from "models/KgNode";
 import * as ReactLoader from "react-loader";
-import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 
 interface KgPathNode extends d3.SimulationNodeDatum, KgNode {
   pathId: string;

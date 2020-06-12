@@ -13,11 +13,15 @@ export const Routes: React.FunctionComponent = () => (
     <Switch>
       <Route
         component={KgNodeSearchResultsPage}
-        path={Hrefs.kg.nodeSearch()}
+        path={Hrefs.kg(kgId).nodeSearch()}
       ></Route>
       <Route component={KgNodePage} path="/node/:nodeId" />
-      <Route exact component={KgPathPage} path={Hrefs.kg.paths} />
-      <Route exact component={RandomKgNodePage} path={Hrefs.kg.randomNode} />
+      <Route exact component={KgPathPage} path={Hrefs.kg(kgId).paths} />
+      <Route
+        exact
+        component={RandomKgNodePage}
+        path={Hrefs.kg(kgId).randomNode}
+      />
       <Route exact component={HomePage} path={Hrefs.home}></Route>
       <Route component={NoRoute} />
     </Switch>

@@ -18,6 +18,7 @@ import {Hrefs} from "Hrefs";
 
 import {KgDataSummaryContext} from "KgDataSummaryProvider";
 import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
+import {kgId} from "api/kgId";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -52,10 +53,10 @@ export const HomePage: React.FunctionComponent = () => {
 
     switch (search.__typename) {
       case "KgNode":
-        history.push(Hrefs.kg.node(search.id));
+        history.push(Hrefs.kg(kgId).node(search.id));
         break;
       case "KgNodeSearchVariables":
-        history.push(Hrefs.kg.nodeSearch(search));
+        history.push(Hrefs.kg(kgId).nodeSearch(search));
         break;
       default:
         const _exhaustiveCheck: never = search;
@@ -103,7 +104,7 @@ export const HomePage: React.FunctionComponent = () => {
                 <Button
                   color="primary"
                   component={Link}
-                  to={Hrefs.kg.randomNode}
+                  to={Hrefs.kg(kgId).randomNode}
                 >
                   Show me something interesting
                 </Button>

@@ -25,7 +25,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import {KgNode} from "models/KgNode";
-import {KgNodeLink} from "../node/KgNodeLink";
+import {KgNodeLink} from "components/node/KgNodeLink";
 
 // Using example Table Pagination Actions toolbar given by docs
 // https://material-ui.com/components/tables/
