@@ -39,18 +39,19 @@ const useStyles = makeStyles(() =>
 const PredicateEdgeList: React.FunctionComponent<{
   edges: NodePageQuery_nodeById_subjectOfEdges[];
   predicate: string;
-}> = ({edges, predicate}) => {
+  datasource: string;
+}> = ({edges, predicate, datasource}) => {
   const classes = useStyles();
   return (
-    <Card className={classes.edgeListRoot}>
+    <Card className={classes.edgeListRoot} data-cy={`list-${predicate}-edges`}>
       <CardContent className={classes.edgeListContent}>
-        <div className={classes.edgeListTitle}>
+        <div className={classes.edgeListTitle} data-cy="edge-list-title">
           <p>{predicate}</p>
         </div>
         <List>
           {edges.map((edge) => (
             <ListItem data-cy="edge" key={edge.object}>
-              <NodeLink node={edge.objectNode!} />
+              <NodeLink node={edge.objectNode!} datasource={datasource} />
             </ListItem>
           ))}
         </List>
@@ -63,7 +64,8 @@ export const NodePredicateList: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
   };
-}> = ({predicateSubjects}) => {
+  datasource: string;
+}> = ({predicateSubjects, datasource}) => {
   return (
     <React.Fragment>
       {Object.keys(predicateSubjects).map((predicate) => (
@@ -71,6 +73,7 @@ export const NodePredicateList: React.FunctionComponent<{
           edges={predicateSubjects[predicate]!}
           predicate={predicate}
           key={predicate}
+          datasource={datasource}
         />
       ))}
     </React.Fragment>

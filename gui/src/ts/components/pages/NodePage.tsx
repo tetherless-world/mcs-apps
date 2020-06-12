@@ -20,6 +20,7 @@ import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
 import {NodePredicateGrid} from "components/node/NodePredicateGrid";
 import {NodePredicateList} from "components/node/NodePredicateList";
+import * as _ from "lodash";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -85,27 +86,28 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
     } else if (!edge.predicate) {
       continue;
     }
-    const edges = predicateSubjects[edge.predicate];
-    if (edges) {
-      edges.push(edge);
-    } else {
-      predicateSubjects[edge.predicate] = [edge];
-    }
+    const edges = (predicateSubjects[edge.predicate] =
+      predicateSubjects[edge.predicate] ?? []);
+    edges.push(edge);
   }
 
   class TabRoute {
-    constructor(private relPath: string, public label: string) {}
-    url() {
+    constructor(
+      private relPath: string,
+      readonly label: string,
+      readonly dataCy: string
+    ) {}
+    get url() {
       return url + this.relPath;
     }
-    path() {
+    get path() {
       return path + this.relPath;
     }
   }
 
   const tabRoutes = {
-    grid: new TabRoute("", "Predicate Grid"),
-    list: new TabRoute("/list", "Predicate List"),
+    grid: new TabRoute("", "Predicate Grid", "predicate-grid"),
+    list: new TabRoute("/list", "Predicate List", "predicate-list"),
   };
 
   return (
@@ -115,10 +117,11 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
           {Object.values(tabRoutes).map((tabRoute) => (
             <Tab
               component={Link}
-              value={tabRoute.url()}
-              to={tabRoute.url()}
-              key={tabRoute.url()}
+              value={tabRoute.url}
+              to={tabRoute.url}
+              key={tabRoute.url}
               label={tabRoute.label}
+              data-cy={`${tabRoute.dataCy}`}
             />
           ))}
         </Tabs>
@@ -127,11 +130,17 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
           <Grid item xs={10}>
             <h2 data-cy="node-title">{title}</h2>
             <Switch>
-              <Route exact path={tabRoutes.grid.path()}>
-                <NodePredicateGrid predicateSubjects={predicateSubjects} />
+              <Route exact path={tabRoutes.grid.path}>
+                <NodePredicateGrid
+                  predicateSubjects={predicateSubjects}
+                  datasource={node.datasource}
+                />
               </Route>
-              <Route path={tabRoutes.list.path()}>
-                <NodePredicateList predicateSubjects={predicateSubjects} />
+              <Route path={tabRoutes.list.path}>
+                <NodePredicateList
+                  predicateSubjects={predicateSubjects}
+                  datasource={node.datasource}
+                />
               </Route>
             </Switch>
           </Grid>

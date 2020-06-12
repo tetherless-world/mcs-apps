@@ -10,28 +10,24 @@ import {
 import * as React from "react";
 import {NodeLink} from "./NodeLink";
 
-const EDGE_PREDICATE_DISPLAY_NAMES: {[index: string]: string} = {};
 
 const EdgeList: React.FunctionComponent<{
   edges: NodePageQuery_nodeById_subjectOfEdges[];
   predicate: string;
-}> = ({edges, predicate}) => {
-  let title = EDGE_PREDICATE_DISPLAY_NAMES[predicate];
-  if (!title) {
-    title = predicate;
-  }
+  datasource: string
+}> = ({edges, predicate, datasource}) => {
   return (
     <Card>
       <CardHeader
         data-cy="edge-list-title"
-        title={title}
+        title={predicate}
         style={{textAlign: "center"}}
       />
       <CardContent>
         <List>
           {edges.map((edge) => (
             <ListItem data-cy="edge" key={edge.object}>
-              <NodeLink node={edge.objectNode!} />
+              <NodeLink node={edge.objectNode!} datasource={datasource} />
             </ListItem>
           ))}
         </List>
@@ -44,14 +40,16 @@ export const NodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: NodePageQuery_nodeById_subjectOfEdges[];
   };
-}> = ({predicateSubjects}) => {
+  datasource: string
+}> = ({predicateSubjects, datasource}) => {
   return (
     <Grid container spacing={4}>
       {Object.keys(predicateSubjects).map((predicate) => (
-        <Grid item key={predicate} data-cy={predicate + "-edges"}>
+        <Grid item key={predicate} data-cy={`grid-${predicate}-edges`}>
           <EdgeList
             edges={predicateSubjects[predicate]!}
             predicate={predicate}
+            datasource={datasource}
           />
         </Grid>
       ))}
