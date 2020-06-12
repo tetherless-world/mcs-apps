@@ -1,4 +1,4 @@
-import {KgNodeSearchInput} from "./KgNodeSearchBox";
+import {KgNodeSearchBox} from "./KgNodeSearchBox";
 
 export abstract class Page {
   get absoluteUrl() {
@@ -12,7 +12,7 @@ export abstract class Page {
   readonly frame = {
     navbar: {
       get search() {
-        return new KgNodeSearchInput("[data-cy=frame] [data-cy=navbar]");
+        return new KgNodeSearchBox("[data-cy=frame] [data-cy=navbar]");
       },
     },
     selector: "[data-cy=frame]",

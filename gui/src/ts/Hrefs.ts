@@ -6,25 +6,26 @@ export class Hrefs {
   static readonly gitHub = "https://github.com/tetherless-world/mcs-portal";
   static readonly home = "/";
   static kg(id: string) {
+    const kgId = id;
     return {
       node(id: string) {
-        return `/kg/${id}/node/${encodeURI(id)}`;
+        return `/kg/${kgId}/node/${encodeURI(id)}`;
       },
 
       nodeSearch(kwds?: KgNodeSearchVariables) {
         if (!kwds) {
-          return `/kg/${id}/node/search`;
+          return `/kg/${kgId}/node/search`;
         }
 
         const {__typename, ...searchVariables} = kwds;
         return (
-          `/kg/${id}/node/search` +
+          `/kg/${kgId}/node/search` +
           qs.stringify(searchVariables, {addQueryPrefix: true})
         );
       },
 
-      paths: "/path",
-      randomNode: "/randomNode",
+      paths: `/kg/${kgId}/path`,
+      randomNode: `/kg/${kgId}/randomNode`,
     };
   }
 }

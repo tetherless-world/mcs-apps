@@ -1,6 +1,7 @@
 export class TestData {
-  readonly nodeCount = 1000;
-  readonly edgeCount = 47589;
+  static readonly kgId = "cskg";
+  static readonly nodeCount = 1000;
+  static readonly edgeCount = 47589;
 
-  readonly datasources = ["portal_test_data"];
+  static readonly datasources = ["portal_test_data"];
 }

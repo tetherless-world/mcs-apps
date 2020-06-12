@@ -1,4 +1,5 @@
 import {Page} from "./Page";
+import {TestData} from "../TestData";
 
 class KgNodeResultsTable {
   get() {
@@ -39,7 +40,9 @@ export class KgNodeSearchResultsPage extends Page {
   readonly resultsTable = new KgNodeResultsTable();
 
   get relativeUrl() {
-    return "/node/search?text=" + encodeURIComponent(this.search);
+    return (
+      `/kg/${TestData.kgId}/node/search?text=` + encodeURIComponent(this.search)
+    );
   }
 
   get visualizationContainer() {

@@ -2,13 +2,12 @@ import {HomePage} from "../support/page_files/HomePage";
 import {TestData} from "../support/TestData";
 
 context("Home Page", () => {
-  const data = new TestData();
   const page = new HomePage();
 
   beforeEach(() => page.visit());
 
   it("should show total node and edge counts", () => {
-    page.totalNodeCount.should("have.text", `${data.nodeCount} nodes`);
+    page.totalNodeCount.should("have.text", `${TestData.nodeCount} nodes`);
     // TODO: use fixture to get this
     // page.totalEdgeCount.should("have.text", `${data.edgeCount} relationships`);
   });
@@ -18,8 +17,8 @@ context("Home Page", () => {
   });
 
   it("should show selected datasource", () => {
-    page.search.selectDatasource(data.datasources[0]);
+    page.search.selectDatasource(TestData.datasources[0]);
 
-    page.search.selectedDatasource.should("have.text", data.datasources[0]);
+    page.search.selectedDatasource.should("have.text", TestData.datasources[0]);
   });
 });

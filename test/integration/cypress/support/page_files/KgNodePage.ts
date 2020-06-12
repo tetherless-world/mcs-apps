@@ -1,4 +1,5 @@
 import {Page} from "./Page";
+import {TestData} from "../TestData";
 
 class EdgeList {
   constructor(private readonly selector: string) {}
@@ -26,7 +27,7 @@ export class KgNodePage extends Page {
     super();
   }
 
-  readonly relativeUrl = "/node/" + encodeURI(this.nodeId);
+  readonly relativeUrl = `/kg/${TestData.kgId}/node/${encodeURI(this.nodeId)}`;
   readonly listRelUrl = this.relativeUrl + "/list";
 
   assertListLoaded() {
