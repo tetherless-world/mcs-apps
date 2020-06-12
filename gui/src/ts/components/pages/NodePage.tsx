@@ -1,5 +1,11 @@
 import * as React from "react";
-import {useLocation} from "react-router-dom";
+import {
+  Link,
+  Route,
+  RouteComponentProps,
+  Switch,
+  useLocation,
+} from "react-router-dom";
 import * as NodePageQueryDocument from "api/queries/NodePageQuery.graphql";
 import {
   NodePageQuery,
@@ -11,16 +17,10 @@ import {ApolloException} from "@tetherless-world/twxplore-base";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
-import {NodeLink} from "../node/NodeLink";
+import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
+import {NodePredicateGrid} from "components/node/NodePredicateGrid";
+import {NodePredicateList} from "components/node/NodePredicateList";
+import * as _ from "lodash";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -29,39 +29,16 @@ import {NodeLink} from "../node/NodeLink";
 //   },
 // }));
 
-const EDGE_PREDICATE_DISPLAY_NAMES: {[index: string]: string} = {};
+interface NodePageRouteParams {
+  nodeId: string;
+}
 
-const EdgeList: React.FunctionComponent<{
-  edges: NodePageQuery_nodeById_subjectOfEdges[];
-  predicate: string;
-}> = ({edges, predicate}) => {
-  let title = EDGE_PREDICATE_DISPLAY_NAMES[predicate];
-  if (!title) {
-    title = predicate;
-  }
-  return (
-    <Card>
-      <CardHeader
-        data-cy="edge-list-title"
-        title={title}
-        style={{textAlign: "center"}}
-      />
-      <CardContent>
-        <List>
-          {edges.map((edge) => (
-            <ListItem data-cy="edge" key={edge.object}>
-              <NodeLink node={edge.objectNode!} />
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
-  );
-};
-
-export const NodePage: React.FunctionComponent = () => {
+export const NodePage: React.FunctionComponent<RouteComponentProps<
+  NodePageRouteParams
+>> = ({match}) => {
   const location = useLocation();
-  const nodeId = location.pathname.split("/").slice(2).join("/");
+  const {path, url} = match;
+  const nodeId = match.params.nodeId;
 
   // const classes = useStyles();
 
@@ -100,7 +77,7 @@ export const NodePage: React.FunctionComponent = () => {
     title += " (" + node.pos + ")";
   }
 
-  const subjectOfEdgesByPredicate: {
+  const predicateSubjects: {
     [index: string]: NodePageQuery_nodeById_subjectOfEdges[];
   } = {};
   for (const edge of node.subjectOfEdges) {
@@ -109,30 +86,63 @@ export const NodePage: React.FunctionComponent = () => {
     } else if (!edge.predicate) {
       continue;
     }
-    const edges = subjectOfEdgesByPredicate[edge.predicate];
-    if (edges) {
-      edges.push(edge);
-    } else {
-      subjectOfEdgesByPredicate[edge.predicate] = [edge];
+    const edges = (predicateSubjects[edge.predicate] =
+      predicateSubjects[edge.predicate] ?? []);
+    edges.push(edge);
+  }
+
+  class TabRoute {
+    constructor(
+      private relPath: string,
+      readonly label: string,
+      readonly dataCy: string
+    ) {}
+    get url() {
+      return url + this.relPath;
+    }
+    get path() {
+      return path + this.relPath;
     }
   }
+
+  const tabRoutes = {
+    grid: new TabRoute("", "Predicate Grid", "predicate-grid"),
+    list: new TabRoute("/list", "Predicate List", "predicate-list"),
+  };
 
   return (
     <Frame>
       <Grid container direction="column">
+        <Tabs value={location.pathname}>
+          {Object.values(tabRoutes).map((tabRoute) => (
+            <Tab
+              component={Link}
+              value={tabRoute.url}
+              to={tabRoute.url}
+              key={tabRoute.url}
+              label={tabRoute.label}
+              data-cy={`${tabRoute.dataCy}`}
+            />
+          ))}
+        </Tabs>
+
         <Grid item container>
           <Grid item xs={10}>
             <h2 data-cy="node-title">{title}</h2>
-            <Grid container spacing={4}>
-              {Object.keys(subjectOfEdgesByPredicate).map((predicate) => (
-                <Grid item key={predicate} data-cy={predicate + "-edges"}>
-                  <EdgeList
-                    edges={subjectOfEdgesByPredicate[predicate]!}
-                    predicate={predicate}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Switch>
+              <Route exact path={tabRoutes.grid.path}>
+                <NodePredicateGrid
+                  predicateSubjects={predicateSubjects}
+                  datasource={node.datasource}
+                />
+              </Route>
+              <Route path={tabRoutes.list.path}>
+                <NodePredicateList
+                  predicateSubjects={predicateSubjects}
+                  datasource={node.datasource}
+                />
+              </Route>
+            </Switch>
           </Grid>
           <Grid item xs={2}>
             <h3>
@@ -143,7 +153,7 @@ export const NodePage: React.FunctionComponent = () => {
               <React.Fragment>
                 <h3>Aliases</h3>
                 <List>
-                  {node.aliases.map((alias) => (
+                  {[...new Set(node.aliases)].map((alias) => (
                     <ListItemText key={alias}>{alias}</ListItemText>
                   ))}
                 </List>
