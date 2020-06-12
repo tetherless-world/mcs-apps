@@ -17,7 +17,7 @@ import {useHistory, Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 
 import {KgDataSummaryContext} from "KgDataSummaryProvider";
-import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
+import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
 import {kgId} from "api/kgId";
 
 const useStyles = makeStyles((theme) =>

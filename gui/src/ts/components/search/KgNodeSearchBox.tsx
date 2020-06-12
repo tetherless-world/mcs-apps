@@ -14,11 +14,11 @@ import {
 import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {KgNode} from "models/KgNode";
+import {KgNode} from "models/kg/KgNode";
 import {KgDatasourceSelect} from "components/search/KgDatasourceSelect";
-import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
+import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
-import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
+import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
 import {KgNodeLink} from "components/node/KgNodeLink";
 import {kgId} from "api/kgId";
 

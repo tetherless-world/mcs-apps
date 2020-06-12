@@ -5,7 +5,7 @@ import {KgPathPageQuery} from "api/queries/types/KgPathPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
 import * as d3 from "d3";
-import {KgNode} from "models/KgNode";
+import {KgNode} from "models/kg/KgNode";
 import * as ReactLoader from "react-loader";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 

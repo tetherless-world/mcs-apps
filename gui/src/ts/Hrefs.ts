@@ -1,5 +1,5 @@
 import * as qs from "qs";
-import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
+import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
 
 export class Hrefs {
   static readonly contact = "mailto:gordom6@rpi.edu";

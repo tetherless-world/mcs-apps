@@ -14,7 +14,7 @@ import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {KgNodeFilters} from "api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
+import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {kgId} from "api/kgId";
 

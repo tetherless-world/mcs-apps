@@ -24,7 +24,7 @@ import {
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import {KgNode} from "models/KgNode";
+import {KgNode} from "models/kg/KgNode";
 import {KgNodeLink} from "components/node/KgNodeLink";
 
 // Using example Table Pagination Actions toolbar given by docs
