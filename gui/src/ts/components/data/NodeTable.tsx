@@ -24,8 +24,8 @@ import {
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import {Node} from "models/Node";
-import {NodeLink} from "../node/NodeLink";
+import {KgNode} from "models/KgNode";
+import {KgNodeLink} from "../node/KgNodeLink";
 
 // Using example Table Pagination Actions toolbar given by docs
 // https://material-ui.com/components/tables/
@@ -114,7 +114,7 @@ const showListAsColumn = (list: string[]) =>
   ));
 
 export const NodeTable: React.FunctionComponent<{
-  nodes: Node[];
+  nodes: KgNode[];
   rowsPerPage: number;
   count: number;
   page: number;
@@ -139,7 +139,7 @@ export const NodeTable: React.FunctionComponent<{
             <TableRow key={node.id}>
               <TableCell>{page * rowsPerPage + index + 1}</TableCell>
               <TableCell>
-                <NodeLink node={node} />
+                <KgNodeLink node={node} />
               </TableCell>
               <TableCell>
                 {node.aliases && showListAsColumn(node.aliases)}

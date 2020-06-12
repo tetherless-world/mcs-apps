@@ -1,5 +1,5 @@
 import {NodeSearchResultsPage} from "../support/page_files/NodeSearchResultsPage";
-import {NodePage} from "../support/page_files/NodePage";
+import {KgNodePage} from "../support/page_files/NodePage";
 import {HomePage} from "../support/page_files/HomePage";
 
 context("Navigate to test NodePage from HomePage using search", () => {
@@ -12,7 +12,7 @@ context("Navigate to test NodePage from HomePage using search", () => {
   });
 
   afterEach(() => {
-    const nodePage = new NodePage("gui_test_data:0");
+    const nodePage = new KgNodePage("gui_test_data:0");
 
     nodePage.assertLoaded();
   });

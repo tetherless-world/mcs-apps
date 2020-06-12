@@ -2,15 +2,15 @@ import * as React from "react";
 import {useQuery} from "@apollo/react-hooks";
 import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
-import {RandomNodePageQuery} from "api/queries/types/RandomNodePageQuery";
-import * as RandomNodePageQueryDocument from "api/queries/RandomNodePageQuery.graphql";
+import {RandomKgNodePageQuery} from "api/queries/types/RandomKgNodePageQuery";
+import * as RandomKgNodePageQueryDocument from "api/queries/RandomKgNodePageQuery.graphql";
 import {Hrefs} from "../../Hrefs";
 import {useHistory} from "react-router-dom";
 import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
 
-export const RandomNodePage: React.FunctionComponent = () => {
-  const {data, error, loading} = useQuery<RandomNodePageQuery>(
-    RandomNodePageQueryDocument
+export const RandomKgNodePage: React.FunctionComponent = () => {
+  const {data, error, loading} = useQuery<RandomKgNodePageQuery>(
+    RandomKgNodePageQueryDocument
   );
 
   const history = useHistory();

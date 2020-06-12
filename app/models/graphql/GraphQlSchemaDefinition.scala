@@ -26,7 +26,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("subjectNode", KgNodeType, resolve = ctx => ctx.ctx.store.getNodeById(ctx.value.subject).head),
     Field("weight", OptionType(FloatType), resolve = _.value.weight)
   ))
-  lazy val KgNodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("Node", () => fields[GraphQlSchemaContext, KgNode](
+  lazy val KgNodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[GraphQlSchemaContext, KgNode](
     Field("aliases", OptionType(ListType(StringType)), resolve = _.value.aliases),
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("id", StringType, resolve = _.value.id),

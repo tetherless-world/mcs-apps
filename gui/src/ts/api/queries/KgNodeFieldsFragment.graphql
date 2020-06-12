@@ -1,4 +1,4 @@
-fragment NodeFieldsFragment on Node {
+fragment KgNodeFieldsFragment on KgNode {
   aliases
   datasource
   id

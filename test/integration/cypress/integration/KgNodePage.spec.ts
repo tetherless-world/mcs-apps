@@ -1,7 +1,7 @@
-import {NodePage, NodePageTab} from "../support/page_files/NodePage";
+import {KgNodePage, NodePageTab} from "../support/page_files/KgNodePage";
 
-context("Node page", () => {
-  const page = new NodePage("gui_test_data:0");
+context("KG node page", () => {
+  const page = new KgNodePage("gui_test_data:0");
 
   beforeEach(() => page.visit());
 

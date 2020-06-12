@@ -1,5 +1,5 @@
 import * as qs from "qs";
-import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
 
 export class Hrefs {
   static get contact() {
@@ -18,7 +18,7 @@ export class Hrefs {
     return "/node/" + encodeURI(id);
   }
 
-  static nodeSearch(kwds?: NodeSearchVariables) {
+  static nodeSearch(kwds?: KgNodeSearchVariables) {
     if (!kwds) {
       return "/node/search";
     }

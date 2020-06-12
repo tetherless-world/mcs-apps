@@ -1,6 +1,6 @@
-#import "./NodeFieldsFragment.graphql"
+#import "./KgNodeFieldsFragment.graphql"
 
-query PathPageQuery($kgId: String!) {
+query KgPathPageQuery($kgId: String!) {
   kg(id: $kgId) {
     paths {
       datasource
@@ -10,13 +10,13 @@ query PathPageQuery($kgId: String!) {
         datasource
         object
         objectNode {
-          ...NodeFieldsFragment
+          ...KgNodeFieldsFragment
         }
         other
         predicate
         subject
         subjectNode {
-          ...NodeFieldsFragment
+          ...KgNodeFieldsFragment
         }
         weight
       }

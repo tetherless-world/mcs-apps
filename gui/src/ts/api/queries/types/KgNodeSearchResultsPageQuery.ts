@@ -5,11 +5,11 @@
 import { KgNodeFilters } from "./../../graphqlGlobalTypes";
 
 // ====================================================
-// GraphQL query operation: NodeSearchResultsPageQuery
+// GraphQL query operation: KgNodeSearchResultsPageQuery
 // ====================================================
 
-export interface NodeSearchResultsPageQuery_kg_matchingNodes {
-  __typename: "Node";
+export interface KgNodeSearchResultsPageQuery_kg_matchingNodes {
+  __typename: "KgNode";
   aliases: string[] | null;
   datasource: string;
   id: string;
@@ -18,17 +18,17 @@ export interface NodeSearchResultsPageQuery_kg_matchingNodes {
   pos: string | null;
 }
 
-export interface NodeSearchResultsPageQuery_kg {
+export interface KgNodeSearchResultsPageQuery_kg {
   __typename: "Kg";
-  matchingNodes: NodeSearchResultsPageQuery_kg_matchingNodes[];
+  matchingNodes: KgNodeSearchResultsPageQuery_kg_matchingNodes[];
   matchingNodesCount: number;
 }
 
-export interface NodeSearchResultsPageQuery {
-  kg: NodeSearchResultsPageQuery_kg;
+export interface KgNodeSearchResultsPageQuery {
+  kg: KgNodeSearchResultsPageQuery_kg;
 }
 
-export interface NodeSearchResultsPageQueryVariables {
+export interface KgNodeSearchResultsPageQueryVariables {
   filters: KgNodeFilters;
   kgId: string;
   limit: number;

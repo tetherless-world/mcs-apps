@@ -21,7 +21,7 @@ export enum NodePageTab {
   PredicateList = "predicate-list",
 }
 
-export class NodePage extends Page {
+export class KgNodePage extends Page {
   constructor(private readonly nodeId: string) {
     super();
   }

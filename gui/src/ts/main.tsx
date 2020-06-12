@@ -6,7 +6,7 @@ import {ApolloProvider as ApolloHooksProvider} from "@apollo/react-hooks";
 import {CssBaseline} from "@material-ui/core";
 import {ConsoleLogger, LoggerContext} from "@tetherless-world/twxplore-base";
 import {Routes} from "./Routes";
-import {DataSummaryProvider} from "./DataSummaryProvider";
+import {KgDataSummaryProvider} from "./KgDataSummaryProvider";
 
 // Logger
 const logger = new ConsoleLogger();
@@ -15,10 +15,10 @@ ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <ApolloHooksProvider client={apolloClient}>
       <LoggerContext.Provider value={logger}>
-        <DataSummaryProvider>
+        <KgDataSummaryProvider>
           <CssBaseline />
           <Routes />
-        </DataSummaryProvider>
+        </KgDataSummaryProvider>
       </LoggerContext.Provider>
     </ApolloHooksProvider>
   </ApolloProvider>,

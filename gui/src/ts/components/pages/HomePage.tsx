@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {NodeSearchBox} from "components/search/NodeSearchBox";
+import {KgNodeSearchBox} from "components/search/KgNodeSearchBox";
 import {Frame} from "components/frame/Frame";
 
 import {
@@ -16,8 +16,8 @@ import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
 
-import {DataSummaryContext} from "DataSummaryProvider";
-import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
+import {KgDataSummaryContext} from "KgDataSummaryProvider";
+import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -38,11 +38,12 @@ export const HomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const data = React.useContext(DataSummaryContext);
+  const data = React.useContext(KgDataSummaryContext);
 
-  const [search, setSearch] = React.useState<NodeSearchBoxValue>(null);
+  const [search, setSearch] = React.useState<KgNodeSearchBoxValue>(null);
 
-  const onSearchChange = (newValue: NodeSearchBoxValue) => setSearch(newValue);
+  const onSearchChange = (newValue: KgNodeSearchBoxValue) =>
+    setSearch(newValue);
 
   const onSearchSubmit = () => {
     if (search === null) {
@@ -50,10 +51,10 @@ export const HomePage: React.FunctionComponent = () => {
     }
 
     switch (search.__typename) {
-      case "Node":
+      case "KgNode":
         history.push(Hrefs.node(search.id));
         break;
-      case "NodeSearchVariables":
+      case "KgNodeSearchVariables":
         history.push(Hrefs.nodeSearch(search));
         break;
       default:
@@ -85,7 +86,7 @@ export const HomePage: React.FunctionComponent = () => {
                   </strong>
                 </Typography>
 
-                <NodeSearchBox
+                <KgNodeSearchBox
                   autoFocus
                   placeholder="Search a word or try a query"
                   showIcon={true}

@@ -3,14 +3,14 @@ import * as React from "react";
 import {Select, MenuItem, Paper} from "@material-ui/core";
 
 import {StringFilter} from "api/graphqlGlobalTypes";
-import {DataSummaryContext} from "DataSummaryProvider";
+import {KgDataSummaryContext} from "KgDataSummaryProvider";
 
-export const DatasourceSelect: React.FunctionComponent<{
+export const KgDatasourceSelect: React.FunctionComponent<{
   value?: StringFilter;
   onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
-  const data = React.useContext(DataSummaryContext);
+  const data = React.useContext(KgDataSummaryContext);
   const datasources = data?.kg.datasources;
 
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(

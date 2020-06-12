@@ -1,7 +1,7 @@
 import {KgNodeFilters} from "api/graphqlGlobalTypes";
 
-export interface NodeSearchVariables {
-  __typename: "NodeSearchVariables";
+export interface KgNodeSearchVariables {
+  __typename: "KgNodeSearchVariables";
   text: string;
   filters: KgNodeFilters;
   offset?: number;

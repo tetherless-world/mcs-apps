@@ -1,4 +1,4 @@
-query DataSummaryQuery($kgId: String!) {
+query KgDataSummaryQuery($kgId: String!) {
   kg(id: $kgId) {
     datasources
     totalNodesCount

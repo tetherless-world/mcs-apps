@@ -3,11 +3,11 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: PathPageQuery
+// GraphQL query operation: KgPathPageQuery
 // ====================================================
 
-export interface PathPageQuery_kg_paths_edges_objectNode {
-  __typename: "Node";
+export interface KgPathPageQuery_kg_paths_edges_objectNode {
+  __typename: "KgNode";
   aliases: string[] | null;
   datasource: string;
   id: string;
@@ -16,8 +16,8 @@ export interface PathPageQuery_kg_paths_edges_objectNode {
   pos: string | null;
 }
 
-export interface PathPageQuery_kg_paths_edges_subjectNode {
-  __typename: "Node";
+export interface KgPathPageQuery_kg_paths_edges_subjectNode {
+  __typename: "KgNode";
   aliases: string[] | null;
   datasource: string;
   id: string;
@@ -26,35 +26,35 @@ export interface PathPageQuery_kg_paths_edges_subjectNode {
   pos: string | null;
 }
 
-export interface PathPageQuery_kg_paths_edges {
+export interface KgPathPageQuery_kg_paths_edges {
   __typename: "KgEdge";
   datasource: string;
   object: string;
-  objectNode: PathPageQuery_kg_paths_edges_objectNode;
+  objectNode: KgPathPageQuery_kg_paths_edges_objectNode;
   other: string | null;
   predicate: string;
   subject: string;
-  subjectNode: PathPageQuery_kg_paths_edges_subjectNode;
+  subjectNode: KgPathPageQuery_kg_paths_edges_subjectNode;
   weight: number | null;
 }
 
-export interface PathPageQuery_kg_paths {
+export interface KgPathPageQuery_kg_paths {
   __typename: "KgPath";
   datasource: string;
   id: string;
   path: string[];
-  edges: PathPageQuery_kg_paths_edges[];
+  edges: KgPathPageQuery_kg_paths_edges[];
 }
 
-export interface PathPageQuery_kg {
+export interface KgPathPageQuery_kg {
   __typename: "Kg";
-  paths: PathPageQuery_kg_paths[];
+  paths: KgPathPageQuery_kg_paths[];
 }
 
-export interface PathPageQuery {
-  kg: PathPageQuery_kg;
+export interface KgPathPageQuery {
+  kg: KgPathPageQuery_kg;
 }
 
-export interface PathPageQueryVariables {
+export interface KgPathPageQueryVariables {
   kgId: string;
 }

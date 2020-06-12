@@ -6,20 +6,20 @@ import {
   Switch,
   useLocation,
 } from "react-router-dom";
-import * as NodePageQueryDocument from "api/queries/NodePageQuery.graphql";
+import * as NodePageQueryDocument from "api/queries/KgNodePageQuery.graphql";
 import {
-  NodePageQuery,
-  NodePageQuery_kg_nodeById_subjectOfEdges,
-  NodePageQueryVariables,
-} from "api/queries/types/NodePageQuery";
+  KgNodePageQuery,
+  KgNodePageQuery_kg_nodeById_subjectOfEdges,
+  KgNodePageQueryVariables,
+} from "api/queries/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {ApolloException} from "@tetherless-world/twxplore-base";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
-import {NodePredicateGrid} from "components/node/NodePredicateGrid";
-import {NodePredicateList} from "components/node/NodePredicateList";
+import {KgNodePredicateGrid} from "components/node/KgNodePredicateGrid";
+import {KgNodePredicateList} from "components/node/KgNodePredicateList";
 import * as _ from "lodash";
 import {kgId} from "api/kgId";
 // import {makeStyles} from "@material-ui/core/styles";
@@ -30,12 +30,12 @@ import {kgId} from "api/kgId";
 //   },
 // }));
 
-interface NodePageRouteParams {
+interface KgNodePageRouteParams {
   nodeId: string;
 }
 
-export const NodePage: React.FunctionComponent<RouteComponentProps<
-  NodePageRouteParams
+export const KgNodePage: React.FunctionComponent<RouteComponentProps<
+  KgNodePageRouteParams
 >> = ({match}) => {
   const location = useLocation();
   const {path, url} = match;
@@ -44,8 +44,8 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   // const classes = useStyles();
 
   const {data, error, loading} = useQuery<
-    NodePageQuery,
-    NodePageQueryVariables
+    KgNodePageQuery,
+    KgNodePageQueryVariables
   >(NodePageQueryDocument, {variables: {kgId, nodeId}});
 
   if (error) {
@@ -79,7 +79,7 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
   }
 
   const predicateSubjects: {
-    [index: string]: NodePageQuery_kg_nodeById_subjectOfEdges[];
+    [index: string]: KgNodePageQuery_kg_nodeById_subjectOfEdges[];
   } = {};
   for (const edge of node.subjectOfEdges) {
     if (!edge.objectNode) {
@@ -132,13 +132,13 @@ export const NodePage: React.FunctionComponent<RouteComponentProps<
             <h2 data-cy="node-title">{title}</h2>
             <Switch>
               <Route exact path={tabRoutes.grid.path}>
-                <NodePredicateGrid
+                <KgNodePredicateGrid
                   predicateSubjects={predicateSubjects}
                   datasource={node.datasource}
                 />
               </Route>
               <Route path={tabRoutes.list.path}>
-                <NodePredicateList
+                <KgNodePredicateList
                   predicateSubjects={predicateSubjects}
                   datasource={node.datasource}
                 />

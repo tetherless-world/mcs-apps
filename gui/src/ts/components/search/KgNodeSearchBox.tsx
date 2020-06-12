@@ -8,18 +8,18 @@ import {useHistory} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {GraphQLError} from "graphql";
 import {
-  NodeSearchResultsPageQuery,
-  NodeSearchResultsPageQueryVariables,
-} from "api/queries/types/NodeSearchResultsPageQuery";
+  KgNodeSearchResultsPageQuery,
+  KgNodeSearchResultsPageQueryVariables,
+} from "api/queries/types/KgNodeSearchResultsPageQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as NodeSearchResultsPageQueryDocument from "api/queries/NodeSearchResultsPageQuery.graphql";
+import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {Node} from "models/Node";
-import {DatasourceSelect} from "components/search/DatasourceSelect";
-import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {KgNode} from "models/KgNode";
+import {KgDatasourceSelect} from "components/search/KgDatasourceSelect";
+import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
 import {StringFilter} from "api/graphqlGlobalTypes";
-import {NodeSearchBoxValue} from "models/NodeSearchBoxValue";
-import {NodeLink} from "components/node/NodeLink";
+import {KgNodeSearchBoxValue} from "models/KgNodeSearchBoxValue";
+import {KgNodeLink} from "components/node/KgNodeLink";
 import {kgId} from "../../api/kgId";
 
 // Throttle wait duration in milliseconds
@@ -29,21 +29,21 @@ const THROTTLE_WAIT_DURATION = 500;
 // Maximum number of suggestions to show
 const MAXIMUM_SUGGESTIONS = 5;
 
-interface NodeSearchTextValue {
+interface KgNodeSearchTextValue {
   __typename: "string";
   value: string;
 }
 
-type NodeSearchAutocompleteValue = NodeSearchTextValue | Node;
+type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
 
-export const NodeSearchBox: React.FunctionComponent<{
+export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
   placeholder?: string;
   showIcon?: boolean;
-  onSubmit?: (value: NodeSearchAutocompleteValue) => void;
+  onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
   autocompleteStyle?: React.CSSProperties;
   value?: string;
-  onChange?: (value: NodeSearchBoxValue) => void;
+  onChange?: (value: KgNodeSearchBoxValue) => void;
 }> = ({
   autoFocus,
   onSubmit: onSubmitUserDefined,
@@ -58,8 +58,8 @@ export const NodeSearchBox: React.FunctionComponent<{
   const apolloClient = useApolloClient();
 
   // Search represents state of node label search and filters
-  const [search, setSearch] = React.useState<NodeSearchVariables>({
-    __typename: "NodeSearchVariables",
+  const [search, setSearch] = React.useState<KgNodeSearchVariables>({
+    __typename: "KgNodeSearchVariables",
     text: value || "",
     filters: {},
   });
@@ -69,9 +69,9 @@ export const NodeSearchBox: React.FunctionComponent<{
   const [
     selectedSearchResult,
     setSelectedSearchResult,
-  ] = React.useState<Node | null>(null);
+  ] = React.useState<KgNode | null>(null);
 
-  const [searchResults, setSearchResults] = React.useState<Node[]>([]);
+  const [searchResults, setSearchResults] = React.useState<KgNode[]>([]);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -110,9 +110,9 @@ export const NodeSearchBox: React.FunctionComponent<{
   const throttledQuery = React.useRef(
     _.throttle(
       (
-        variables: NodeSearchResultsPageQueryVariables,
+        variables: KgNodeSearchResultsPageQueryVariables,
         callback: (
-          data: NodeSearchResultsPageQuery,
+          data: KgNodeSearchResultsPageQuery,
           errors: readonly GraphQLError[] | undefined
         ) => void
       ) => {
@@ -126,9 +126,9 @@ export const NodeSearchBox: React.FunctionComponent<{
 
         apolloClient
           .query<
-            NodeSearchResultsPageQuery,
-            NodeSearchResultsPageQueryVariables
-          >({query: NodeSearchResultsPageQueryDocument, variables})
+            KgNodeSearchResultsPageQuery,
+            KgNodeSearchResultsPageQueryVariables
+          >({query: KgNodeSearchResultsPageQueryDocument, variables})
           .then(({data, errors}) => {
             setIsLoading(false);
             callback(data, errors);
@@ -182,7 +182,7 @@ export const NodeSearchBox: React.FunctionComponent<{
   //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
-    : (value: NodeSearchAutocompleteValue) => {
+    : (value: KgNodeSearchAutocompleteValue) => {
         if (value.__typename === "string") {
           const text = value.value;
 
@@ -192,12 +192,12 @@ export const NodeSearchBox: React.FunctionComponent<{
 
           history.push(
             Hrefs.nodeSearch({
-              __typename: "NodeSearchVariables",
+              __typename: "KgNodeSearchVariables",
               text,
               filters: search.filters,
             })
           );
-        } else if (value.__typename === "Node") {
+        } else if (value.__typename === "KgNode") {
           history.push(Hrefs.node(value.id));
         } else {
           const _exhaustiveCheck: never = value;
@@ -224,7 +224,7 @@ export const NodeSearchBox: React.FunctionComponent<{
     >
       <Autocomplete
         style={{verticalAlign: "top", ...autocompleteStyle}}
-        getOptionLabel={(option: Node | string) =>
+        getOptionLabel={(option: KgNode | string) =>
           typeof option === "string" ? option : option.label!
         }
         options={searchResults}
@@ -240,7 +240,7 @@ export const NodeSearchBox: React.FunctionComponent<{
             text: newInputValue,
           }));
         }}
-        onHighlightChange={(_, option: Node | null) => {
+        onHighlightChange={(_, option: KgNode | null) => {
           setSelectedSearchResult(option);
         }}
         renderInput={(params) => (
@@ -273,10 +273,10 @@ export const NodeSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(node) => (
-          <NodeLink node={node} datasource={node.datasource} />
+          <KgNodeLink node={node} datasource={node.datasource} />
         )}
       ></Autocomplete>
-      <DatasourceSelect
+      <KgDatasourceSelect
         style={{display: "inline-flex", verticalAlign: "top"}}
         value={search.filters.datasource || undefined}
         onChange={(datasource: StringFilter) => {
@@ -288,7 +288,7 @@ export const NodeSearchBox: React.FunctionComponent<{
             },
           }));
         }}
-      ></DatasourceSelect>
+      ></KgDatasourceSelect>
     </form>
   );
 };

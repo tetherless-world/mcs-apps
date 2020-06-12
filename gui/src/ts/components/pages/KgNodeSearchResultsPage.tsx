@@ -4,22 +4,22 @@ import {Frame} from "components/frame/Frame";
 
 import {useQuery} from "@apollo/react-hooks";
 import {
-  NodeSearchResultsPageQuery,
-  NodeSearchResultsPageQueryVariables,
-} from "api/queries/types/NodeSearchResultsPageQuery";
-import * as NodeSearchResultsPageQueryDocument from "api/queries/NodeSearchResultsPageQuery.graphql";
+  KgNodeSearchResultsPageQuery,
+  KgNodeSearchResultsPageQueryVariables,
+} from "api/queries/types/KgNodeSearchResultsPageQuery";
+import * as KgNodeSearchResultsPageQueryDocument from "api/queries/KgNodeSearchResultsPageQuery.graphql";
 import {NodeTable} from "components/data/NodeTable";
 
 import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {KgNodeFilters} from "api/graphqlGlobalTypes";
-import {NodeSearchVariables} from "models/NodeSearchVariables";
+import {KgNodeSearchVariables} from "models/KgNodeSearchVariables";
 import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
 import {kgId} from "../../api/kgId";
 
-class QueryStringNodeSearchVariables implements NodeSearchVariables {
-  public readonly __typename = "NodeSearchVariables";
+class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
+  public readonly __typename = "KgNodeSearchVariables";
 
   private constructor(
     public readonly text: string,
@@ -50,7 +50,7 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
       offset: string;
       limit: string;
     };
-    return new QueryStringNodeSearchVariables(
+    return new QueryStringKgNodeSearchVariables(
       text,
       filters,
       offset === undefined ? undefined : +offset,
@@ -62,8 +62,8 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
     return qs.stringify(this.object, {addQueryPrefix: true});
   }
 
-  replace({text, filters, offset, limit}: Partial<NodeSearchVariables>) {
-    return new QueryStringNodeSearchVariables(
+  replace({text, filters, offset, limit}: Partial<KgNodeSearchVariables>) {
+    return new QueryStringKgNodeSearchVariables(
       text !== undefined ? text : this.text,
       filters !== undefined ? filters : this.filters,
       offset !== undefined ? offset : this.offset,
@@ -72,19 +72,21 @@ class QueryStringNodeSearchVariables implements NodeSearchVariables {
   }
 }
 
-export const NodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
+export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   const history = useHistory();
 
   const location = useLocation();
 
-  const searchVariables = QueryStringNodeSearchVariables.parse(location.search);
+  const searchVariables = QueryStringKgNodeSearchVariables.parse(
+    location.search
+  );
 
   const [count, setCount] = React.useState<number | null>(null);
 
   const {data, loading, error} = useQuery<
-    NodeSearchResultsPageQuery,
-    NodeSearchResultsPageQueryVariables
-  >(NodeSearchResultsPageQueryDocument, {
+    KgNodeSearchResultsPageQuery,
+    KgNodeSearchResultsPageQueryVariables
+  >(KgNodeSearchResultsPageQueryDocument, {
     variables: {kgId, ...searchVariables.object, withCount: count === null},
   });
 

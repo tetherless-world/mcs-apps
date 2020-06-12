@@ -5,7 +5,7 @@ import {makeStyles, createStyles, Grid} from "@material-ui/core";
 import {Footer} from "../footer/Footer";
 
 import * as ReactLoader from "react-loader";
-import {DataSummaryContext} from "DataSummaryProvider";
+import {KgDataSummaryContext} from "KgDataSummaryProvider";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -32,7 +32,7 @@ export const Frame: React.FunctionComponent<{children: React.ReactNode}> = ({
 }) => {
   const classes = useStyles();
 
-  const data = React.useContext(DataSummaryContext);
+  const data = React.useContext(KgDataSummaryContext);
 
   return (
     <ReactLoader

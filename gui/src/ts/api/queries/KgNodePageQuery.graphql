@@ -1,12 +1,12 @@
-#import "./NodeFieldsFragment.graphql"
+#import "./KgNodeFieldsFragment.graphql"
 
-query NodePageQuery(
+query KgNodePageQuery(
   $kgId: String!,
   $nodeId: String!
 ) {
   kg(id: $kgId) {
     nodeById(id: $nodeId) {
-      ...NodeFieldsFragment
+      ...KgNodeFieldsFragment
       subjectOfEdges(limit: 100, offset: 0) {
         object
         objectNode {

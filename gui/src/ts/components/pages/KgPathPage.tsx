@@ -1,22 +1,22 @@
 import * as React from "react";
 import {Frame} from "components/frame/Frame";
-import * as PathPageDocument from "api/queries/PathPageQuery.graphql";
-import {PathPageQuery} from "api/queries/types/PathPageQuery";
+import * as KgPathPageQueryDocument from "api/queries/KgPathPageQuery.graphql";
+import {KgPathPageQuery} from "api/queries/types/KgPathPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
 import * as d3 from "d3";
-import {Node} from "models/Node";
+import {KgNode} from "models/KgNode";
 import * as ReactLoader from "react-loader";
 import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
 
-interface PathNode extends d3.SimulationNodeDatum, Node {
+interface KgPathNode extends d3.SimulationNodeDatum, KgNode {
   pathId: string;
 }
 
-interface PathEdge extends d3.SimulationLinkDatum<PathNode> {}
+interface KgPathEdge extends d3.SimulationLinkDatum<KgPathNode> {}
 
-export const PathPage: React.FunctionComponent = () => {
-  const {data, error} = useQuery<PathPageQuery>(PathPageDocument);
+export const KgPathPage: React.FunctionComponent = () => {
+  const {data, error} = useQuery<KgPathPageQuery>(KgPathPageQueryDocument);
   // console.dir(data);
 
   if (error) {
@@ -24,11 +24,11 @@ export const PathPage: React.FunctionComponent = () => {
   }
 
   const pathGraphData = React.useMemo<{
-    nodes: PathNode[];
-    links: PathEdge[];
+    nodes: KgPathNode[];
+    links: KgPathEdge[];
   }>(() => {
-    const nodes: PathNode[] = [];
-    const links: PathEdge[] = [];
+    const nodes: KgPathNode[] = [];
+    const links: KgPathEdge[] = [];
 
     data?.kg.paths.forEach((path) => {
       path.edges.forEach((edge) => {

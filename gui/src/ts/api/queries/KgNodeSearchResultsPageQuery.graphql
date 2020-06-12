@@ -1,5 +1,6 @@
-#import "./NodeFieldsFragment.graphql"
-query NodeSearchResultsPageQuery(
+#import "./KgNodeFieldsFragment.graphql"
+
+query KgNodeSearchResultsPageQuery(
   $filters: KgNodeFilters!
   $kgId: String!
   $limit: Int!
@@ -14,7 +15,7 @@ query NodeSearchResultsPageQuery(
       offset: $offset
       text: $text
     ) {
-      ...NodeFieldsFragment
+      ...KgNodeFieldsFragment
     }
     matchingNodesCount(filters: $filters, text: $text) @include(if: $withCount)
   }

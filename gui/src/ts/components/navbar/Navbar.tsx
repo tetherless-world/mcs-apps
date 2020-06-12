@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {NodeSearchBox} from "components/search/NodeSearchBox";
+import {KgNodeSearchBox} from "components/search/KgNodeSearchBox";
 
 import {Hrefs} from "Hrefs";
 import {Link} from "react-router-dom";
@@ -35,7 +35,7 @@ export const Navbar: React.FunctionComponent<{}> = () => {
         <Button component={Link} to={Hrefs.home} className={classes.brand}>
           <Typography variant="h6">MCS Portal</Typography>
         </Button>
-        <NodeSearchBox
+        <KgNodeSearchBox
           showIcon={true}
           autocompleteStyle={{display: "inline-flex"}}
         />
