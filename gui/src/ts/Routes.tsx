@@ -3,7 +3,7 @@ import {KgNodeSearchResultsPage} from "./components/pages/KgNodeSearchResultsPag
 import * as React from "react";
 import {KgNodePage} from "./components/pages/KgNodePage";
 import {NoRoute} from "./components/error/NoRoute";
-import {HomePage} from "./components/pages/HomePage";
+import {HomePage} from "./components/HomePage";
 import {Hrefs} from "./Hrefs";
 import {RandomKgNodePage} from "./components/pages/RandomKgNodePage";
 import {KgPathPage} from "components/pages/KgPathPage";
