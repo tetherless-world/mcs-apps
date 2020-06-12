@@ -7,10 +7,12 @@ import * as RandomKgNodePageQueryDocument from "api/queries/RandomKgNodePageQuer
 import {Hrefs} from "../../Hrefs";
 import {useHistory} from "react-router-dom";
 import {ApolloErrorHandler} from "../error/ApolloErrorHandler";
+import {kgId} from "../../api/kgId";
 
 export const RandomKgNodePage: React.FunctionComponent = () => {
   const {data, error, loading} = useQuery<RandomKgNodePageQuery>(
-    RandomKgNodePageQueryDocument
+    RandomKgNodePageQueryDocument,
+    {variables: {kgId}}
   );
 
   const history = useHistory();
