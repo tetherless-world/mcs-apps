@@ -4,7 +4,7 @@ import java.net.InetAddress
 
 import org.scalatest.{BeforeAndAfterAll, WordSpec}
 import org.slf4j.LoggerFactory
-import stores.{Neo4jStoreConfiguration, TestData}
+import stores.Neo4jStoreConfiguration
 
 class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
   val logger = LoggerFactory.getLogger(getClass)
@@ -19,9 +19,9 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
     if (!sut.isEmpty) {
       sut.clear()
     }
-    sut.putNodes(TestData.nodes)
-    sut.putEdges(TestData.edges)
-    sut.putPaths(TestData.paths)
+    sut.putNodes(KgTestData.nodes)
+    sut.putEdges(KgTestData.edges)
+    sut.putPaths(KgTestData.paths)
   }
 
   if (inTestingEnvironment) {
