@@ -6,18 +6,18 @@
 // GraphQL query operation: RandomKgNodePageQuery
 // ====================================================
 
-export interface RandomKgNodePageQuery_kg_randomNode {
+export interface RandomKgNodePageQuery_kgById_randomNode {
   __typename: "KgNode";
   id: string;
 }
 
-export interface RandomKgNodePageQuery_kg {
+export interface RandomKgNodePageQuery_kgById {
   __typename: "Kg";
-  randomNode: RandomKgNodePageQuery_kg_randomNode;
+  randomNode: RandomKgNodePageQuery_kgById_randomNode;
 }
 
 export interface RandomKgNodePageQuery {
-  kg: RandomKgNodePageQuery_kg;
+  kgById: RandomKgNodePageQuery_kgById;
 }
 
 export interface RandomKgNodePageQueryVariables {

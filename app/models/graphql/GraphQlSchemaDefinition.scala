@@ -93,7 +93,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   val RootQueryType = ObjectType("RootQuery",  fields[GraphQlSchemaContext, Unit](
     Field("benchmarks", ListType(BenchmarkType), resolve = _.ctx.stores.benchmarkStore.getBenchmarks),
     Field("benchmarkById", OptionType(BenchmarkType), arguments = IdArgument :: Nil,resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkById(ctx.args.arg(IdArgument))),
-    Field("kg", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
+    Field("kgById", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
   ))
 
   // Schema

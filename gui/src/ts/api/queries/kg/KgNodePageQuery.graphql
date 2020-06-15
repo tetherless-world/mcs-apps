@@ -4,7 +4,7 @@ query KgNodePageQuery(
   $kgId: String!,
   $nodeId: String!
 ) {
-  kg(id: $kgId) {
+  kgById(id: $kgId) {
     nodeById(id: $nodeId) {
       ...KgNodeFieldsFragment
       subjectOfEdges(limit: 100, offset: 0) {

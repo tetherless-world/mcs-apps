@@ -1,5 +1,5 @@
 query RandomKgNodePageQuery($kgId: String!) {
-  kg(id: $kgId) {
+  kgById(id: $kgId) {
     randomNode {
       id
     }

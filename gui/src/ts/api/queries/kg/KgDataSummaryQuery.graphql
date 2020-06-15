@@ -1,5 +1,5 @@
 query KgDataSummaryQuery($kgId: String!) {
-  kg(id: $kgId) {
+  kgById(id: $kgId) {
     datasources
     totalNodesCount
     totalEdgesCount

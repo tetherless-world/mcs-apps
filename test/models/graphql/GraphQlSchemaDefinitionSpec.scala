@@ -75,7 +75,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
          query KgNodeByIdQuery($$kgId: String!, $$nodeId: String!) {
-           kg(id: $$kgId) {
+           kgById(id: $$kgId) {
              nodeById(id: $$nodeId) {
               label
              }
@@ -94,7 +94,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
-           kg(id: $$kgId) {
+           kgById(id: $$kgId) {
              nodeById(id: $$nodeId) {
                subjectOfEdges(limit: 10000, offset: 0) {
                  predicate
@@ -119,7 +119,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
-           kg(id: $$kgId) {
+           kgById(id: $$kgId) {
              nodeById(id: $$nodeId) {
                objectOfEdges(limit: 10000, offset: 0) {
                  predicate
@@ -138,7 +138,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
         val query =
           graphql"""
          query RandomKgNodeQuery($$kgId: String!) {
-           kg(id: $$kgId) {
+           kgById(id: $$kgId) {
              randomNode {
               id
               label
@@ -156,7 +156,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
          query MatchingKgNodesQuery($$kgId: String!, $$text: String!) {
-           kg(id: $$kgId) {
+           kgById(id: $$kgId) {
              matchingNodes(text: $$text, limit: 1, offset: 0) {
               id
              }
@@ -177,7 +177,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
           query TotalKgCountsQuery($$kgId: String!) {
-            kg(id: $$kgId) {
+            kgById(id: $$kgId) {
               totalNodesCount
               totalEdgesCount
             }
@@ -193,7 +193,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
           query KgPathsQuery($$kgId: String!) {
-            kg(id: $$kgId) {
+            kgById(id: $$kgId) {
               paths {
                 id
               }
@@ -211,7 +211,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
           query PathQuery($$kgId: String!, $$pathId: String!) {
-            kg(id: $$kgId) {
+            kgById(id: $$kgId) {
               pathById(id: $$pathId) {
                   path
               }
@@ -230,7 +230,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val query =
         graphql"""
         query PathQuery($$kgId: String!, $$pathId: String!) {
-          kg(id: $$kgId) {
+          kgById(id: $$kgId) {
             pathById(id: $$pathId) {
               edges {
                 objectNode {

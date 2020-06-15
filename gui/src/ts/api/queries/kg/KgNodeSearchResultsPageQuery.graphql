@@ -8,7 +8,7 @@ query KgNodeSearchResultsPageQuery(
   $text: String!
   $withCount: Boolean!
 ) {
-  kg(id: $kgId) {
+  kgById(id: $kgId) {
     matchingNodes(
       filters: $filters
       limit: $limit
