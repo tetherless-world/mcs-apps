@@ -15,8 +15,26 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Object types
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
-  implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet]()
-  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark]()
+  implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet](
+    AddFields(
+      Field(
+        "questions",
+        ListType(BenchmarkQuestionType),
+        arguments = LimitArgument :: OffsetArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsBySet(
+          benchmarkId = ctx.value.benchmarkId,
+          benchmarkQuestionSetId = ctx.value.id,
+          limit = ctx.args.arg(LimitArgument),
+          offset = ctx.args.arg(OffsetArgument)
+        )
+      )
+    )
+  )
+  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
+    AddFields(
+      Field("questionSets", ListType(BenchmarkQuestionSetType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionSets(ctx.value.id))
+    )
+  )
 
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54
@@ -73,6 +91,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   ))
 
   val RootQueryType = ObjectType("RootQuery",  fields[GraphQlSchemaContext, Unit](
+    Field("benchmarks", ListType(BenchmarkType), resolve = _.ctx.stores.benchmarkStore.getBenchmarks),
+    Field("benchmarkById", OptionType(BenchmarkType), arguments = IdArgument :: Nil,resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkById(ctx.args.arg(IdArgument))),
     Field("kg", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
   ))
 
