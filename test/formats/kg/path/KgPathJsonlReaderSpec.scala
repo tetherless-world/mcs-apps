@@ -9,7 +9,7 @@ import scala.io.Source
 class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "KG path .jsonl reader" can {
     "read the test data" in {
-      withResource(new KgPathJsonlReader(Source.fromInputStream(KgTestData.getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+      withResource(new KgPathsJsonlReader(Source.fromInputStream(KgTestData.getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
         val paths = reader.toStream.toList
         paths.size should be > 0
         for (path <- paths) {

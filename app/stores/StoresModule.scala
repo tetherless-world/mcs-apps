@@ -2,20 +2,18 @@ package stores
 
 import com.google.inject.AbstractModule
 import org.slf4j.LoggerFactory
+import stores.benchmark.{BenchmarkStore, MemBenchmarkStore, TestBenchmarkStore}
 import stores.kg.{KgStore, Neo4jStore, TestKgStore}
 
 final class StoresModule extends AbstractModule {
   private val logger = LoggerFactory.getLogger(classOf[StoresModule])
 
   override def configure(): Unit = {
-    val storeClass =
-      if (System.getProperty("testIntegration") != null) {
-        logger.info("using test store from local data")
-        classOf[TestKgStore]
-      } else {
-        logger.info("using neo4j store")
-        classOf[Neo4jStore]
-      }
-    bind(classOf[KgStore]).to(storeClass)
+    val useTestStores = System.getProperty("testIntegration") != null
+    if (useTestStores) {
+      logger.info("using test stores for integration testing")
+    }
+    bind(classOf[BenchmarkStore]).to(if (useTestStores) classOf[TestBenchmarkStore] else classOf[MemBenchmarkStore])
+    bind(classOf[KgStore]).to(if (useTestStores) classOf[TestKgStore] else classOf[Neo4jStore])
   }
 }
