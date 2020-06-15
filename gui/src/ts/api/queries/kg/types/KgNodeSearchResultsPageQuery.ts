@@ -8,7 +8,7 @@ import { KgNodeFilters } from "./../../../graphqlGlobalTypes";
 // GraphQL query operation: KgNodeSearchResultsPageQuery
 // ====================================================
 
-export interface KgNodeSearchResultsPageQuery_kg_matchingNodes {
+export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   __typename: "KgNode";
   aliases: string[] | null;
   datasource: string;
@@ -18,14 +18,14 @@ export interface KgNodeSearchResultsPageQuery_kg_matchingNodes {
   pos: string | null;
 }
 
-export interface KgNodeSearchResultsPageQuery_kg {
+export interface KgNodeSearchResultsPageQuery_kgById {
   __typename: "Kg";
-  matchingNodes: KgNodeSearchResultsPageQuery_kg_matchingNodes[];
+  matchingNodes: KgNodeSearchResultsPageQuery_kgById_matchingNodes[];
   matchingNodesCount: number;
 }
 
 export interface KgNodeSearchResultsPageQuery {
-  kg: KgNodeSearchResultsPageQuery_kg;
+  kgById: KgNodeSearchResultsPageQuery_kgById;
 }
 
 export interface KgNodeSearchResultsPageQueryVariables {

@@ -1,7 +1,7 @@
 #import "./KgNodeFieldsFragment.graphql"
 
 query KgPathPageQuery($kgId: String!) {
-  kg(id: $kgId) {
+  kgById(id: $kgId) {
     paths {
       datasource
       id

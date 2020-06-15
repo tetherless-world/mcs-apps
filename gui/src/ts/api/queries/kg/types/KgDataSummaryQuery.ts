@@ -6,7 +6,7 @@
 // GraphQL query operation: KgDataSummaryQuery
 // ====================================================
 
-export interface KgDataSummaryQuery_kg {
+export interface KgDataSummaryQuery_kgById {
   __typename: "Kg";
   datasources: string[];
   totalNodesCount: number;
@@ -14,7 +14,7 @@ export interface KgDataSummaryQuery_kg {
 }
 
 export interface KgDataSummaryQuery {
-  kg: KgDataSummaryQuery_kg;
+  kgById: KgDataSummaryQuery_kgById;
 }
 
 export interface KgDataSummaryQueryVariables {

@@ -1,4 +1,4 @@
-import {KgNodePageQuery_kg_nodeById_subjectOfEdges} from "api/queries/kg/types/KgNodePageQuery";
+import {KgNodePageQuery_kgById_nodeById_subjectOfEdges} from "api/queries/kg/types/KgNodePageQuery";
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() =>
 );
 
 const PredicateEdgeList: React.FunctionComponent<{
-  edges: KgNodePageQuery_kg_nodeById_subjectOfEdges[];
+  edges: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
   predicate: string;
   datasource: string;
 }> = ({edges, predicate, datasource}) => {
@@ -62,7 +62,7 @@ const PredicateEdgeList: React.FunctionComponent<{
 
 export const KgNodePredicateList: React.FunctionComponent<{
   predicateSubjects: {
-    [predicate: string]: KgNodePageQuery_kg_nodeById_subjectOfEdges[];
+    [predicate: string]: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
   };
   datasource: string;
 }> = ({predicateSubjects, datasource}) => {

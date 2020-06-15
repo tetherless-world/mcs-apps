@@ -98,8 +98,8 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     setCount(null);
   }
 
-  if (data?.kg.matchingNodesCount && count === null) {
-    setCount(data.kg.matchingNodesCount);
+  if (data?.kgById.matchingNodesCount && count === null) {
+    setCount(data.kgById.matchingNodesCount);
   }
 
   return (
@@ -112,7 +112,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
             </Typography>
             {count && (
               <KgNodeTable
-                nodes={data?.kg.matchingNodes || []}
+                nodes={data?.kgById.matchingNodes || []}
                 rowsPerPage={searchVariables.limit}
                 count={count}
                 page={searchVariables.page}

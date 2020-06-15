@@ -11,7 +11,7 @@ export const KgDatasourceSelect: React.FunctionComponent<{
   style?: React.CSSProperties;
 }> = ({value, onChange, style}) => {
   const data = React.useContext(KgDataSummaryContext);
-  const datasources = data?.kg.datasources;
+  const datasources = data?.kgById.datasources;
 
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
     value?.include?.[0] || ""

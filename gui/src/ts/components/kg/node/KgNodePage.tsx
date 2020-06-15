@@ -9,7 +9,7 @@ import {
 import * as NodePageQueryDocument from "api/queries/kg/KgNodePageQuery.graphql";
 import {
   KgNodePageQuery,
-  KgNodePageQuery_kg_nodeById_subjectOfEdges,
+  KgNodePageQuery_kgById_nodeById_subjectOfEdges,
   KgNodePageQueryVariables,
 } from "api/queries/kg/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
@@ -60,7 +60,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
     throw new EvalError();
   }
 
-  const node = data.kg.nodeById;
+  const node = data.kgById.nodeById;
   if (!node) {
     return (
       <Frame>
@@ -79,7 +79,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
   }
 
   const predicateSubjects: {
-    [index: string]: KgNodePageQuery_kg_nodeById_subjectOfEdges[];
+    [index: string]: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
   } = {};
   for (const edge of node.subjectOfEdges) {
     if (!edge.objectNode) {
