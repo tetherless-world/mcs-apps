@@ -3,7 +3,7 @@ package stores.kg
 import java.io.{BufferedInputStream, InputStream}
 
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.kg.path.KgPathJsonlReader
+import formats.kg.path.KgPathsJsonlReader
 import models.kg.{KgEdge, KgNode, KgPath}
 import stores.WithResource
 
@@ -58,7 +58,7 @@ object KgTestData extends WithResource {
   }
 
   private def readPaths(): List[KgPath] = {
-    withResource(new KgPathJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+    withResource(new KgPathsJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
       reader.toStream.toList
     }
   }

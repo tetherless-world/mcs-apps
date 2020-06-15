@@ -5,7 +5,7 @@ import java.nio.file.Paths
 import akka.stream.OverflowStrategy
 import controllers.Assets
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.kg.path.KgPathJsonlReader
+import formats.kg.path.KgPathsJsonlReader
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.http.HttpEntity
@@ -41,7 +41,7 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
   }
 
   def putPaths(pathsJsonlFileName: String) = Action {
-    withResource(new KgPathJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
+    withResource(new KgPathsJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
       store.putPaths(reader.toStream)
       Ok("")
     }
