@@ -50,13 +50,13 @@ export class KgNodePage extends Page {
 
   gridEdgeList(predicate: string) {
     return new EdgeList(
-      `${this.frame.selector} [data-cy=grid-${predicate}-edges]`
+      `${this.frame.selector} [data-cy="grid-${predicate}-edges"]`
     );
   }
 
   listEdgeList(predicate: string) {
     return new EdgeList(
-      `${this.frame.selector} [data-cy=list-${predicate}-edges]`
+      `${this.frame.selector} [data-cy="list-${predicate}-edges"]`
     );
   }
 
