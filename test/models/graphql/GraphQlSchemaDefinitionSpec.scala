@@ -8,7 +8,7 @@ import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
 import stores.Stores
-import stores.benchmark.TestBenchmarkStore
+import stores.benchmark.{BenchmarkTestData, TestBenchmarkStore}
 import stores.kg.{KgTestData, TestKgStore}
 
 import scala.concurrent.Await
@@ -19,6 +19,57 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
   private val KgId = "test"
 
   "GraphQL schema" must {
+    "get benchmarks" in {
+      val query =
+        graphql"""
+          query BenchmarksQuery {
+            benchmarks {
+              id
+              name
+            }
+          }
+          """
+      val result = Json.stringify(executeQuery(query))
+      for (benchmark <- BenchmarkTestData.benchmarks) {
+        result must include(benchmark.id)
+        result must include(benchmark.name)
+      }
+    }
+
+    "get a benchmark tree" in {
+      val benchmark = BenchmarkTestData.benchmarks(0)
+      val query =
+        graphql"""
+          query BenchmarkByIdQuery($$benchmarkId: String!) {
+            benchmarkById(id: $$benchmarkId) {
+              questionSets {
+                id
+                questions(limit: 1000, offset: 0) {
+                  choices {
+                    label
+                    text
+                  }
+                  concept
+                  id
+                  text
+                }
+              }
+            }
+          }
+          """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id)))
+      for (questionSet <- BenchmarkTestData.benchmarkQuestionSets.filter(questionSet => questionSet.benchmarkId == benchmark.id)) {
+        result must include(questionSet.id)
+        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.benchmarkId == benchmark.id && question.benchmarkQuestionSetId == questionSet.id)) {
+          result must include(question.id)
+          for (choice <- question.choices) {
+            result must include(choice.text)
+          }
+        }
+      }
+    }
+
     "get a KG node by id" in {
       val node = KgTestData.nodes(0)
       val query =
