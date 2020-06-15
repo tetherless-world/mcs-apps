@@ -1,21 +1,38 @@
 import {KgNodePage, KgNodePageTab} from "../support/page_files/KgNodePage";
+import {Node} from "../support/Node";
+import {TestData} from "../support/TestData";
+import {Edge} from "../support/Edge";
 
 context("KG node page", () => {
-  const page = new KgNodePage("portal_test_data:0");
+  let page: KgNodePage;
+  let node: Node;
+  let testNodeEdges: Edge[];
 
-  beforeEach(() => page.visit());
+  before(() => {
+    TestData.nodes.then((nodes) => {
+      node = nodes[0];
+      TestData.edges.then((edges) => {
+        testNodeEdges = edges.filter((edge) => edge.subject === node.id);
+      });
+      page = new KgNodePage(node.id);
+    });
+  });
+
+  beforeEach(() => {
+    page.visit();
+  });
 
   it("should have the node label in its card title", () => {
-    page.nodeTitle.should("contain", "Test node 0");
+    page.nodeTitle.should("contain", node.label);
   });
 
   it("should show edges by predicate", () => {
-    // TODO: use fixture to get this
-    page.gridEdgeList("\\/r\\/AtLocation").list.should("exist");
+    const edge = testNodeEdges[0];
+    page.gridEdgeList(edge.predicate).list.should("exist");
   });
 
   it("should show the node datasource", () => {
-    page.datasource.should("have.text", "portal_test_data");
+    page.datasource.should("have.text", node.datasource);
   });
 
   it("should have the grid tab selected by default", () => {
@@ -28,7 +45,8 @@ context("KG node page", () => {
   });
 
   it("should contain predicate lists in the list tab", () => {
+    const edge = testNodeEdges[0];
     page.visitList();
-    page.listEdgeList("\\/r\\/AtLocation").list.should("exist");
+    page.listEdgeList(edge.predicate).list.should("exist");
   });
 });
