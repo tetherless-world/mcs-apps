@@ -29,7 +29,7 @@ export const RandomKgNodePage: React.FunctionComponent = () => {
     throw new EvalError();
   }
 
-  const randomNodeId = data.kg.randomNode.id;
+  const randomNodeId = data.kgById.randomNode.id;
 
   history.push(Hrefs.kg(kgId).node(randomNodeId));
   return <React.Fragment />;

@@ -157,7 +157,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
         offset: 0,
         withCount: false,
       },
-      ({kg}, errors) => {
+      ({kgById}, errors) => {
         if (!active) {
           return;
         }
@@ -166,7 +166,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           setSearchErrors(errors);
         }
 
-        setSearchResults(kg.matchingNodes);
+        setSearchResults(kgById.matchingNodes);
       }
     );
 

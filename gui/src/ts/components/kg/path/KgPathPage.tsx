@@ -30,7 +30,7 @@ export const KgPathPage: React.FunctionComponent = () => {
     const nodes: KgPathNode[] = [];
     const links: KgPathEdge[] = [];
 
-    data?.kg.paths.forEach((path) => {
+    data?.kgById.paths.forEach((path) => {
       path.edges.forEach((edge) => {
         if (
           edge.subjectNode &&
