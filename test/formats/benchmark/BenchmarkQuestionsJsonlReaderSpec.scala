@@ -9,7 +9,7 @@ import scala.io.Source
 class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "Benchmark questions .jsonl reader" can {
     "read the test data" in {
-      withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(BenchmarkTestData.getBenchmarkQuestionsJsonResourceAsStream(), "UTF-8"))) { reader =>
+      withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(BenchmarkTestData.getBenchmarkQuestionsJsonlResourceAsStream(), "UTF-8"))) { reader =>
         val questions = reader.toStream.toList
         for (question <- questions) {
           question.benchmarkId should not be empty
