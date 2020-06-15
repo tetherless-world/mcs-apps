@@ -5,9 +5,10 @@ import io.github.tetherlessworld.twxplore.lib.base.controllers.graphql.BaseGraph
 import javax.inject.{Inject, Singleton}
 import models.graphql.{GraphQlSchemaContext, GraphQlSchemaDefinition}
 import play.api.mvc.Request
+import stores.Stores
 import stores.kg.KgStore
 
 @Singleton
-class GraphQlController @Inject()(store: KgStore, system: ActorSystem) extends BaseGraphQlController[GraphQlSchemaContext](GraphQlSchemaDefinition.schema, system) {
-  override protected def getContext(request: Request[_]): GraphQlSchemaContext = new GraphQlSchemaContext(request, store)
+class GraphQlController @Inject()(stores: Stores, system: ActorSystem) extends BaseGraphQlController[GraphQlSchemaContext](GraphQlSchemaDefinition.schema, system) {
+  override protected def getContext(request: Request[_]): GraphQlSchemaContext = new GraphQlSchemaContext(request, stores)
 }

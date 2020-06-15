@@ -2,7 +2,7 @@ package stores.benchmark
 
 import models.benchmark.{Benchmark, BenchmarkQuestion, BenchmarkQuestionSet}
 
-final class MemBenchmarkStore extends BenchmarkStore {
+class MemBenchmarkStore extends BenchmarkStore {
   private val benchmarks: List[Benchmark] = BenchmarkTestData.benchmarks
   private val benchmarkQuestionSets: List[BenchmarkQuestionSet] = BenchmarkTestData.benchmarkQuestionSets
   private val benchmarkQuestions: List[BenchmarkQuestion] = BenchmarkTestData.benchmarkQuestions
