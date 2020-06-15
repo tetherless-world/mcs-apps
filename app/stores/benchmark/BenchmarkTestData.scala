@@ -53,8 +53,8 @@ object BenchmarkTestData extends WithResource {
 
   private def validate(): Unit = {
     for (question <- benchmarkQuestions) {
-      if (!benchmarkQuestionSets.exists(questionSet => question.benchmarkQuestionSetId == questionSet.id)) {
-        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.benchmarkQuestionSetId}")
+      if (!benchmarkQuestionSets.exists(questionSet => question.questionSetId == questionSet.id)) {
+        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
       if (!benchmarks.exists(benchmark => question.benchmarkId == benchmark.id)) {
         throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark ${question.benchmarkId}")

@@ -61,7 +61,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id)))
       for (questionSet <- BenchmarkTestData.benchmarkQuestionSets.filter(questionSet => questionSet.benchmarkId == benchmark.id)) {
         result must include(questionSet.id)
-        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.benchmarkId == benchmark.id && question.benchmarkQuestionSetId == questionSet.id)) {
+        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.benchmarkId == benchmark.id && question.questionSetId == questionSet.id)) {
           result must include(question.id)
           for (choice <- question.choices) {
             result must include(choice.text)

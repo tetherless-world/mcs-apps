@@ -13,7 +13,7 @@ class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with With
         val questions = reader.toStream.toList
         for (question <- questions) {
           question.benchmarkId should not be empty
-          question.benchmarkQuestionSetId should not be empty
+          question.questionSetId should not be empty
           question.id should not be empty
           question.choices should not be empty
           for (choice <- question.choices) {

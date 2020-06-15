@@ -14,7 +14,7 @@ class MemBenchmarkStore extends BenchmarkStore {
 
   override def getBenchmarkQuestionsBySet(benchmarkId: String, benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
     benchmarkQuestions
-      .filter(benchmarkQuestion => benchmarkQuestion.benchmarkId == benchmarkId && benchmarkQuestion.benchmarkQuestionSetId == benchmarkQuestionSetId)
+      .filter(benchmarkQuestion => benchmarkQuestion.benchmarkId == benchmarkId && benchmarkQuestion.questionSetId == benchmarkQuestionSetId)
       .drop(offset).take(limit)
 
   override def getBenchmarkQuestionSets(benchmarkId: String): List[BenchmarkQuestionSet] =
