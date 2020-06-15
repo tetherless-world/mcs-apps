@@ -1,5 +1,6 @@
 package formats.kg.path
 
+import formats.JsonlReader
 import io.circe.generic.semiauto.deriveDecoder
 import io.circe.{Decoder, Json}
 import models.kg.KgPath
@@ -7,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-final class KgPathJsonlReader(source: Source) extends JsonlReader[KgPath](source) {
+final class KgPathsJsonlReader(source: Source) extends JsonlReader[KgPath](source) {
   private val pathDecoder: Decoder[KgPath] = deriveDecoder
   private val logger = LoggerFactory.getLogger(getClass)
 
