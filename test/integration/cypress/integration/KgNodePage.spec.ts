@@ -1,12 +1,12 @@
 import {KgNodePage, KgNodePageTab} from "../support/page_files/KgNodePage";
-import {Node} from "../support/Node";
+import {KgNode} from "../support/Node";
 import {TestData} from "../support/TestData";
-import {Edge} from "../support/Edge";
+import {KgEdge} from "../support/Edge";
 
 context("KG node page", () => {
   let page: KgNodePage;
-  let node: Node;
-  let testNodeEdges: Edge[];
+  let node: KgNode;
+  let testNodeEdges: KgEdge[];
 
   before(() => {
     TestData.nodes.then((nodes) => {

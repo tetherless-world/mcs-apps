@@ -1,4 +1,4 @@
-export type Node = {
+export type KgNode = {
   readonly id: string;
   readonly label: string;
   readonly aliases: [string];
