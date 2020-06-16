@@ -18,7 +18,20 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()
   implicit val BenchmarkAnswerExplanationType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswerExplanation]()
   implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
-  implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission]()
+  implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission](
+    AddFields(
+      Field(
+        "answers",
+        ListType(BenchmarkAnswerType),
+        arguments = LimitArgument :: OffsetArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswersBySubmission(
+          benchmarkSubmissionId = ctx.value.id,
+          limit = ctx.args.arg(LimitArgument),
+          offset = ctx.args.arg(OffsetArgument)
+        )
+      )
+    )
+  )
 
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
@@ -33,11 +46,13 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
           limit = ctx.args.arg(LimitArgument),
           offset = ctx.args.arg(OffsetArgument)
         )
-      )
+      ),
+      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByQuestionSet(questionSetId = ctx.value.id))
     )
   )
   implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
     AddFields(
+      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id))
     )
   )
 

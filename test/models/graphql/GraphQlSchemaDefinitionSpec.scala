@@ -77,7 +77,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
           query BenchmarkByIdQuery($$benchmarkId: String!) {
             benchmarkById(id: $$benchmarkId) {
               submissions {
-                answers {
+                answers(limit: 1000, offset: 0) {
                   choiceLabel
                   questionId
                 }

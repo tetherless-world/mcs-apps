@@ -64,6 +64,20 @@ object BenchmarkTestData extends WithResource {
   }
 
   private def validate(): Unit = {
+    if (benchmarks.map(benchmark => benchmark.id).toSet.size != benchmarks.size) {
+      throw new IllegalArgumentException("benchmarks do not have unique id's")
+    }
+    val questionSets = benchmarks.flatMap(benchmark => benchmark.questionSets)
+    if (questionSets.map(questionSet => questionSet.id).toSet.size != questionSets.size) {
+      throw new IllegalArgumentException("benchmark question sets do not have unique id's")
+    }
+    if (benchmarkQuestions.map(question => question.id).toSet.size != benchmarkQuestions.size) {
+      throw new IllegalArgumentException("benchmark questions do not have unique id's")
+    }
+    if (benchmarkSubmissions.map(submission => submission.id).toSet.size != benchmarkSubmissions.size) {
+      throw new IllegalArgumentException("benchmark submissions do not have unique id's")
+    }
+
     for (question <- benchmarkQuestions) {
       val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == question.questionSetId))
       if (!benchmark.isDefined) {
@@ -73,7 +87,8 @@ object BenchmarkTestData extends WithResource {
         throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
     }
-    for (submission <- benchmarkSubmissions) {
+  }
+  for (submission <- benchmarkSubmissions) {
       val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == submission.questionSetId))
       if (!benchmark.isDefined) {
         throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
