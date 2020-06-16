@@ -17,7 +17,7 @@ export const Routes: React.FunctionComponent = () => (
         path={Hrefs.kg(kgId).nodeSearch()}
       ></Route>
       <Route component={KgNodePage} path="/kg/:kgId/node/:nodeId" />
-      <Route exact component={KgPathPage} path={Hrefs.kg(kgId).paths} />
+      <Route component={KgPathPage} path={Hrefs.kg(kgId).paths} />
       <Route
         exact
         component={RandomKgNodePage}
