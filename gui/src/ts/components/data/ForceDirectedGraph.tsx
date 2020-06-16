@@ -1,6 +1,36 @@
 import * as React from "react";
 import * as d3 from "d3";
 
+import {ForceDirectedGraphNodeOptions as NodeOptions} from "models/data/ForceDirectedGraphNodeOptions";
+
+// type D3AttrValue<GElement extends d3.BaseType, Datum> =
+//   | null
+//   | string
+//   | number
+//   | boolean
+//   | d3.ValueFn<GElement, Datum, string | number | boolean | null>;
+
+// type D3Value<T, GElement extends d3.BaseType, Datum> =
+//   | null
+//   | T
+//   | d3.ValueFn<GElement, Datum, T>;
+
+// interface ForceDirectedGraphOptions<
+//   NodeDatum extends d3.SimulationNodeDatum,
+//   LinkDatum extends d3.SimulationLinkDatum<NodeDatum>
+// > {
+//   node: ForceDirectedGraphNodeOptions<NodeDatum>;
+//   link: {[key: string]: D3AttrValue<SVGLineElement, LinkDatum>};
+// }
+
+// interface ForceDirectedGraphNodeOptions<
+//   NodeDatum extends d3.SimulationNodeDatum
+// > {
+//   r: D3Value<number, SVGCircleElement, NodeDatum>;
+// }
+
+interface LinkOptions<T> {}
+
 // Reference https://observablehq.com/@d3/force-directed-graph
 export const ForceDirectedGraph = <
   NodeDatum extends d3.SimulationNodeDatum,
@@ -10,20 +40,27 @@ export const ForceDirectedGraph = <
   links,
   height,
   width,
-  nodeIdFunction,
-  nodeGroupFunction,
-}: {
+  nodeOptions,
+  linkOptions,
+}: // nodeOptions: userDefinedNodeOptions,
+{
   nodes: NodeDatum[];
   links: LinkDatum[];
   height: number;
   width: number;
-  nodeIdFunction: (node: NodeDatum) => string;
-  nodeGroupFunction: (node: NodeDatum) => string;
+  nodeOptions: NodeOptions<NodeDatum>;
+  linkOptions: LinkOptions<LinkDatum>;
+  // nodeOptions?: Partial<ForceDirectedGraphNodeOptions<NodeDatum>>;
 }) => {
   const svgRef = React.useRef<SVGSVGElement>(null);
 
-  const scale = d3.scaleOrdinal(d3.schemeCategory10);
-  const color = (d: NodeDatum) => scale(nodeGroupFunction(d));
+  // const options: ForceDirectedGraphOptions<NodeDatum, LinkDatum> = {
+  //   node: {
+  //     r: 5,
+  //     ...(userDefinedNodeOptions || {}),
+  //   },
+  //   link: {},
+  // };
 
   const drag = (simulation: d3.Simulation<NodeDatum, LinkDatum>) => {
     function dragstarted(d: NodeDatum) {
@@ -59,7 +96,7 @@ export const ForceDirectedGraph = <
       .forceSimulation<NodeDatum, LinkDatum>(nodes)
       .force(
         "link",
-        d3.forceLink<NodeDatum, LinkDatum>(links).id(nodeIdFunction)
+        d3.forceLink<NodeDatum, LinkDatum>(links).id(nodeOptions.id)
       )
       .force("charge", d3.forceManyBody())
       .force("x", d3.forceX())
@@ -72,10 +109,22 @@ export const ForceDirectedGraph = <
       .attr("viewBox", [-width / 2, -height / 2, width, height]);
     // .attr("viewBox", [0, 0, width, height] as number[]);
 
-    const link = svg
+    const svgEnter = svg.selectAll("g").data([null]).enter();
+
+    svgEnter
       .append("g")
+      .attr("class", "links")
       .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
+      .attr("stroke-opacity", 0.6);
+
+    svgEnter
+      .append("g")
+      .attr("class", "nodes")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", nodeOptions["stroke-width"]);
+
+    const link = svg
+      .select<SVGGElement>("g.links")
       .selectAll<SVGLineElement, LinkDatum>("line")
       .data(links)
       .join("line")
@@ -83,17 +132,17 @@ export const ForceDirectedGraph = <
       .attr("stroke-width", 1);
 
     const node = svg
-      .append("g")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
+      .select<SVGGElement>("g.nodes")
       .selectAll<SVGCircleElement, NodeDatum>("circle")
-      .data(nodes)
+      .data(nodes, nodeOptions.id)
       .join("circle")
-      .attr("r", 5)
-      .attr("fill", color)
+      .attr("r", nodeOptions.r)
+      .attr("fill", nodeOptions.fill)
+      .on("click", nodeOptions.onClick)
+      .style("cursor", "pointer")
       .call(drag(simulation));
 
-    node.append("title").text(nodeIdFunction);
+    node.append("title").text(nodeOptions.id);
 
     simulation.on("tick", () => {
       link
@@ -104,7 +153,7 @@ export const ForceDirectedGraph = <
 
       node.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
     });
-  }, [svgRef, nodes, links]);
+  }, [svgRef, nodes, links, height, width]);
 
   return <svg ref={svgRef} height={height} width={width} />;
 };
