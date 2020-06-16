@@ -30,11 +30,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
       )
     )
   )
-  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
-    AddFields(
-      Field("questionSets", ListType(BenchmarkQuestionSetType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionSets(ctx.value.id))
-    )
-  )
+  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark]()
 
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54

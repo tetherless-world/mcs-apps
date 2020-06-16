@@ -4,7 +4,6 @@ import models.benchmark.{Benchmark, BenchmarkQuestion, BenchmarkQuestionSet}
 
 class MemBenchmarkStore extends BenchmarkStore {
   private val benchmarks: List[Benchmark] = BenchmarkTestData.benchmarks
-  private val benchmarkQuestionSets: List[BenchmarkQuestionSet] = BenchmarkTestData.benchmarkQuestionSets
   private val benchmarkQuestions: List[BenchmarkQuestion] = BenchmarkTestData.benchmarkQuestions
 
   override def getBenchmarks: List[Benchmark] = benchmarks
@@ -16,7 +15,4 @@ class MemBenchmarkStore extends BenchmarkStore {
     benchmarkQuestions
       .filter(benchmarkQuestion => benchmarkQuestion.benchmarkId == benchmarkId && benchmarkQuestion.questionSetId == benchmarkQuestionSetId)
       .drop(offset).take(limit)
-
-  override def getBenchmarkQuestionSets(benchmarkId: String): List[BenchmarkQuestionSet] =
-    benchmarkQuestionSets.filter(benchmarkQuestionSet => benchmarkQuestionSet.benchmarkId == benchmarkId)
 }

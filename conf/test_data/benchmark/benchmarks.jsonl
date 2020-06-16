@@ -1,3 +1,3 @@
-{"id": "benchmark0", "name": "Benchmark 0"}
-{"id": "benchmark1", "name": "Benchmark 1"}
-{"id": "benchmark2", "name": "Benchmark 2"}
+{"id": "benchmark0", "name": "Benchmark 0", "questionSets": [{"benchmarkId": "benchmark0", "id": "dev"}, {"benchmarkId": "benchmark0", "id": "test"}, {"benchmarkId": "benchmark0", "id": "train"}]}
+{"id": "benchmark1", "name": "Benchmark 1", "questionSets": [{"benchmarkId": "benchmark1", "id": "dev"}, {"benchmarkId": "benchmark1", "id": "test"}, {"benchmarkId": "benchmark1", "id": "train"}]}
+{"id": "benchmark2", "name": "Benchmark 2", "questionSets": [{"benchmarkId": "benchmark2", "id": "dev"}, {"benchmarkId": "benchmark2", "id": "test"}, {"benchmarkId": "benchmark2", "id": "train"}]}

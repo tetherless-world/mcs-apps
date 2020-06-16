@@ -2,7 +2,7 @@ package stores.benchmark
 
 import java.io.{BufferedInputStream, InputStream}
 
-import formats.benchmark.{BenchmarkQuestionSetsJsonlReader, BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
+import formats.benchmark.{BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.path.KgPathsJsonlReader
 import models.benchmark.{Benchmark, BenchmarkQuestion, BenchmarkQuestionSet, BenchmarkSubmission}
@@ -19,7 +19,6 @@ object BenchmarkTestData extends WithResource {
 
   val benchmarks = readBenchmarks()
   val benchmarkQuestions = readBenchmarkQuestions()
-  val benchmarkQuestionSets = readBenchmarkQuestionSets()
   val benchmarkSubmissions = readBenchmarkSubmissions()
   validate()
 
@@ -28,9 +27,6 @@ object BenchmarkTestData extends WithResource {
 
   def getBenchmarkQuestionsJsonlResourceAsStream(): InputStream =
     getResourceAsStream(BenchmarkQuestionsJsonlResourceName)
-
-  def getBenchmarkQuestionSetsJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(BenchmarkQuestionSetsJsonlResourceName)
 
   def getBenchmarkSubmissionsJsonlResourceAsStream(): InputStream =
     getResourceAsStream(BenchmarkSubmissionsJsonlResourceName)
@@ -50,34 +46,29 @@ object BenchmarkTestData extends WithResource {
     }
   }
 
-  private def readBenchmarkQuestionSets(): List[BenchmarkQuestionSet] = {
-    withResource(new BenchmarkQuestionSetsJsonlReader(Source.fromInputStream(getBenchmarkQuestionSetsJsonlResourceAsStream()))) { reader =>
-      reader.toStream.toList
-    }
-  }
-
   private def readBenchmarkSubmissions(): List[BenchmarkSubmission] = {
     withResource(new BenchmarkSubmissionsJsonlReader(Source.fromInputStream(getBenchmarkSubmissionsJsonlResourceAsStream()))) { reader =>
       reader.toStream.toList
     }
   }
 
-
   private def validate(): Unit = {
     for (question <- benchmarkQuestions) {
-      if (!benchmarkQuestionSets.exists(questionSet => question.questionSetId == questionSet.id)) {
-        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
-      }
-      if (!benchmarks.exists(benchmark => question.benchmarkId == benchmark.id)) {
+      val benchmark = benchmarks.find(benchmark => question.benchmarkId == benchmark.id)
+      if (!benchmark.isDefined) {
         throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark ${question.benchmarkId}")
+      }
+      if (!benchmark.get.questionSets.exists(questionSet => question.questionSetId == questionSet.id)) {
+        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
     }
     for (submission <- benchmarkSubmissions) {
-      if (!benchmarkQuestionSets.exists(questionSet => submission.questionSetId == questionSet.id)) {
-        throw new IllegalArgumentException(s"benchmark question ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
-      }
-      if (!benchmarks.exists(benchmark => submission.benchmarkId == benchmark.id)) {
+      val benchmark = benchmarks.find(benchmark => submission.benchmarkId == benchmark.id)
+      if (!benchmark.isDefined) {
         throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark ${submission.benchmarkId}")
+      }
+      if (!benchmark.get.questionSets.exists(questionSet => submission.questionSetId == questionSet.id)) {
+        throw new IllegalArgumentException(s"benchmark question ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
       }
       for (answer <- submission.answers) {
         val question = benchmarkQuestions.find(question => question.id == answer.questionId && question.benchmarkId == submission.benchmarkId && question.questionSetId == submission.questionSetId)
