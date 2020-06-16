@@ -1,14 +1,56 @@
 [
     {
         "id": "benchmark0",
-        "name": "Benchmark 0"
+        "name": "Benchmark 0",
+        "questionSets": [
+            {
+                "id": "benchmark0-dev",
+                "name": "Benchmark 0 dev set"
+            },
+            {
+                "id": "benchmark0-test",
+                "name": "Benchmark 0 test set"
+            },
+            {
+                "id": "benchmark0-train",
+                "name": "Benchmark 0 train set"
+            }
+        ]
     },
     {
         "id": "benchmark1",
-        "name": "Benchmark 1"
+        "name": "Benchmark 1",
+        "questionSets": [
+            {
+                "id": "benchmark1-dev",
+                "name": "Benchmark 1 dev set"
+            },
+            {
+                "id": "benchmark1-test",
+                "name": "Benchmark 1 test set"
+            },
+            {
+                "id": "benchmark1-train",
+                "name": "Benchmark 1 train set"
+            }
+        ]
     },
     {
         "id": "benchmark2",
-        "name": "Benchmark 2"
+        "name": "Benchmark 2",
+        "questionSets": [
+            {
+                "id": "benchmark2-dev",
+                "name": "Benchmark 2 dev set"
+            },
+            {
+                "id": "benchmark2-test",
+                "name": "Benchmark 2 test set"
+            },
+            {
+                "id": "benchmark2-train",
+                "name": "Benchmark 2 train set"
+            }
+        ]
     }
 ]
