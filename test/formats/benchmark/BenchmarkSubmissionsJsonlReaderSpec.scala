@@ -10,7 +10,7 @@ class BenchmarkSubmissionsJsonlReaderSpec extends WordSpec with Matchers with Wi
   "Benchmark submissions .jsonl reader" can {
     "read the test data" in {
       withResource(new BenchmarkSubmissionsJsonlReader(Source.fromInputStream(BenchmarkTestData.getBenchmarkSubmissionsJsonlResourceAsStream(), "UTF-8"))) { reader =>
-        val submissions = reader.toStream.toList
+        val submissions = reader.iterator.toList
         for (submission <- submissions) {
           submission.questionSetId should not be empty
           submission.id should not be empty

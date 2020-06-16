@@ -32,7 +32,7 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
 
   def putEdges(edgesCsvFileName: String) = Action {
     withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
-      withStreamProgress(reader.toStream, "putEdges") { edges =>
+      withIteratorProgress(reader.iterator, "putEdges") { edges =>
         store.putEdges(edges)
         Ok("")
       }
@@ -41,7 +41,7 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
 
   def putNodes(nodesCsvFileName: String) = Action {
     withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve(nodesCsvFileName))) { reader =>
-      withStreamProgress(reader.toStream, "putNodes") { nodes =>
+      withIteratorProgress(reader.iterator, "putNodes") { nodes =>
         store.putNodes(nodes)
         Ok("")
       }
@@ -50,14 +50,14 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
 
   def putPaths(pathsJsonlFileName: String) = Action {
     withResource(new KgPathsJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
-      withStreamProgress(reader.toStream, "putPaths") { paths =>
+      withIteratorProgress(reader.iterator, "putPaths") { paths =>
         store.putPaths(paths)
         Ok("")
       }
     }
   }
 
-  def withStreamProgress[T, V](stream: Stream[T], taskName: String)(f: (Stream[T]) => V): V = {
+  def withIteratorProgress[T, V](models: Iterator[T], taskName: String)(f: (Iterator[T]) => V): V = {
     val progressBar =
       new ProgressBarBuilder()
         .setInitialMax(0)
@@ -67,7 +67,7 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
         .showSpeed
         .build
     withResource(progressBar) { progressBar =>
-      f(stream.map(x => { progressBar.step(); x }))
+      f(models.map(x => { progressBar.step(); x }))
     }
   }
 }

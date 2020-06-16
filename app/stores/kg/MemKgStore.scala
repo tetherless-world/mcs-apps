@@ -93,11 +93,11 @@ class MemKgStore extends KgStore {
   override def isEmpty: Boolean =
     edges.isEmpty && nodes.isEmpty && paths.isEmpty
 
-  final override def putEdges(edges: TraversableOnce[KgEdge]): Unit = {
+  final override def putEdges(edges: Iterator[KgEdge]): Unit = {
     this.edges = edges.toList
   }
 
-  final override def putNodes(nodes: TraversableOnce[KgNode]): Unit = {
+  final override def putNodes(nodes: Iterator[KgNode]): Unit = {
     this.nodes = nodes.toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
     this.datasources = this.nodes.flatMap(_.datasource.split(",")).distinct
@@ -108,8 +108,7 @@ class MemKgStore extends KgStore {
     lucene.commit()
   }
 
-
-  override def putPaths(paths: TraversableOnce[KgPath]): Unit = {
+  override def putPaths(paths: Iterator[KgPath]): Unit = {
     this.paths = paths.toList
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }

@@ -19,9 +19,9 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
     if (!sut.isEmpty) {
       sut.clear()
     }
-    sut.putNodes(KgTestData.nodes)
-    sut.putEdges(KgTestData.edges)
-    sut.putPaths(KgTestData.paths)
+    sut.putNodes(KgTestData.nodes.iterator)
+    sut.putEdges(KgTestData.edges.iterator)
+    sut.putPaths(KgTestData.paths.iterator)
   }
 
   if (inTestingEnvironment) {

@@ -8,7 +8,7 @@ class CskgEdgesCsvReaderSpec extends WordSpec with Matchers with WithResource {
   "CSKG edges CSV reader" can {
     "read the test data" in {
       withResource (CskgEdgesCsvReader.open(KgTestData.getEdgesCsvResourceAsStream())) { reader =>
-        val edges = reader.toStream.toList
+        val edges = reader.iterator.toList
         edges.size should be > 0
         for (edge <- edges) {
           edge.subject should not be empty

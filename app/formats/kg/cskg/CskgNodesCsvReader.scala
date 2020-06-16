@@ -8,8 +8,8 @@ import models.kg
 import models.kg.KgNode
 
 final class CskgNodesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgNode](csvReader) {
-  def toStream: Stream[KgNode] =
-    csvReader.toStreamWithHeaders.map(row =>
+  def iterator: Iterator[KgNode] =
+    csvReader.iteratorWithHeaders.map(row =>
       kg.KgNode(
         aliases = row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList),
         datasource = row("datasource"),

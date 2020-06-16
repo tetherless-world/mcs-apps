@@ -10,7 +10,7 @@ class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with With
   "Benchmark questions .jsonl reader" can {
     "read the test data" in {
       withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(BenchmarkTestData.getBenchmarkQuestionsJsonlResourceAsStream(), "UTF-8"))) { reader =>
-        val questions = reader.toStream.toList
+        val questions = reader.iterator.toList
         for (question <- questions) {
           question.questionSetId should not be empty
           question.id should not be empty

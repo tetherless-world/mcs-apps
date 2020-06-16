@@ -7,7 +7,7 @@ import com.github.tototoshi.csv.{CSVFormat, CSVReader, TSVFormat}
 import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
 import org.apache.commons.lang3.StringUtils
 
-abstract class CskgCsvReader[T](protected val csvReader: CSVReader) extends AutoCloseable {
+abstract class CskgCsvReader[T](protected val csvReader: CSVReader) extends AutoCloseable with Iterable[T] {
   override def close(): Unit =
     csvReader.close()
 
@@ -16,11 +16,13 @@ abstract class CskgCsvReader[T](protected val csvReader: CSVReader) extends Auto
       row.get(key).flatMap(value => if (!StringUtils.isBlank(value) && value != "::") Some(value) else None)
   }
 
-  def toStream: Stream[T]
+  def iterator: Iterator[T]
 }
 
 object CskgCsvReader {
-  private implicit val csvFormat: CSVFormat = new TSVFormat {}
+  private val csvFormat: CSVFormat = new TSVFormat {
+    override val escapeChar: Char = 0
+  }
 
   def openCsvReader(filePath: Path): CSVReader = {
     // Need to buffer the file input stream so that the compressor factory can check it
@@ -41,5 +43,5 @@ object CskgCsvReader {
   }
 
   def openCsvReader(reader: Reader): CSVReader =
-    CSVReader.open(reader)
+    CSVReader.open(reader)(csvFormat)
 }

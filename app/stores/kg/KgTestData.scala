@@ -47,19 +47,19 @@ object KgTestData extends WithResource {
 
   private def readEdges(): List[KgEdge] = {
     withResource(CskgEdgesCsvReader.open(getEdgesCsvResourceAsStream())) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 
   private def readNodes(): List[KgNode] = {
     withResource(CskgNodesCsvReader.open(getNodesCsvResourceAsStream())) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 
   private def readPaths(): List[KgPath] = {
     withResource(new KgPathsJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 

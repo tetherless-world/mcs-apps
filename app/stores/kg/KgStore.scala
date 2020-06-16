@@ -61,18 +61,27 @@ trait KgStore {
 
   def isEmpty: Boolean
 
+  final def putEdges(edges: Iterable[KgEdge]): Unit =
+    putEdges(edges.iterator)
+
   /**
    * Put the given edges to the store
    */
-  def putEdges(edges: TraversableOnce[KgEdge]): Unit
+  def putEdges(edges: Iterator[KgEdge]): Unit
+
+  final def putNodes(nodes: Iterable[KgNode]): Unit =
+    putNodes(nodes.iterator)
 
   /**
    * Put the given nodes to the store
    */
-  def putNodes(nodes: TraversableOnce[KgNode]): Unit
+  def putNodes(nodes: Iterator[KgNode]): Unit
+
+  final def putPaths(paths: Iterable[KgPath]): Unit =
+    putPaths(paths.iterator)
 
   /**
    * Put the given paths to the store
    */
-  def putPaths(paths: TraversableOnce[KgPath]): Unit
+  def putPaths(paths: Iterator[KgPath]): Unit
 }
