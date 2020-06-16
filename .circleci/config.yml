@@ -107,48 +107,48 @@ workflows:
   version: 2
   build:
     jobs:
-#      - cypress/install:
-#          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
-#          requires:
-#            - scala
-#          working_directory: test/integration
-#          post-steps:
-#            - slack/status:
-#                fail_only: true
-#      - cypress/run:
-#          attach-workspace: true
-#          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
-#          post-steps:
-#            - store_test_results:
-#                path: test/integration/results
-#            - store_artifacts:
-#                path: test/integration/cypress/screenshots
-#            - store_artifacts:
-#                path: test/integration/cypress/videos
-#            - slack/status
-#          requires:
-#            - cypress/install
-#          start: |
-#            pwd
-#            cp ~/project/.circleci/cypress.json .
-#            apt-get update && apt-get install -y default-jre
-#            cd ~/dist/app
-#            bin/mcs-portal-app -DtestIntegration
-#          wait-on: "http-get://localhost:9000/index.html"
-#          working_directory: test/integration
+      - cypress/install:
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
+          requires:
+            - scala
+          working_directory: test/integration
+          post-steps:
+            - slack/status:
+                fail_only: true
+      - cypress/run:
+          attach-workspace: true
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
+          post-steps:
+            - store_test_results:
+                path: test/integration/results
+            - store_artifacts:
+                path: test/integration/cypress/screenshots
+            - store_artifacts:
+                path: test/integration/cypress/videos
+            - slack/status
+          requires:
+            - cypress/install
+          start: |
+            pwd
+            cp ~/project/.circleci/cypress.json .
+            apt-get update && apt-get install -y default-jre
+            cd ~/dist/app
+            bin/mcs-portal-app -DtestIntegration
+          wait-on: "http-get://localhost:9000/index.html"
+          working_directory: test/integration
       - docker:
           filters:
             branches:
               only: master
           post-steps:
             - slack/status
-#      - scala:
-#          requires:
-#            - ts
-#          post-steps:
-#            - slack/status:
-#                fail_only: true
-#      - ts:
-#          post-steps:
-#            - slack/status:
-#                fail_only: true
+      - scala:
+          requires:
+            - ts
+          post-steps:
+            - slack/status:
+                fail_only: true
+      - ts:
+          post-steps:
+            - slack/status:
+                fail_only: true
