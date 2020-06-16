@@ -7,9 +7,12 @@ context("Home Page", () => {
   beforeEach(() => page.visit());
 
   it("should show total node and edge counts", () => {
-    page.totalNodeCount.should("have.text", `${TestData.nodeCount} nodes`);
-    // TODO: use fixture to get this
-    // page.totalEdgeCount.should("have.text", `${data.edgeCount} relationships`);
+    TestData.nodes.then((nodes) => {
+      page.totalNodeCount.should("have.text", `${nodes.length} nodes`);
+    });
+    TestData.edges.then((edges) => {
+      page.totalEdgeCount.should("have.text", `${edges.length} relationships`);
+    });
   });
 
   it("should show all datasources", () => {
