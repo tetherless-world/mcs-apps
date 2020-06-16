@@ -19,7 +19,7 @@ object BenchmarkTestData extends WithResource {
   val BenchmarkSubmissionsJsonlResourceName = "/test_data/benchmark/benchmark_submissions.jsonl"
 
   val benchmarks = readBenchmarks()
-  val benchmarkAnswers: List[BenchmarkAnswer] = List()
+  val benchmarkAnswers = readBenchmarkAnswers()
   val benchmarkQuestions = readBenchmarkQuestions()
   val benchmarkSubmissions = readBenchmarkSubmissions()
   validate()

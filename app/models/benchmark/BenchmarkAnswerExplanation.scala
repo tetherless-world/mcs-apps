@@ -1,3 +1,3 @@
 package models.benchmark
 
-final case class BenchmarkAnswerExplanation(choiceAnalysis: Option[List[BenchmarkQuestionChoiceAnalysis]])
+final case class BenchmarkAnswerExplanation(choiceAnalyses: Option[List[BenchmarkQuestionChoiceAnalysis]])
