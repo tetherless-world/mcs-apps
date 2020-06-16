@@ -3,7 +3,7 @@ package models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.benchmark.{Benchmark, BenchmarkQuestion, BenchmarkQuestionChoice, BenchmarkQuestionSet}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkQuestionSet, BenchmarkSubmission}
 import models.kg.{KgEdge, KgNode, KgPath}
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
@@ -13,6 +13,13 @@ import stores.kg.KgNodeFilters
 
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Object types
+  implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
+  implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths]()
+  implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()
+  implicit val BenchmarkAnswerExplanationType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswerExplanation]()
+  implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
+  implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission]()
+
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
   implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet](
@@ -22,7 +29,6 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         ListType(BenchmarkQuestionType),
         arguments = LimitArgument :: OffsetArgument :: Nil,
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsBySet(
-          benchmarkId = ctx.value.benchmarkId,
           benchmarkQuestionSetId = ctx.value.id,
           limit = ctx.args.arg(LimitArgument),
           offset = ctx.args.arg(OffsetArgument)
@@ -30,7 +36,10 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
       )
     )
   )
-  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark]()
+  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
+    AddFields(
+    )
+  )
 
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54

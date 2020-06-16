@@ -4,16 +4,16 @@
         "name": "Benchmark 0",
         "questionSets": [
             {
-                "benchmarkId": "benchmark0",
-                "id": "dev"
+                "id": "benchmark0-dev",
+                "name": "Benchmark 0 dev set"
             },
             {
-                "benchmarkId": "benchmark0",
-                "id": "test"
+                "id": "benchmark0-test",
+                "name": "Benchmark 0 test set"
             },
             {
-                "benchmarkId": "benchmark0",
-                "id": "train"
+                "id": "benchmark0-train",
+                "name": "Benchmark 0 train set"
             }
         ]
     },
@@ -22,16 +22,16 @@
         "name": "Benchmark 1",
         "questionSets": [
             {
-                "benchmarkId": "benchmark1",
-                "id": "dev"
+                "id": "benchmark1-dev",
+                "name": "Benchmark 1 dev set"
             },
             {
-                "benchmarkId": "benchmark1",
-                "id": "test"
+                "id": "benchmark1-test",
+                "name": "Benchmark 1 test set"
             },
             {
-                "benchmarkId": "benchmark1",
-                "id": "train"
+                "id": "benchmark1-train",
+                "name": "Benchmark 1 train set"
             }
         ]
     },
@@ -40,16 +40,16 @@
         "name": "Benchmark 2",
         "questionSets": [
             {
-                "benchmarkId": "benchmark2",
-                "id": "dev"
+                "id": "benchmark2-dev",
+                "name": "Benchmark 2 dev set"
             },
             {
-                "benchmarkId": "benchmark2",
-                "id": "test"
+                "id": "benchmark2-test",
+                "name": "Benchmark 2 test set"
             },
             {
-                "benchmarkId": "benchmark2",
-                "id": "train"
+                "id": "benchmark2-train",
+                "name": "Benchmark 2 train set"
             }
         ]
     }

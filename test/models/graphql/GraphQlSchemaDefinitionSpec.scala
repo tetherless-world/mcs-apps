@@ -61,7 +61,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id)))
       for (questionSet <- benchmark.questionSets) {
         result must include(questionSet.id)
-        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.benchmarkId == benchmark.id && question.questionSetId == questionSet.id)) {
+        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.questionSetId == questionSet.id)) {
           result must include(question.id)
           for (choice <- question.choices) {
             result must include(choice.text)
@@ -69,6 +69,35 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
         }
       }
     }
+
+    "get a benchmark submission tree" in {
+      val benchmark = BenchmarkTestData.benchmarks(0)
+      val query =
+        graphql"""
+          query BenchmarkByIdQuery($$benchmarkId: String!) {
+            benchmarkById(id: $$benchmarkId) {
+              submissions {
+                answers {
+                  choiceLabel
+                  questionId
+                }
+                id
+              }
+            }
+          }
+          """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id)))
+      val submissions = BenchmarkTestData.benchmarkSubmissions.filter(submission => submission.benchmarkId == benchmark.id)
+      for (submission <- submissions) {
+        result must include(submission.id)
+        val answers = BenchmarkTestData.benchmarkAnswers.filter(answer => answer.submissionId == submission.id)
+        for (answer <- answers) {
+          result must include(answer.questionId)
+        }
+      }
+    }
+
 
     "get a KG node by id" in {
       val node = KgTestData.nodes(0)

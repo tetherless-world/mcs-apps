@@ -65,18 +65,18 @@ object BenchmarkTestData extends WithResource {
 
   private def validate(): Unit = {
     for (question <- benchmarkQuestions) {
-      val benchmark = benchmarks.find(benchmark => question.benchmarkId == benchmark.id)
+      val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == question.questionSetId))
       if (!benchmark.isDefined) {
-        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark ${question.benchmarkId}")
+        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
       if (!benchmark.get.questionSets.exists(questionSet => question.questionSetId == questionSet.id)) {
         throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
     }
     for (submission <- benchmarkSubmissions) {
-      val benchmark = benchmarks.find(benchmark => submission.benchmarkId == benchmark.id)
+      val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == submission.questionSetId))
       if (!benchmark.isDefined) {
-        throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark ${submission.benchmarkId}")
+        throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
       }
       if (!benchmark.get.questionSets.exists(questionSet => submission.questionSetId == questionSet.id)) {
         throw new IllegalArgumentException(s"benchmark question ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
@@ -90,8 +90,7 @@ object BenchmarkTestData extends WithResource {
       val question =
         benchmarkQuestions.find(
           question => question.id == answer.questionId &&
-            question.questionSetId == submission.get.questionSetId &&
-            question.benchmarkId == submission.get.benchmarkId)
+            question.questionSetId == submission.get.questionSetId)
       if (!question.isDefined) {
         throw new IllegalArgumentException(s"answer refers to missing question ${answer.questionId}")
       }

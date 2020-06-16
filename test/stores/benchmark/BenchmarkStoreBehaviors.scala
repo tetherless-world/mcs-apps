@@ -11,7 +11,7 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
       for (benchmark <- benchmarks) {
         benchmark.questionSets should not be empty
         for (questionSet <- benchmark.questionSets) {
-          val questions = sut.getBenchmarkQuestionsBySet(benchmarkId = benchmark.id, benchmarkQuestionSetId = questionSet.id, limit = 1000, offset = 0)
+          val questions = sut.getBenchmarkQuestionsBySet(benchmarkQuestionSetId = questionSet.id, limit = 1000, offset = 0)
           questions should not be empty
           questions.size should be < 1000
         }
@@ -22,7 +22,7 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
       val benchmarks = sut.getBenchmarks
       benchmarks should not be empty
       for (benchmark <- benchmarks) {
-        val submissions = sut.getBenchmarkSubmissionsByBenchmark(benchmark.id)
+        val submissions = sut.getBenchmarkSubmissionsByQuestionSet(benchmark.id)
         submissions should not be empty
         for (submission <- submissions) {
           submission.benchmarkId should equal(benchmark.id)
@@ -31,7 +31,7 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
           val answers = sut.getBenchmarkAnswersBySubmission(submission.id, limit = 1000, offset = 0)
           answers should not be empty
           for (answer <- answers) {
-            val question = sut.getBenchmarkQuestionById(benchmarkId = benchmark.id, benchmarkQuestionSetId = questionSet.get.id, benchmarkQuestionId = answer.questionId)
+            val question = sut.getBenchmarkQuestionById(answer.questionId)
             question should not be None
             question.get.choices.exists(choice => choice.label == answer.choiceLabel) should be(true)
             answer.explanation should not be None

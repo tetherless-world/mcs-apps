@@ -18,15 +18,18 @@ class MemBenchmarkStore extends BenchmarkStore {
   final override def getBenchmarkById(benchmarkId: String): Option[Benchmark] =
     benchmarks.find(benchmark => benchmark.id == benchmarkId)
 
-  final override def getBenchmarkQuestionsBySet(benchmarkId: String, benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
+  final override def getBenchmarkQuestionsBySet(benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
     benchmarkQuestions
-      .filter(question => question.benchmarkId == benchmarkId && question.questionSetId == benchmarkQuestionSetId)
+      .filter(question => question.questionSetId == benchmarkQuestionSetId)
       .drop(offset).take(limit)
 
-  final override def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission] =
+  override def getBenchmarkQuestionById(benchmarkQuestionId: String): Option[BenchmarkQuestion] =
+    benchmarkQuestions
+      .find(question => question.id == benchmarkQuestionId)
+
+  override def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission] =
     benchmarkSubmissions.filter(submission => submission.benchmarkId == benchmarkId)
 
-  override def getBenchmarkQuestionById(benchmarkId: String, benchmarkQuestionSetId: String, benchmarkQuestionId: String): Option[BenchmarkQuestion] =
-    benchmarkQuestions
-      .find(question => question.benchmarkId == benchmarkId && question.questionSetId == benchmarkQuestionSetId && question.id == benchmarkQuestionId)
+  final override def getBenchmarkSubmissionsByQuestionSet(benchmarkQuestionSetId: String): List[BenchmarkSubmission] =
+    benchmarkSubmissions.filter(submission => submission.questionSetId == benchmarkQuestionSetId)
 }
