@@ -22,7 +22,7 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
       val benchmarks = sut.getBenchmarks
       benchmarks should not be empty
       for (benchmark <- benchmarks) {
-        val submissions = sut.getBenchmarkSubmissionsByQuestionSet(benchmark.id)
+        val submissions = sut.getBenchmarkSubmissionsByBenchmark(benchmark.id)
         submissions should not be empty
         for (submission <- submissions) {
           submission.benchmarkId should equal(benchmark.id)
