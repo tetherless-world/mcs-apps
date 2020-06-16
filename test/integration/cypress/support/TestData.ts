@@ -1,6 +1,6 @@
-import {KgNode} from "./Node";
-import {KgEdge} from "./Edge";
-import {KgPath} from "./Path";
+import {KgNode} from "./KgNode";
+import {KgEdge} from "./KgEdge";
+import {KgPath} from "./KgPath";
 
 export class TestData {
   static readonly kgId = "cskg";

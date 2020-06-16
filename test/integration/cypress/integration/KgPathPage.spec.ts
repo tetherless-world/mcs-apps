@@ -1,6 +1,6 @@
 import {KgPathPage} from "../support/page_files/KgPathPage";
 import {TestData} from "../support/TestData";
-import {KgPath} from "../support/Path";
+import {KgPath} from "../support/KgPath";
 
 context("KgPathPage", () => {
   const page = new KgPathPage();
