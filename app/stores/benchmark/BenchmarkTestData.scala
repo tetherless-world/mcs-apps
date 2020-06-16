@@ -87,8 +87,8 @@ object BenchmarkTestData extends WithResource {
         throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
       }
     }
-  }
-  for (submission <- benchmarkSubmissions) {
+
+    for (submission <- benchmarkSubmissions) {
       val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == submission.questionSetId))
       if (!benchmark.isDefined) {
         throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
@@ -113,6 +113,5 @@ object BenchmarkTestData extends WithResource {
         throw new IllegalArgumentException(s"answer refers to missing choice ${answer.choiceLabel}")
       }
     }
-
   }
 }
