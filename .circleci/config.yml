@@ -22,12 +22,11 @@ jobs:
       - run:
           name: Load the database
           command: |
-            bzip2 -d -f conf/test_data/kg/edges.csv.bz2 conf/test_data/kg/edges.csv
-            bzip2 -d -f conf/test_data/kg/nodes.csv.bz2 conf/test_data/kg/nodes.csv
+            bzip2 -dc conf/test_data/kg/edges.csv.bz2 >conf/test_data/kg/edges.csv
+            bzip2 -dc conf/test_data/kg/nodes.csv.bz2 >conf/test_data/kg/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
             docker cp conf/test_data/benchmark/ mcs-portal-app:/app/data/import/
             docker cp conf/test_data/kg/ mcs-portal-app:/app/data/import/
-            rm conf/test_data/*.csv
             script/import-cskg
       - run:
           name: Test that the database is loaded
