@@ -1,3 +1,3 @@
 package models.benchmark
 
-final case class BenchmarkAnswer(choiceLabel: String, questionId: String)
+final case class BenchmarkAnswer(choiceLabel: String, explanation: Option[BenchmarkAnswerExplanation], questionId: String, submissionId: String)

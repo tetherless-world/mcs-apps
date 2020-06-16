@@ -8,16 +8,6 @@ import models.benchmark.{BenchmarkQuestion, BenchmarkQuestionChoice, BenchmarkQu
 import scala.io.Source
 
 final class BenchmarkQuestionsJsonlReader(source: Source) extends JsonlReader[BenchmarkQuestion](source) {
-  protected final override def toStream(jsonl: Stream[Json]): Stream[BenchmarkQuestion] = {
-    implicit val benchmarkQuestionChoiceDecoder: Decoder[BenchmarkQuestionChoice] = deriveDecoder
-    implicit val benchmarkQuestionDecoder: Decoder[BenchmarkQuestion] = deriveDecoder
-    jsonl.map(obj =>
-      benchmarkQuestionDecoder.decodeJson(obj) match {
-        case Left(decodingFailure) => {
-          throw decodingFailure
-        }
-        case Right(benchmarkQuestion) => benchmarkQuestion
-      }
-    )
-  }
+  private implicit val benchmarkQuestionChoiceDecoder: Decoder[BenchmarkQuestionChoice] = deriveDecoder
+  protected val decoder: Decoder[BenchmarkQuestion] = deriveDecoder
 }

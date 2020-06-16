@@ -1,6 +1,6 @@
 package formats
 
-import io.circe.Json
+import io.circe.{Decoder, Json}
 import io.circe.parser._
 import org.slf4j.LoggerFactory
 
@@ -8,6 +8,8 @@ import scala.io.Source
 
 abstract class JsonlReader[T](source: Source) extends AutoCloseable {
   private val logger = LoggerFactory.getLogger(getClass)
+
+  protected val decoder: Decoder[T]
 
   final override def close(): Unit =
     source.close()
@@ -26,5 +28,14 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable {
       }
     }))
 
-  protected def toStream(jsonl: Stream[Json]): Stream[T]
+  protected def toStream(jsonl: Stream[Json]): Stream[T] = {
+    jsonl.map(obj =>
+      decoder.decodeJson(obj) match {
+        case Left(decodingFailure) => {
+          throw decodingFailure
+        }
+        case Right(benchmarkQuestion) => benchmarkQuestion
+      }
+    )
+  }
 }
