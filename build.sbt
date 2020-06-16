@@ -13,6 +13,7 @@ lazy val app = (project in file("."))
       "com.outr" %% "lucene4s" % "1.9.1",
       "io.circe" %% "circe-parser" % "0.12.3",
       "io.github.tetherless-world" %% "twxplore-base" % "1.0.0-SNAPSHOT",
+      "me.tongfei" % "progressbar" % "0.8.1",
       "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1",
       "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
     ),

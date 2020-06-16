@@ -41,25 +41,25 @@ object BenchmarkTestData extends WithResource {
 
   private def readBenchmarkAnswers(): List[BenchmarkAnswer] = {
     withResource(new BenchmarkAnswersJsonlReader(Source.fromInputStream(getBenchmarkAnswersJsonlResourceAsStream()))) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 
   private def readBenchmarks(): List[Benchmark] = {
     withResource(new BenchmarksJsonlReader(Source.fromInputStream(getBenchmarksJsonlResourceAsStream()))) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 
   private def readBenchmarkQuestions(): List[BenchmarkQuestion] = {
     withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(getBenchmarkQuestionsJsonlResourceAsStream()))) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 
   private def readBenchmarkSubmissions(): List[BenchmarkSubmission] = {
     withResource(new BenchmarkSubmissionsJsonlReader(Source.fromInputStream(getBenchmarkSubmissionsJsonlResourceAsStream()))) { reader =>
-      reader.toStream.toList
+      reader.iterator.toList
     }
   }
 

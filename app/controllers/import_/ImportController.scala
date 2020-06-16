@@ -7,6 +7,8 @@ import controllers.Assets
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.path.KgPathsJsonlReader
 import javax.inject.{Inject, Singleton}
+import me.tongfei.progressbar.{DelegatingProgressBarConsumer, ProgressBar, ProgressBarBuilder}
+import org.slf4j.LoggerFactory
 import play.api.Configuration
 import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
@@ -17,6 +19,8 @@ import scala.io.Source
 
 @Singleton
 class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) extends InjectedController with WithResource {
+  private val logger = LoggerFactory.getLogger(getClass)
+
   @Inject
   def this(configuration: Configuration, store: KgStore) =
     this(Paths.get(configuration.get[String]("importDirectoryPath")), store)
@@ -28,22 +32,42 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
 
   def putEdges(edgesCsvFileName: String) = Action {
     withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
-      store.putEdges(reader.toStream)
-      Ok("")
+      withIteratorProgress(reader.iterator, "putEdges") { edges =>
+        store.putEdges(edges)
+        Ok("")
+      }
     }
   }
 
   def putNodes(nodesCsvFileName: String) = Action {
     withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve(nodesCsvFileName))) { reader =>
-      store.putNodes(reader.toStream)
-      Ok("")
+      withIteratorProgress(reader.iterator, "putNodes") { nodes =>
+        store.putNodes(nodes)
+        Ok("")
+      }
     }
   }
 
   def putPaths(pathsJsonlFileName: String) = Action {
     withResource(new KgPathsJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
-      store.putPaths(reader.toStream)
-      Ok("")
+      withIteratorProgress(reader.iterator, "putPaths") { paths =>
+        store.putPaths(paths)
+        Ok("")
+      }
+    }
+  }
+
+  def withIteratorProgress[T, V](models: Iterator[T], taskName: String)(f: (Iterator[T]) => V): V = {
+    val progressBar =
+      new ProgressBarBuilder()
+        .setInitialMax(0)
+        .setTaskName(taskName)
+        .setConsumer(new DelegatingProgressBarConsumer(message => logger.info(message)))
+        .setUpdateIntervalMillis(5000)
+        .showSpeed
+        .build
+    withResource(progressBar) { progressBar =>
+      f(models.map(x => { progressBar.step(); x }))
     }
   }
 }

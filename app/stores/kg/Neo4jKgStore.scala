@@ -79,6 +79,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
+  private val PutCommitInterval = 10000
 
   private implicit class RecordWrapper(record: Record) {
     def toEdge: KgEdge = {
@@ -365,78 +366,77 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private def queryParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
-  final override def putEdges(edges: TraversableOnce[KgEdge]): Unit = {
-    withSession { session =>
-      session.writeTransaction { transaction =>
-        for (edge <- edges) {
-          //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
-          transaction.run(
-            """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-              |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
-              |REMOVE rel.noOp
-              |""".stripMargin,
-            queryParameters(Map(
-              "datasource" -> edge.datasource,
-              "object" -> edge.`object`,
-              "other" -> edge.other.getOrElse(null),
-              "predicate" -> edge.predicate,
-              "subject" -> edge.subject,
-              "weight" -> edge.weight.getOrElse(null)
-            ))
-          )
-        }
-        transaction.commit()
+  final override def putEdges(edges: Iterator[KgEdge]): Unit =
+    putModels(edges) { (transaction, edge) => {
+      //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
+      transaction.run(
+        """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
+          |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
+          |REMOVE rel.noOp
+          |""".stripMargin,
+        queryParameters(Map(
+          "datasource" -> edge.datasource,
+          "object" -> edge.`object`,
+          "other" -> edge.other.getOrElse(null),
+          "predicate" -> edge.predicate,
+          "subject" -> edge.subject,
+          "weight" -> edge.weight.getOrElse(null)
+        ))
+      )
+    }
+    }
+
+  final override def putNodes(nodes: Iterator[KgNode]): Unit =
+    putModels(nodes) { (transaction, node) =>
+      //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
+      transaction.run(
+        "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
+        queryParameters(Map(
+          "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
+          "datasource" -> node.datasource,
+          "id" -> node.id,
+          "label" -> node.label,
+          "pos" -> node.pos.getOrElse(null),
+          "other" -> node.other.getOrElse(null)
+        ))
+      )
+    }
+
+  override def putPaths(paths: Iterator[KgPath]): Unit =
+    putModels(paths) { (transaction, path) => {
+      for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
+        val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
+        transaction.run(
+          """
+            |MATCH (subject:Node), (object: Node)
+            |WHERE subject.id = $subject AND object.id = $object
+            |CREATE (subject)-[path:PATH {datasource: $pathDatasource, id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate}]->(object)
+            |""".stripMargin,
+          queryParameters(Map(
+            "object" -> pathEdge.`object`,
+            "pathDatasource" -> path.datasource,
+            "pathEdgeIndex" -> pathEdgeIndex,
+            "pathId" -> path.id,
+            "pathEdgePredicate" -> pathEdge.predicate,
+            "subject" -> pathEdge.subject
+          ))
+        )
       }
     }
-  }
-
-  final override def putNodes(nodes: TraversableOnce[KgNode]): Unit = {
-    withSession { session =>
-      session.writeTransaction { transaction =>
-        for (node <- nodes) {
-          //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
-          transaction.run(
-            "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
-            queryParameters(Map(
-              "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
-              "datasource" -> node.datasource,
-              "id" -> node.id,
-              "label" -> node.label,
-              "pos" -> node.pos.getOrElse(null),
-              "other" -> node.other.getOrElse(null)
-            ))
-          )
-        }
-        transaction.commit()
-      }
     }
-  }
 
-  override def putPaths(paths: TraversableOnce[KgPath]): Unit = {
-    withSession { session =>
-      session.writeTransaction { transaction =>
-        for (path <- paths) {
-          for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-            val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-            transaction.run(
-              """
-                |MATCH (subject:Node), (object: Node)
-                |WHERE subject.id = $subject AND object.id = $object
-                |CREATE (subject)-[path:PATH {datasource: $pathDatasource, id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate}]->(object)
-                |""".stripMargin,
-              queryParameters(Map(
-                "object" -> pathEdge.`object`,
-                "pathDatasource" -> path.datasource,
-                "pathEdgeIndex" -> pathEdgeIndex,
-                "pathId" -> path.id,
-                "pathEdgePredicate" -> pathEdge.predicate,
-                "subject" -> pathEdge.subject
-              ))
-            )
-          }
+  private def putModels[T](models: Iterator[T])(putModel: (Transaction, T)=>Unit): Unit =
+    withSession { session => {
+      var transaction = session.beginTransaction()
+      for (modelWithIndex <- models.zipWithIndex) {
+        val (model, modelIndex) = modelWithIndex
+        putModel(transaction, model)
+        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
+          transaction.commit()
+          transaction = session.beginTransaction()
         }
-        transaction.commit()
       }
+      transaction.commit()
     }
   }
 

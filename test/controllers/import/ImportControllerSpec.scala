@@ -34,7 +34,7 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
 
   "The import controller" should {
     "clear the store" in {
-      store.putNodes(KgTestData.nodes)
+      store.putNodes(KgTestData.nodes.iterator)
       store.isEmpty must be(false)
       val result = sut.clear()(FakeRequest())
 //      val bodyText = contentAsString(result)
@@ -44,7 +44,7 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
 
     "put edges to the store" in {
       store.getTotalEdgesCount must be (0)
-      store.putNodes(KgTestData.nodes)
+      store.putNodes(KgTestData.nodes.iterator)
       val sourceFilePath = new File(getClass.getResource(KgTestData.EdgesCsvBz2ResourceName).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)

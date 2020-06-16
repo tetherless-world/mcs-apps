@@ -7,8 +7,8 @@ import com.github.tototoshi.csv._
 import models.kg.KgEdge
 
 final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdge](csvReader) {
-  def toStream: Stream[KgEdge] =
-    csvReader.toStreamWithHeaders.map(row =>
+  def iterator: Iterator[KgEdge] =
+    csvReader.iteratorWithHeaders.map(row =>
       KgEdge(
         datasource = row("datasource"),
         `object` = row("object"),

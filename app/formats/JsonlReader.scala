@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-abstract class JsonlReader[T](source: Source) extends AutoCloseable {
+abstract class JsonlReader[T](source: Source) extends AutoCloseable with Iterable[T] {
   private val logger = LoggerFactory.getLogger(getClass)
 
   protected val decoder: Decoder[T]
@@ -14,8 +14,8 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable {
   final override def close(): Unit =
     source.close()
 
-  final def toStream: Stream[T] =
-    toStream(source.getLines().toStream.flatMap(line => {
+  final def iterator: Iterator[T] =
+    iterator(source.getLines().flatMap(line => {
       val parseResult = parse(line)
       parseResult match {
         case Left(parsingFailure) => {
@@ -28,7 +28,7 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable {
       }
     }))
 
-  protected def toStream(jsonl: Stream[Json]): Stream[T] = {
+  protected def iterator(jsonl: Iterator[Json]): Iterator[T] = {
     jsonl.map(obj =>
       decoder.decodeJson(obj) match {
         case Left(decodingFailure) => {
