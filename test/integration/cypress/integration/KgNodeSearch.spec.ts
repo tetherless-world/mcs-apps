@@ -1,9 +1,9 @@
 import {KgNodeSearchResultsPage} from "../support/page_files/KgNodeSearchResultsPage";
 import {KgNodePage} from "../support/page_files/KgNodePage";
-import {HomePage} from "../support/page_files/HomePage";
+import {KgHomePage} from "../support/page_files/KgHomePage";
 
 context("Navigate to test KgNodePage from HomePage using search", () => {
-  const homePage = new HomePage();
+  const homePage = new KgHomePage();
 
   beforeEach(() => {
     homePage.visit();
