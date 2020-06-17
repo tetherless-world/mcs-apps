@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath}
 import org.neo4j.driver._
+import org.neo4j.driver.exceptions.TransientException
 import org.slf4j.LoggerFactory
 import stores.{Neo4jStoreConfiguration, StringFilter, WithResource}
 
@@ -432,11 +433,24 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
         val (model, modelIndex) = modelWithIndex
         putModel(transaction, model)
         if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
-          transaction.commit()
+          tryOperation(() => transaction.commit())
           transaction = session.beginTransaction()
         }
       }
-      transaction.commit()
+      tryOperation(() => transaction.commit())
+    }
+  }
+
+  private def tryOperation(f: () => Unit): Unit = {
+    for (tryI <- 0 until 10) {
+      try {
+        f()
+        return
+      } catch {
+        case e: TransientException => {
+          logger.warn("transient exception in neo4j, try {}: {}", tryI, e.getMessage)
+        }
+      }
     }
   }
 
