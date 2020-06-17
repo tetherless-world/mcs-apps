@@ -1,6 +1,6 @@
 package stores.benchmark
 
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkQuestionSet, BenchmarkSubmission}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkDataset, BenchmarkSubmission}
 
 trait BenchmarkStore {
   def getBenchmarks: List[Benchmark]
@@ -8,8 +8,8 @@ trait BenchmarkStore {
   def getBenchmarkAnswersBySubmission(benchmarkSubmissionId: String, limit: Int, offset: Int): List[BenchmarkAnswer]
   def getBenchmarkById(benchmarkId: String): Option[Benchmark]
   def getBenchmarkQuestionById(benchmarkQuestionId: String): Option[BenchmarkQuestion]
-  def getBenchmarkQuestionsBySet(benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion]
+  def getBenchmarkQuestionsByDataset(benchmarkDatasetId: String, limit: Int, offset: Int): List[BenchmarkQuestion]
   def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission]
   def getBenchmarkSubmissionById(submissionId: String): Option[BenchmarkSubmission]
-  def getBenchmarkSubmissionsByQuestionSet(questionSetId: String): List[BenchmarkSubmission]
+  def getBenchmarkSubmissionsByDataset(datasetId: String): List[BenchmarkSubmission]
 }

@@ -6,64 +6,64 @@
 // GraphQL query operation: BenchmarkAnswerPageQuery
 // ====================================================
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_questionById_choices {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices {
   __typename: "BenchmarkQuestionChoice";
   label: string;
   text: string;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_questionById {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById {
   __typename: "BenchmarkQuestion";
-  choices: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_questionById_choices[];
+  choices: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices[];
   text: string;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths {
   __typename: "BenchmarkQuestionAnswerPath";
   path: string[];
   score: number;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths {
   __typename: "BenchmarkQuestionAnswerPaths";
   endNodeId: string;
   startNodeId: string;
-  paths: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths[];
+  paths: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths[];
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses {
   __typename: "BenchmarkQuestionChoiceAnalysis";
   choiceLabel: string;
-  questionAnswerPaths: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths[];
+  questionAnswerPaths: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths[];
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation {
   __typename: "BenchmarkAnswerExplanation";
-  choiceAnalyses: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation_choiceAnalyses[] | null;
+  choiceAnalyses: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses[] | null;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId {
   __typename: "BenchmarkAnswer";
   choiceLabel: string;
-  explanation: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId_explanation | null;
+  explanation: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation | null;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById {
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById {
   __typename: "BenchmarkSubmission";
-  answerByQuestionId: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById_answerByQuestionId | null;
+  answerByQuestionId: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId | null;
 }
 
-export interface BenchmarkAnswerPageQuery_benchmarkById_questionSetById {
-  __typename: "BenchmarkQuestionSet";
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById {
+  __typename: "BenchmarkDataset";
   name: string;
-  questionById: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_questionById | null;
-  submissionById: BenchmarkAnswerPageQuery_benchmarkById_questionSetById_submissionById | null;
+  questionById: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById | null;
+  submissionById: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById | null;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById {
   __typename: "Benchmark";
   name: string;
-  questionSetById: BenchmarkAnswerPageQuery_benchmarkById_questionSetById | null;
+  datasetById: BenchmarkAnswerPageQuery_benchmarkById_datasetById | null;
 }
 
 export interface BenchmarkAnswerPageQuery {
@@ -73,6 +73,6 @@ export interface BenchmarkAnswerPageQuery {
 export interface BenchmarkAnswerPageQueryVariables {
   benchmarkId: string;
   questionId: string;
-  questionSetId: string;
+  datasetId: string;
   submissionId: string;
 }

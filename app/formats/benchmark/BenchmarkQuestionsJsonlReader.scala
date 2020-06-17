@@ -3,7 +3,7 @@ package formats.benchmark
 import formats.JsonlReader
 import io.circe.generic.semiauto.deriveDecoder
 import io.circe.{Decoder, Json}
-import models.benchmark.{BenchmarkQuestion, BenchmarkQuestionChoice, BenchmarkQuestionSet}
+import models.benchmark.{BenchmarkQuestion, BenchmarkQuestionChoice, BenchmarkDataset}
 
 import scala.io.Source
 

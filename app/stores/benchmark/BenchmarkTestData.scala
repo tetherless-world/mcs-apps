@@ -3,10 +3,7 @@ package stores.benchmark
 import java.io.{BufferedInputStream, InputStream}
 
 import formats.benchmark.{BenchmarkAnswersJsonlReader, BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
-import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.kg.path.KgPathsJsonlReader
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkQuestionSet, BenchmarkSubmission}
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkSubmission}
 import stores.WithResource
 
 import scala.io.Source
@@ -15,7 +12,6 @@ object BenchmarkTestData extends WithResource {
   val BenchmarkAnswersJsonlResourceName = "/test_data/benchmark/benchmark_answers.jsonl"
   val BenchmarksJsonlResourceName = "/test_data/benchmark/benchmarks.jsonl"
   val BenchmarkQuestionsJsonlResourceName = "/test_data/benchmark/benchmark_questions.jsonl"
-  val BenchmarkQuestionSetsJsonlResourceName = "/test_data/benchmark/benchmark_question_sets.jsonl"
   val BenchmarkSubmissionsJsonlResourceName = "/test_data/benchmark/benchmark_submissions.jsonl"
 
   val benchmarks = readBenchmarks()
@@ -67,8 +63,8 @@ object BenchmarkTestData extends WithResource {
     if (benchmarks.map(benchmark => benchmark.id).toSet.size != benchmarks.size) {
       throw new IllegalArgumentException("benchmarks do not have unique id's")
     }
-    val questionSets = benchmarks.flatMap(benchmark => benchmark.questionSets)
-    if (questionSets.map(questionSet => questionSet.id).toSet.size != questionSets.size) {
+    val datasets = benchmarks.flatMap(benchmark => benchmark.datasets)
+    if (datasets.map(dataset => dataset.id).toSet.size != datasets.size) {
       throw new IllegalArgumentException("benchmark question sets do not have unique id's")
     }
     if (benchmarkQuestions.map(question => question.id).toSet.size != benchmarkQuestions.size) {
@@ -79,22 +75,22 @@ object BenchmarkTestData extends WithResource {
     }
 
     for (question <- benchmarkQuestions) {
-      val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == question.questionSetId))
+      val benchmark = benchmarks.find(benchmark => benchmark.datasets.exists(dataset => dataset.id == question.datasetId))
       if (!benchmark.isDefined) {
-        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
+        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.datasetId}")
       }
-      if (!benchmark.get.questionSets.exists(questionSet => question.questionSetId == questionSet.id)) {
-        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.questionSetId}")
+      if (!benchmark.get.datasets.exists(dataset => question.datasetId == dataset.id)) {
+        throw new IllegalArgumentException(s"benchmark question ${question.id} refers to missing benchmark question set ${question.datasetId}")
       }
     }
 
     for (submission <- benchmarkSubmissions) {
-      val benchmark = benchmarks.find(benchmark => benchmark.questionSets.exists(questionSet => questionSet.id == submission.questionSetId))
+      val benchmark = benchmarks.find(benchmark => benchmark.datasets.exists(dataset => dataset.id == submission.datasetId))
       if (!benchmark.isDefined) {
-        throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
+        throw new IllegalArgumentException(s"submission ${submission.id} refers to missing benchmark question set ${submission.datasetId}")
       }
-      if (!benchmark.get.questionSets.exists(questionSet => submission.questionSetId == questionSet.id)) {
-        throw new IllegalArgumentException(s"benchmark question ${submission.id} refers to missing benchmark question set ${submission.questionSetId}")
+      if (!benchmark.get.datasets.exists(dataset => submission.datasetId == dataset.id)) {
+        throw new IllegalArgumentException(s"benchmark question ${submission.id} refers to missing benchmark question set ${submission.datasetId}")
       }
     }
     for (answer <- benchmarkAnswers) {
@@ -105,7 +101,7 @@ object BenchmarkTestData extends WithResource {
       val question =
         benchmarkQuestions.find(
           question => question.id == answer.questionId &&
-            question.questionSetId == submission.get.questionSetId)
+            question.datasetId == submission.get.datasetId)
       if (!question.isDefined) {
         throw new IllegalArgumentException(s"answer refers to missing question ${answer.questionId}")
       }

@@ -1,3 +1,3 @@
 package models.benchmark
 
-final case class Benchmark(id: String, name: String, questionSets: List[BenchmarkQuestionSet])
+final case class Benchmark(datasets: List[BenchmarkDataset], id: String, name: String)

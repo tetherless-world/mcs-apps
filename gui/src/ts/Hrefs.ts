@@ -11,15 +11,14 @@ export class Hrefs {
         return benchmarkPrefix;
       },
 
-      questionSet(kwds: {id: string; idEncoded?: boolean}) {
-        const questionSetId = kwds.idEncoded
+      dataset(kwds: {id: string; idEncoded?: boolean}) {
+        const datasetId = kwds.idEncoded
           ? kwds.id
           : encodeURIComponent(kwds.id);
-        const questionSetPrefix =
-          benchmarkPrefix + `questionSet/${questionSetId}/`;
+        const datasetPrefix = benchmarkPrefix + `dataset/${datasetId}/`;
         return {
           get home() {
-            return questionSetPrefix;
+            return datasetPrefix;
           },
 
           submission(kwds: {id: string; idEncoded?: boolean}) {
@@ -27,7 +26,7 @@ export class Hrefs {
               ? kwds.id
               : encodeURIComponent(kwds.id);
             const submissionPrefix =
-              questionSetPrefix + `submission/${submissionId}/`;
+              datasetPrefix + `submission/${submissionId}/`;
             return {
               get home() {
                 return submissionPrefix;

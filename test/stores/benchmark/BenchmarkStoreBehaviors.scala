@@ -9,9 +9,9 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
       val benchmarks = sut.getBenchmarks
       benchmarks should not be empty
       for (benchmark <- benchmarks) {
-        benchmark.questionSets should not be empty
-        for (questionSet <- benchmark.questionSets) {
-          val questions = sut.getBenchmarkQuestionsBySet(benchmarkQuestionSetId = questionSet.id, limit = 1000, offset = 0)
+        benchmark.datasets should not be empty
+        for (dataset <- benchmark.datasets) {
+          val questions = sut.getBenchmarkQuestionsByDataset(benchmarkDatasetId = dataset.id, limit = 1000, offset = 0)
           questions should not be empty
           questions.size should be < 1000
         }
@@ -26,8 +26,8 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
         submissions should not be empty
         for (submission <- submissions) {
           submission.benchmarkId should equal(benchmark.id)
-          val questionSet = benchmark.questionSets.find(questionSet => submission.questionSetId == questionSet.id)
-          questionSet should not be None
+          val dataset = benchmark.datasets.find(dataset => submission.datasetId == dataset.id)
+          dataset should not be None
           val answers = sut.getBenchmarkAnswersBySubmission(submission.id, limit = 1000, offset = 0)
           answers should not be empty
           for (answer <- answers) {

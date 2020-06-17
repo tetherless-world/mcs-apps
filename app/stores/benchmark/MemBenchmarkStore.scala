@@ -1,6 +1,6 @@
 package stores.benchmark
 
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkQuestionSet, BenchmarkSubmission}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkDataset, BenchmarkSubmission}
 
 class MemBenchmarkStore extends BenchmarkStore {
   private val benchmarks: List[Benchmark] = BenchmarkTestData.benchmarks
@@ -21,9 +21,9 @@ class MemBenchmarkStore extends BenchmarkStore {
   final override def getBenchmarkById(benchmarkId: String): Option[Benchmark] =
     benchmarks.find(benchmark => benchmark.id == benchmarkId)
 
-  final override def getBenchmarkQuestionsBySet(benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
+  final override def getBenchmarkQuestionsByDataset(benchmarkDatasetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
     benchmarkQuestions
-      .filter(question => question.questionSetId == benchmarkQuestionSetId)
+      .filter(question => question.datasetId == benchmarkDatasetId)
       .drop(offset).take(limit)
 
   override def getBenchmarkQuestionById(benchmarkQuestionId: String): Option[BenchmarkQuestion] =
@@ -36,6 +36,6 @@ class MemBenchmarkStore extends BenchmarkStore {
   override def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission] =
     benchmarkSubmissions.filter(submission => submission.benchmarkId == benchmarkId)
 
-  final override def getBenchmarkSubmissionsByQuestionSet(benchmarkQuestionSetId: String): List[BenchmarkSubmission] =
-    benchmarkSubmissions.filter(submission => submission.questionSetId == benchmarkQuestionSetId)
+  final override def getBenchmarkSubmissionsByDataset(benchmarkDatasetId: String): List[BenchmarkSubmission] =
+    benchmarkSubmissions.filter(submission => submission.datasetId == benchmarkDatasetId)
 }

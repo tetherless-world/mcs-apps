@@ -1,7 +1,7 @@
-query BenchmarkAnswerPageQuery($benchmarkId: String!, $questionId: String!, $questionSetId: String!, $submissionId: String!) {
+query BenchmarkAnswerPageQuery($benchmarkId: String!, $questionId: String!, $datasetId: String!, $submissionId: String!) {
     benchmarkById(id: $benchmarkId) {
         name
-        questionSetById(id: $questionSetId) {
+        datasetById(id: $datasetId) {
             name
             questionById(id: $questionId) {
                 choices {

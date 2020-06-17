@@ -2,16 +2,16 @@
     {
         "benchmarkId": "benchmark0",
         "id": "benchmark0-submission",
-        "questionSetId": "benchmark0-test"
+        "datasetId": "benchmark0-test"
     },
     {
         "benchmarkId": "benchmark1",
         "id": "benchmark1-submission",
-        "questionSetId": "benchmark1-test"
+        "datasetId": "benchmark1-test"
     },
     {
         "benchmarkId": "benchmark2",
         "id": "benchmark2-submission",
-        "questionSetId": "benchmark2-test"
+        "datasetId": "benchmark2-test"
     }
 ]
