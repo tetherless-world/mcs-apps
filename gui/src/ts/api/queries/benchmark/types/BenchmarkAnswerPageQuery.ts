@@ -39,9 +39,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation {
   __typename: "BenchmarkAnswerExplanation";
-  choiceAnalyses:
-    | BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses[]
-    | null;
+  choiceAnalyses: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses[] | null;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId {
