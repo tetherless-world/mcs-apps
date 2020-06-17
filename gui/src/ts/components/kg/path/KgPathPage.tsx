@@ -6,7 +6,7 @@ import {
   KgPathPageQueryVariables,
 } from "api/queries/kg/types/KgPathPageQuery";
 import {useQuery} from "@apollo/react-hooks";
-import {ForceDirectedGraph} from "components/data/ForceDirectedGraph";
+import {ForceGraph} from "components/data/forceGraph/ForceGraph";
 import * as d3 from "d3";
 import {KgNode} from "models/kg/KgNode";
 import * as ReactLoader from "react-loader";
@@ -15,7 +15,6 @@ import {kgId} from "api/kgId";
 import {Grid, Typography, Breadcrumbs, Button} from "@material-ui/core";
 import {KgPathsTable} from "components/kg/path/KgPathsTable";
 import {KgPathTable} from "./KgPathTable";
-import {ForceDirectedGraphNodeOptions} from "models/data/ForceDirectedGraphNodeOptions";
 
 import {
   RouteComponentProps,
@@ -25,12 +24,16 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+import {ForceGraphNode} from "components/data/forceGraph/ForceGraphNode";
+import {ForceGraphLink} from "components/data/forceGraph/ForceGraphLink";
 
 interface KgPathNode extends d3.SimulationNodeDatum, KgNode {
   pathId: string;
 }
 
-interface KgPathEdge extends d3.SimulationLinkDatum<KgPathNode> {}
+interface KgPathEdge extends d3.SimulationLinkDatum<KgPathNode> {
+  id: string;
+}
 
 export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
   match,
@@ -80,6 +83,7 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
         links.push({
           source: edge.subject,
           target: edge.object,
+          id: edge.subject + "-" + edge.object,
         });
       });
     });
@@ -143,33 +147,29 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
     history.push(pathPageNestedRoutes.path(id).path);
   };
 
-  // Configuration for nodes in the force directed graph
-  const forceDirectedGraphNodeOptions: ForceDirectedGraphNodeOptions<KgPathNode> = {
-    id: (node) => node.id,
-    group: (node) => node.pathId,
-    onClick: (node) => {
-      if (node.pathId === selectedPath?.id) {
-        return;
-      }
-
-      setSelectedPath(node.pathId);
-    },
-    r: 10,
-    "stroke-width": 2,
-    fill: (node) => pathColorScale(node.pathId),
-  };
-
   return (
     <Frame>
       <ReactLoader loaded={data !== undefined}>
         <Grid container>
           <Grid item md={4} ref={pathGraphContainerRef}>
-            <ForceDirectedGraph
-              {...pathGraphData}
-              {...pathGraphDimensions}
-              nodeOptions={forceDirectedGraphNodeOptions}
-              linkOptions={{}}
-            />
+            <ForceGraph {...pathGraphDimensions}>
+              {pathGraphData.nodes.map((node) => (
+                <ForceGraphNode
+                  key={node.id}
+                  node={node}
+                  fill={pathColorScale(node.pathId)}
+                  onClick={() => {
+                    if (node.pathId === selectedPath?.id) {
+                      return;
+                    }
+                    setSelectedPath(node.pathId);
+                  }}
+                />
+              ))}
+              {pathGraphData.links.map((link) => (
+                <ForceGraphLink key={link.id} link={link} />
+              ))}
+            </ForceGraph>
           </Grid>
           <Grid item md={8} container direction="column" spacing={2}>
             <Grid item>
