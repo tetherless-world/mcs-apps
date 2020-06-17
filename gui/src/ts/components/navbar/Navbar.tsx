@@ -45,11 +45,17 @@ export const Navbar: React.FunctionComponent<{}> = () => {
     {path: Hrefs.benchmarks, label: "Benchmarks"},
   ];
 
+  function normalizePath(path: string) {
+    return path.toLowerCase().replace(/\/$/, "");
+  }
+
   let closestPathMatch: string = "";
   for (const tlp of topLevelPaths) {
+    const currentPathNormed = normalizePath(location.pathname);
+    const tlpNormed = normalizePath(tlp.path);
     const pathMatches: boolean =
-      location.pathname === tlp.path ||
-      location.pathname.startsWith(tlp.path + "/");
+      currentPathNormed === tlpNormed ||
+      currentPathNormed.startsWith(tlpNormed + "/");
     if (pathMatches && tlp.path.length > closestPathMatch.length) {
       closestPathMatch = tlp.path;
     }
@@ -63,6 +69,7 @@ export const Navbar: React.FunctionComponent<{}> = () => {
         </Button>
         {topLevelPaths.map((tlp) => (
           <Button
+            key={tlp.path}
             component={Link}
             to={tlp.path}
             className={
