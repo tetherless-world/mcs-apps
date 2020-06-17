@@ -31,6 +31,6 @@ export const RandomKgNodePage: React.FunctionComponent = () => {
 
   const randomNodeId = data.kgById.randomNode.id;
 
-  history.push(Hrefs.kg(kgId).node(randomNodeId));
+  history.push(Hrefs.kg({id: kgId}).node({id: randomNodeId}));
   return <React.Fragment />;
 };

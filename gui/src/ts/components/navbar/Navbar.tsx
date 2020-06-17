@@ -41,7 +41,7 @@ export const Navbar: React.FunctionComponent<{}> = () => {
   const location = useLocation();
 
   const topLevelPaths: TopLevelPath[] = [
-    {path: Hrefs.kgRoot, label: "CSKG"},
+    {path: Hrefs.kgs, label: "CSKG"},
     {path: Hrefs.benchmarks, label: "Benchmarks"},
   ];
 

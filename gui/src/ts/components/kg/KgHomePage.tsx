@@ -53,10 +53,10 @@ export const KgHomePage: React.FunctionComponent = () => {
 
     switch (search.__typename) {
       case "KgNode":
-        history.push(Hrefs.kg(kgId).node(search.id));
+        history.push(Hrefs.kg({id: kgId}).node({id: search.id}));
         break;
       case "KgNodeSearchVariables":
-        history.push(Hrefs.kg(kgId).nodeSearch(search));
+        history.push(Hrefs.kg({id: kgId}).nodeSearch(search));
         break;
       default:
         const _exhaustiveCheck: never = search;
@@ -104,7 +104,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                 <Button
                   color="primary"
                   component={Link}
-                  to={Hrefs.kg(kgId).randomNode}
+                  to={Hrefs.kg({id: kgId}).randomNode}
                 >
                   Show me something interesting
                 </Button>
