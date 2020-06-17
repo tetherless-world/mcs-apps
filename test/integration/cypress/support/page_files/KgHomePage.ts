@@ -1,7 +1,7 @@
 import {Page} from "./Page";
 import {KgNodeSearchBox} from "./KgNodeSearchBox";
 
-export class HomePage extends Page {
+export class KgHomePage extends Page {
   get totalNodeCount() {
     return cy.get(this.frame.bodySelector + " [data-cy=totalNodeCount]");
   }
@@ -14,5 +14,5 @@ export class HomePage extends Page {
     return new KgNodeSearchBox(this.frame.bodySelector);
   }
 
-  readonly relativeUrl: string = "/";
+  readonly relativeUrl: string = "/kg/";
 }

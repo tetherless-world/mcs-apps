@@ -6,7 +6,9 @@ import models.kg.{KgEdge, KgNode, KgPath}
 @ImplementedBy(classOf[Neo4jStore])
 trait KgStore {
   /**
-   * Clear the store
+   * Clear the store.
+   *
+   * This operation is not guaranteed to complete immediately. It should not be used for large stores.
    */
   def clear()
 

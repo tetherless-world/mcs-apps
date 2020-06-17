@@ -1,8 +1,8 @@
-import {HomePage} from "../support/page_files/HomePage";
+import {KgHomePage} from "../support/page_files/KgHomePage";
 import {TestData} from "../support/TestData";
 
-context("Home Page", () => {
-  const page = new HomePage();
+context("KG Home Page", () => {
+  const page = new KgHomePage();
 
   beforeEach(() => page.visit());
 
@@ -23,5 +23,10 @@ context("Home Page", () => {
     page.search.selectDatasource(TestData.datasources[0]);
 
     page.search.selectedDatasource.should("have.text", TestData.datasources[0]);
+  });
+
+  it("should be the home page", () => {
+    cy.visit("/");
+    page.assertLoaded();
   });
 });
