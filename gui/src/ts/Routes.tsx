@@ -10,13 +10,13 @@ import {KgPathPage} from "components/kg/path/KgPathPage";
 import {kgId} from "api/kgId";
 import {BenchmarksPage} from "components/benchmark/BenchmarksPage";
 import {BenchmarkPage} from "components/benchmark/BenchmarkPage";
-import {BenchmarkQuestionSetPage} from "components/benchmark/BenchmarkQuestionSetPage";
+import {BenchmarkDatasetPage} from "components/benchmark/BenchmarkDatasetPage";
 import {BenchmarkAnswerPage} from "components/benchmark/BenchmarkAnswerPage";
 import {BenchmarkSubmissionPage} from "components/benchmark/BenchmarkSubmissionPage";
 
 const answerIdParam = {id: ":answerId", idEncoded: true};
 const benchmarkIdParam = {id: ":benchmarkId", idEncoded: true};
-const questionSetIdParam = {id: ":questionSetId", idEncoded: true};
+const datasetIdParam = {id: ":datasetId", idEncoded: true};
 const submissionIdParam = {id: ":submissionId", idEncoded: true};
 
 export const Routes: React.FunctionComponent = () => (
@@ -35,18 +35,16 @@ export const Routes: React.FunctionComponent = () => (
       />
       <Route
         exact
-        path={
-          Hrefs.benchmark(benchmarkIdParam).questionSet(questionSetIdParam).home
-        }
+        path={Hrefs.benchmark(benchmarkIdParam).dataset(datasetIdParam).home}
         not
         rea
-        component={BenchmarkQuestionSetPage}
+        component={BenchmarkDatasetPage}
       />
       <Route
         exact
         path={
           Hrefs.benchmark(benchmarkIdParam)
-            .questionSet(questionSetIdParam)
+            .dataset(datasetIdParam)
             .submission(submissionIdParam).home
         }
         component={BenchmarkSubmissionPage}
@@ -57,7 +55,7 @@ export const Routes: React.FunctionComponent = () => (
           id: ":benchmarkId",
           idEncoded: true,
         })
-          .questionSet(questionSetIdParam)
+          .dataset(datasetIdParam)
           .submission(submissionIdParam)
           .answer(answerIdParam)}
         component={BenchmarkAnswerPage}

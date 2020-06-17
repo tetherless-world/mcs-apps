@@ -42,7 +42,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
         graphql"""
           query BenchmarkByIdQuery($$benchmarkId: String!) {
             benchmarkById(id: $$benchmarkId) {
-              questionSets {
+              datasets {
                 id
                 questions(limit: 1000, offset: 0) {
                   choices {
@@ -59,9 +59,9 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
           """
 
       val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id)))
-      for (questionSet <- benchmark.questionSets) {
-        result must include(questionSet.id)
-        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.questionSetId == questionSet.id)) {
+      for (dataset <- benchmark.datasets) {
+        result must include(dataset.id)
+        for (question <- BenchmarkTestData.benchmarkQuestions.filter(question => question.datasetId == dataset.id)) {
           result must include(question.id)
           for (choice <- question.choices) {
             result must include(choice.text)

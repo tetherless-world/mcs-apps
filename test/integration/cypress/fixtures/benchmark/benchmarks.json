@@ -2,7 +2,7 @@
     {
         "id": "benchmark0",
         "name": "Benchmark 0",
-        "questionSets": [
+        "datasets": [
             {
                 "id": "benchmark0-dev",
                 "name": "Benchmark 0 dev set"
@@ -20,7 +20,7 @@
     {
         "id": "benchmark1",
         "name": "Benchmark 1",
-        "questionSets": [
+        "datasets": [
             {
                 "id": "benchmark1-dev",
                 "name": "Benchmark 1 dev set"
@@ -38,7 +38,7 @@
     {
         "id": "benchmark2",
         "name": "Benchmark 2",
-        "questionSets": [
+        "datasets": [
             {
                 "id": "benchmark2-dev",
                 "name": "Benchmark 2 dev set"

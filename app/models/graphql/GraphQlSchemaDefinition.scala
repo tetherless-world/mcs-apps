@@ -3,7 +3,7 @@ package models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkQuestionSet, BenchmarkSubmission}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkDataset, BenchmarkSubmission}
 import models.kg.{KgEdge, KgNode, KgPath}
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
@@ -47,7 +47,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
 
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
-  implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet](
+  implicit val BenchmarkDatasetType = deriveObjectType[GraphQlSchemaContext, BenchmarkDataset](
     AddFields(
       Field(
         "questionById",
@@ -59,8 +59,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         "questions",
         ListType(BenchmarkQuestionType),
         arguments = LimitArgument :: OffsetArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsBySet(
-          benchmarkQuestionSetId = ctx.value.id,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsByDataset(
+          benchmarkDatasetId = ctx.value.id,
           limit = ctx.args.arg(LimitArgument),
           offset = ctx.args.arg(OffsetArgument)
         )
@@ -71,18 +71,18 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         arguments = IdArgument :: Nil,
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
       ),
-      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByQuestionSet(questionSetId = ctx.value.id))
+      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByDataset(datasetId = ctx.value.id))
     )
   )
   implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
     AddFields(
       Field(
-        "questionSetById",
-        OptionType(BenchmarkQuestionSetType),
+        "datasetById",
+        OptionType(BenchmarkDatasetType),
         arguments = IdArgument :: Nil,
         resolve = ctx => {
-          val questionSetId = ctx.args.arg(IdArgument)
-          ctx.value.questionSets.find(questionSet => questionSet.id == questionSetId)
+          val datasetId = ctx.args.arg(IdArgument)
+          ctx.value.datasets.find(dataset => dataset.id == datasetId)
         }
       ),
       Field(
