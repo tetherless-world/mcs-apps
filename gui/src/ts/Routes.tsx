@@ -10,6 +10,14 @@ import {KgPathPage} from "components/kg/path/KgPathPage";
 import {kgId} from "api/kgId";
 import {BenchmarksPage} from "components/benchmark/BenchmarksPage";
 import {BenchmarkPage} from "components/benchmark/BenchmarkPage";
+import {BenchmarkQuestionSetPage} from "components/benchmark/BenchmarkQuestionSetPage";
+import {BenchmarkAnswerPage} from "components/benchmark/BenchmarkAnswerPage";
+import {BenchmarkSubmissionPage} from "components/benchmark/BenchmarkSubmissionPage";
+
+const answerIdParam = {id: ":answerId", idEncoded: true};
+const benchmarkIdParam = {id: ":benchmarkId", idEncoded: true};
+const questionSetIdParam = {id: ":questionSetId", idEncoded: true};
+const submissionIdParam = {id: ":submissionId", idEncoded: true};
 
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>
@@ -18,11 +26,41 @@ export const Routes: React.FunctionComponent = () => (
         <Redirect to={Hrefs.kgs} />
       </Route>
 
+      {/* Benchmark routes */}
       <Route exact path={Hrefs.benchmarks} component={BenchmarksPage} />
       <Route
         exact
-        path={Hrefs.benchmark({id: ":benchmarkId", idEncoded: true}).home}
+        path={Hrefs.benchmark(benchmarkIdParam).home}
         component={BenchmarkPage}
+      />
+      <Route
+        exact
+        path={
+          Hrefs.benchmark(benchmarkIdParam).questionSet(questionSetIdParam).home
+        }
+        not
+        rea
+        component={BenchmarkQuestionSetPage}
+      />
+      <Route
+        exact
+        path={
+          Hrefs.benchmark(benchmarkIdParam)
+            .questionSet(questionSetIdParam)
+            .submission(submissionIdParam).home
+        }
+        component={BenchmarkSubmissionPage}
+      />
+      <Route
+        exact
+        path={Hrefs.benchmark({
+          id: ":benchmarkId",
+          idEncoded: true,
+        })
+          .questionSet(questionSetIdParam)
+          .submission(submissionIdParam)
+          .answer(answerIdParam)}
+        component={BenchmarkAnswerPage}
       />
 
       {/* KG Routes */}

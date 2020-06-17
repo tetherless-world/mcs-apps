@@ -23,7 +23,7 @@ export class Hrefs {
           submission(kwds: {id: string; idEncoded?: boolean}) {
             const submissionId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
             const submissionPrefix =
-              questionSetPrefix + `submission/${submissionId}`;
+              questionSetPrefix + `submission/${submissionId}/`;
             return {
               get home() {
                 return submissionPrefix;

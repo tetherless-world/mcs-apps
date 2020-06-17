@@ -1,5 +1,5 @@
 import * as React from "react";
 
 export const BenchmarkQuestionSetPage: React.FunctionComponent = () => (
-  <div></div>
+  <div>Benchmark question set page</div>
 );
