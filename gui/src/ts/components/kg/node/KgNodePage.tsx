@@ -39,7 +39,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
 >> = ({match}) => {
   const location = useLocation();
   const {path, url} = match;
-  const nodeId = match.params.nodeId;
+  const nodeId = decodeURIComponent(match.params.nodeId);
 
   // const classes = useStyles();
 
