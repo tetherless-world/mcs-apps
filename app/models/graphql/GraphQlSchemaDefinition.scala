@@ -12,6 +12,9 @@ import stores.StringFilter
 import stores.kg.KgNodeFilters
 
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
+  // Scalar arguments
+  val IdArgument = Argument("id", StringType)
+
   // Object types
   implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
   implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths]()
@@ -20,6 +23,15 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
   implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission](
     AddFields(
+      Field(
+        "answerByQuestionId",
+        OptionType(BenchmarkAnswerType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswerByQuestion(
+          benchmarkQuestionId = ctx.args.arg(IdArgument),
+          benchmarkSubmissionId = ctx.value.id
+        )
+      ),
       Field(
         "answers",
         ListType(BenchmarkAnswerType),
@@ -37,6 +49,12 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
   implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet](
     AddFields(
+      Field(
+        "questionById",
+        OptionType(BenchmarkQuestionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionById(ctx.args.arg(IdArgument))
+      ),
       Field(
         "questions",
         ListType(BenchmarkQuestionType),
@@ -93,8 +111,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val StringFilterType = deriveInputObjectType[StringFilter]()
   implicit val KgNodeFiltersType = deriveInputObjectType[KgNodeFilters]()
 
-  // Argument types
-  val IdArgument = Argument("id", StringType)
+  // Object argument types types
   val KgNodeFiltersArgument = Argument("filters", OptionInputType(KgNodeFiltersType))
 
   // Query types
