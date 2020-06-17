@@ -5,8 +5,11 @@ import java.nio.file.Path
 
 import com.github.tototoshi.csv._
 import models.kg.KgEdge
+import org.slf4j.LoggerFactory
 
 final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdge](csvReader) {
+  private val logger = LoggerFactory.getLogger(getClass)
+
   def iterator: Iterator[KgEdge] =
     csvReader.iteratorWithHeaders.map(row =>
       KgEdge(
@@ -15,7 +18,16 @@ final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdg
         other = row.getNonBlank("other"),
         predicate = row("predicate"),
         subject = row("subject"),
-        weight = row.getNonBlank("weight").map(weight => weight.toFloat)
+        weight = row.getNonBlank("weight").flatMap(weight => {
+          try {
+            Some(weight.toFloat)
+          } catch {
+            case e: NumberFormatException => {
+              logger.warn("invalid edge weight: {}", weight)
+              None
+            }
+          }
+        })
     ))
 }
 
