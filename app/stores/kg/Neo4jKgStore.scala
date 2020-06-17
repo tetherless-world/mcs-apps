@@ -182,12 +182,15 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   }
 
   final def clear(): Unit = {
+    // It would be simpler to use CREATE OR REPLACE DATABASE, but the free Neo4j 4.0 Community Edition doesn't support it,
+    // and the open source fork of the Neo4j Enterprise Edition doesn't include 4.0 features yet.
     withSession { session =>
       session.writeTransaction { transaction =>
         // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
         transaction.run(
           """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
-            |YIELD batches, total RETURN batches, total
+            |YIELD batches, total
+            |RETURN batches, total
             |""".stripMargin)
         transaction.commit()
       }
