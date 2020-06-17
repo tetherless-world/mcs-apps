@@ -10,5 +10,6 @@ trait BenchmarkStore {
   def getBenchmarkQuestionById(benchmarkQuestionId: String): Option[BenchmarkQuestion]
   def getBenchmarkQuestionsBySet(benchmarkQuestionSetId: String, limit: Int, offset: Int): List[BenchmarkQuestion]
   def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission]
+  def getBenchmarkSubmissionById(submissionId: String): Option[BenchmarkSubmission]
   def getBenchmarkSubmissionsByQuestionSet(questionSetId: String): List[BenchmarkSubmission]
 }

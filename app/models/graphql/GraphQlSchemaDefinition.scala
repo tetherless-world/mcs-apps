@@ -65,12 +65,37 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
           offset = ctx.args.arg(OffsetArgument)
         )
       ),
+      Field(
+        "submissionById",
+        OptionType(BenchmarkSubmissionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
+      ),
       Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByQuestionSet(questionSetId = ctx.value.id))
     )
   )
   implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
     AddFields(
-      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id))
+      Field(
+        "questionSetById",
+        OptionType(BenchmarkQuestionSetType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => {
+          val questionSetId = ctx.args.arg(IdArgument)
+          ctx.value.questionSets.find(questionSet => questionSet.id == questionSetId)
+        }
+      ),
+      Field(
+        "submissionById",
+        OptionType(BenchmarkSubmissionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
+      ),
+      Field(
+        "submissions",
+        ListType(BenchmarkSubmissionType),
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id)
+      )
     )
   )
 
