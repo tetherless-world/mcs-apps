@@ -27,7 +27,9 @@ export class KgNodePage extends Page {
     super();
   }
 
-  readonly relativeUrl = `/kg/${TestData.kgId}/node/${encodeURI(this.nodeId)}`;
+  readonly relativeUrl = `/kg/${TestData.kgId}/node/${encodeURIComponent(
+    this.nodeId
+  )}`;
   readonly listRelUrl = this.relativeUrl + "/list";
 
   assertListLoaded() {

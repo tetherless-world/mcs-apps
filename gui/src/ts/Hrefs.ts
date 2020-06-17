@@ -4,7 +4,7 @@ import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
 export class Hrefs {
   static benchmarks = `/benchmark/`;
   static benchmark(kwds: {id: string; idEncoded?: boolean}) {
-    const benchmarkId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+    const benchmarkId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
     const benchmarkPrefix = `${Hrefs.benchmarks}${benchmarkId}/`;
     return {
       get home() {
@@ -12,7 +12,9 @@ export class Hrefs {
       },
 
       questionSet(kwds: {id: string; idEncoded?: boolean}) {
-        const questionSetId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+        const questionSetId = kwds.idEncoded
+          ? kwds.id
+          : encodeURIComponent(kwds.id);
         const questionSetPrefix =
           benchmarkPrefix + `questionSet/${questionSetId}/`;
         return {
@@ -21,7 +23,9 @@ export class Hrefs {
           },
 
           submission(kwds: {id: string; idEncoded?: boolean}) {
-            const submissionId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+            const submissionId = kwds.idEncoded
+              ? kwds.id
+              : encodeURIComponent(kwds.id);
             const submissionPrefix =
               questionSetPrefix + `submission/${submissionId}/`;
             return {
@@ -30,7 +34,9 @@ export class Hrefs {
               },
 
               answer(kwds: {id: string; idEncoded?: boolean}) {
-                const answerId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+                const answerId = kwds.idEncoded
+                  ? kwds.id
+                  : encodeURIComponent(kwds.id);
                 return submissionPrefix + `answer/${answerId}`;
               },
             };
@@ -45,7 +51,7 @@ export class Hrefs {
   static readonly home = "/";
   static readonly kgs = "/kg/";
   static kg(kwds: {id: string; idEncoded?: boolean}) {
-    const kgId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+    const kgId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
     const kgPrefix = `${Hrefs.kgs}${kgId}/`;
     return {
       get home() {
@@ -53,7 +59,7 @@ export class Hrefs {
       },
 
       node(kwds: {id: string; idEncoded?: boolean}) {
-        const nodeId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
+        const nodeId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
         return kgPrefix + `node/${nodeId}`;
       },
 
