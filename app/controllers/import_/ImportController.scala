@@ -25,10 +25,10 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
   def this(configuration: Configuration, store: KgStore) =
     this(Paths.get(configuration.get[String]("importDirectoryPath")), store)
 
-  def clear() = Action {
-    store.clear()
-    Ok("")
-  }
+//  def clear() = Action {
+//    store.clear()
+//    Ok("")
+//  }
 
   def putEdges(edgesCsvFileName: String) = Action {
     withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
@@ -63,7 +63,7 @@ class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) 
         .setInitialMax(0)
         .setTaskName(taskName)
         .setConsumer(new DelegatingProgressBarConsumer(message => logger.info(message)))
-        .setUpdateIntervalMillis(5000)
+        .setUpdateIntervalMillis(10000)
         .showSpeed
         .build
     withResource(progressBar) { progressBar =>

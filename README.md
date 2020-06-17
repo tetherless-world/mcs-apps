@@ -16,6 +16,12 @@ This work is supported by the [DARPA Machine Common Sense (MCS)](https://www.dar
 In the current directory:
 
     docker-compose up
+    
+## Clearing the database (if previously loaded)    
+
+The Docker setup uses Neo4j Community Edition. The only way to quickly and reliably clear a Community Edition database is to stop the neo4j container and delete its backing data. There is a script to do this:
+
+    script/delete-neo4j-data
 
 ## Loading the database
 
@@ -24,7 +30,7 @@ After starting the application, copy a CSKG `nodes.csv` and `edges.csv` into `da
 Then run:
 
     script/import-cskg
-    
+        
 ## Viewing the application
 
 After starting the application and loading the data, open your browser to [http://localhost:8080](http://localhost:8080).
