@@ -81,7 +81,6 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
-  private val PutCommitInterval = 1000
 
   private implicit class RecordWrapper(record: Record) {
     def toEdge: KgEdge = {
@@ -446,7 +445,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       // I don't have time to investigate that. Batching models should be OK for now.
       val modelBatch = new mutable.MutableList[T]
       while (models.hasNext) {
-        while (modelBatch.size < PutCommitInterval && models.hasNext) {
+        while (modelBatch.size < configuration.commitInterval && models.hasNext) {
           modelBatch += models.next()
         }
         if (!modelBatch.isEmpty) {
