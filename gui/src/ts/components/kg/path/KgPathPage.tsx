@@ -152,9 +152,7 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
       <ReactLoader loaded={data !== undefined}>
         <Grid container>
           <Grid item md={4} ref={pathGraphContainerRef}>
-            <ForceGraph
-              {...pathGraphDimensions}
-            >
+            <ForceGraph {...pathGraphDimensions}>
               {pathGraphData.nodes.map((node) => (
                 <ForceGraphNode
                   key={node.id}
@@ -169,10 +167,7 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
                 />
               ))}
               {pathGraphData.links.map((link) => (
-                <ForceGraphLink
-                  key={link.source + "-" + link.target}
-                  link={link}
-                />
+                <ForceGraphLink key={link.id} link={link} />
               ))}
             </ForceGraph>
           </Grid>
