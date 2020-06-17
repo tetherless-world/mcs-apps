@@ -33,14 +33,14 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
   }
 
   "The import controller" should {
-    "clear the store" in {
-      store.putNodes(KgTestData.nodes.iterator)
-      store.isEmpty must be(false)
-      val result = sut.clear()(FakeRequest())
-//      val bodyText = contentAsString(result)
-////      bodyText must be("ok")
-      store.isEmpty must be(true)
-    }
+//    "clear the store" in {
+//      store.putNodes(KgTestData.nodes.iterator)
+//      store.isEmpty must be(false)
+//      val result = sut.clear()(FakeRequest())
+////      val bodyText = contentAsString(result)
+//////      bodyText must be("ok")
+//      store.isEmpty must be(true)
+//    }
 
     "put edges to the store" in {
       store.getTotalEdgesCount must be (0)
