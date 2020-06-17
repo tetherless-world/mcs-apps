@@ -23,7 +23,7 @@ export class Hrefs {
           submission(kwds: {id: string; idEncoded?: boolean}) {
             const submissionId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
             const submissionPrefix =
-              questionSetPrefix + `submission/${submissionId}`;
+              questionSetPrefix + `submission/${submissionId}/`;
             return {
               get home() {
                 return submissionPrefix;
@@ -46,7 +46,7 @@ export class Hrefs {
   static readonly kgs = "/kg/";
   static kg(kwds: {id: string; idEncoded?: boolean}) {
     const kgId = kwds.idEncoded ? kwds.id : encodeURI(kwds.id);
-    const kgPrefix = `${Hrefs.kgs}/${kgId}/`;
+    const kgPrefix = `${Hrefs.kgs}${kgId}/`;
     return {
       get home() {
         return kgPrefix;

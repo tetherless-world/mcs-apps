@@ -4,7 +4,7 @@ import {Frame} from "components/frame/Frame";
 export const BenchmarksPage: React.FunctionComponent = () => {
   return (
     <Frame>
-      <h1>Benchmarks</h1>
+      <h1>Benchmarks page</h1>
     </Frame>
   );
 };
