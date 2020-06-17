@@ -70,11 +70,10 @@ export const Routes: React.FunctionComponent = () => (
         component={KgNodeSearchResultsPage}
       />
       <Route
-        exact
         path={Hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
         component={KgNodePage}
       />
-      <Route exact path={Hrefs.kg({id: kgId}).paths} component={KgPathPage} />
+      <Route path={Hrefs.kg({id: kgId}).paths} component={KgPathPage} />
       <Route
         exact
         path={Hrefs.kg({id: kgId}).randomNode}
