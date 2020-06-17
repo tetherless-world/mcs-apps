@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import stores.{Neo4jStoreConfiguration, StringFilter, WithResource}
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 final case class CypherBinding(variableName: String, value: Any)
 final case class CypherFilter(cypher: String, binding: Option[CypherBinding] = None)
@@ -80,7 +81,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
-  private val PutCommitInterval = 10000
+  private val PutCommitInterval = 1000
 
   private implicit class RecordWrapper(record: Record) {
     def toEdge: KgEdge = {
@@ -431,27 +432,31 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
 
   private def putModels[T](models: Iterator[T])(putModel: (Transaction, T)=>Unit): Unit =
     withSession { session => {
-      var transaction = session.beginTransaction()
-      for (modelWithIndex <- models.zipWithIndex) {
-        val (model, modelIndex) = modelWithIndex
-        putModel(transaction, model)
-        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
-          tryOperation(() => transaction.commit())
-          transaction = session.beginTransaction()
+      // Batch the models in order to put them all in a transaction.
+      // My (MG) first implementation looked like:
+//      for (modelWithIndex <- models.zipWithIndex) {
+//        val (model, modelIndex) = modelWithIndex
+//        putModel(transaction, model)
+//        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
+//          tryOperation(() => transaction.commit())
+//          transaction = session.beginTransaction()
+//        }
+//      }
+      // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
+      // I don't have time to investigate that. Batching models should be OK for now.
+      val modelBatch = new mutable.MutableList[T]
+      while (models.hasNext) {
+        while (modelBatch.size < PutCommitInterval && models.hasNext) {
+          modelBatch += models.next()
         }
-      }
-      tryOperation(() => transaction.commit())
-    }
-  }
-
-  private def tryOperation(f: () => Unit): Unit = {
-    for (tryI <- 0 until 10) {
-      try {
-        f()
-        return
-      } catch {
-        case e: TransientException => {
-          logger.warn("transient exception in neo4j, try {}: {}", tryI, e.getMessage)
+        if (!modelBatch.isEmpty) {
+          logger.info("putting batch of {} models in a transaction", modelBatch.size)
+          session.writeTransaction { transaction =>
+            for (model <- modelBatch) {
+              putModel(transaction, model)
+            }
+          }
+          modelBatch.clear()
         }
       }
     }
