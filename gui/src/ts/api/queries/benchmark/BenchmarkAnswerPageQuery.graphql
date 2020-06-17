@@ -1,0 +1,33 @@
+query BenchmarkAnswerPageQuery($benchmarkId: String!, $questionId: String!, $questionSetId: String!, $submissionId: String!) {
+    benchmarkById(id: $benchmarkId) {
+        name
+        questionSetById(id: $questionSetId) {
+            name
+            questionById(id: $questionId) {
+                choices {
+                    label
+                    text
+                }
+                text
+            }
+            submissionById(id: $submissionId) {
+                answerByQuestionId(id: $questionId) {
+                    choiceLabel
+                    explanation {
+                        choiceAnalyses {
+                            choiceLabel
+                            questionAnswerPaths {
+                                endNodeId
+                                startNodeId
+                                paths {
+                                    path
+                                    score
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

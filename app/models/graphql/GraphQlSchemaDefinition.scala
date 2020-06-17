@@ -12,6 +12,9 @@ import stores.StringFilter
 import stores.kg.KgNodeFilters
 
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
+  // Scalar arguments
+  val IdArgument = Argument("id", StringType)
+
   // Object types
   implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
   implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths]()
@@ -20,6 +23,15 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
   implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission](
     AddFields(
+      Field(
+        "answerByQuestionId",
+        OptionType(BenchmarkAnswerType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswerByQuestion(
+          benchmarkQuestionId = ctx.args.arg(IdArgument),
+          benchmarkSubmissionId = ctx.value.id
+        )
+      ),
       Field(
         "answers",
         ListType(BenchmarkAnswerType),
@@ -38,6 +50,12 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkQuestionSetType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionSet](
     AddFields(
       Field(
+        "questionById",
+        OptionType(BenchmarkQuestionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionById(ctx.args.arg(IdArgument))
+      ),
+      Field(
         "questions",
         ListType(BenchmarkQuestionType),
         arguments = LimitArgument :: OffsetArgument :: Nil,
@@ -47,12 +65,37 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
           offset = ctx.args.arg(OffsetArgument)
         )
       ),
+      Field(
+        "submissionById",
+        OptionType(BenchmarkSubmissionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
+      ),
       Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByQuestionSet(questionSetId = ctx.value.id))
     )
   )
   implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
     AddFields(
-      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id))
+      Field(
+        "questionSetById",
+        OptionType(BenchmarkQuestionSetType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => {
+          val questionSetId = ctx.args.arg(IdArgument)
+          ctx.value.questionSets.find(questionSet => questionSet.id == questionSetId)
+        }
+      ),
+      Field(
+        "submissionById",
+        OptionType(BenchmarkSubmissionType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
+      ),
+      Field(
+        "submissions",
+        ListType(BenchmarkSubmissionType),
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id)
+      )
     )
   )
 
@@ -93,8 +136,7 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val StringFilterType = deriveInputObjectType[StringFilter]()
   implicit val KgNodeFiltersType = deriveInputObjectType[KgNodeFilters]()
 
-  // Argument types
-  val IdArgument = Argument("id", StringType)
+  // Object argument types types
   val KgNodeFiltersArgument = Argument("filters", OptionInputType(KgNodeFiltersType))
 
   // Query types
