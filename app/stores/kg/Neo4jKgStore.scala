@@ -450,7 +450,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
           modelBatch += models.next()
         }
         if (!modelBatch.isEmpty) {
-          logger.info("putting batch of {} models in a transaction", modelBatch.size)
+//          logger.info("putting batch of {} models in a transaction", modelBatch.size)
           session.writeTransaction { transaction =>
             for (model <- modelBatch) {
               putModel(transaction, model)
