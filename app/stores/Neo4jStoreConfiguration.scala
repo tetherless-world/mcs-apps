@@ -12,9 +12,13 @@ final class Neo4jStoreConfiguration(val commitInterval: Int,
   @Inject
   def this(configuration: Configuration) =
     this(
-      configuration.getOptional[Int]("neo4j.commitInterval").getOrElse(10000),
+      configuration.getOptional[Int]("neo4j.commitInterval").getOrElse(Neo4jStoreConfiguration.CommitIntervalDefault),
       configuration.get[String]("neo4j.password"),
       configuration.get[String]("neo4j.uri"),
       configuration.get[String]("neo4j.user")
     )
+}
+
+object Neo4jStoreConfiguration {
+  val CommitIntervalDefault = 10000
 }
