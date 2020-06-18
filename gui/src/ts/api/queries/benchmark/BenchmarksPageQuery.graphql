@@ -1,0 +1,6 @@
+query BenchmarksQuery {
+    benchmarks {
+        id
+        name
+    }
+}
