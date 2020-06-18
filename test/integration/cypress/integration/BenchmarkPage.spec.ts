@@ -23,4 +23,16 @@ context("Benchmark page", () => {
       page.datasetName(dataset.id).should("have.text", dataset.name);
     });
   });
+
+  it("should show submissions", () => {
+    TestData.benchmarkSubmissions.then((submissions) => {
+      submissions
+        .filter((submission) => submission.benchmarkId == benchmark.id)
+        .forEach((submission) => {
+          page.submissionsTable
+            .submission(submission.id)
+            .name.should("have.text", submission.name);
+        });
+    });
+  });
 });

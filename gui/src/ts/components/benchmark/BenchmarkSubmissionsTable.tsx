@@ -21,8 +21,8 @@ export const BenchmarkSubmissionsTable: React.FunctionComponent<{
     </TableHead>
     <TableBody>
       {benchmarkSubmissions.map((submission) => (
-        <TableRow key={submission.id}>
-          <TableCell data-cy={"submission-name-" + submission.id}>
+        <TableRow data-cy={"submission-" + submission.id} key={submission.id}>
+          <TableCell data-cy={"submission-name"}>
             <Link
               to={
                 Hrefs.benchmark({id: submission.benchmarkId})
