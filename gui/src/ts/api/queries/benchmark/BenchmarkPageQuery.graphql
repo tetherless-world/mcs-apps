@@ -1,0 +1,9 @@
+query BenchmarkPageQuery($benchmarkId: String!) {
+    benchmarkById(id: $benchmarkId) {
+        datasets {
+            id
+            name
+        }
+        name
+    }
+}
