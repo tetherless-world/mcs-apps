@@ -5,10 +5,10 @@ import {BenchmarksQuery} from "api/queries/benchmark/types/BenchmarksQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import {ApolloException} from "@tetherless-world/twxplore-base";
-import * as ReactLoader from "react-loader";
 import {Grid, Typography, ListItem, List} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
+import { LoaderFrame } from "components/loader/LoaderFrame";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const {data, error, loading} = useQuery<BenchmarksQuery>(
@@ -18,11 +18,7 @@ export const BenchmarksPage: React.FunctionComponent = () => {
   if (error) {
     return <FatalErrorModal exception={new ApolloException(error)} />;
   } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
+    return <LoaderFrame />;
   } else if (!data) {
     throw new EvalError();
   }

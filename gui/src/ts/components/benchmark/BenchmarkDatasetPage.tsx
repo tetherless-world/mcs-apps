@@ -4,10 +4,10 @@ import {useParams} from "react-router-dom";
 import * as BenchmarkDatasetPageQueryDocument from "api/queries/benchmark/BenchmarkDatasetPageQuery.graphql";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {useQuery} from "@apollo/react-hooks";
-import * as ReactLoader from "react-loader";
 import {Grid, Typography} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
+import {LoaderFrame} from "components/loader/LoaderFrame";
 
 export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   const {benchmarkId, datasetId} = useParams<{
@@ -23,11 +23,7 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   if (error) {
     return <ApolloErrorHandler error={error} />;
   } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
+    return <LoaderFrame />;
   } else if (!data) {
     throw new EvalError();
   }

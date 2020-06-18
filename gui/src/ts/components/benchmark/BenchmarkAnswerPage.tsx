@@ -9,7 +9,6 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import * as ReactLoader from "react-loader";
 import {ApolloException} from "@tetherless-world/twxplore-base";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
 import {
@@ -20,6 +19,7 @@ import {
   CardContent,
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
+import {LoaderFrame} from "components/loader/LoaderFrame";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -120,11 +120,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
   if (error) {
     return <FatalErrorModal exception={new ApolloException(error)} />;
   } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
+    return <LoaderFrame />;
   } else if (!data) {
     throw new EvalError();
   }

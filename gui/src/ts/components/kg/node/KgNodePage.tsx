@@ -15,13 +15,13 @@ import {
 import {useQuery} from "@apollo/react-hooks";
 import {ApolloException} from "@tetherless-world/twxplore-base";
 import {FatalErrorModal} from "components/error/FatalErrorModal";
-import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
 import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
 import * as _ from "lodash";
 import {kgId} from "api/kgId";
+import {LoaderFrame} from "components/loader/LoaderFrame";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -51,11 +51,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
   if (error) {
     return <FatalErrorModal exception={new ApolloException(error)} />;
   } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
+    return <LoaderFrame />;
   } else if (!data) {
     throw new EvalError();
   }

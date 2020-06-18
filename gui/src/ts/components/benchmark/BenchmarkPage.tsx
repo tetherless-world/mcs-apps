@@ -5,7 +5,6 @@ import {BenchmarkPageQuery} from "api/queries/benchmark/types/BenchmarkPageQuery
 import * as BenchmarkPageQueryDocument from "api/queries/benchmark/BenchmarkPageQuery.graphql";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {useQuery} from "@apollo/react-hooks";
-import * as ReactLoader from "react-loader";
 import {
   Grid,
   Table,
@@ -17,6 +16,7 @@ import {
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
+import { LoaderFrame } from "components/loader/LoaderFrame";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -29,11 +29,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
   if (error) {
     return <ApolloErrorHandler error={error} />;
   } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
+    return <LoaderFrame />
   } else if (!data) {
     throw new EvalError();
   }
