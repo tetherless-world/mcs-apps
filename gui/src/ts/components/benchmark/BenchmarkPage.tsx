@@ -52,7 +52,9 @@ export const BenchmarkPage: React.FunctionComponent = () => {
     <Frame>
       <Grid container direction="column" spacing={3}>
         <Grid item>
-          <Typography variant="h4">{benchmark.name}</Typography>
+          <Typography data-cy="benchmark-name" variant="h4">
+            {benchmark.name}
+          </Typography>
         </Grid>
         <Grid item>
           <Typography variant="h5">Datasets</Typography>
@@ -66,8 +68,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
             <TableBody>
               {benchmark.datasets.map((dataset) => (
                 <TableRow key={dataset.id}>
-                  <TableCell>
-                    {" "}
+                  <TableCell data-cy={"dataset-name-" + dataset.id}>
                     <Link
                       to={
                         Hrefs.benchmark({id: benchmarkId}).dataset({
