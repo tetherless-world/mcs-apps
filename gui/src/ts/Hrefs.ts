@@ -32,11 +32,11 @@ export class Hrefs {
                 return submissionPrefix;
               },
 
-              answer(kwds: {id: string; idEncoded?: boolean}) {
-                const answerId = kwds.idEncoded
+              question(kwds: {id: string; idEncoded?: boolean}) {
+                const questionId = kwds.idEncoded
                   ? kwds.id
                   : encodeURIComponent(kwds.id);
-                return submissionPrefix + `answer/${answerId}`;
+                return submissionPrefix + `question/${questionId}`;
               },
             };
           },
