@@ -2,16 +2,19 @@
     {
         "benchmarkId": "benchmark0",
         "id": "benchmark0-submission",
-        "datasetId": "benchmark0-test"
+        "datasetId": "benchmark0-test",
+        "name": "Benchmark 0 test submission"
     },
     {
         "benchmarkId": "benchmark1",
         "id": "benchmark1-submission",
-        "datasetId": "benchmark1-test"
+        "datasetId": "benchmark1-test",
+        "name": "Benchmark 1 test submission"
     },
     {
         "benchmarkId": "benchmark2",
         "id": "benchmark2-submission",
-        "datasetId": "benchmark2-test"
+        "datasetId": "benchmark2-test",
+        "name": "Benchmark 2 test submission"
     }
 ]
