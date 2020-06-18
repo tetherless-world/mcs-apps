@@ -1,11 +1,8 @@
 import * as React from "react";
-import {Frame} from "components/frame/Frame";
 import {Link, useParams} from "react-router-dom";
 import {BenchmarkPageQuery} from "api/queries/benchmark/types/BenchmarkPageQuery";
 import * as BenchmarkPageQueryDocument from "api/queries/benchmark/BenchmarkPageQuery.graphql";
-import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {useQuery} from "@apollo/react-hooks";
-import * as ReactLoader from "react-loader";
 import {
   Grid,
   Table,
@@ -16,6 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
+import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -25,35 +23,19 @@ export const BenchmarkPage: React.FunctionComponent = () => {
     {variables: {benchmarkId}}
   );
 
-  if (error) {
-    return <ApolloErrorHandler error={error} />;
-  } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
-  } else if (!data) {
-    throw new EvalError();
-  }
-
-  const benchmark = data.benchmarkById;
-  if (!benchmark) {
-    return (
-      <Frame>
-        <h3>
-          <code>{benchmarkId} not found</code>
-        </h3>
-      </Frame>
-    );
-  }
+  const benchmark = data?.benchmarkById;
 
   return (
-    <Frame>
+    <BenchmarkFrame
+      data={data}
+      error={error}
+      loading={loading}
+      routeParams={{benchmarkId}}
+    >
       <Grid container direction="column" spacing={3}>
         <Grid item>
           <Typography data-cy="benchmark-name" variant="h4">
-            {benchmark.name}
+            {benchmark?.name}
           </Typography>
         </Grid>
         <Grid item>
@@ -66,7 +48,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {benchmark.datasets.map((dataset) => (
+              {benchmark?.datasets.map((dataset) => (
                 <TableRow key={dataset.id}>
                   <TableCell data-cy={"dataset-name-" + dataset.id}>
                     <Link
@@ -86,6 +68,6 @@ export const BenchmarkPage: React.FunctionComponent = () => {
           </Table>
         </Grid>
       </Grid>
-    </Frame>
+    </BenchmarkFrame>
   );
 };

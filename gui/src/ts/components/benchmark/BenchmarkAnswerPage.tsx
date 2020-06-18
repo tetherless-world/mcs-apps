@@ -8,13 +8,9 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import * as ReactLoader from "react-loader";
-import {ApolloException} from "@tetherless-world/twxplore-base";
-import {FatalErrorModal} from "components/error/FatalErrorModal";
 import {Grid, Typography, Card, CardContent} from "@material-ui/core";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {NotFound} from "components/error/NotFound";
-import {Frame} from "components/frame/Frame";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -55,19 +51,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
     BenchmarkAnswerPageQueryVariables
   >(BenchmarkAnswerPageQueryDocument, {variables: routeParams});
 
-  if (error) {
-    return <FatalErrorModal exception={new ApolloException(error)} />;
-  } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
-  } else if (!data) {
-    throw new EvalError();
-  }
-
-  const benchmark = data.benchmarkById;
+  const benchmark = data?.benchmarkById;
   const dataset = benchmark?.datasetById;
   const question = dataset?.questionById;
   const submission = dataset?.submissionById;
@@ -76,11 +60,13 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
   return (
     <BenchmarkFrame
       routeParams={routeParams}
-      data={{benchmark, dataset, question, submission}}
+      data={data}
+      error={error}
+      loading={loading}
     >
-      <Grid container direction="column" spacing={3}>
+      <Grid container direction="column">
         {/* Show question and answer choices*/}
-        <Grid item container spacing={2}>
+        <Grid item container>
           <Grid item md={6} container direction="column" justify="center">
             <Grid item>
               <Typography variant="h4">{question?.text}</Typography>

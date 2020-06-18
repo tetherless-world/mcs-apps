@@ -6,14 +6,23 @@ import {
   BenchmarkBreadcrumbsProps,
 } from "components/benchmark/BenchmarkBreadcrumbs";
 import {NotFound} from "components/error/NotFound";
+import {ApolloError} from "apollo-client";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import * as ReactLoader from "react-loader";
 
 export interface BenchmarkFrameProps {
-  data: {
-    benchmark?: {name: string} | null;
-    submission?: {} | null;
-    dataset?: {name: string} | null;
-    question?: {} | null;
+  data?: {
+    benchmarkById: {
+      name: string;
+      datasetById?: {
+        name: string;
+        submissionById?: {} | null;
+        questionById?: {} | null;
+      } | null;
+    } | null;
   };
+  loading: boolean;
+  error?: ApolloError;
   routeParams: {
     benchmarkId: string;
     datasetId?: string;
@@ -24,9 +33,28 @@ export interface BenchmarkFrameProps {
 
 export const BenchmarkFrame: React.FunctionComponent<BenchmarkFrameProps> = ({
   children,
-  data: {benchmark, submission, dataset, question},
+  loading,
+  error,
+  data,
   routeParams: {benchmarkId, datasetId, submissionId, questionId},
 }) => {
+  if (error) {
+    return <ApolloErrorHandler error={error} />;
+  } else if (loading) {
+    return (
+      <Frame>
+        <ReactLoader loaded={false} />
+      </Frame>
+    );
+  } else if (!data) {
+    throw new EvalError();
+  }
+
+  const benchmark = data.benchmarkById;
+  const dataset = benchmark?.datasetById;
+  const question = dataset?.questionById;
+  const submission = dataset?.submissionById;
+
   if (!benchmark) {
     return <NotFound label={benchmarkId} />;
   }
@@ -58,7 +86,9 @@ export const BenchmarkFrame: React.FunctionComponent<BenchmarkFrameProps> = ({
         <Grid item>
           <BenchmarkBreadcrumbs {...breadcrumbsProps} />
         </Grid>
-        <Grid item>{children}</Grid>
+        <Grid item container>
+          {children}
+        </Grid>
       </Grid>
     </Frame>
   );
