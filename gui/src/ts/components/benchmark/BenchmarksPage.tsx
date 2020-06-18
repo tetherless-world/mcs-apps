@@ -36,7 +36,7 @@ export const BenchmarksPage: React.FunctionComponent = () => {
         <Grid item>
           <List>
             {data.benchmarks.map((bm) => (
-              <ListItem>
+              <ListItem key={bm.id}>
                 <Link
                   to={Hrefs.benchmark({id: bm.id}).home}
                   data-cy={`benchmark-${bm.id}`}
