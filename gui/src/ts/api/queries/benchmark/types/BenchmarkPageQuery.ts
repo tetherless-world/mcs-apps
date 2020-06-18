@@ -12,10 +12,18 @@ export interface BenchmarkPageQuery_benchmarkById_datasets {
   name: string;
 }
 
+export interface BenchmarkPageQuery_benchmarkById_submissions {
+  __typename: "BenchmarkSubmission";
+  datasetId: string;
+  id: string;
+  name: string;
+}
+
 export interface BenchmarkPageQuery_benchmarkById {
   __typename: "Benchmark";
   datasets: BenchmarkPageQuery_benchmarkById_datasets[];
   name: string;
+  submissions: BenchmarkPageQuery_benchmarkById_submissions[];
 }
 
 export interface BenchmarkPageQuery {

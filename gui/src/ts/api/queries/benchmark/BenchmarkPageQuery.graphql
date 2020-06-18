@@ -5,5 +5,10 @@ query BenchmarkPageQuery($benchmarkId: String!) {
             name
         }
         name
+        submissions {
+            datasetId
+            id
+            name
+        }
     }
 }

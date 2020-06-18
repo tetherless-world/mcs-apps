@@ -16,6 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
+import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -50,7 +51,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
 
   return (
     <Frame>
-      <Grid container direction="column" spacing={3}>
+      <Grid container direction="column" spacing={6}>
         <Grid item>
           <Typography data-cy="benchmark-name" variant="h4">
             {benchmark.name}
@@ -85,6 +86,17 @@ export const BenchmarkPage: React.FunctionComponent = () => {
             </TableBody>
           </Table>
         </Grid>
+        {benchmark.submissions.length > 0 ? (
+          <Grid item>
+            <Typography variant="h5">Submissions</Typography>
+            <BenchmarkSubmissionsTable
+              benchmarkSubmissions={benchmark.submissions.map((submission) => ({
+                ...submission,
+                benchmarkId,
+              }))}
+            />
+          </Grid>
+        ) : null}
       </Grid>
     </Frame>
   );
