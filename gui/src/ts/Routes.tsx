@@ -14,7 +14,7 @@ import {BenchmarkDatasetPage} from "components/benchmark/BenchmarkDatasetPage";
 import {BenchmarkAnswerPage} from "components/benchmark/BenchmarkAnswerPage";
 import {BenchmarkSubmissionPage} from "components/benchmark/BenchmarkSubmissionPage";
 
-const answerIdParam = {id: ":answerId", idEncoded: true};
+const questionIdParam = {id: ":questionId", idEncoded: true};
 const benchmarkIdParam = {id: ":benchmarkId", idEncoded: true};
 const datasetIdParam = {id: ":datasetId", idEncoded: true};
 const submissionIdParam = {id: ":submissionId", idEncoded: true};
@@ -57,7 +57,7 @@ export const Routes: React.FunctionComponent = () => (
         })
           .dataset(datasetIdParam)
           .submission(submissionIdParam)
-          .answer(answerIdParam)}
+          .question(questionIdParam)}
         component={BenchmarkAnswerPage}
       />
 

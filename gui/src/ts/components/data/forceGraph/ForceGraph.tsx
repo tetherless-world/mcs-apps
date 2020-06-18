@@ -25,22 +25,6 @@ export const ForceGraph = <
   height: number;
   width: number;
 }>) => {
-  // Initialize force simulation once and then update node
-  // and links with useEffect
-  const simulation = React.useMemo<d3.Simulation<NodeDatum, LinkDatum>>(
-    () =>
-      d3
-        .forceSimulation<NodeDatum, LinkDatum>()
-        .force(
-          "link",
-          d3.forceLink<NodeDatum, LinkDatum>().id((node) => node.id)
-        )
-        .force("charge", d3.forceManyBody())
-        .force("x", d3.forceX())
-        .force("y", d3.forceY()),
-    []
-  );
-
   const [nodePositions, setNodePositions] = React.useState<NodePositions>({});
   const [linkPositions, setLinkPositions] = React.useState<LinkPositions>({});
 
@@ -68,43 +52,62 @@ export const ForceGraph = <
     return {nodes, links};
   }, [children]);
 
+  const updatePositions = React.useCallback(() => {
+    setLinkPositions((prevPositions) =>
+      links.reduce<LinkPositions>(
+        (positions, link) => ({
+          ...positions,
+          [link.id]: {
+            x1: (link.source as NodeDatum).x!,
+            y1: (link.source as NodeDatum).y!,
+            x2: (link.target as NodeDatum).x!,
+            y2: (link.target as NodeDatum).y!,
+          },
+        }),
+        prevPositions
+      )
+    );
+
+    setNodePositions((prevPositions) =>
+      nodes.reduce<NodePositions>(
+        (positions, node) => ({
+          ...positions,
+          [node.id]: {
+            cx: node.x!,
+            cy: node.y!,
+          },
+        }),
+        prevPositions
+      )
+    );
+  }, []);
+
+  // Initialize force simulation once and then update node
+  // and links with useEffect
+  const simulation = React.useMemo<d3.Simulation<NodeDatum, LinkDatum>>(
+    () =>
+      d3
+        .forceSimulation<NodeDatum, LinkDatum>()
+        .force(
+          "link",
+          d3.forceLink<NodeDatum, LinkDatum>().id((node) => node.id)
+        )
+        .force("charge", d3.forceManyBody())
+        .force("x", d3.forceX())
+        .force("y", d3.forceY())
+        .on("tick", updatePositions)
+        .on("end", () => {
+          simulation.on("tick", null);
+        }),
+    []
+  );
+
   // When nodes or links are changed, update simulation
   React.useEffect(() => {
     simulation
       .nodes(nodes)
       .force<d3.ForceLink<NodeDatum, LinkDatum>>("link")!
       .links(links);
-
-    // On simulation tick, update node and link positions
-    simulation.on("tick", () => {
-      setLinkPositions((prevPositions) =>
-        links.reduce<LinkPositions>(
-          (positions, link) => ({
-            ...positions,
-            [link.id]: {
-              x1: (link.source as NodeDatum).x!,
-              y1: (link.source as NodeDatum).y!,
-              x2: (link.target as NodeDatum).x!,
-              y2: (link.target as NodeDatum).y!,
-            },
-          }),
-          prevPositions
-        )
-      );
-
-      setNodePositions((prevPositions) =>
-        nodes.reduce<NodePositions>(
-          (positions, node) => ({
-            ...positions,
-            [node.id]: {
-              cx: node.x!,
-              cy: node.y!,
-            },
-          }),
-          prevPositions
-        )
-      );
-    });
   }, [nodes, links]);
 
   // Create children elements
