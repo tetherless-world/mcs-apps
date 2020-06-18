@@ -1,6 +1,7 @@
 import {TestData} from "../support/TestData";
 import {BenchmarkPage} from "../support/page_files/BenchmarkPage";
 import {Benchmark} from "../support/Benchmark";
+import {BenchmarksPage} from "../support/page_files/BenchmarksPage";
 
 context("Benchmark page", () => {
   let benchmark: Benchmark;
@@ -34,5 +35,11 @@ context("Benchmark page", () => {
             .name.should("have.text", submission.name);
         });
     });
+  });
+
+  it("should link back to benchmarks page", () => {
+    page.benchmarksLink.click();
+    const benchmarksPage = new BenchmarksPage();
+    benchmarksPage.assertLoaded();
   });
 });

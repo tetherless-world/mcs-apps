@@ -53,6 +53,11 @@ export const BenchmarkPage: React.FunctionComponent = () => {
     <Frame>
       <Grid container direction="column" spacing={6}>
         <Grid item>
+          <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
+            Back to benchmarks
+          </Link>
+        </Grid>
+        <Grid item>
           <Typography data-cy="benchmark-name" variant="h4">
             {benchmark.name}
           </Typography>
