@@ -3,10 +3,7 @@ import {useParams, Link} from "react-router-dom";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import * as BenchmarkDatasetQuestionPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionPaginationQuery.graphql";
 import * as BenchmarkSubmissionPageQueryDocument from "api/queries/benchmark/BenchmarkSubmissionPageQuery.graphql";
-import {
-  BenchmarkSubmissionPageQuery,
-  BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions,
-} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
+import {BenchmarkSubmissionPageQuery} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
 import {Frame} from "components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
@@ -15,6 +12,7 @@ import {Typography} from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {
   BenchmarkDatasetQuestionPaginationQuery,
+  BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkDatasetQuestionPaginationQueryVariables,
 } from "api/queries/benchmark/types/BenchmarkDatasetQuestionPaginationQuery";
 
@@ -43,12 +41,13 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
   );
 
   const [questions, setQuestions] = React.useState<
-    BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions[] | null
+    | BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions[]
+    | null
   >(null);
 
   return (
     <Frame {...initialQuery}>
-      {({initialData}) => {
+      {({data: initialData}) => {
         const benchmark = initialData.benchmarkById;
         if (!benchmark) {
           return <NotFound label={benchmarkId} />;
@@ -62,7 +61,7 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
           return <NotFound label={submissionId} />;
         }
         if (questions === null) {
-          setQuestions(questions);
+          setQuestions(dataset.questions);
           return null;
         }
 
