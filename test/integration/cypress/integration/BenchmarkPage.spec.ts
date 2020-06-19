@@ -1,6 +1,7 @@
 import {TestData} from "../support/TestData";
 import {BenchmarkPage} from "../support/page_files/BenchmarkPage";
 import {Benchmark} from "../support/Benchmark";
+import {BenchmarksPage} from "../support/page_files/BenchmarksPage";
 
 context("Benchmark page", () => {
   let benchmark: Benchmark;
@@ -22,5 +23,23 @@ context("Benchmark page", () => {
     benchmark.datasets.forEach((dataset) => {
       page.datasetName(dataset.id).should("have.text", dataset.name);
     });
+  });
+
+  it("should show submissions", () => {
+    TestData.benchmarkSubmissions.then((submissions) => {
+      submissions
+        .filter((submission) => submission.benchmarkId == benchmark.id)
+        .forEach((submission) => {
+          page.submissionsTable
+            .submission(submission.id)
+            .name.should("have.text", submission.name);
+        });
+    });
+  });
+
+  it("should link back to benchmarks page", () => {
+    page.benchmarksLink.click();
+    const benchmarksPage = new BenchmarksPage();
+    benchmarksPage.assertLoaded();
   });
 });

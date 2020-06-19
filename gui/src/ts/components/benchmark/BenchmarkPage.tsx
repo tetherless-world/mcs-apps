@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -32,7 +33,12 @@ export const BenchmarkPage: React.FunctionComponent = () => {
       loading={loading}
       routeParams={{benchmarkId}}
     >
-      <Grid container direction="column" spacing={3}>
+      <Grid container direction="column" spacing={6}>
+        <Grid item>
+          <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
+            Back to benchmarks
+          </Link>
+        </Grid>
         <Grid item>
           <Typography data-cy="benchmark-name" variant="h4">
             {benchmark?.name}
@@ -67,6 +73,17 @@ export const BenchmarkPage: React.FunctionComponent = () => {
             </TableBody>
           </Table>
         </Grid>
+        {benchmark.submissions.length > 0 ? (
+          <Grid item>
+            <Typography variant="h5">Submissions</Typography>
+            <BenchmarkSubmissionsTable
+              benchmarkSubmissions={benchmark.submissions.map((submission) => ({
+                ...submission,
+                benchmarkId,
+              }))}
+            />
+          </Grid>
+        ) : null}
       </Grid>
     </BenchmarkFrame>
   );

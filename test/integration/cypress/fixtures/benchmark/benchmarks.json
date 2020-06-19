@@ -1,7 +1,5 @@
 [
     {
-        "id": "benchmark0",
-        "name": "Benchmark 0",
         "datasets": [
             {
                 "id": "benchmark0-dev",
@@ -15,11 +13,11 @@
                 "id": "benchmark0-train",
                 "name": "Benchmark 0 train set"
             }
-        ]
+        ],
+        "id": "benchmark0",
+        "name": "Benchmark 0"
     },
     {
-        "id": "benchmark1",
-        "name": "Benchmark 1",
         "datasets": [
             {
                 "id": "benchmark1-dev",
@@ -33,11 +31,11 @@
                 "id": "benchmark1-train",
                 "name": "Benchmark 1 train set"
             }
-        ]
+        ],
+        "id": "benchmark1",
+        "name": "Benchmark 1"
     },
     {
-        "id": "benchmark2",
-        "name": "Benchmark 2",
         "datasets": [
             {
                 "id": "benchmark2-dev",
@@ -51,6 +49,8 @@
                 "id": "benchmark2-train",
                 "name": "Benchmark 2 train set"
             }
-        ]
+        ],
+        "id": "benchmark2",
+        "name": "Benchmark 2"
     }
 ]
