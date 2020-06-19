@@ -1,4 +1,4 @@
-import {Page} from "./Page";
+import {Page} from "../Page";
 import {BenchmarkSubmissionsTable} from "./BenchmarkSubmissionsTable";
 
 export class BenchmarkPage extends Page {

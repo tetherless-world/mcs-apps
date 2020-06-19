@@ -1,5 +1,3 @@
-import {KgNodeSearchBox} from "./KgNodeSearchBox";
-
 export abstract class Page {
   get absoluteUrl() {
     return Cypress.config().baseUrl + this.relativeUrl;
@@ -10,11 +8,6 @@ export abstract class Page {
   }
 
   readonly frame = {
-    navbar: {
-      get search() {
-        return new KgNodeSearchBox("[data-cy=frame] [data-cy=navbar]");
-      },
-    },
     selector: "[data-cy=frame]",
     bodySelector: "[data-cy=frame] [data-cy=frame-content]",
   };

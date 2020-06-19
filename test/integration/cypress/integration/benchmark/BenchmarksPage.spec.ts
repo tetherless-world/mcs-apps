@@ -1,7 +1,7 @@
-import {TestData} from "../support/TestData";
-import {BenchmarksPage} from "../support/page_files/BenchmarksPage";
-import {Benchmark} from "../support/Benchmark";
-import {BenchmarkPage} from "../support/page_files/BenchmarkPage";
+import {TestData} from "../../support/TestData";
+import {BenchmarksPage} from "../../support/pages/benchmark/BenchmarksPage";
+import {Benchmark} from "../../support/models/benchmark/Benchmark";
+import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
 
 context("Benchmarks page", () => {
   let benchmark: Benchmark;

@@ -1,5 +1,5 @@
-import {KgHomePage} from "../support/page_files/KgHomePage";
-import {TestData} from "../support/TestData";
+import {KgHomePage} from "../../support/pages/kg/KgHomePage";
+import {TestData} from "../../support/TestData";
 
 context("KG Home Page", () => {
   const page = new KgHomePage();

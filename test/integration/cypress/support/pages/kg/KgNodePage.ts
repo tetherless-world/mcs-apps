@@ -1,5 +1,5 @@
-import {Page} from "./Page";
-import {TestData} from "../TestData";
+import {Page} from "../Page";
+import {TestData} from "../../TestData";
 
 class EdgeList {
   constructor(private readonly selector: string) {}

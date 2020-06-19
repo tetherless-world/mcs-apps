@@ -1,8 +1,8 @@
-import {KgNode} from "./KgNode";
-import {KgEdge} from "./KgEdge";
-import {KgPath} from "./KgPath";
-import {Benchmark} from "./Benchmark";
-import {BenchmarkSubmission} from "./BenchmarkSubmission";
+import {KgNode} from "./models/kg/KgNode";
+import {KgEdge} from "./models/kg/KgEdge";
+import {KgPath} from "./models/kg/KgPath";
+import {Benchmark} from "./models/benchmark/Benchmark";
+import {BenchmarkSubmission} from "./models/benchmark/BenchmarkSubmission";
 
 export class TestData {
   static readonly kgId = "cskg";
