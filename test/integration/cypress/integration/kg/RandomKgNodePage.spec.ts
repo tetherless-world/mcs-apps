@@ -1,5 +1,5 @@
-import {RandomKgNodePage} from "../support/page_files/RandomKgNodePage";
-import {TestData} from "../support/TestData";
+import {RandomKgNodePage} from "../../support/pages/kg/RandomKgNodePage";
+import {TestData} from "../../support/TestData";
 
 context("Random KG node page", () => {
   const page = new RandomKgNodePage();

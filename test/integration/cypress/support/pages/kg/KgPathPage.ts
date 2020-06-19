@@ -1,5 +1,5 @@
-import {Page} from "./Page";
-import {TestData} from "../TestData";
+import {Page} from "../Page";
+import {TestData} from "../../TestData";
 
 class KgPathTable {
   constructor(public readonly selector: string) {}
