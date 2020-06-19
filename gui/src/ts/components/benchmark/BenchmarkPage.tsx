@@ -1,11 +1,8 @@
 import * as React from "react";
-import {Frame} from "components/frame/Frame";
 import {Link, useParams} from "react-router-dom";
 import {BenchmarkPageQuery} from "api/queries/benchmark/types/BenchmarkPageQuery";
 import * as BenchmarkPageQueryDocument from "api/queries/benchmark/BenchmarkPageQuery.graphql";
-import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {useQuery} from "@apollo/react-hooks";
-import * as ReactLoader from "react-loader";
 import {
   Grid,
   Table,
@@ -17,6 +14,10 @@ import {
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import {Frame} from "components/frame/Frame";
+import * as ReactLoader from "react-loader";
+import {NotFound} from "components/error/NotFound";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -40,13 +41,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
 
   const benchmark = data.benchmarkById;
   if (!benchmark) {
-    return (
-      <Frame>
-        <h3>
-          <code>{benchmarkId} not found</code>
-        </h3>
-      </Frame>
-    );
+    return <NotFound label={benchmarkId} />;
   }
 
   return (
@@ -59,7 +54,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
         </Grid>
         <Grid item>
           <Typography data-cy="benchmark-name" variant="h4">
-            {benchmark.name}
+            {benchmark?.name}
           </Typography>
         </Grid>
         <Grid item>
@@ -72,7 +67,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {benchmark.datasets.map((dataset) => (
+              {benchmark?.datasets.map((dataset) => (
                 <TableRow key={dataset.id}>
                   <TableCell data-cy={"dataset-name-" + dataset.id}>
                     <Link

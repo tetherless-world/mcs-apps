@@ -1,6 +1,5 @@
 import * as React from "react";
-import {Frame} from "components/frame/Frame";
-import {useParams, Link} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import * as BenchmarkAnswerPageQueryDocument from "api/queries/benchmark/BenchmarkAnswerPageQuery.graphql";
 import {
   BenchmarkAnswerPageQuery,
@@ -9,83 +8,15 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import * as ReactLoader from "react-loader";
-import {ApolloException} from "@tetherless-world/twxplore-base";
-import {FatalErrorModal} from "components/error/FatalErrorModal";
+import {Grid, Typography, Card, CardContent} from "@material-ui/core";
+import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {NotFound} from "components/error/NotFound";
 import {
-  Grid,
-  Breadcrumbs,
-  Typography,
-  Card,
-  CardContent,
-} from "@material-ui/core";
-import {Hrefs} from "Hrefs";
+  BenchmarkBreadcrumbsProps,
+  BenchmarkBreadcrumbs,
+} from "./BenchmarkBreadcrumbs";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
-
-interface BenchmarkPathParams {
-  benchmarkId: string;
-  datasetId: string;
-  submissionId: string;
-  questionId: string;
-}
-
-const BenchmarkBreadcrumbs: React.FunctionComponent<Partial<
-  BenchmarkPathParams
->> = ({benchmarkId, datasetId, submissionId, questionId}) => {
-  const breadcrumbsChildren: React.ReactNode = (() => {
-    const breadcrumbs: React.ReactNodeArray = [
-      <Link to={Hrefs.benchmarks}>Benchmarks</Link>,
-    ];
-
-    if (!benchmarkId) {
-      return breadcrumbs;
-    }
-
-    const benchmark = Hrefs.benchmark({id: benchmarkId});
-    breadcrumbs.push(<Link to={benchmark.home}>{benchmarkId}</Link>);
-
-    if (!datasetId) {
-      return breadcrumbs;
-    }
-
-    breadcrumbs.push(<Typography>Datasets</Typography>);
-
-    const dataset = benchmark.dataset({id: datasetId});
-    breadcrumbs.push(<Link to={dataset.home}>{datasetId}</Link>);
-
-    if (!submissionId) {
-      return breadcrumbs;
-    }
-
-    breadcrumbs.push(<Typography>Submissions</Typography>);
-
-    const submission = dataset.submission({id: submissionId});
-    breadcrumbs.push(<Link to={submission.home}>{submissionId}</Link>);
-
-    if (!questionId) {
-      return breadcrumbs;
-    }
-
-    breadcrumbs.push(<Typography>Questions</Typography>);
-
-    breadcrumbs.push(
-      <Link to={submission.question({id: questionId})}>{questionId}</Link>
-    );
-
-    return breadcrumbs;
-  })();
-
-  return <Breadcrumbs>{breadcrumbsChildren}</Breadcrumbs>;
-};
-
-const NotFound: React.FunctionComponent<{label: string}> = ({label}) => {
-  return (
-    <Frame>
-      <Typography variant="h5">{label} was not found</Typography>
-    </Frame>
-  );
-};
 
 const QuestionAnswerChoiceCard: React.FunctionComponent<{
   choice: QuestionAnswerChoice;
@@ -105,118 +36,128 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
   </Card>
 );
 
+interface BenchmarkAnswerRouteParams {
+  benchmarkId: string;
+  datasetId: string;
+  submissionId: string;
+  questionId: string;
+}
+
 export const BenchmarkAnswerPage: React.FunctionComponent = () => {
-  const variables = _.mapValues(
-    useParams<BenchmarkPathParams>(),
+  const routeParams = _.mapValues(
+    useParams<BenchmarkAnswerRouteParams>(),
     decodeURIComponent
   );
-  const {benchmarkId, datasetId, submissionId, questionId} = variables;
 
   const {data, error, loading} = useQuery<
     BenchmarkAnswerPageQuery,
     BenchmarkAnswerPageQueryVariables
-  >(BenchmarkAnswerPageQueryDocument, {variables});
-
-  if (error) {
-    return <FatalErrorModal exception={new ApolloException(error)} />;
-  } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
-  } else if (!data) {
-    throw new EvalError();
-  }
-
-  const benchmark = data.benchmarkById;
-  if (!benchmark) {
-    return <NotFound label={benchmarkId} />;
-  }
-
-  const dataset = benchmark.datasetById;
-  if (!dataset) {
-    return <NotFound label={datasetId} />;
-  }
-
-  const question = dataset.questionById;
-  if (!question) {
-    return <NotFound label={questionId} />;
-  }
-
-  const submission = dataset.submissionById;
-  if (!submission) {
-    return <NotFound label={submissionId} />;
-  }
-
-  const answer = submission.answerByQuestionId;
-  if (!answer) {
-    return <NotFound label={`Answer for ${questionId} `} />;
-  }
-
-  // console.log(JSON.stringify(data));
+  >(BenchmarkAnswerPageQueryDocument, {
+    variables: routeParams,
+  });
 
   return (
-    <Frame>
-      <Grid container direction="column" spacing={3}>
-        <Grid item>
-          <BenchmarkBreadcrumbs {...variables} />
-        </Grid>
+    <BenchmarkFrame data={data} error={error} loading={loading}>
+      {({data}) => {
+        const benchmark = data.benchmarkById;
+        const dataset = benchmark?.datasetById;
+        const question = dataset?.questionById;
+        const submission = dataset?.submissionById;
+        const answer = submission?.answerByQuestionId;
 
-        {/* Show question and answer choices*/}
-        <Grid item container spacing={2}>
-          <Grid item md={6} container direction="column" justify="center">
+        const {benchmarkId, datasetId, submissionId, questionId} = routeParams;
+
+        if (!benchmark) {
+          return <NotFound label={benchmarkId} />;
+        }
+
+        if (!dataset) {
+          return <NotFound label={datasetId} />;
+        }
+
+        if (!question) {
+          return <NotFound label={questionId} />;
+        }
+
+        if (!submission) {
+          return <NotFound label={submissionId} />;
+        }
+
+        const breadcrumbProps: BenchmarkBreadcrumbsProps = {
+          benchmarkId,
+          benchmarkName: benchmark.name,
+          datasetId,
+          datasetName: dataset.name,
+          questionId,
+          submissionId,
+        };
+
+        return (
+          <Grid container direction="column">
             <Grid item>
-              <Typography variant="h4">{question.text}</Typography>
+              <BenchmarkBreadcrumbs {...breadcrumbProps} />
             </Grid>
-          </Grid>
-          <Grid item md={6} container direction="column" spacing={3}>
-            {question.choices.map((choice) => (
-              <Grid item key={choice.label}>
-                <QuestionAnswerChoiceCard choice={choice} />
+            {/* Show question and answer choices*/}
+            <Grid item container>
+              <Grid item md={6} container direction="column" justify="center">
+                <Grid item>
+                  <Typography variant="h4">{question?.text}</Typography>
+                </Grid>
               </Grid>
-            ))}
-          </Grid>
-        </Grid>
-
-        {/* Extra spacing hack */}
-        <Grid item>
-          <br />
-          <br />
-        </Grid>
-
-        {/* Show submission answer */}
-        <Grid item container spacing={2}>
-          <Grid
-            item
-            md={6}
-            container
-            direction="column"
-            justify="center"
-            alignItems="flex-end"
-          >
-            <Grid item>
-              <Typography variant="h5">
-                Submission {submissionId} answered
-              </Typography>
+              <Grid item md={6} container direction="column" spacing={3}>
+                {question?.choices.map((choice) => (
+                  <Grid item key={choice.label}>
+                    <QuestionAnswerChoiceCard choice={choice} />
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item md={6} spacing={3}>
-            <QuestionAnswerChoiceCard
-              choice={
-                question.choices.find(
-                  (choice) => choice.label === answer.choiceLabel
-                )!
-              }
-            ></QuestionAnswerChoiceCard>
-          </Grid>
-        </Grid>
 
-        {/* Show submission explanation */}
-        <Grid item>
-          <Typography variant="body1">Explanation</Typography>
-        </Grid>
-      </Grid>
-    </Frame>
+            {/* Extra spacing hack */}
+            <Grid item>
+              <br />
+              <br />
+            </Grid>
+
+            {!answer && <NotFound label={`Answer for ${questionId} `} />}
+            {answer && (
+              <React.Fragment>
+                {/* Show submission answer */}
+                <Grid item container spacing={2}>
+                  <Grid
+                    item
+                    md={6}
+                    container
+                    direction="column"
+                    justify="center"
+                    alignItems="flex-end"
+                  >
+                    <Grid item>
+                      <Typography variant="h5">
+                        Submission {submissionId} answered
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item md={6} spacing={3}>
+                    <QuestionAnswerChoiceCard
+                      choice={
+                        question?.choices.find(
+                          (choice) => choice.label === answer.choiceLabel
+                        )!
+                      }
+                    ></QuestionAnswerChoiceCard>
+                  </Grid>
+                </Grid>
+
+                {/* Show submission explanation */}
+                <Grid item>
+                  <Typography variant="body1">Explanation</Typography>
+                </Grid>
+              </React.Fragment>
+            )}
+          </Grid>
+        );
+      }}
+    </BenchmarkFrame>
   );
 };
