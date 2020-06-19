@@ -9,7 +9,6 @@ import {useQuery} from "@apollo/react-hooks";
 import {ForceGraph} from "components/data/forceGraph/ForceGraph";
 import * as d3 from "d3";
 import {KgNode} from "models/kg/KgNode";
-import * as ReactLoader from "react-loader";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {kgId} from "api/kgId";
 import {Grid, Typography, Breadcrumbs, Button} from "@material-ui/core";
@@ -54,10 +53,10 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
     height: 400,
   });
 
-  const {data, error} = useQuery<KgPathPageQuery, KgPathPageQueryVariables>(
-    KgPathPageQueryDocument,
-    {variables: {kgId}}
-  );
+  const {data, error, loading} = useQuery<
+    KgPathPageQuery,
+    KgPathPageQueryVariables
+  >(KgPathPageQueryDocument, {variables: {kgId}});
 
   // Format path data into d3 form
   const pathGraphData = React.useMemo<{
@@ -148,8 +147,8 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
   };
 
   return (
-    <Frame>
-      <ReactLoader loaded={data !== undefined}>
+    <Frame data={data} error={error} loading={loading}>
+      {({data}) => (
         <Grid container>
           <Grid item md={4} ref={pathGraphContainerRef}>
             <ForceGraph {...pathGraphDimensions}>
@@ -229,7 +228,7 @@ export const KgPathPage: React.FunctionComponent<RouteComponentProps> = ({
             </Grid>
           </Grid>
         </Grid>
-      </ReactLoader>
+      )}
     </Frame>
   );
 };

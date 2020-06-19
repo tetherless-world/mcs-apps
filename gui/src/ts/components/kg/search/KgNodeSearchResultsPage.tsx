@@ -9,13 +9,10 @@ import {
 } from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "components/kg/node/KgNodeTable";
-
-import * as ReactLoader from "react-loader";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {KgNodeFilters} from "api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
-import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {kgId} from "api/kgId";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
@@ -90,10 +87,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     variables: {kgId, ...searchVariables.object, withCount: count === null},
   });
 
-  if (error) {
-    return <ApolloErrorHandler error={error} />;
-  }
-
   if (loading && count !== null) {
     setCount(null);
   }
@@ -103,10 +96,10 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   }
 
   return (
-    <Frame>
-      <Grid container spacing={3}>
-        <Grid item md={8} data-cy="visualizationContainer">
-          <ReactLoader loaded={!loading}>
+    <Frame data={data} error={error} loading={loading}>
+      {({data}) => (
+        <Grid container spacing={3}>
+          <Grid item md={8} data-cy="visualizationContainer">
             <Typography variant="h6">
               {count || "No"} results for "{searchVariables.text}"
             </Typography>
@@ -132,12 +125,12 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
                 }
               />
             )}
-          </ReactLoader>
-        </Grid>
-        {/* <Grid item xs={4} container direction="column">
+          </Grid>
+          {/* <Grid item xs={4} container direction="column">
           <Grid item>Extra information</Grid>
         </Grid> */}
-      </Grid>
+        </Grid>
+      )}
     </Frame>
   );
 };

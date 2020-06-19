@@ -65,54 +65,56 @@ export const KgHomePage: React.FunctionComponent = () => {
   };
 
   return (
-    <Frame>
-      <Container maxWidth="md" className={classes.container}>
-        <Grid container direction="column" spacing={3}>
-          <Grid item>
-            <Typography variant="h2" className={classes.title}>
-              MCS Portal
-            </Typography>
-          </Grid>
-          <Grid item>
-            {data && (
-              <React.Fragment>
-                <Typography>
-                  Search{" "}
-                  <strong data-cy="totalNodeCount">
-                    {data.kgById.totalNodesCount} nodes
-                  </strong>{" "}
-                  with{" "}
-                  <strong data-cy="totalEdgeCount">
-                    {data.kgById.totalEdgesCount} relationships
-                  </strong>
-                </Typography>
+    <Frame data={data} loading={false}>
+      {({data}) => (
+        <Container maxWidth="md" className={classes.container}>
+          <Grid container direction="column" spacing={3}>
+            <Grid item>
+              <Typography variant="h2" className={classes.title}>
+                MCS Portal
+              </Typography>
+            </Grid>
+            <Grid item>
+              {data && (
+                <React.Fragment>
+                  <Typography>
+                    Search{" "}
+                    <strong data-cy="totalNodeCount">
+                      {data.kgById.totalNodesCount} nodes
+                    </strong>{" "}
+                    with{" "}
+                    <strong data-cy="totalEdgeCount">
+                      {data.kgById.totalEdgesCount} relationships
+                    </strong>
+                  </Typography>
 
-                <KgNodeSearchBox
-                  autoFocus
-                  placeholder="Search a word or try a query"
-                  showIcon={true}
-                  onChange={onSearchChange}
-                />
-                <br />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={onSearchSubmit}
-                >
-                  Search
-                </Button>
-                <Button
-                  color="primary"
-                  component={Link}
-                  to={Hrefs.kg({id: kgId}).randomNode}
-                >
-                  Show me something interesting
-                </Button>
-              </React.Fragment>
-            )}
+                  <KgNodeSearchBox
+                    autoFocus
+                    placeholder="Search a word or try a query"
+                    showIcon={true}
+                    onChange={onSearchChange}
+                  />
+                  <br />
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={onSearchSubmit}
+                  >
+                    Search
+                  </Button>
+                  <Button
+                    color="primary"
+                    component={Link}
+                    to={Hrefs.kg({id: kgId}).randomNode}
+                  >
+                    Show me something interesting
+                  </Button>
+                </React.Fragment>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      )}
     </Frame>
   );
 };
