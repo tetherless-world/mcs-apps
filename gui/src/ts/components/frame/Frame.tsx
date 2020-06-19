@@ -5,8 +5,8 @@ import {makeStyles, createStyles, Grid} from "@material-ui/core";
 import {Footer} from "components/footer/Footer";
 
 import * as ReactLoader from "react-loader";
-import {ApolloError} from "apollo-client";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import {FrameProps} from "components/frame/FrameProps";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -27,17 +27,6 @@ const useStyles = makeStyles((theme) =>
     },
   })
 );
-
-interface FrameChildrenProps<TData> {
-  data: TData;
-}
-
-interface FrameProps<TData> {
-  children: (props: FrameChildrenProps<TData>) => React.ReactNode;
-  data?: TData;
-  error?: ApolloError;
-  loading: boolean;
-}
 
 export const Frame = <TData,>({
   children,

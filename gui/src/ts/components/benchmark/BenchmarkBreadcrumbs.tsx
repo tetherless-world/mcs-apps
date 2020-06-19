@@ -2,13 +2,14 @@ import * as React from "react";
 import {Link} from "react-router-dom";
 import {Breadcrumbs, Typography} from "@material-ui/core";
 import {Hrefs} from "Hrefs";
+import {BenchmarkBreadcrumbsProps} from "components/benchmark/BenchmarkBreadcrumbsProps";
 
-export const BenchmarkBreadcrumbs: React.FunctionComponent<{
-  benchmark?: {id: string; name: string};
-  dataset?: {id: string; name: string};
-  question?: {id: string};
-  submission?: {id: string; name: string};
-}> = ({benchmark, dataset, question, submission}) => {
+export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsProps> = ({
+  benchmark,
+  dataset,
+  question,
+  submission,
+}) => {
   const breadcrumbsChildren: React.ReactNode = (() => {
     const breadcrumbs: React.ReactNodeArray = [
       <Link to={Hrefs.benchmarks}>Benchmarks</Link>,
