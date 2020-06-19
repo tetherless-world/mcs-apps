@@ -6,6 +6,7 @@ import {useQuery} from "@apollo/react-hooks";
 import {Grid, Typography, ListItem, List} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
+import {BenchmarkBreadcrumbs} from "components/benchmark/BenchmarkBreadcrumbs";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const query = useQuery<BenchmarksQuery>(BenchmarksPageQueryDocument);
@@ -14,6 +15,9 @@ export const BenchmarksPage: React.FunctionComponent = () => {
     <Frame {...query}>
       {({data}) => (
         <Grid container direction="column" spacing={1}>
+          <Grid item>
+            <BenchmarkBreadcrumbs />
+          </Grid>
           <Grid item>
             <Typography variant="h4">Benchmarks</Typography>
           </Grid>

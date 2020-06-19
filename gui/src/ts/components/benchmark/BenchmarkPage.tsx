@@ -16,6 +16,7 @@ import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {Frame} from "components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
+import {BenchmarkBreadcrumbs} from "components/benchmark/BenchmarkBreadcrumbs";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -35,9 +36,11 @@ export const BenchmarkPage: React.FunctionComponent = () => {
         return (
           <Grid container direction="column" spacing={6}>
             <Grid item>
-              <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
-                Back to benchmarks
-              </Link>
+              <BenchmarkBreadcrumbs
+                {...{
+                  benchmark: {id: benchmarkId, name: benchmark.name},
+                }}
+              />
             </Grid>
             <Grid item>
               <Typography data-cy="benchmark-name" variant="h4">

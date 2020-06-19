@@ -7,6 +7,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
 import {NotFound} from "components/error/NotFound";
+import {BenchmarkBreadcrumbs} from "components/benchmark/BenchmarkBreadcrumbs";
 
 export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   const {benchmarkId, datasetId} = useParams<{
@@ -33,6 +34,14 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
 
         return (
           <Grid container direction="column" spacing={6}>
+            <Grid item>
+              <BenchmarkBreadcrumbs
+                {...{
+                  benchmark: {id: benchmarkId, name: benchmark.name},
+                  dataset: {id: datasetId, name: dataset.name},
+                }}
+              />
+            </Grid>
             <Grid item>
               <Typography data-cy="dataset-name" variant="h4">
                 {dataset.name}
