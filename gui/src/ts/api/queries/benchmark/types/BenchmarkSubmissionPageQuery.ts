@@ -6,15 +6,8 @@
 // GraphQL query operation: BenchmarkSubmissionPageQuery
 // ====================================================
 
-export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_choices {
-  __typename: "BenchmarkQuestionChoice";
-  label: string;
-  text: string;
-}
-
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions {
   __typename: "BenchmarkQuestion";
-  choices: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_choices[];
   concept: string | null;
   id: string;
   text: string;
@@ -28,6 +21,7 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissi
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById {
   __typename: "BenchmarkDataset";
   name: string;
+  questionCount: number;
   questions: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions[];
   submissionById: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissionById | null;
 }

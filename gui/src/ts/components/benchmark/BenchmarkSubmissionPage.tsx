@@ -1,11 +1,24 @@
 import * as React from "react";
-import {useParams} from "react-router-dom";
-import {useQuery} from "@apollo/react-hooks";
+import {useParams, Link} from "react-router-dom";
+import {useApolloClient, useQuery} from "@apollo/react-hooks";
+import * as BenchmarkDatasetQuestionPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionPaginationQuery.graphql";
 import * as BenchmarkSubmissionPageQueryDocument from "api/queries/benchmark/BenchmarkSubmissionPageQuery.graphql";
-import {BenchmarkSubmissionPageQuery} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
+import {
+  BenchmarkSubmissionPageQuery,
+  BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions,
+} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
 import {Frame} from "components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import MUIDataTable from "mui-datatables";
+import {Typography} from "@material-ui/core";
+import {Hrefs} from "Hrefs";
+import {
+  BenchmarkDatasetQuestionPaginationQuery,
+  BenchmarkDatasetQuestionPaginationQueryVariables,
+} from "api/queries/benchmark/types/BenchmarkDatasetQuestionPaginationQuery";
+
+const QUESTIONS_PER_PAGE = 10;
 
 export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
   const {benchmarkId, datasetId, submissionId} = useParams<{
@@ -14,15 +27,29 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
     submissionId: string;
   }>();
 
-  const query = useQuery<BenchmarkSubmissionPageQuery>(
+  const apolloClient = useApolloClient();
+
+  const initialQuery = useQuery<BenchmarkSubmissionPageQuery>(
     BenchmarkSubmissionPageQueryDocument,
-    {variables: {benchmarkId, datasetId}}
+    {
+      variables: {
+        benchmarkId,
+        datasetId,
+        questionLimit: QUESTIONS_PER_PAGE,
+        questionOffset: 0,
+        submissionId,
+      },
+    }
   );
 
+  const [questions, setQuestions] = React.useState<
+    BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions[] | null
+  >(null);
+
   return (
-    <Frame {...query}>
-      {({data}) => {
-        const benchmark = data.benchmarkById;
+    <Frame {...initialQuery}>
+      {({initialData}) => {
+        const benchmark = initialData.benchmarkById;
         if (!benchmark) {
           return <NotFound label={benchmarkId} />;
         }
@@ -34,6 +61,13 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
         if (!submission) {
           return <NotFound label={submissionId} />;
         }
+        if (questions === null) {
+          setQuestions(questions);
+          return null;
+        }
+
+        // See mui-datatables example
+        // https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js
 
         return (
           <BenchmarkFrame
@@ -44,7 +78,72 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
               submission: {id: submissionId, name: submission.name},
             }}
           >
-            <div></div>
+            <MUIDataTable
+              columns={[
+                {
+                  name: "text",
+                  label: "Text",
+                  options: {
+                    customBodyRender: (value, tableMeta) => {
+                      return (
+                        <Link
+                          to={Hrefs.benchmark({id: benchmarkId})
+                            .dataset({id: datasetId})
+                            .submission({id: submissionId})
+                            .question({id: tableMeta.rowData[2]})}
+                        >
+                          {value}
+                        </Link>
+                      );
+                    },
+                  },
+                },
+                {name: "concept", label: "Concept"},
+                {name: "id", label: "Id"},
+              ]}
+              data={questions}
+              options={{
+                count: dataset.questionCount,
+                filter: false,
+                onTableChange: (action, tableState) => {
+                  switch (action) {
+                    case "changePage": {
+                      // Use another query to paginate instead of refetch so that we don't re-render the whole frame when loading goes back to true.
+                      // We also don't request redundant data.
+                      apolloClient
+                        .query<
+                          BenchmarkDatasetQuestionPaginationQuery,
+                          BenchmarkDatasetQuestionPaginationQueryVariables
+                        >({
+                          query: BenchmarkDatasetQuestionPaginationQueryDocument,
+                          variables: {
+                            benchmarkId,
+                            datasetId,
+                            questionLimit: tableState.rowsPerPage,
+                            questionOffset:
+                              tableState.page * tableState.rowsPerPage,
+                          },
+                        })
+                        .then(({data, errors, loading}) => {
+                          if (errors) {
+                          } else if (loading) {
+                          } else if (!data) {
+                            throw new EvalError();
+                          }
+                          setQuestions(
+                            data.benchmarkById!.datasetById!.questions
+                          );
+                        });
+                      break;
+                    }
+                  }
+                },
+                rowsPerPage: QUESTIONS_PER_PAGE,
+                serverSide: true,
+                sort: false,
+              }}
+              title={<Typography variant="h6">Questions</Typography>}
+            />
           </BenchmarkFrame>
         );
       }}
