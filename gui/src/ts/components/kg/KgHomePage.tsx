@@ -18,8 +18,8 @@ import {Hrefs} from "Hrefs";
 import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
 import {kgId} from "api/kgId";
 import {useQuery} from "@apollo/react-hooks";
-import {KgDataSummaryQuery} from "api/queries/kg/types/KgDataSummaryQuery";
-import * as KgDataSummaryQueryDocument from "api/queries/kg/KgDataSummaryQuery.graphql";
+import {KgHomePageQuery} from "api/queries/kg/types/KgHomePageQuery";
+import * as KgHomePageQueryDocument from "api/queries/kg/KgHomePageQuery.graphql";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -40,7 +40,7 @@ export const KgHomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const query = useQuery<KgDataSummaryQuery>(KgDataSummaryQueryDocument, {
+  const query = useQuery<KgHomePageQuery>(KgHomePageQueryDocument, {
     variables: {kgId},
   });
 
