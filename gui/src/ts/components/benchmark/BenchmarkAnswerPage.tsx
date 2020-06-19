@@ -85,12 +85,10 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
             <Grid item>
               <BenchmarkBreadcrumbs
                 {...{
-                  benchmarkId,
-                  benchmarkName: benchmark.name,
-                  datasetId,
-                  datasetName: dataset.name,
-                  questionId,
-                  submissionId,
+                  benchmark: {id: benchmarkId, name: benchmark.name},
+                  dataset: {id: datasetId, name: dataset.name},
+                  question: {id: questionId},
+                  submission: {id: submissionId, name: submission.name},
                 }}
               />
             </Grid>
