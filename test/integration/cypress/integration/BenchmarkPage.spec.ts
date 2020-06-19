@@ -37,9 +37,9 @@ context("Benchmark page", () => {
     });
   });
 
-  it("should link back to benchmarks page", () => {
-    page.benchmarksLink.click();
-    const benchmarksPage = new BenchmarksPage();
-    benchmarksPage.assertLoaded();
-  });
+  // it("should link back to benchmarks page", () => {
+  //   page.benchmarksLink.click();
+  //   const benchmarksPage = new BenchmarksPage();
+  //   benchmarksPage.assertLoaded();
+  // });
 });

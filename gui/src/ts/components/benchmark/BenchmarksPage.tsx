@@ -3,9 +3,10 @@ import {Frame} from "components/frame/Frame";
 import * as BenchmarksPageQueryDocument from "api/queries/benchmark/BenchmarksPageQuery.graphql";
 import {BenchmarksQuery} from "api/queries/benchmark/types/BenchmarksQuery";
 import {useQuery} from "@apollo/react-hooks";
-import {Grid, Typography, ListItem, List} from "@material-ui/core";
+import {ListItem, List} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
+import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const query = useQuery<BenchmarksQuery>(BenchmarksPageQueryDocument);
@@ -13,25 +14,20 @@ export const BenchmarksPage: React.FunctionComponent = () => {
   return (
     <Frame {...query}>
       {({data}) => (
-        <Grid container direction="column" spacing={1}>
-          <Grid item>
-            <Typography variant="h4">Benchmarks</Typography>
-          </Grid>
-          <Grid item>
-            <List>
-              {data.benchmarks.map((bm) => (
-                <ListItem key={bm.id}>
-                  <Link
-                    to={Hrefs.benchmark({id: bm.id}).home}
-                    data-cy={`benchmark-${bm.id}`}
-                  >
-                    {bm.name}
-                  </Link>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
-        </Grid>
+        <BenchmarkFrame title="Benchmarks">
+          <List>
+            {data.benchmarks.map((bm) => (
+              <ListItem key={bm.id}>
+                <Link
+                  to={Hrefs.benchmark({id: bm.id}).home}
+                  data-cy={`benchmark-${bm.id}`}
+                >
+                  {bm.name}
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </BenchmarkFrame>
       )}
     </Frame>
   );

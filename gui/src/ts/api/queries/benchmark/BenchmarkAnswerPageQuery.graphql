@@ -27,6 +27,7 @@ query BenchmarkAnswerPageQuery($benchmarkId: String!, $questionId: String!, $dat
                         }
                     }
                 }
+                name
             }
         }
     }

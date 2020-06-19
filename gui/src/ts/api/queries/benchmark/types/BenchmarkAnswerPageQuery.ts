@@ -51,6 +51,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById {
   __typename: "BenchmarkSubmission";
   answerByQuestionId: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId | null;
+  name: string;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById {

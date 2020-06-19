@@ -10,8 +10,8 @@ import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
-import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
 import {Frame} from "components/frame/Frame";
+import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -81,78 +81,75 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
         }
 
         return (
-          <Grid container direction="column">
-            <Grid item>
-              <BenchmarkBreadcrumbs
-                {...{
-                  benchmarkId,
-                  benchmarkName: benchmark.name,
-                  datasetId,
-                  datasetName: dataset.name,
-                  questionId,
-                  submissionId,
-                }}
-              />
-            </Grid>
+          <BenchmarkFrame
+            {...{
+              benchmark: {id: benchmarkId, name: benchmark.name},
+              dataset: {id: datasetId, name: dataset.name},
+              question: {id: questionId},
+              submission: {id: submissionId, name: submission.name},
+            }}
+          >
             {/* Show question and answer choices*/}
-            <Grid item container>
-              <Grid item md={6} container direction="column" justify="center">
-                <Grid item>
-                  <Typography variant="h4">{question?.text}</Typography>
+            <Grid container direction="column">
+              <Grid item container>
+                <Grid item md={6} container direction="column" justify="center">
+                  <Grid item>
+                    <Typography variant="h4">{question?.text}</Typography>
+                  </Grid>
+                </Grid>
+                <Grid item md={6} container direction="column" spacing={3}>
+                  {question?.choices.map((choice) => (
+                    <Grid item key={choice.label}>
+                      <QuestionAnswerChoiceCard choice={choice} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Grid>
-              <Grid item md={6} container direction="column" spacing={3}>
-                {question?.choices.map((choice) => (
-                  <Grid item key={choice.label}>
-                    <QuestionAnswerChoiceCard choice={choice} />
-                  </Grid>
-                ))}
+
+              {/* Extra spacing hack */}
+              <Grid item>
+                <br />
+                <br />
               </Grid>
-            </Grid>
 
-            {/* Extra spacing hack */}
-            <Grid item>
-              <br />
-              <br />
-            </Grid>
-
-            {!answer && <NotFound label={`Answer for ${questionId} `} />}
-            {answer && (
-              <React.Fragment>
-                {/* Show submission answer */}
-                <Grid item container spacing={2}>
-                  <Grid
-                    item
-                    md={6}
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="flex-end"
-                  >
-                    <Grid item>
-                      <Typography variant="h5">
-                        Submission {submissionId} answered
-                      </Typography>
+              {!answer && <NotFound label={`Answer for ${questionId} `} />}
+              {answer && (
+                <React.Fragment>
+                  {/* Show submission answer */}
+                  <Grid item container spacing={2}>
+                    <Grid
+                      item
+                      md={6}
+                      container
+                      direction="column"
+                      justify="center"
+                      alignItems="flex-end"
+                    >
+                      <Grid item>
+                        <Typography variant="h5">
+                          Submission {submissionId} answered
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item md={6} spacing={3}>
+                      <QuestionAnswerChoiceCard
+                        choice={
+                          question?.choices.find(
+                            (choice) => choice.label === answer.choiceLabel
+                          )!
+                        }
+                      ></QuestionAnswerChoiceCard>
                     </Grid>
                   </Grid>
-                  <Grid item md={6} spacing={3}>
-                    <QuestionAnswerChoiceCard
-                      choice={
-                        question?.choices.find(
-                          (choice) => choice.label === answer.choiceLabel
-                        )!
-                      }
-                    ></QuestionAnswerChoiceCard>
-                  </Grid>
-                </Grid>
 
-                {/* Show submission explanation */}
-                <Grid item>
-                  <Typography variant="body1">Explanation</Typography>
-                </Grid>
-              </React.Fragment>
-            )}
-          </Grid>
+                  {/* Show submission explanation */}
+                  <Grid item>
+                    <Typography variant="body1">Explanation</Typography>
+                  </Grid>
+                </React.Fragment>
+              )}
+            </Grid>
+          </BenchmarkFrame>
         );
       }}
     </Frame>

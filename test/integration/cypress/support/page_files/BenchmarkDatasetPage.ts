@@ -7,7 +7,7 @@ export class BenchmarkDatasetPage extends Page {
   }
 
   get datasetName() {
-    return cy.get(`[data-cy=dataset-name]`);
+    return cy.get(`[data-cy=benchmark-frame-title]`);
   }
 
   get submissionsTable() {
