@@ -11,7 +11,7 @@ interface Props extends BenchmarkBreadcrumbsProps {
 export const BenchmarkFrame: React.FunctionComponent<Props> = (props) => {
   const {children, title, ...breadcrumbProps} = props;
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" spacing={6}>
       <Grid item>
         <BenchmarkBreadcrumbs {...breadcrumbProps} />
       </Grid>

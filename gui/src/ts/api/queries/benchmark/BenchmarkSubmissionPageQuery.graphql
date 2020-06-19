@@ -1,0 +1,17 @@
+query BenchmarkSubmissionPageQuery($benchmarkId: String!, $datasetId: String!, $questionLimit: Int!, $questionOffset: Int!, $submissionId: String!) {
+    benchmarkById(id: $benchmarkId) {
+        datasetById(id: $datasetId) {
+            name
+            questionCount
+            questions(limit: $questionLimit, offset: $questionOffset) {
+                concept
+                id
+                text
+            }
+            submissionById(id: $submissionId) {
+                name
+            }
+        }
+        name
+    }
+}

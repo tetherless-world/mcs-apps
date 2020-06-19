@@ -21,6 +21,10 @@ class MemBenchmarkStore extends BenchmarkStore {
   final override def getBenchmarkById(benchmarkId: String): Option[Benchmark] =
     benchmarks.find(benchmark => benchmark.id == benchmarkId)
 
+  final override def getBenchmarkQuestionCountByDataset(benchmarkDatasetId: String): Int =
+    benchmarkQuestions
+      .count(question => question.datasetId == benchmarkDatasetId)
+
   final override def getBenchmarkQuestionsByDataset(benchmarkDatasetId: String, limit: Int, offset: Int): List[BenchmarkQuestion] =
     benchmarkQuestions
       .filter(question => question.datasetId == benchmarkDatasetId)

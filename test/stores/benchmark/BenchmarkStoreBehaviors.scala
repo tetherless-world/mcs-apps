@@ -14,6 +14,8 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
           val questions = sut.getBenchmarkQuestionsByDataset(benchmarkDatasetId = dataset.id, limit = 1000, offset = 0)
           questions should not be empty
           questions.size should be < 1000
+          val questionCount = sut.getBenchmarkQuestionCountByDataset(dataset.id)
+          questionCount should equal(questions.size)
         }
       }
     }

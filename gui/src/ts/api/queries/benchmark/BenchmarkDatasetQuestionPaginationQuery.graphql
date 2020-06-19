@@ -1,0 +1,11 @@
+query BenchmarkDatasetQuestionPaginationQuery($benchmarkId: String!, $datasetId: String!, $questionLimit: Int!, $questionOffset: Int!) {
+    benchmarkById(id: $benchmarkId) {
+        datasetById(id: $datasetId) {
+            questions(limit: $questionLimit, offset: $questionOffset) {
+                concept
+                id
+                text
+            }
+        }
+    }
+}
