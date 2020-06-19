@@ -7,7 +7,7 @@ import {Frame} from "components/frame/Frame";
 export const NoRoute: React.FunctionComponent = () => {
   const location = useLocation();
   return (
-    <Frame data={null} loading={false}>
+    <Frame data={true} loading={false}>
       {({data}) => (
         <h3>
           <code>{location.pathname}</code>
