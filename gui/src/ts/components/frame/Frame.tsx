@@ -5,7 +5,6 @@ import {makeStyles, createStyles, Grid} from "@material-ui/core";
 import {Footer} from "components/footer/Footer";
 
 import * as ReactLoader from "react-loader";
-import {KgDataSummaryContext} from "KgDataSummaryProvider";
 import {ApolloError} from "apollo-client";
 import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 
@@ -48,8 +47,6 @@ export const Frame = <TData,>({
 }: FrameProps<TData>) => {
   const classes = useStyles();
 
-  const kgDataSummary = React.useContext(KgDataSummaryContext);
-
   if (error) {
     return <ApolloErrorHandler error={error} />;
   } else if (loading) {
@@ -59,10 +56,7 @@ export const Frame = <TData,>({
   }
 
   return (
-    <ReactLoader
-      loaded={!loading && kgDataSummary !== undefined}
-      loadedClassName={classes.frameLoader}
-    >
+    <ReactLoader loaded={!loading} loadedClassName={classes.frameLoader}>
       <Grid
         className={classes.frame}
         container

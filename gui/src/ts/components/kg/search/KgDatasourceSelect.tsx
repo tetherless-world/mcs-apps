@@ -3,23 +3,16 @@ import * as React from "react";
 import {Select, MenuItem, Paper} from "@material-ui/core";
 
 import {StringFilter} from "api/graphqlGlobalTypes";
-import {KgDataSummaryContext} from "KgDataSummaryProvider";
 
 export const KgDatasourceSelect: React.FunctionComponent<{
+  datasources: string[];
   value?: StringFilter;
   onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
-}> = ({value, onChange, style}) => {
-  const data = React.useContext(KgDataSummaryContext);
-  const datasources = data?.kgById.datasources;
-
+}> = ({datasources, value, onChange, style}) => {
   const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
     value?.include?.[0] || ""
   );
-
-  if (!datasources) {
-    return null;
-  }
 
   return (
     <Paper variant="outlined" square style={style} data-cy="datasourceSelect">

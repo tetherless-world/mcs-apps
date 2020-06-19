@@ -15,10 +15,11 @@ import {
 import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
-
-import {KgDataSummaryContext} from "KgDataSummaryProvider";
 import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
 import {kgId} from "api/kgId";
+import {useQuery} from "@apollo/react-hooks";
+import {KgDataSummaryQuery} from "api/queries/kg/types/KgDataSummaryQuery";
+import * as KgDataSummaryQueryDocument from "api/queries/kg/KgDataSummaryQuery.graphql";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -39,7 +40,9 @@ export const KgHomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const data = React.useContext(KgDataSummaryContext);
+  const query = useQuery<KgDataSummaryQuery>(KgDataSummaryQueryDocument, {
+    variables: {kgId},
+  });
 
   const [search, setSearch] = React.useState<KgNodeSearchBoxValue>(null);
 
@@ -65,7 +68,7 @@ export const KgHomePage: React.FunctionComponent = () => {
   };
 
   return (
-    <Frame data={data} loading={false}>
+    <Frame {...query}>
       {({data}) => (
         <Container maxWidth="md" className={classes.container}>
           <Grid container direction="column" spacing={3}>
@@ -90,6 +93,7 @@ export const KgHomePage: React.FunctionComponent = () => {
 
                   <KgNodeSearchBox
                     autoFocus
+                    datasources={data.kgById.datasources}
                     placeholder="Search a word or try a query"
                     showIcon={true}
                     onChange={onSearchChange}
