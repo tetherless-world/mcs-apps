@@ -15,10 +15,11 @@ import {
 import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "Hrefs";
-
-import {KgDataSummaryContext} from "KgDataSummaryProvider";
 import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
 import {kgId} from "api/kgId";
+import {useQuery} from "@apollo/react-hooks";
+import {KgHomePageQuery} from "api/queries/kg/types/KgHomePageQuery";
+import * as KgHomePageQueryDocument from "api/queries/kg/KgHomePageQuery.graphql";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -39,7 +40,9 @@ export const KgHomePage: React.FunctionComponent = () => {
 
   const history = useHistory();
 
-  const data = React.useContext(KgDataSummaryContext);
+  const query = useQuery<KgHomePageQuery>(KgHomePageQueryDocument, {
+    variables: {kgId},
+  });
 
   const [search, setSearch] = React.useState<KgNodeSearchBoxValue>(null);
 
@@ -65,54 +68,57 @@ export const KgHomePage: React.FunctionComponent = () => {
   };
 
   return (
-    <Frame>
-      <Container maxWidth="md" className={classes.container}>
-        <Grid container direction="column" spacing={3}>
-          <Grid item>
-            <Typography variant="h2" className={classes.title}>
-              MCS Portal
-            </Typography>
-          </Grid>
-          <Grid item>
-            {data && (
-              <React.Fragment>
-                <Typography>
-                  Search{" "}
-                  <strong data-cy="totalNodeCount">
-                    {data.kgById.totalNodesCount} nodes
-                  </strong>{" "}
-                  with{" "}
-                  <strong data-cy="totalEdgeCount">
-                    {data.kgById.totalEdgesCount} relationships
-                  </strong>
-                </Typography>
+    <Frame {...query}>
+      {({data}) => (
+        <Container maxWidth="md" className={classes.container}>
+          <Grid container direction="column" spacing={3}>
+            <Grid item>
+              <Typography variant="h2" className={classes.title}>
+                MCS Portal
+              </Typography>
+            </Grid>
+            <Grid item>
+              {data && (
+                <React.Fragment>
+                  <Typography>
+                    Search{" "}
+                    <strong data-cy="totalNodeCount">
+                      {data.kgById.totalNodesCount} nodes
+                    </strong>{" "}
+                    with{" "}
+                    <strong data-cy="totalEdgeCount">
+                      {data.kgById.totalEdgesCount} relationships
+                    </strong>
+                  </Typography>
 
-                <KgNodeSearchBox
-                  autoFocus
-                  placeholder="Search a word or try a query"
-                  showIcon={true}
-                  onChange={onSearchChange}
-                />
-                <br />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={onSearchSubmit}
-                >
-                  Search
-                </Button>
-                <Button
-                  color="primary"
-                  component={Link}
-                  to={Hrefs.kg({id: kgId}).randomNode}
-                >
-                  Show me something interesting
-                </Button>
-              </React.Fragment>
-            )}
+                  <KgNodeSearchBox
+                    autoFocus
+                    datasources={data.kgById.datasources}
+                    placeholder="Search a word or try a query"
+                    showIcon={true}
+                    onChange={onSearchChange}
+                  />
+                  <br />
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={onSearchSubmit}
+                  >
+                    Search
+                  </Button>
+                  <Button
+                    color="primary"
+                    component={Link}
+                    to={Hrefs.kg({id: kgId}).randomNode}
+                  >
+                    Show me something interesting
+                  </Button>
+                </React.Fragment>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      )}
     </Frame>
   );
 };

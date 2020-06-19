@@ -5,7 +5,8 @@ import {makeStyles, createStyles, Grid} from "@material-ui/core";
 import {Footer} from "components/footer/Footer";
 
 import * as ReactLoader from "react-loader";
-import {KgDataSummaryContext} from "KgDataSummaryProvider";
+import {ApolloError} from "apollo-client";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -27,18 +28,35 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export const Frame: React.FunctionComponent<{children: React.ReactNode}> = ({
+interface FrameChildrenProps<TData> {
+  data: TData;
+}
+
+interface FrameProps<TData> {
+  children: (props: FrameChildrenProps<TData>) => React.ReactNode;
+  data?: TData;
+  error?: ApolloError;
+  loading: boolean;
+}
+
+export const Frame = <TData,>({
   children,
-}) => {
+  data,
+  error,
+  loading,
+}: FrameProps<TData>) => {
   const classes = useStyles();
 
-  const data = React.useContext(KgDataSummaryContext);
+  if (error) {
+    return <ApolloErrorHandler error={error} />;
+  } else if (loading) {
+    // Drop down
+  } else if (!data) {
+    throw new EvalError();
+  }
 
   return (
-    <ReactLoader
-      loaded={data !== undefined}
-      loadedClassName={classes.frameLoader}
-    >
+    <ReactLoader loaded={!loading} loadedClassName={classes.frameLoader}>
       <Grid
         className={classes.frame}
         container
@@ -51,7 +69,7 @@ export const Frame: React.FunctionComponent<{children: React.ReactNode}> = ({
         </Grid>
         <Grid className={classes.rootContainer} item>
           <div className={classes.root} data-cy="frame-content">
-            {children}
+            {data ? children({data}) : null}
           </div>
         </Grid>
         <Grid item>

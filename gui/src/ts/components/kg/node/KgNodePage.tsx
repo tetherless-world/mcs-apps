@@ -13,15 +13,12 @@ import {
   KgNodePageQueryVariables,
 } from "api/queries/kg/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
-import {ApolloException} from "@tetherless-world/twxplore-base";
-import {FatalErrorModal} from "components/error/FatalErrorModal";
-import * as ReactLoader from "react-loader";
 import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
 import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
-import * as _ from "lodash";
 import {kgId} from "api/kgId";
+import {NotFound} from "components/error/NotFound";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -43,126 +40,112 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
 
   // const classes = useStyles();
 
-  const {data, error, loading} = useQuery<
-    KgNodePageQuery,
-    KgNodePageQueryVariables
-  >(NodePageQueryDocument, {variables: {kgId, nodeId}});
-
-  if (error) {
-    return <FatalErrorModal exception={new ApolloException(error)} />;
-  } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
-  } else if (!data) {
-    throw new EvalError();
-  }
-
-  const node = data.kgById.nodeById;
-  if (!node) {
-    return (
-      <Frame>
-        <h3>
-          <code>{nodeId} not found</code>
-        </h3>
-      </Frame>
-    );
-  }
-
-  const nodeLabel = node.label ? node.label : node.id;
-
-  let title = nodeLabel;
-  if (node.pos) {
-    title += " (" + node.pos + ")";
-  }
-
-  const predicateSubjects: {
-    [index: string]: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
-  } = {};
-  for (const edge of node.subjectOfEdges) {
-    if (!edge.objectNode) {
-      continue;
-    } else if (!edge.predicate) {
-      continue;
-    }
-    const edges = (predicateSubjects[edge.predicate] =
-      predicateSubjects[edge.predicate] ?? []);
-    edges.push(edge);
-  }
-
-  class TabRoute {
-    constructor(
-      private relPath: string,
-      readonly label: string,
-      readonly dataCy: string
-    ) {}
-    get url() {
-      return url + this.relPath;
-    }
-    get path() {
-      return path + this.relPath;
-    }
-  }
-
-  const tabRoutes = {
-    grid: new TabRoute("", "Predicate Grid", "predicate-grid"),
-    list: new TabRoute("/list", "Predicate List", "predicate-list"),
-  };
+  const query = useQuery<KgNodePageQuery, KgNodePageQueryVariables>(
+    NodePageQueryDocument,
+    {variables: {kgId, nodeId}}
+  );
 
   return (
-    <Frame>
-      <Grid container direction="column">
-        <Tabs value={location.pathname}>
-          {Object.values(tabRoutes).map((tabRoute) => (
-            <Tab
-              component={Link}
-              value={tabRoute.url}
-              to={tabRoute.url}
-              key={tabRoute.url}
-              label={tabRoute.label}
-              data-cy={`${tabRoute.dataCy}`}
-            />
-          ))}
-        </Tabs>
+    <Frame {...query}>
+      {({data}) => {
+        const node = data.kgById.nodeById;
+        if (!node) {
+          return <NotFound label={nodeId} />;
+        }
 
-        <Grid item container>
-          <Grid item xs={10}>
-            <h2 data-cy="node-title">{title}</h2>
-            <Switch>
-              <Route exact path={tabRoutes.grid.path}>
-                <KgNodePredicateGrid
-                  predicateSubjects={predicateSubjects}
-                  datasource={node.datasource}
+        const nodeLabel = node.label ? node.label : node.id;
+
+        let title = nodeLabel;
+        if (node.pos) {
+          title += " (" + node.pos + ")";
+        }
+
+        const predicateSubjects: {
+          [index: string]: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
+        } = {};
+        for (const edge of node.subjectOfEdges) {
+          if (!edge.objectNode) {
+            continue;
+          } else if (!edge.predicate) {
+            continue;
+          }
+          const edges = (predicateSubjects[edge.predicate] =
+            predicateSubjects[edge.predicate] ?? []);
+          edges.push(edge);
+        }
+
+        class TabRoute {
+          constructor(
+            private relPath: string,
+            readonly label: string,
+            readonly dataCy: string
+          ) {}
+          get url() {
+            return url + this.relPath;
+          }
+          get path() {
+            return path + this.relPath;
+          }
+        }
+
+        const tabRoutes = {
+          grid: new TabRoute("", "Predicate Grid", "predicate-grid"),
+          list: new TabRoute("/list", "Predicate List", "predicate-list"),
+        };
+
+        return (
+          <Grid container direction="column">
+            <Tabs value={location.pathname}>
+              {Object.values(tabRoutes).map((tabRoute) => (
+                <Tab
+                  component={Link}
+                  value={tabRoute.url}
+                  to={tabRoute.url}
+                  key={tabRoute.url}
+                  label={tabRoute.label}
+                  data-cy={`${tabRoute.dataCy}`}
                 />
-              </Route>
-              <Route path={tabRoutes.list.path}>
-                <KgNodePredicateList
-                  predicateSubjects={predicateSubjects}
-                  datasource={node.datasource}
-                />
-              </Route>
-            </Switch>
+              ))}
+            </Tabs>
+
+            <Grid item container>
+              <Grid item xs={10}>
+                <h2 data-cy="node-title">{title}</h2>
+                <Switch>
+                  <Route exact path={tabRoutes.grid.path}>
+                    <KgNodePredicateGrid
+                      predicateSubjects={predicateSubjects}
+                      datasource={node.datasource}
+                    />
+                  </Route>
+                  <Route path={tabRoutes.list.path}>
+                    <KgNodePredicateList
+                      predicateSubjects={predicateSubjects}
+                      datasource={node.datasource}
+                    />
+                  </Route>
+                </Switch>
+              </Grid>
+              <Grid item xs={2}>
+                <h3>
+                  Data source:{" "}
+                  <span data-cy="node-datasource">{node.datasource}</span>
+                </h3>
+                {node.aliases ? (
+                  <React.Fragment>
+                    <h3>Aliases</h3>
+                    <List>
+                      {[...new Set(node.aliases)].map((alias) => (
+                        <ListItemText key={alias}>{alias}</ListItemText>
+                      ))}
+                    </List>
+                  </React.Fragment>
+                ) : null}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={2}>
-            <h3>
-              Data source:{" "}
-              <span data-cy="node-datasource">{node.datasource}</span>
-            </h3>
-            {node.aliases ? (
-              <React.Fragment>
-                <h3>Aliases</h3>
-                <List>
-                  {[...new Set(node.aliases)].map((alias) => (
-                    <ListItemText key={alias}>{alias}</ListItemText>
-                  ))}
-                </List>
-              </React.Fragment>
-            ) : null}
-          </Grid>
-        </Grid>
-      </Grid>
+        );
+      }}
     </Frame>
   );
 };

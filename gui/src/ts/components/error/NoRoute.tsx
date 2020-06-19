@@ -7,10 +7,12 @@ import {Frame} from "components/frame/Frame";
 export const NoRoute: React.FunctionComponent = () => {
   const location = useLocation();
   return (
-    <Frame>
-      <h3>
-        <code>{location.pathname}</code>
-      </h3>
+    <Frame data={true} loading={false}>
+      {({data}) => (
+        <h3>
+          <code>{location.pathname}</code>
+        </h3>
+      )}
     </Frame>
   );
 };

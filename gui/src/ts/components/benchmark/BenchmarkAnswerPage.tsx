@@ -9,12 +9,9 @@ import {
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent} from "@material-ui/core";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {NotFound} from "components/error/NotFound";
-import {
-  BenchmarkBreadcrumbsProps,
-  BenchmarkBreadcrumbs,
-} from "./BenchmarkBreadcrumbs";
+import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
+import {Frame} from "components/frame/Frame";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -49,7 +46,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
     decodeURIComponent
   );
 
-  const {data, error, loading} = useQuery<
+  const query = useQuery<
     BenchmarkAnswerPageQuery,
     BenchmarkAnswerPageQueryVariables
   >(BenchmarkAnswerPageQueryDocument, {
@@ -57,7 +54,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
   });
 
   return (
-    <BenchmarkFrame data={data} error={error} loading={loading}>
+    <Frame {...query}>
       {({data}) => {
         const benchmark = data.benchmarkById;
         const dataset = benchmark?.datasetById;
@@ -83,19 +80,19 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
           return <NotFound label={submissionId} />;
         }
 
-        const breadcrumbProps: BenchmarkBreadcrumbsProps = {
-          benchmarkId,
-          benchmarkName: benchmark.name,
-          datasetId,
-          datasetName: dataset.name,
-          questionId,
-          submissionId,
-        };
-
         return (
           <Grid container direction="column">
             <Grid item>
-              <BenchmarkBreadcrumbs {...breadcrumbProps} />
+              <BenchmarkBreadcrumbs
+                {...{
+                  benchmarkId,
+                  benchmarkName: benchmark.name,
+                  datasetId,
+                  datasetName: dataset.name,
+                  questionId,
+                  submissionId,
+                }}
+              />
             </Grid>
             {/* Show question and answer choices*/}
             <Grid item container>
@@ -158,6 +155,6 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
           </Grid>
         );
       }}
-    </BenchmarkFrame>
+    </Frame>
   );
 };

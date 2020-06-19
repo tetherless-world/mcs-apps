@@ -38,6 +38,7 @@ type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
 
 export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
+  datasources: string[];
   placeholder?: string;
   showIcon?: boolean;
   onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
@@ -46,6 +47,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   onChange?: (value: KgNodeSearchBoxValue) => void;
 }> = ({
   autoFocus,
+  datasources,
   onSubmit: onSubmitUserDefined,
   showIcon = false,
   placeholder,
@@ -277,6 +279,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
         )}
       ></Autocomplete>
       <KgDatasourceSelect
+        datasources={datasources}
         style={{display: "inline-flex", verticalAlign: "top"}}
         value={search.filters.datasource || undefined}
         onChange={(datasource: StringFilter) => {

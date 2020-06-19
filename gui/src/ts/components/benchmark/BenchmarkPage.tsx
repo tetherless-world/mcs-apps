@@ -14,90 +14,81 @@ import {
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
-import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
 import {Frame} from "components/frame/Frame";
-import * as ReactLoader from "react-loader";
 import {NotFound} from "components/error/NotFound";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
 
-  const {data, error, loading} = useQuery<BenchmarkPageQuery>(
-    BenchmarkPageQueryDocument,
-    {variables: {benchmarkId}}
-  );
-
-  if (error) {
-    return <ApolloErrorHandler error={error} />;
-  } else if (loading) {
-    return (
-      <Frame>
-        <ReactLoader loaded={false} />
-      </Frame>
-    );
-  } else if (!data) {
-    throw new EvalError();
-  }
-
-  const benchmark = data.benchmarkById;
-  if (!benchmark) {
-    return <NotFound label={benchmarkId} />;
-  }
+  const query = useQuery<BenchmarkPageQuery>(BenchmarkPageQueryDocument, {
+    variables: {benchmarkId},
+  });
 
   return (
-    <Frame>
-      <Grid container direction="column" spacing={6}>
-        <Grid item>
-          <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
-            Back to benchmarks
-          </Link>
-        </Grid>
-        <Grid item>
-          <Typography data-cy="benchmark-name" variant="h4">
-            {benchmark?.name}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="h5">Datasets</Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                {/*<TableCell>Type</TableCell>*/}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {benchmark?.datasets.map((dataset) => (
-                <TableRow key={dataset.id}>
-                  <TableCell data-cy={"dataset-name-" + dataset.id}>
-                    <Link
-                      to={
-                        Hrefs.benchmark({id: benchmarkId}).dataset({
-                          id: dataset.id,
-                        }).home
-                      }
-                    >
-                      {dataset.name}
-                    </Link>
-                  </TableCell>
-                  {/*<TableCell></TableCell>*/}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Grid>
-        {benchmark.submissions.length > 0 ? (
-          <Grid item>
-            <Typography variant="h5">Submissions</Typography>
-            <BenchmarkSubmissionsTable
-              benchmarkSubmissions={benchmark.submissions.map((submission) => ({
-                ...submission,
-                benchmarkId,
-              }))}
-            />
+    <Frame {...query}>
+      {({data}) => {
+        const benchmark = data.benchmarkById;
+        if (!benchmark) {
+          return <NotFound label={benchmarkId} />;
+        }
+
+        return (
+          <Grid container direction="column" spacing={6}>
+            <Grid item>
+              <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
+                Back to benchmarks
+              </Link>
+            </Grid>
+            <Grid item>
+              <Typography data-cy="benchmark-name" variant="h4">
+                {benchmark?.name}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h5">Datasets</Typography>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    {/*<TableCell>Type</TableCell>*/}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {benchmark?.datasets.map((dataset) => (
+                    <TableRow key={dataset.id}>
+                      <TableCell data-cy={"dataset-name-" + dataset.id}>
+                        <Link
+                          to={
+                            Hrefs.benchmark({id: benchmarkId}).dataset({
+                              id: dataset.id,
+                            }).home
+                          }
+                        >
+                          {dataset.name}
+                        </Link>
+                      </TableCell>
+                      {/*<TableCell></TableCell>*/}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+            {benchmark.submissions.length > 0 ? (
+              <Grid item>
+                <Typography variant="h5">Submissions</Typography>
+                <BenchmarkSubmissionsTable
+                  benchmarkSubmissions={benchmark.submissions.map(
+                    (submission) => ({
+                      ...submission,
+                      benchmarkId,
+                    })
+                  )}
+                />
+              </Grid>
+            ) : null}
           </Grid>
-        ) : null}
-      </Grid>
+        );
+      }}
     </Frame>
   );
 };
