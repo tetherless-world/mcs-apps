@@ -7,11 +7,7 @@ export class BenchmarkPage extends Page {
   }
 
   get benchmarkName() {
-    return cy.get("[data-cy=benchmark-name]");
-  }
-
-  get benchmarksLink() {
-    return cy.get("[data-cy=benchmarks-link]");
+    return cy.get("[data-cy=benchmark-frame-title]");
   }
 
   datasetName(datasetId: string) {

@@ -7,7 +7,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
 import {NotFound} from "components/error/NotFound";
-import {BenchmarkBreadcrumbs} from "components/benchmark/BenchmarkBreadcrumbs";
+import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 
 export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   const {benchmarkId, datasetId} = useParams<{
@@ -33,35 +33,30 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
         }
 
         return (
-          <Grid container direction="column" spacing={6}>
-            <Grid item>
-              <BenchmarkBreadcrumbs
-                {...{
-                  benchmark: {id: benchmarkId, name: benchmark.name},
-                  dataset: {id: datasetId, name: dataset.name},
-                }}
-              />
+          <BenchmarkFrame
+            title={dataset.name}
+            {...{
+              benchmark: {id: benchmarkId, name: benchmark.name},
+              dataset: {id: datasetId, name: dataset.name},
+            }}
+          >
+            <Grid container direction="column">
+              {dataset.submissions.length > 0 ? (
+                <Grid item>
+                  <Typography variant="h5">Submissions</Typography>
+                  <BenchmarkSubmissionsTable
+                    benchmarkSubmissions={dataset.submissions.map(
+                      (submission) => ({
+                        ...submission,
+                        benchmarkId,
+                        datasetId,
+                      })
+                    )}
+                  />
+                </Grid>
+              ) : null}
             </Grid>
-            <Grid item>
-              <Typography data-cy="dataset-name" variant="h4">
-                {dataset.name}
-              </Typography>
-            </Grid>
-            {dataset.submissions.length > 0 ? (
-              <Grid item>
-                <Typography variant="h5">Submissions</Typography>
-                <BenchmarkSubmissionsTable
-                  benchmarkSubmissions={dataset.submissions.map(
-                    (submission) => ({
-                      ...submission,
-                      benchmarkId,
-                      datasetId,
-                    })
-                  )}
-                />
-              </Grid>
-            ) : null}
-          </Grid>
+          </BenchmarkFrame>
         );
       }}
     </Frame>
