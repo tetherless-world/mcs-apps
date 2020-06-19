@@ -11,6 +11,10 @@ import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent} from "@material-ui/core";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {NotFound} from "components/error/NotFound";
+import {
+  BenchmarkBreadcrumbsProps,
+  BenchmarkBreadcrumbs,
+} from "./BenchmarkBreadcrumbs";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -44,86 +48,116 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
     useParams<BenchmarkAnswerRouteParams>(),
     decodeURIComponent
   );
-  const {submissionId, questionId} = routeParams;
 
   const {data, error, loading} = useQuery<
     BenchmarkAnswerPageQuery,
     BenchmarkAnswerPageQueryVariables
-  >(BenchmarkAnswerPageQueryDocument, {variables: routeParams});
-
-  const benchmark = data?.benchmarkById;
-  const dataset = benchmark?.datasetById;
-  const question = dataset?.questionById;
-  const submission = dataset?.submissionById;
-  const answer = submission?.answerByQuestionId;
+  >(BenchmarkAnswerPageQueryDocument, {
+    variables: routeParams,
+  });
 
   return (
-    <BenchmarkFrame
-      routeParams={routeParams}
-      data={data}
-      error={error}
-      loading={loading}
-    >
-      <Grid container direction="column">
-        {/* Show question and answer choices*/}
-        <Grid item container>
-          <Grid item md={6} container direction="column" justify="center">
+    <BenchmarkFrame data={data} error={error} loading={loading}>
+      {({data}) => {
+        const benchmark = data.benchmarkById;
+        const dataset = benchmark?.datasetById;
+        const question = dataset?.questionById;
+        const submission = dataset?.submissionById;
+        const answer = submission?.answerByQuestionId;
+
+        const {benchmarkId, datasetId, submissionId, questionId} = routeParams;
+
+        if (!benchmark) {
+          return <NotFound label={benchmarkId} />;
+        }
+
+        if (!dataset) {
+          return <NotFound label={datasetId} />;
+        }
+
+        if (!question) {
+          return <NotFound label={questionId} />;
+        }
+
+        if (!submission) {
+          return <NotFound label={submissionId} />;
+        }
+
+        const breadcrumbProps: BenchmarkBreadcrumbsProps = {
+          benchmarkId,
+          benchmarkName: benchmark.name,
+          datasetId,
+          datasetName: dataset.name,
+          questionId,
+          submissionId,
+        };
+
+        return (
+          <Grid container direction="column">
             <Grid item>
-              <Typography variant="h4">{question?.text}</Typography>
+              <BenchmarkBreadcrumbs {...breadcrumbProps} />
             </Grid>
-          </Grid>
-          <Grid item md={6} container direction="column" spacing={3}>
-            {question?.choices.map((choice) => (
-              <Grid item key={choice.label}>
-                <QuestionAnswerChoiceCard choice={choice} />
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-
-        {/* Extra spacing hack */}
-        <Grid item>
-          <br />
-          <br />
-        </Grid>
-
-        {!answer && <NotFound label={`Answer for ${questionId} `} />}
-        {answer && (
-          <React.Fragment>
-            {/* Show submission answer */}
-            <Grid item container spacing={2}>
-              <Grid
-                item
-                md={6}
-                container
-                direction="column"
-                justify="center"
-                alignItems="flex-end"
-              >
+            {/* Show question and answer choices*/}
+            <Grid item container>
+              <Grid item md={6} container direction="column" justify="center">
                 <Grid item>
-                  <Typography variant="h5">
-                    Submission {submissionId} answered
-                  </Typography>
+                  <Typography variant="h4">{question?.text}</Typography>
                 </Grid>
               </Grid>
-              <Grid item md={6} spacing={3}>
-                <QuestionAnswerChoiceCard
-                  choice={
-                    question?.choices.find(
-                      (choice) => choice.label === answer.choiceLabel
-                    )!
-                  }
-                ></QuestionAnswerChoiceCard>
+              <Grid item md={6} container direction="column" spacing={3}>
+                {question?.choices.map((choice) => (
+                  <Grid item key={choice.label}>
+                    <QuestionAnswerChoiceCard choice={choice} />
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
 
-            {/* Show submission explanation */}
+            {/* Extra spacing hack */}
             <Grid item>
-              <Typography variant="body1">Explanation</Typography>
+              <br />
+              <br />
             </Grid>
-          </React.Fragment>
-        )}
-      </Grid>
+
+            {!answer && <NotFound label={`Answer for ${questionId} `} />}
+            {answer && (
+              <React.Fragment>
+                {/* Show submission answer */}
+                <Grid item container spacing={2}>
+                  <Grid
+                    item
+                    md={6}
+                    container
+                    direction="column"
+                    justify="center"
+                    alignItems="flex-end"
+                  >
+                    <Grid item>
+                      <Typography variant="h5">
+                        Submission {submissionId} answered
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item md={6} spacing={3}>
+                    <QuestionAnswerChoiceCard
+                      choice={
+                        question?.choices.find(
+                          (choice) => choice.label === answer.choiceLabel
+                        )!
+                      }
+                    ></QuestionAnswerChoiceCard>
+                  </Grid>
+                </Grid>
+
+                {/* Show submission explanation */}
+                <Grid item>
+                  <Typography variant="body1">Explanation</Typography>
+                </Grid>
+              </React.Fragment>
+            )}
+          </Grid>
+        );
+      }}
     </BenchmarkFrame>
   );
 };

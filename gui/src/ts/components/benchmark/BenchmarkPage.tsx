@@ -13,8 +13,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
+import {ApolloErrorHandler} from "components/error/ApolloErrorHandler";
+import {Frame} from "components/frame/Frame";
+import * as ReactLoader from "react-loader";
+import {NotFound} from "components/error/NotFound";
 
 export const BenchmarkPage: React.FunctionComponent = () => {
   const {benchmarkId} = useParams<{benchmarkId: string}>();
@@ -24,15 +27,25 @@ export const BenchmarkPage: React.FunctionComponent = () => {
     {variables: {benchmarkId}}
   );
 
-  const benchmark = data?.benchmarkById;
+  if (error) {
+    return <ApolloErrorHandler error={error} />;
+  } else if (loading) {
+    return (
+      <Frame>
+        <ReactLoader loaded={false} />
+      </Frame>
+    );
+  } else if (!data) {
+    throw new EvalError();
+  }
+
+  const benchmark = data.benchmarkById;
+  if (!benchmark) {
+    return <NotFound label={benchmarkId} />;
+  }
 
   return (
-    <BenchmarkFrame
-      data={data}
-      error={error}
-      loading={loading}
-      routeParams={{benchmarkId}}
-    >
+    <Frame>
       <Grid container direction="column" spacing={6}>
         <Grid item>
           <Link to={Hrefs.benchmarks} data-cy="benchmarks-link">
@@ -85,6 +98,6 @@ export const BenchmarkPage: React.FunctionComponent = () => {
           </Grid>
         ) : null}
       </Grid>
-    </BenchmarkFrame>
+    </Frame>
   );
 };

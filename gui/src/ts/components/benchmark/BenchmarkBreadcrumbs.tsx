@@ -5,7 +5,7 @@ import {Hrefs} from "Hrefs";
 
 export interface BenchmarkBreadcrumbsProps {
   benchmarkId: string;
-  benchmarkName: string;
+  benchmarkName?: string;
   datasetId?: string;
   datasetName?: string;
   submissionId?: string;
