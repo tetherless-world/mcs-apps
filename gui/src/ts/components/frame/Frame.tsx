@@ -69,7 +69,7 @@ export const Frame = <TData,>({
         </Grid>
         <Grid className={classes.rootContainer} item>
           <div className={classes.root} data-cy="frame-content">
-            {children({data: data!})}
+            {data ? children({data}) : null}
           </div>
         </Grid>
         <Grid item>

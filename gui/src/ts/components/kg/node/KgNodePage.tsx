@@ -17,7 +17,6 @@ import {Frame} from "components/frame/Frame";
 import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
 import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
-import * as _ from "lodash";
 import {kgId} from "api/kgId";
 import {NotFound} from "components/error/NotFound";
 // import {makeStyles} from "@material-ui/core/styles";
