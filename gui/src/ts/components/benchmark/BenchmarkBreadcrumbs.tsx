@@ -12,7 +12,9 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 }) => {
   const breadcrumbsChildren: React.ReactNode = (() => {
     const breadcrumbs: React.ReactNodeArray = [
-      <Link to={Hrefs.benchmarks}>Benchmarks</Link>,
+      <Link key="benchmarks" to={Hrefs.benchmarks}>
+        Benchmarks
+      </Link>,
     ];
 
     if (!benchmark) {
@@ -20,34 +22,49 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
     }
 
     const benchmarkHrefs = Hrefs.benchmark({id: benchmark.id});
-    breadcrumbs.push(<Link to={benchmarkHrefs.home}>{benchmark.name}</Link>);
+    breadcrumbs.push(
+      <Link key={"benchmark-" + benchmark.id} to={benchmarkHrefs.home}>
+        {benchmark.name}
+      </Link>
+    );
 
     if (!dataset) {
       return breadcrumbs;
     }
 
-    breadcrumbs.push(<Typography>Datasets</Typography>);
+    breadcrumbs.push(<Typography key="datasets">Datasets</Typography>);
 
     const datasetHrefs = benchmarkHrefs.dataset({id: dataset.id});
-    breadcrumbs.push(<Link to={datasetHrefs.home}>{dataset.name}</Link>);
+    breadcrumbs.push(
+      <Link key={"dataset-" + dataset.id} to={datasetHrefs.home}>
+        {dataset.name}
+      </Link>
+    );
 
     if (!submission) {
       return breadcrumbs;
     }
 
-    breadcrumbs.push(<Typography>Submissions</Typography>);
+    breadcrumbs.push(<Typography key="submissions">Submissions</Typography>);
 
     const submissionHrefs = datasetHrefs.submission({id: submission.id});
-    breadcrumbs.push(<Link to={submissionHrefs.home}>{submission.id}</Link>);
+    breadcrumbs.push(
+      <Link key={"submission-" + submission.id} to={submissionHrefs.home}>
+        {submission.id}
+      </Link>
+    );
 
     if (!question) {
       return breadcrumbs;
     }
 
-    breadcrumbs.push(<Typography>Questions</Typography>);
+    breadcrumbs.push(<Typography key="questions">Questions</Typography>);
 
     breadcrumbs.push(
-      <Link to={submissionHrefs.question({id: question.id})}>
+      <Link
+        key={"question-" + question.id}
+        to={submissionHrefs.question({id: question.id})}
+      >
         {question.id}
       </Link>
     );
