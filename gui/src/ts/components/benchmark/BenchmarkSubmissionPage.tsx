@@ -68,6 +68,8 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
         // See mui-datatables example
         // https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js
 
+        const getRowQuestionId = (rowData: any[]) => rowData[2];
+
         return (
           <BenchmarkFrame
             title={submission.name}
@@ -86,10 +88,13 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
                     customBodyRender: (value, tableMeta) => {
                       return (
                         <Link
+                          data-cy="question-text"
                           to={Hrefs.benchmark({id: benchmarkId})
                             .dataset({id: datasetId})
                             .submission({id: submissionId})
-                            .question({id: tableMeta.rowData[2]})}
+                            .question({
+                              id: getRowQuestionId(tableMeta.rowData),
+                            })}
                         >
                           {value}
                         </Link>
@@ -139,6 +144,9 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
                 },
                 rowsPerPage: QUESTIONS_PER_PAGE,
                 serverSide: true,
+                setRowProps: (row) => ({
+                  "data-cy": "question-" + getRowQuestionId(row),
+                }),
                 sort: false,
               }}
               title={<Typography variant="h6">Questions</Typography>}
