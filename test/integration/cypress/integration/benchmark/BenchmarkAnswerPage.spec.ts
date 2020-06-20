@@ -52,12 +52,13 @@ context("BenchmarkAnswerPage", () => {
               submission.id,
               question.id
             );
-            page.visit();
           });
         });
       });
     });
   });
+
+  beforeEach(() => page.visit());
 
   it("should show question text", () => {
     page.question.text.should("have.text", question.text);
