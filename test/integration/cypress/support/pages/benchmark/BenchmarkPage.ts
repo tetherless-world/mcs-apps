@@ -2,7 +2,7 @@ import {Page} from "../Page";
 import {BenchmarkSubmissionsTable} from "./BenchmarkSubmissionsTable";
 
 export class BenchmarkPage extends Page {
-  constructor(readonly benchmarkId: String) {
+  constructor(readonly benchmarkId: string) {
     super();
   }
 

@@ -3,8 +3,9 @@ import {KgEdge} from "./models/kg/KgEdge";
 import {KgPath} from "./models/kg/KgPath";
 import {Benchmark} from "./models/benchmark/Benchmark";
 import {BenchmarkSubmission} from "./models/benchmark/BenchmarkSubmission";
-import {BenchmarkQuestion} from "./models/benchmark/BenchmarkQuestion";
 import {BenchmarkAnswer} from "./models/benchmark/BenchmarkAnswer";
+import {BenchmarkQuestion} from "./models/benchmark/BenchmarkQuestion";
+
 
 export class TestData {
   static readonly kgId = "cskg";
@@ -13,6 +14,10 @@ export class TestData {
 
   static get benchmarks(): Cypress.Chainable<Benchmark[]> {
     return cy.fixture("benchmark/benchmarks.json");
+  }
+
+  static get benchmarkQuestions(): Cypress.Chainable<BenchmarkQuestion[]> {
+    return cy.fixture("benchmark/benchmark_questions.json");
   }
 
   static get benchmarkSubmissions(): Cypress.Chainable<BenchmarkSubmission[]> {
