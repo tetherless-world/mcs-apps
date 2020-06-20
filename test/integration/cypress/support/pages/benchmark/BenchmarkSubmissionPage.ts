@@ -27,5 +27,5 @@ export class BenchmarkSubmissionPage extends Page {
     return cy.get(`[data-cy=benchmark-frame-title]`);
   }
 
-  readonly relativeUrl: string = `/benchmark/${this.benchmarkId}/dataset/${this.datasetId}/submission/${this.submissionId}`;
+  readonly relativeUrl: string = `/benchmark/${this.benchmarkId}/dataset/${this.datasetId}/submission/${this.submissionId}/`;
 }
