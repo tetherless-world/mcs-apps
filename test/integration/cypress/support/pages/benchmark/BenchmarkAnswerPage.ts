@@ -1,4 +1,5 @@
 import {Page} from "../Page";
+import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
 
 class Answer {
   constructor(private readonly selector: string) {}
@@ -22,17 +23,16 @@ export class BenchmarkAnswerPage extends Page {
     super();
   }
 
+  get breadcrumbs() {
+    return new BenchmarkBreadcrumbs("[data-cy=breadcrumbs]");
+  }
+
   readonly question = {
     get text() {
       return cy.get("[data-cy=questionText]");
     },
 
     answer(choiceLabel: string) {
-      // const el = cy
-      //   .get("[data-cy=questionAnswer] [data-cy=label]")
-      //   .contains(new RegExp(`^${choiceLabel}$`))
-      //   .parentsUntil("[data-cy=questionAnswer]");
-
       return {
         label: cy
           .get("[data-cy=questionAnswer] [data-cy=label]")

@@ -12,7 +12,7 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 }) => {
   const breadcrumbsChildren: React.ReactNode = (() => {
     const breadcrumbs: React.ReactNodeArray = [
-      <Link key="benchmarks" to={Hrefs.benchmarks}>
+      <Link key="benchmarks" to={Hrefs.benchmarks} data-cy="benchmarks">
         Benchmarks
       </Link>,
     ];
@@ -23,7 +23,11 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const benchmarkHrefs = Hrefs.benchmark({id: benchmark.id});
     breadcrumbs.push(
-      <Link key={"benchmark-" + benchmark.id} to={benchmarkHrefs.home}>
+      <Link
+        key={"benchmark-" + benchmark.id}
+        to={benchmarkHrefs.home}
+        data-cy="benchmark"
+      >
         {benchmark.name}
       </Link>
     );
@@ -36,7 +40,11 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const datasetHrefs = benchmarkHrefs.dataset({id: dataset.id});
     breadcrumbs.push(
-      <Link key={"dataset-" + dataset.id} to={datasetHrefs.home}>
+      <Link
+        key={"dataset-" + dataset.id}
+        to={datasetHrefs.home}
+        data-cy="dataset"
+      >
         {dataset.name}
       </Link>
     );
@@ -49,7 +57,11 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const submissionHrefs = datasetHrefs.submission({id: submission.id});
     breadcrumbs.push(
-      <Link key={"submission-" + submission.id} to={submissionHrefs.home}>
+      <Link
+        key={"submission-" + submission.id}
+        to={submissionHrefs.home}
+        data-cy="submission"
+      >
         {submission.id}
       </Link>
     );
@@ -64,6 +76,7 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
       <Link
         key={"question-" + question.id}
         to={submissionHrefs.question({id: question.id})}
+        data-cy="question"
       >
         {question.id}
       </Link>
@@ -72,5 +85,5 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
     return breadcrumbs;
   })();
 
-  return <Breadcrumbs>{breadcrumbsChildren}</Breadcrumbs>;
+  return <Breadcrumbs data-cy="breadcrumbs">{breadcrumbsChildren}</Breadcrumbs>;
 };

@@ -5,6 +5,9 @@ import {BenchmarkDataset} from "../../support/models/benchmark/BenchmarkDataset"
 import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
 import {BenchmarkQuestion} from "../../support/models/benchmark/BenchmarkQuestion";
 import {BenchmarkAnswer} from "../../support/models/benchmark/BenchmarkAnswer";
+import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
+import {BenchmarkDatasetPage} from "../../support/pages/benchmark/BenchmarkDatasetPage";
+import {BenchmarkSubmissionPage} from "../../support/pages/benchmark/BenchmarkSubmissionPage";
 
 context("BenchmarkAnswerPage", () => {
   let benchmark: Benchmark;
@@ -18,11 +21,11 @@ context("BenchmarkAnswerPage", () => {
   before(() => {
     TestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
-      cy.log(benchmark.id);
+
       dataset = benchmark.datasets.find((dataset) =>
         dataset.id.endsWith("-test")
       )!;
-      cy.log(dataset.id);
+
       TestData.benchmarkSubmissions.then((submissions) => {
         submission = submissions.find(
           (submission) =>
@@ -80,5 +83,30 @@ context("BenchmarkAnswerPage", () => {
       answerQuestionChoice!.label
     );
     page.submission.answer.text.should("have.text", answerQuestionChoice!.text);
+  });
+
+  it("should go to benchmark page", () => {
+    page.breadcrumbs.toBenchmark();
+
+    const benchmarkPage = new BenchmarkPage(benchmark.id);
+    benchmarkPage.assertLoaded();
+  });
+
+  it("should go to dataset page", () => {
+    page.breadcrumbs.toDataset();
+
+    const datasetPage = new BenchmarkDatasetPage(benchmark.id, dataset.id);
+    datasetPage.assertLoaded();
+  });
+
+  it("should go to submission page", () => {
+    page.breadcrumbs.toSubmission();
+
+    const submissionPage = new BenchmarkSubmissionPage(
+      benchmark.id,
+      dataset.id,
+      submission.id
+    );
+    submissionPage.assertLoaded();
   });
 });
