@@ -17,15 +17,20 @@ import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 
 const QuestionAnswerChoiceCard: React.FunctionComponent<{
   choice: QuestionAnswerChoice;
-}> = ({choice, children}) => (
-  <Card>
+  dataCy: string;
+}> = ({choice, children, dataCy}) => (
+  <Card data-cy={dataCy}>
     <CardContent>
       <Grid container>
         <Grid item xs={2}>
-          <Typography variant="h6">{choice.label}</Typography>
+          <Typography variant="h6" data-cy="label">
+            {choice.label}
+          </Typography>
         </Grid>
         <Grid item xs={10}>
-          <Typography variant="body1">{choice.text}</Typography>
+          <Typography variant="body1" data-cy="text">
+            {choice.text}
+          </Typography>
         </Grid>
       </Grid>
       {children}
@@ -94,13 +99,18 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
               <Grid item container>
                 <Grid item md={6} container direction="column" justify="center">
                   <Grid item>
-                    <Typography variant="h4">{question?.text}</Typography>
+                    <Typography variant="h4" data-cy="questionText">
+                      {question?.text}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item md={6} container direction="column" spacing={3}>
                   {question?.choices.map((choice) => (
                     <Grid item key={choice.label}>
-                      <QuestionAnswerChoiceCard choice={choice} />
+                      <QuestionAnswerChoiceCard
+                        choice={choice}
+                        dataCy="questionAnswer"
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -127,7 +137,9 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                     >
                       <Grid item>
                         <Typography variant="h5">
-                          Submission {submissionId} answered
+                          Submission{" "}
+                          <span data-cy="submissionId">{submissionId}</span>{" "}
+                          answered
                         </Typography>
                       </Grid>
                     </Grid>
@@ -138,6 +150,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                             (choice) => choice.label === answer.choiceLabel
                           )!
                         }
+                        dataCy="submissionAnswer"
                       ></QuestionAnswerChoiceCard>
                     </Grid>
                   </Grid>
