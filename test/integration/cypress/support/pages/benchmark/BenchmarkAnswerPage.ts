@@ -28,7 +28,23 @@ export class BenchmarkAnswerPage extends Page {
     },
 
     answer(choiceLabel: string) {
-      return cy.get("[data-cy=questionAnswer]").find("[data-cy=label]");
+      // const el = cy
+      //   .get("[data-cy=questionAnswer] [data-cy=label]")
+      //   .contains(new RegExp(`^${choiceLabel}$`))
+      //   .parentsUntil("[data-cy=questionAnswer]");
+
+      return {
+        label: cy
+          .get("[data-cy=questionAnswer] [data-cy=label]")
+          .contains(new RegExp(`^${choiceLabel}$`))
+          .parentsUntil("[data-cy=questionAnswer]")
+          .find("[data-cy=label]"),
+        text: cy
+          .get("[data-cy=questionAnswer] [data-cy=label]")
+          .contains(new RegExp(`^${choiceLabel}$`))
+          .parentsUntil("[data-cy=questionAnswer]")
+          .find("[data-cy=text]"),
+      };
     },
   };
 

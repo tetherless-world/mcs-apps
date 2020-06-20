@@ -18,21 +18,22 @@ context("BenchmarkAnswerPage", () => {
   before(() => {
     TestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
+      cy.log(benchmark.id);
       dataset = benchmark.datasets.find((dataset) =>
         dataset.id.endsWith("-test")
       )!;
+      cy.log(dataset.id);
       TestData.benchmarkSubmissions.then((submissions) => {
         submission = submissions.find(
           (submission) =>
             submission.benchmarkId === benchmark.id &&
-            submission.datasetId === submission.id &&
-            submission.id.endsWith("-test")
+            submission.datasetId === dataset.id
         )!;
 
         TestData.benchmarkQuestions.then((questions) => {
           question = questions.find(
             (question) =>
-              question.datasetId === dataset.id && question.id.endsWith("-test")
+              question.datasetId === dataset.id && question.id.search("test")
           )!;
 
           TestData.benchmarkAnswers.then((answers) => {
@@ -57,6 +58,12 @@ context("BenchmarkAnswerPage", () => {
 
   it("should show question text", () => {
     page.question.text.should("have.text", question.text);
+  });
+
+  it("should show question answer choices", () => {
+    question.choices.forEach((choice) => {
+      page.question.answer(choice.label).text.should("have.text", choice.text);
+    });
   });
 
   it("should show submission id", () => {
