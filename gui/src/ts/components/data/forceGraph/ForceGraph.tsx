@@ -94,30 +94,6 @@ export const ForceGraph = <
     });
   }, [simulation]);
 
-  // Initialize force simulation once and then update node
-  // and links with useEffect
-  // const simulation = React.useMemo<d3.Simulation<NodeDatum, LinkDatum>>(
-  //   () =>
-  //     d3
-  //       .forceSimulation<NodeDatum, LinkDatum>()
-  //       .force(
-  //         "link",
-  //         d3.forceLink<NodeDatum, LinkDatum>().id((node) => node.id)
-  //         // .distance(200)
-  //       )
-  //       // .force("center", d3.forceCenter(0, 0))
-  //       .force("charge", d3.forceManyBody())
-  //       // .force("x", d3.forceX())
-  //       // .force("y", d3.forceY())
-  //       // .force("collide", d3.forceCollide(100))
-  //       // .on("tick", () => requestAnimationFrame(updatePositions))
-  //       .on("tick", updatePositions)
-  //       .on("end", () => {
-  //         simulation.on("tick", null);
-  //       }),
-  //   []
-  // );
-
   // When nodes or links are changed, update simulation
   React.useEffect(() => {
     simulation
