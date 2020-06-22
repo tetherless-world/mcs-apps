@@ -10,6 +10,7 @@ export interface BenchmarkPageQuery_benchmarkById_datasets {
   __typename: "BenchmarkDataset";
   id: string;
   name: string;
+  submissionsCount: number;
 }
 
 export interface BenchmarkPageQuery_benchmarkById_submissions {

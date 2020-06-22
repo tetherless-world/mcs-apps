@@ -3,6 +3,7 @@ query BenchmarkPageQuery($benchmarkId: String!) {
         datasets {
             id
             name
+            submissionsCount
         }
         name
         submissions {

@@ -40,14 +40,14 @@ export const BenchmarkPage: React.FunctionComponent = () => {
               benchmark: {id: benchmarkId, name: benchmark.name},
             }}
           >
-            <Grid container direction="column">
+            <Grid container direction="column" spacing={6}>
               <Grid item>
                 <Typography variant="h5">Datasets</Typography>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
-                      {/*<TableCell>Type</TableCell>*/}
+                      <TableCell>Submissions</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -64,7 +64,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
                             {dataset.name}
                           </Link>
                         </TableCell>
-                        {/*<TableCell></TableCell>*/}
+                        <TableCell>{dataset.submissionsCount}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
