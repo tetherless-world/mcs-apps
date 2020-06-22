@@ -75,7 +75,7 @@ export class Hrefs {
         );
       },
 
-      paths: kgPrefix + "path",
+      // paths: kgPrefix + "path",
       randomNode: kgPrefix + "randomNode",
     };
   }
