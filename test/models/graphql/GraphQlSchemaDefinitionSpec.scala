@@ -99,6 +99,40 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       }
     }
 
+    "get a benchmark dataset submission tree" in {
+      val benchmark = TestBenchmarkData.benchmarks(0)
+      val dataset = benchmark.datasets.find(dataset => dataset.id.endsWith("-test")).get
+      val query =
+        graphql"""
+          query BenchmarkByIdQuery($$benchmarkId: String!, $$benchmarkDatasetId: String!) {
+            benchmarkById(id: $$benchmarkId) {
+              datasetById(id: $$benchmarkDatasetId) {
+                submissions {
+                  answers(limit: 1000, offset: 0) {
+                    choiceLabel
+                    questionId
+                  }
+                  id
+                }
+                submissionsCount
+              }
+            }
+          }
+          """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("benchmarkId" -> benchmark.id, "benchmarkDatasetId" -> dataset.id)))
+      val submissions = TestBenchmarkData.benchmarkSubmissions.filter(submission => submission.benchmarkId == benchmark.id && submission.datasetId == dataset.id)
+      submissions must not be empty
+      result must include(s"""submissionsCount":${submissions.size}""")
+      for (submission <- submissions) {
+        result must include(submission.id)
+        val answers = TestBenchmarkData.benchmarkAnswers.filter(answer => answer.submissionId == submission.id)
+        for (answer <- answers) {
+          result must include(answer.questionId)
+        }
+      }
+    }
+
 
     "get a KG node by id" in {
       val node = TestKgData.nodes(0)

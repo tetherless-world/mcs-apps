@@ -1,16 +1,21 @@
 import {TestData} from "../../support/TestData";
 import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
 import {Benchmark} from "../../support/models/benchmark/Benchmark";
+import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
 
 context("Benchmark page", () => {
   let benchmark: Benchmark;
+  let benchmarkSubmissions: BenchmarkSubmission[];
   let page: BenchmarkPage;
 
   before(() => {
     TestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
-      page = new BenchmarkPage(benchmark.id);
-      page.visit();
+      TestData.benchmarkSubmissions.then((submissions) => {
+        benchmarkSubmissions = submissions;
+        page = new BenchmarkPage(benchmark.id);
+        page.visit();
+      });
     });
   });
 
@@ -18,9 +23,19 @@ context("Benchmark page", () => {
     page.benchmarkName.should("have.text", benchmark.name);
   });
 
-  it("should show the dataset names", () => {
+  it("should show datasets", () => {
     benchmark.datasets.forEach((dataset) => {
-      page.datasetName(dataset.id).should("have.text", dataset.name);
+      const submissions = benchmarkSubmissions.filter(
+        (submission) =>
+          submission.benchmarkId === benchmark.id &&
+          submission.datasetId === dataset.id
+      );
+      page.datasetsTable
+        .dataset(dataset.id)
+        .name.should("have.text", dataset.name);
+      page.datasetsTable
+        .dataset(dataset.id)
+        .submissionsCount.should("have.text", submissions.length);
     });
   });
 

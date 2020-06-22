@@ -50,4 +50,10 @@ class MemBenchmarkStore(
 
   final override def getBenchmarkSubmissionsByDataset(benchmarkDatasetId: String): List[BenchmarkSubmission] =
     benchmarkSubmissions.filter(submission => submission.datasetId == benchmarkDatasetId)
+
+  final override def getBenchmarkSubmissionsCountByBenchmark(benchmarkId: String): Int =
+    getBenchmarkSubmissionsByBenchmark(benchmarkId).size
+
+  override def getBenchmarkSubmissionsCountByDataset(datasetId: String): Int =
+    getBenchmarkSubmissionsByDataset(datasetId).size
 }
