@@ -33,8 +33,8 @@ jobs:
             # Copy a file in in order to use -f
             # If we cat the Cypher into the docker exec then the cypher-shell doesn't print anything.
             echo "MATCH (n) RETURN COUNT(n);" >test-neo4j.cypher
-            docker cp test-neo4j.cypher neo4j:/var/lib/neo4j
-            docker exec --interactive neo4j cypher-shell -u neo4j -p nC1aB4mji623s2Zs --non-interactive -f test-neo4j.cypher
+            docker cp test-neo4j.cypher mcs-portal-neo4j:/var/lib/neo4j
+            docker exec --interactive mcs-portal-neo4j cypher-shell -u neo4j -p nC1aB4mji623s2Zs --non-interactive -f test-neo4j.cypher
       - run:
           name: Test that the user interface is up
           command: |
