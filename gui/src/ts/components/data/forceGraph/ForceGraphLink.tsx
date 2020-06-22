@@ -1,4 +1,5 @@
 import * as React from "react";
+import {ForceGraphLinkPosition} from "models/data/forceGraph";
 
 const defaultLinkOptions: React.SVGProps<SVGLineElement> = {
   stroke: "#999",
@@ -6,9 +7,10 @@ const defaultLinkOptions: React.SVGProps<SVGLineElement> = {
   strokeWidth: 1,
 };
 
-export type ForceGraphLinkProps<LinkDatum> = React.SVGProps<SVGLineElement> & {
-  link: LinkDatum;
-};
+export type ForceGraphLinkProps<LinkDatum> = React.SVGProps<SVGLineElement> &
+  Partial<ForceGraphLinkPosition> & {
+    link: LinkDatum;
+  };
 
 export const ForceGraphLink = <
   NodeDatum extends d3.SimulationNodeDatum,
@@ -16,6 +18,6 @@ export const ForceGraphLink = <
 >({
   link,
   ...props
-}: ForceGraphLinkProps<LinkDatum>) => (
-  <line {...defaultLinkOptions} {...props} />
-);
+}: ForceGraphLinkProps<LinkDatum>) => {
+  return <line {...defaultLinkOptions} {...props} />;
+};

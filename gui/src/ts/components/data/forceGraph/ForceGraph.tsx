@@ -3,14 +3,18 @@ import * as d3 from "d3";
 
 import {ForceGraphNodeProps} from "./ForceGraphNode";
 import {ForceGraphLinkProps} from "./ForceGraphLink";
+import {
+  ForceGraphNodePosition,
+  ForceGraphLinkPosition,
+} from "models/data/forceGraph";
 
 // Positions
 interface NodePositions {
-  [nodeId: string]: {cx: number; cy: number};
+  [nodeId: string]: ForceGraphNodePosition;
 }
 
 interface LinkPositions {
-  [linkId: string]: {x1: number; y1: number; x2: number; y2: number};
+  [linkId: string]: ForceGraphLinkPosition;
 }
 
 // Reference https://github.com/uber/react-vis-force
@@ -20,10 +24,12 @@ export const ForceGraph = <
 >({
   height,
   width,
+  simulation,
   children,
 }: React.PropsWithChildren<{
   height: number;
   width: number;
+  simulation: d3.Simulation<NodeDatum, LinkDatum>;
 }>) => {
   const [nodePositions, setNodePositions] = React.useState<NodePositions>({});
   const [linkPositions, setLinkPositions] = React.useState<LinkPositions>({});
@@ -82,25 +88,35 @@ export const ForceGraph = <
     );
   }, []);
 
+  React.useEffect(() => {
+    simulation.on("tick", updatePositions).on("end", () => {
+      simulation.on("tick", null);
+    });
+  }, [simulation]);
+
   // Initialize force simulation once and then update node
   // and links with useEffect
-  const simulation = React.useMemo<d3.Simulation<NodeDatum, LinkDatum>>(
-    () =>
-      d3
-        .forceSimulation<NodeDatum, LinkDatum>()
-        .force(
-          "link",
-          d3.forceLink<NodeDatum, LinkDatum>().id((node) => node.id)
-        )
-        .force("charge", d3.forceManyBody())
-        .force("x", d3.forceX())
-        .force("y", d3.forceY())
-        .on("tick", updatePositions)
-        .on("end", () => {
-          simulation.on("tick", null);
-        }),
-    []
-  );
+  // const simulation = React.useMemo<d3.Simulation<NodeDatum, LinkDatum>>(
+  //   () =>
+  //     d3
+  //       .forceSimulation<NodeDatum, LinkDatum>()
+  //       .force(
+  //         "link",
+  //         d3.forceLink<NodeDatum, LinkDatum>().id((node) => node.id)
+  //         // .distance(200)
+  //       )
+  //       // .force("center", d3.forceCenter(0, 0))
+  //       .force("charge", d3.forceManyBody())
+  //       // .force("x", d3.forceX())
+  //       // .force("y", d3.forceY())
+  //       // .force("collide", d3.forceCollide(100))
+  //       // .on("tick", () => requestAnimationFrame(updatePositions))
+  //       .on("tick", updatePositions)
+  //       .on("end", () => {
+  //         simulation.on("tick", null);
+  //       }),
+  //   []
+  // );
 
   // When nodes or links are changed, update simulation
   React.useEffect(() => {
