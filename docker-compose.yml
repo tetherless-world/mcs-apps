@@ -29,12 +29,12 @@ services:
       - 7687:7687 # Bolt
     restart: unless-stopped
     volumes:
-      - mcs-portal-neo4j-data:/data
-      - mcs-portal-neo4j-logs:/logs
-      - mcs-portal-neo4j-import:/var/lib/neo4j/import
-      - mcs-portal-neo4j-plugins:/plugins
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+      - neo4j-plugins:/plugins
 volumes:
-  mcs-portal-neo4j-data:
-  mcs-portal-neo4j-import:
-  mcs-portal-neo4j-logs:
-  mcs-portal-neo4j-plugins:
+  neo4j-data:
+  neo4j-import:
+  neo4j-logs:
+  neo4j-plugins:
