@@ -30,13 +30,28 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 // http://localhost:9001/benchmark/commonsenseqa/dataset/commonsenseqa-dev/submission/kagnet-commonsenseqa-dev/question/commonsenseqa-dev-1afa02df02c908a558b4036e80242fac
 
 const CorrectSubmissionAnswerIcon = (
-  <FontAwesomeIcon icon={faCheck} color="green" size="2x" />
+  <FontAwesomeIcon
+    icon={faCheck}
+    color="green"
+    size="2x"
+    data-cy="correctSubmissionAnswerIcon"
+  />
 );
 const CorrectChoiceIcon = (
-  <FontAwesomeIcon icon={faStar} color="purple" size="2x" />
+  <FontAwesomeIcon
+    icon={faStar}
+    color="purple"
+    size="2x"
+    data-cy="correctChoiceIcon"
+  />
 );
 const SubmissionChoiceIcon = (
-  <FontAwesomeIcon icon={faTimes} color="red" size="2x" />
+  <FontAwesomeIcon
+    icon={faTimes}
+    color="red"
+    size="2x"
+    data-cy="submissionChoiceIcon"
+  />
 );
 
 const QuestionAnswerChoiceCard: React.FunctionComponent<{
