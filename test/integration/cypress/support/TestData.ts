@@ -27,15 +27,11 @@ export class TestData {
     return cy.fixture("benchmark/benchmark_answers.json");
   }
 
-  static get nodes(): Cypress.Chainable<KgNode[]> {
+  static get kgNodes(): Cypress.Chainable<KgNode[]> {
     return cy.fixture("kg/nodes.json");
   }
 
-  static get edges(): Cypress.Chainable<KgEdge[]> {
+  static get kgEdges(): Cypress.Chainable<KgEdge[]> {
     return cy.fixture("kg/edges.json");
-  }
-
-  static get paths(): Cypress.Chainable<KgPath[]> {
-    return cy.fixture("kg/paths.json");
   }
 }

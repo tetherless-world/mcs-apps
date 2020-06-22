@@ -9,9 +9,9 @@ context("KG node page", () => {
   let testNodeEdges: KgEdge[];
 
   before(() => {
-    TestData.nodes.then((nodes) => {
+    TestData.kgNodes.then((nodes) => {
       node = nodes[0];
-      TestData.edges.then((edges) => {
+      TestData.kgEdges.then((edges) => {
         testNodeEdges = edges.filter((edge) => edge.subject === node.id);
       });
       page = new KgNodePage(node.id);
