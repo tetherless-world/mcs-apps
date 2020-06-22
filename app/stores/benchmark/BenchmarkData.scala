@@ -1,63 +1,17 @@
 package stores.benchmark
 
-import java.io.{BufferedInputStream, InputStream}
-
-import formats.benchmark.{BenchmarkAnswersJsonlReader, BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
 import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkSubmission}
-import stores.WithResource
 
-import scala.io.Source
+class BenchmarkData(val benchmarks: List[Benchmark], val benchmarkAnswers: List[BenchmarkAnswer], val benchmarkQuestions: List[BenchmarkQuestion], val benchmarkSubmissions: List[BenchmarkSubmission]) {
+  def this(resources: BenchmarkDataResources) =
+    this(
+      benchmarks = resources.readBenchmarks(),
+      benchmarkAnswers = resources.readBenchmarkAnswers(),
+      benchmarkQuestions = resources.readBenchmarkQuestions(),
+      benchmarkSubmissions = resources.readBenchmarkSubmissions()
+    )
 
-object BenchmarkTestData extends WithResource {
-  val BenchmarkAnswersJsonlResourceName = "/test_data/benchmark/benchmark_answers.jsonl"
-  val BenchmarksJsonlResourceName = "/test_data/benchmark/benchmarks.jsonl"
-  val BenchmarkQuestionsJsonlResourceName = "/test_data/benchmark/benchmark_questions.jsonl"
-  val BenchmarkSubmissionsJsonlResourceName = "/test_data/benchmark/benchmark_submissions.jsonl"
-
-  val benchmarks = readBenchmarks()
-  val benchmarkAnswers = readBenchmarkAnswers()
-  val benchmarkQuestions = readBenchmarkQuestions()
-  val benchmarkSubmissions = readBenchmarkSubmissions()
   validate()
-
-  def getBenchmarkAnswersJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(BenchmarkAnswersJsonlResourceName)
-
-  def getBenchmarksJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(BenchmarksJsonlResourceName)
-
-  def getBenchmarkQuestionsJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(BenchmarkQuestionsJsonlResourceName)
-
-  def getBenchmarkSubmissionsJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(BenchmarkSubmissionsJsonlResourceName)
-
-  private def getResourceAsStream(resourceName: String) =
-    new BufferedInputStream(getClass.getResourceAsStream(resourceName))
-
-  private def readBenchmarkAnswers(): List[BenchmarkAnswer] = {
-    withResource(new BenchmarkAnswersJsonlReader(Source.fromInputStream(getBenchmarkAnswersJsonlResourceAsStream()))) { reader =>
-      reader.iterator.toList
-    }
-  }
-
-  private def readBenchmarks(): List[Benchmark] = {
-    withResource(new BenchmarksJsonlReader(Source.fromInputStream(getBenchmarksJsonlResourceAsStream()))) { reader =>
-      reader.iterator.toList
-    }
-  }
-
-  private def readBenchmarkQuestions(): List[BenchmarkQuestion] = {
-    withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(getBenchmarkQuestionsJsonlResourceAsStream()))) { reader =>
-      reader.iterator.toList
-    }
-  }
-
-  private def readBenchmarkSubmissions(): List[BenchmarkSubmission] = {
-    withResource(new BenchmarkSubmissionsJsonlReader(Source.fromInputStream(getBenchmarkSubmissionsJsonlResourceAsStream()))) { reader =>
-      reader.iterator.toList
-    }
-  }
 
   private def validate(): Unit = {
     if (benchmarks.map(benchmark => benchmark.id).toSet.size != benchmarks.size) {

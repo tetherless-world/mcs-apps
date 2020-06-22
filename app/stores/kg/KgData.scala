@@ -1,25 +1,21 @@
 package stores.kg
 
-import java.io.{BufferedInputStream, InputStream}
-
-import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.kg.path.KgPathsJsonlReader
 import models.kg.{KgEdge, KgNode, KgPath}
-import stores.WithResource
 
-import scala.io.Source
+class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnsorted: List[KgPath]) {
+  def this(resources: KgDataResources) =
+    this(
+      edgesUnsorted = resources.readEdges(),
+      nodesUnsorted = resources.readNodes(),
+      pathsUnsorted = resources.readPaths()
+    )
 
-object KgTestData extends WithResource {
-  val EdgesCsvBz2ResourceName = "/test_data/kg/edges.csv.bz2"
-  val NodesCsvBz2ResourceName = "/test_data/kg/nodes.csv.bz2"
-  val PathsJsonlResourceName = "/test_data/kg/paths.jsonl"
-
-  val nodesById = deduplicateNodes(sortNodes(readNodes()))
+  val nodesById = deduplicateNodes(sortNodes(nodesUnsorted))
   val nodes = nodesById.values.toList
-  val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(readEdges()), nodesById))
+  val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(edgesUnsorted), nodesById))
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
-  val paths = validatePaths(edges, nodesById, readPaths())
+  val paths = validatePaths(edges, nodesById, pathsUnsorted)
 
   private def checkDuplicateEdges(edges: List[KgEdge]): List[KgEdge] = {
     // Default toMap duplicate handling = use later key
@@ -32,36 +28,6 @@ object KgTestData extends WithResource {
 
   private def deduplicateNodes(nodes: List[KgNode]): Map[String, KgNode] =
     nodes.map(node => (node.id, node)).toMap
-
-  def getEdgesCsvResourceAsStream(): InputStream =
-    getResourceAsStream(EdgesCsvBz2ResourceName)
-
-  def getNodesCsvResourceAsStream(): InputStream =
-    getResourceAsStream(NodesCsvBz2ResourceName)
-
-  def getPathsJsonlResourceAsStream(): InputStream =
-    getResourceAsStream(PathsJsonlResourceName)
-
-  private def getResourceAsStream(resourceName: String) =
-    new BufferedInputStream(getClass.getResourceAsStream(resourceName))
-
-  private def readEdges(): List[KgEdge] = {
-    withResource(CskgEdgesCsvReader.open(getEdgesCsvResourceAsStream())) { reader =>
-      reader.iterator.toList
-    }
-  }
-
-  private def readNodes(): List[KgNode] = {
-    withResource(CskgNodesCsvReader.open(getNodesCsvResourceAsStream())) { reader =>
-      reader.iterator.toList
-    }
-  }
-
-  private def readPaths(): List[KgPath] = {
-    withResource(new KgPathsJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
-      reader.iterator.toList
-    }
-  }
 
   private def checkDanglingEdges(edges: List[KgEdge], nodesById: Map[String, KgNode]): List[KgEdge] = {
     val nonDanglingEdges = edges.filter(edge => nodesById.contains(edge.subject) && nodesById.contains(edge.`object`))

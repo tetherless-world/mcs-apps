@@ -1,6 +1,8 @@
 package stores.benchmark
 
-import models.benchmark.{Benchmark, BenchmarkQuestion, BenchmarkDataset}
-
-final class TestBenchmarkStore extends MemBenchmarkStore {
-}
+final class TestBenchmarkStore extends MemBenchmarkStore(
+  benchmarks = TestBenchmarkData.benchmarks,
+  benchmarkAnswers = TestBenchmarkData.benchmarkAnswers,
+  benchmarkQuestions = TestBenchmarkData.benchmarkQuestions,
+  benchmarkSubmissions = TestBenchmarkData.benchmarkSubmissions,
+)
