@@ -1,9 +1,11 @@
 /.circleci/
 /.git/
 /data/
+**/.DS_Store
 /gui/dist/
 /.idea/
 LICENSE/
+**/*.log
 README.md
 **/node_modules/
 **/target/
