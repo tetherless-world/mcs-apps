@@ -7,13 +7,15 @@ import {
 import * as BenchmarkPageQueryDocument from "api/queries/benchmark/BenchmarkPageQuery.graphql";
 import {useQuery} from "@apollo/react-hooks";
 import {
+  Card,
+  CardContent,
+  CardHeader,
   Grid,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
 } from "@material-ui/core";
 import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
@@ -37,6 +39,7 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
         <TableRow key={dataset.id} data-cy={"dataset-" + dataset.id}>
           <TableCell data-cy="dataset-name">
             <Link
+              style={{fontSize: "larger"}}
               to={
                 Hrefs.benchmark({id: benchmarkId}).dataset({
                   id: dataset.id,
@@ -78,24 +81,36 @@ export const BenchmarkPage: React.FunctionComponent = () => {
             }}
           >
             <Grid container direction="column" spacing={6}>
-              <Grid item>
-                <Typography variant="h5">Datasets</Typography>
-                <BenchmarkDatasetsTable
-                  benchmarkId={benchmarkId}
-                  datasets={benchmark.datasets}
-                />
+              <Grid item container>
+                <Grid item xs={6}>
+                  <Card>
+                    <CardHeader title="Datasets" />
+                    <CardContent>
+                      <BenchmarkDatasetsTable
+                        benchmarkId={benchmarkId}
+                        datasets={benchmark.datasets}
+                      />
+                    </CardContent>
+                  </Card>
+                </Grid>
               </Grid>
               {benchmark.submissions.length > 0 ? (
-                <Grid item>
-                  <Typography variant="h5">Submissions</Typography>
-                  <BenchmarkSubmissionsTable
-                    benchmarkSubmissions={benchmark.submissions.map(
-                      (submission) => ({
-                        ...submission,
-                        benchmarkId,
-                      })
-                    )}
-                  />
+                <Grid item container>
+                  <Grid item xs={6}>
+                    <Card>
+                      <CardHeader title="Submissions" />
+                      <CardContent>
+                        <BenchmarkSubmissionsTable
+                          benchmarkSubmissions={benchmark.submissions.map(
+                            (submission) => ({
+                              ...submission,
+                              benchmarkId,
+                            })
+                          )}
+                        />
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 </Grid>
               ) : null}
             </Grid>

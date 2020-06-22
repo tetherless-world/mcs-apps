@@ -24,6 +24,7 @@ export const BenchmarkSubmissionsTable: React.FunctionComponent<{
         <TableRow data-cy={"submission-" + submission.id} key={submission.id}>
           <TableCell data-cy={"submission-name"}>
             <Link
+              style={{fontSize: "larger"}}
               to={
                 Hrefs.benchmark({id: submission.benchmarkId})
                   .dataset({
