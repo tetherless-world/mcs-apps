@@ -75,9 +75,6 @@ class MemKgStore extends KgStore {
     results.total.intValue
   }
 
-  final override def getPaths =
-    paths
-
   override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
 

@@ -37,8 +37,6 @@ trait KgStore {
    */
   def getMatchingNodesCount(filters: Option[KgNodeFilters], text: String): Int;
 
-  def getPaths: List[KgPath]
-
   def getPathById(id: String): Option[KgPath]
 
   /**
