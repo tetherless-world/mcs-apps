@@ -11,7 +11,7 @@ import play.api.mvc.{AnyContent, Results}
 import play.api.test.{FakeRequest, Helpers}
 import play.api.test._
 import play.api.test.Helpers._
-import stores.kg.{KgStore, KgTestData, MemKgStore}
+import stores.kg.{KgStore, MemKgStore, TestKgData, TestKgDataResources}
 
 import scala.reflect.io.Directory
 
@@ -44,36 +44,36 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
 
     "put edges to the store" in {
       store.getTotalEdgesCount must be (0)
-      store.putNodes(KgTestData.nodes.iterator)
-      val sourceFilePath = new File(getClass.getResource(KgTestData.EdgesCsvBz2ResourceName).toURI).toPath
+      store.putNodes(TestKgData.nodes.iterator)
+      val sourceFilePath = new File(getClass.getResource(TestKgDataResources.edgesCsvBz2ResourceName).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putEdges(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
       //      //      bodyText must be("ok")
-      store.getTotalEdgesCount must be (KgTestData.edges.length)
+      store.getTotalEdgesCount must be (TestKgData.edges.length)
     }
 
     "put paths to the store" in {
       store.getPaths.length must be (0)
-      val sourceFilePath = new File(getClass.getResource(KgTestData.PathsJsonlResourceName).toURI).toPath
+      val sourceFilePath = new File(getClass.getResource(TestKgDataResources.pathsJsonlResourceName).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putPaths(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
       //      //      bodyText must be("ok")
-      store.getPaths.length must be (KgTestData.paths.length)
+      store.getPaths.length must be (TestKgData.paths.length)
     }
 
     "put nodes to the store" in {
       store.getTotalNodesCount must be (0)
-      val sourceFilePath = new File(getClass.getResource(KgTestData.NodesCsvBz2ResourceName).toURI).toPath
+      val sourceFilePath = new File(getClass.getResource(TestKgDataResources.nodesCsvBz2ResourceName).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putNodes(destFilePath.getFileName.toString)(FakeRequest())
 //      val bodyText = contentAsString(result)
 //      //      bodyText must be("ok")
-      store.getTotalNodesCount must be (KgTestData.nodes.length)
+      store.getTotalNodesCount must be (TestKgData.nodes.length)
     }
   }
 

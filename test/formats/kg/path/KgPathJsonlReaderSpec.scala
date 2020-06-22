@@ -2,14 +2,14 @@ package formats.kg.path
 
 import org.scalatest.{Matchers, WordSpec}
 import stores.WithResource
-import stores.kg.KgTestData
+import stores.kg.{TestKgData, TestKgDataResources}
 
 import scala.io.Source
 
 class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "KG path .jsonl reader" can {
     "read the test data" in {
-      withResource(new KgPathsJsonlReader(Source.fromInputStream(KgTestData.getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+      withResource(new KgPathsJsonlReader(Source.fromInputStream(TestKgDataResources.getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
         val paths = reader.iterator.toList
         paths.size should be > 0
         for (path <- paths) {

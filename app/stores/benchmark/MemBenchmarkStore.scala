@@ -2,11 +2,19 @@ package stores.benchmark
 
 import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkDataset, BenchmarkSubmission}
 
-class MemBenchmarkStore extends BenchmarkStore {
-  private val benchmarks: List[Benchmark] = BenchmarkTestData.benchmarks
-  private val benchmarkAnswers: List[BenchmarkAnswer] = BenchmarkTestData.benchmarkAnswers
-  private val benchmarkQuestions: List[BenchmarkQuestion] = BenchmarkTestData.benchmarkQuestions
-  private val benchmarkSubmissions: List[BenchmarkSubmission] = BenchmarkTestData.benchmarkSubmissions
+class MemBenchmarkStore(
+                        private val benchmarks: List[Benchmark],
+                        private val benchmarkAnswers: List[BenchmarkAnswer],
+                        private val benchmarkQuestions: List[BenchmarkQuestion],
+                        private val benchmarkSubmissions: List[BenchmarkSubmission]
+                       ) extends BenchmarkStore {
+  def this(benchmarkData: BenchmarkData) =
+    this(
+      benchmarks = benchmarkData.benchmarks,
+      benchmarkAnswers = benchmarkData.benchmarkAnswers,
+      benchmarkQuestions = benchmarkData.benchmarkQuestions,
+      benchmarkSubmissions = benchmarkData.benchmarkSubmissions
+    )
 
   final override def getBenchmarks: List[Benchmark] = benchmarks
 

@@ -2,12 +2,12 @@ package formats.kg.cskg
 
 import org.scalatest.{Matchers, WordSpec}
 import stores.WithResource
-import stores.kg.KgTestData
+import stores.kg.{TestKgData, TestKgDataResources}
 
 class CskgNodesCsvReaderSpec extends WordSpec with Matchers with WithResource {
   "CSKG nodes CSV reader" can {
     "read the test data" in {
-      withResource (CskgNodesCsvReader.open(KgTestData.getNodesCsvResourceAsStream())) { reader =>
+      withResource (CskgNodesCsvReader.open(TestKgDataResources.getNodesCsvResourceAsStream())) { reader =>
         val nodes = reader.iterator.toList
         nodes.size should be > 0
         for (node <- nodes) {

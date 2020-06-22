@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: mcs-portal-app
+    restart: unless-stopped
     volumes:
       - ./data:/app/data
   gui:
@@ -17,14 +18,16 @@ services:
       - app
     ports:
       - 127.0.0.1:8080:80
+    restart: unless-stopped
   neo4j:
     build:
       context: .
       dockerfile: neo4j/Dockerfile
-    container_name: neo4j
+    container_name: mcs-portal-neo4j
     ports:
       - 7474:7474 # HTTP
       - 7687:7687 # Bolt
+    restart: unless-stopped
     volumes:
       - neo4j-data:/data
       - neo4j-logs:/logs
