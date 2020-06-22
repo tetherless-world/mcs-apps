@@ -1,8 +1,34 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
-import {Breadcrumbs, Typography} from "@material-ui/core";
+import {
+  Breadcrumbs,
+  Chip,
+  emphasize,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import {Hrefs} from "Hrefs";
+import HomeIcon from "@material-ui/icons/Home";
+import ExtensionIcon from "@material-ui/icons/Extension";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+import DoneIcon from "@material-ui/icons/Done";
+import ShutterSpeedIcon from "@material-ui/icons/ShutterSpeed";
 import {BenchmarkBreadcrumbsProps} from "components/benchmark/BenchmarkBreadcrumbsProps";
+
+const StyledBreadcrumb = withStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.grey[100],
+    height: theme.spacing(3),
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    "&:hover, &:focus": {
+      backgroundColor: theme.palette.grey[300],
+    },
+    "&:active": {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(theme.palette.grey[300], 0.12),
+    },
+  },
+}))(Chip) as any; // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
 
 export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsProps> = ({
   benchmark,
@@ -12,9 +38,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 }) => {
   const breadcrumbsChildren: React.ReactNode = (() => {
     const breadcrumbs: React.ReactNodeArray = [
-      <Link key="benchmarks" to={Hrefs.benchmarks} data-cy="benchmarks">
-        Benchmarks
-      </Link>,
+      <StyledBreadcrumb
+        component="a"
+        data-cy="benchmarks"
+        href={Hrefs.benchmarks}
+        icon={<HomeIcon />}
+        key="benchmarks"
+        label="Benchmarks"
+      ></StyledBreadcrumb>,
     ];
 
     if (!benchmark) {
@@ -23,13 +54,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const benchmarkHrefs = Hrefs.benchmark({id: benchmark.id});
     breadcrumbs.push(
-      <Link
-        key={"benchmark-" + benchmark.id}
-        to={benchmarkHrefs.home}
+      <StyledBreadcrumb
+        component="a"
         data-cy="benchmark"
-      >
-        {benchmark.name}
-      </Link>
+        href={benchmarkHrefs.home}
+        icon={<ShutterSpeedIcon />}
+        key={"benchmark-" + benchmark.id}
+        label={benchmark.name}
+      ></StyledBreadcrumb>
     );
 
     if (!dataset) {
@@ -40,13 +72,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const datasetHrefs = benchmarkHrefs.dataset({id: dataset.id});
     breadcrumbs.push(
-      <Link
-        key={"dataset-" + dataset.id}
-        to={datasetHrefs.home}
+      <StyledBreadcrumb
+        component="a"
         data-cy="dataset"
-      >
-        {dataset.name}
-      </Link>
+        key={"dataset-" + dataset.id}
+        href={datasetHrefs.home}
+        icon={<ExtensionIcon />}
+        label={dataset.name}
+      ></StyledBreadcrumb>
     );
 
     if (!submission) {
@@ -57,13 +90,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
 
     const submissionHrefs = datasetHrefs.submission({id: submission.id});
     breadcrumbs.push(
-      <Link
+      <StyledBreadcrumb
+        component="a"
         key={"submission-" + submission.id}
-        to={submissionHrefs.home}
+        href={submissionHrefs.home}
+        icon={<DoneIcon />}
         data-cy="submission"
-      >
-        {submission.id}
-      </Link>
+        label={submission.name}
+      ></StyledBreadcrumb>
     );
 
     if (!question) {
@@ -73,13 +107,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
     breadcrumbs.push(<Typography key="questions">Questions</Typography>);
 
     breadcrumbs.push(
-      <Link
-        key={"question-" + question.id}
-        to={submissionHrefs.question({id: question.id})}
+      <StyledBreadcrumb
+        component="a"
         data-cy="question"
-      >
-        {question.id}
-      </Link>
+        key={"question-" + question.id}
+        href={submissionHrefs.question({id: question.id})}
+        icon={<QuestionAnswerIcon />}
+        label={question.id}
+      ></StyledBreadcrumb>
     );
 
     return breadcrumbs;

@@ -1,6 +1,5 @@
 import {KgNode} from "./models/kg/KgNode";
 import {KgEdge} from "./models/kg/KgEdge";
-import {KgPath} from "./models/kg/KgPath";
 import {Benchmark} from "./models/benchmark/Benchmark";
 import {BenchmarkSubmission} from "./models/benchmark/BenchmarkSubmission";
 import {BenchmarkAnswer} from "./models/benchmark/BenchmarkAnswer";

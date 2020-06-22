@@ -3,7 +3,7 @@ import {Frame} from "components/frame/Frame";
 import {useParams} from "react-router-dom";
 import * as BenchmarkDatasetPageQueryDocument from "api/queries/benchmark/BenchmarkDatasetPageQuery.graphql";
 import {useQuery} from "@apollo/react-hooks";
-import {Grid, Typography} from "@material-ui/core";
+import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
 import {NotFound} from "components/error/NotFound";
@@ -42,17 +42,23 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
           >
             <Grid container direction="column">
               {dataset.submissions.length > 0 ? (
-                <Grid item>
-                  <Typography variant="h5">Submissions</Typography>
-                  <BenchmarkSubmissionsTable
-                    benchmarkSubmissions={dataset.submissions.map(
-                      (submission) => ({
-                        ...submission,
-                        benchmarkId,
-                        datasetId,
-                      })
-                    )}
-                  />
+                <Grid item container>
+                  <Grid item xs={6}>
+                    <Card>
+                      <CardHeader title="Submissions" />
+                      <CardContent>
+                        <BenchmarkSubmissionsTable
+                          benchmarkSubmissions={dataset.submissions.map(
+                            (submission) => ({
+                              ...submission,
+                              benchmarkId,
+                              datasetId,
+                            })
+                          )}
+                        />
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 </Grid>
               ) : null}
             </Grid>
