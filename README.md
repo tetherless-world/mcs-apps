@@ -99,7 +99,18 @@ The same system property can be set in an IntelliJ run configuration.
 
 Integration testing uses this test data store instead of neo4j.
 
-### Front end
+## Front end
+
+### Installing dependencies
+
+Before running the front end for the first time you must install its dependencies:
+
+    cd gui
+    npm install
+
+You should also run this command when the dependencies listed in the `package.json` are updated. If there are build errors on the `master` branch on your system it's often because dependencies are missing.
+
+### Running
 
 The front end is built with webpack. To start the webpack-dev-server, run
 
