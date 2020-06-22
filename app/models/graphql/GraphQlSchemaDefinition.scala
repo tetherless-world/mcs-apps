@@ -76,7 +76,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         arguments = IdArgument :: Nil,
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
       ),
-      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByDataset(datasetId = ctx.value.id))
+      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByDataset(datasetId = ctx.value.id)),
+      Field("submissionsCount", IntType, resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsCountByDataset(datasetId = ctx.value.id))
     )
   )
   implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
@@ -100,7 +101,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         "submissions",
         ListType(BenchmarkSubmissionType),
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id)
-      )
+      ),
+      Field("submissionsCount", IntType, resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsCountByBenchmark(benchmarkId = ctx.value.id))
     )
   )
 
