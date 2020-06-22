@@ -74,58 +74,56 @@ const extractNodeAndLinks = (explanation: AnswerExplanation) => {
         paths.forEach(({path, score}, index) => {
           const pathId = `${questionAnswerPathId}-${index}`;
 
-          // Extract nodes from path [node link node link node]
-          for (let i = 0; i < path.length; i += 2) {
-            const nodeId = path[i];
-            if (!nodes[nodeId]) {
-              nodes[nodeId] = {
-                id: nodeId,
-                label: nodeId,
-                incomingEdges: 0,
-                outgoingEdges: 0,
-                paths: [],
+          // path is [node link node link node]
+          for (let i = 0; i < path.length; i++) {
+            // Extract nodes from path
+            if (i % 2 === 0) {
+              const nodeId = path[i];
+              if (!nodes[nodeId]) {
+                nodes[nodeId] = {
+                  id: nodeId,
+                  label: nodeId,
+                  incomingEdges: 0,
+                  outgoingEdges: 0,
+                  paths: [],
+                };
+              }
+
+              // Extract links from path
+            } else {
+              const sourceNodeId = path[i - 1];
+              const targetNodeId = path[i + 1];
+
+              const linkId = `${pathId}-${i}`;
+              const pathInfo = {
+                questionAnswerPathId,
+                choiceAnalysisId,
+                score,
               };
-            }
-          }
+              // Add path info to link
+              links[linkId] = {
+                source: sourceNodeId,
+                target: targetNodeId,
+                sourceId: sourceNodeId,
+                targetId: targetNodeId,
+                id: linkId,
+                pathId,
+                label: path[i],
+                ...pathInfo,
+              };
 
-          // Extract links from path [node link node link node]
-          for (let i = 1; i < path.length; i += 2) {
-            const sourceNodeId = path[i - 1];
-            const targetNodeId = path[i + 1];
+              const sourceNode = nodes[sourceNodeId];
+              const targetNode = nodes[targetNodeId];
 
-            const linkId = `${pathId}-${i}`;
-            const pathInfo = {
-              questionAnswerPathId,
-              choiceAnalysisId,
-              score,
-            };
-            // Add path info to link
-            links[linkId] = {
-              source: sourceNodeId,
-              target: targetNodeId,
-              sourceId: sourceNodeId,
-              targetId: targetNodeId,
-              id: linkId,
-              pathId,
-              label: path[i],
-              ...pathInfo,
-            };
+              // Increment node edge counts
+              sourceNode.outgoingEdges += 1;
+              targetNode.incomingEdges += 1;
 
-            const sourceNode = nodes[sourceNodeId];
-            const targetNode = nodes[targetNodeId];
-
-            // Increment node edge counts
-            sourceNode.outgoingEdges += 1;
-            targetNode.incomingEdges += 1;
-
-            // Add path info to node
-            if (!sourceNode.paths.some((path) => path.id === pathId)) {
+              // Add path info to node
               sourceNode.paths.push({
                 id: pathId,
                 ...pathInfo,
               });
-            }
-            if (!targetNode.paths.some((path) => path.id === pathId)) {
               targetNode.paths.push({
                 id: pathId,
                 ...pathInfo,
@@ -157,10 +155,14 @@ const AnswerExplanationGraphLegendNode: React.FunctionComponent<{
   radius?: number;
   color?: string;
   opacity?: number;
-}> = ({radius: propRadius, color: propColor, opacity: propOpacity}) => {
-  const radius = propRadius || 20;
-  const backgroundColor = propColor || "#999";
-  const opacity = propOpacity || 1;
+}> = ({
+  radius: userDefinedRadius,
+  color: userDefinedColor,
+  opacity: userDefinedOpacity,
+}) => {
+  const radius = userDefinedRadius ?? 20;
+  const backgroundColor = userDefinedColor ?? "#999";
+  const opacity = userDefinedOpacity ?? 1;
   return (
     <ListItemAvatar>
       <div
