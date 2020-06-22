@@ -9,7 +9,17 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import {Grid, Typography, Card, CardContent} from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  makeStyles,
+  ListItemAvatar,
+  ListItemText,
+} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
 import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
@@ -174,9 +184,46 @@ const extractNodeAndLinks = (explanation: AnswerExplanation) => {
   return {nodes, links};
 };
 
+const answerExplanationGraphStyles = makeStyles({
+  graphLegendContainer: {
+    display: "flex",
+    flexDirection: "row",
+    padding: 0,
+    whiteSpace: "nowrap",
+  },
+});
+
+const AnswerExplanationGraphLegendNode: React.FunctionComponent<{
+  radius?: number;
+  color?: string;
+  opacity?: number;
+}> = ({radius: propRadius, color: propColor, opacity: propOpacity}) => {
+  const radius = propRadius || 20;
+  const backgroundColor = propColor || "#999";
+  const opacity = propOpacity || 1;
+  return (
+    <ListItemAvatar>
+      <div
+        style={{
+          height: radius + "px",
+          width: radius + "px",
+          borderRadius: "50%",
+          backgroundColor,
+          display: "inline-block",
+          opacity,
+        }}
+      />
+    </ListItemAvatar>
+  );
+};
+
 const AnswerExplanationGraph: React.FunctionComponent<{
   explanation: AnswerExplanation;
 }> = ({explanation}) => {
+  const classes = answerExplanationGraphStyles();
+
+  const choiceAnalyses = explanation.choiceAnalyses;
+
   const {nodes, links} = React.useMemo<{
     nodes: {[nodeId: string]: AnswerExplanationGraphNodeDatum};
     links: {[linkId: string]: AnswerExplanationGraphLinkDatum};
@@ -190,39 +237,67 @@ const AnswerExplanationGraph: React.FunctionComponent<{
     node.incomingEdges > 0 ? Math.log2(node.incomingEdges * 10) + 10 : 10;
 
   return (
-    <ForceGraph
-      height={800}
-      width={1200}
-      simulation={answerExplanationGraphSimulation}
-    >
-      {Object.values(nodes).map((node) => {
-        const path = node.paths[0];
-        const score = path.score;
-        // Color by choice analysis (aka choiceLabel)
-        const fill = pathColorScale(path.choiceAnalysisId);
-        // Opacity based on score
+    <React.Fragment>
+      <List className={classes.graphLegendContainer}>
+        {choiceAnalyses?.map(({choiceLabel}) => (
+          <ListItem>
+            <AnswerExplanationGraphLegendNode
+              color={pathColorScale(choiceLabel)}
+            />
+            <ListItemText primary={choiceLabel} />
+          </ListItem>
+        ))}
+        <ListItem>
+          <AnswerExplanationGraphLegendNode radius={25} />
+          <ListItemText primary="More edges" />
+        </ListItem>
+        <ListItem>
+          <AnswerExplanationGraphLegendNode radius={15} />
+          <ListItemText primary="Less edges" />
+        </ListItem>
+        <ListItem>
+          <AnswerExplanationGraphLegendNode />
+          <ListItemText primary="High score" />
+        </ListItem>
+        <ListItem>
+          <AnswerExplanationGraphLegendNode opacity={0.5} />
+          <ListItemText primary="Low score" />
+        </ListItem>
+      </List>
+      <ForceGraph
+        height={800}
+        width={1200}
+        simulation={answerExplanationGraphSimulation}
+      >
+        {Object.values(nodes).map((node) => {
+          const path = node.paths[0];
+          const score = path.score;
+          // Color by choice analysis (aka choiceLabel)
+          const fill = pathColorScale(path.choiceAnalysisId);
+          // Opacity based on score
 
-        return (
-          <ForceGraphNode
-            key={node.id}
-            node={node}
-            r={nodeRadius(node)}
-            fill={fill}
-            fillOpacity={score}
-          >
-            <title>{node.id}</title>
-          </ForceGraphNode>
-        );
-      })}
-      {Object.values(links).map((link) => (
-        <ForceGraphArrowLink
-          key={link.id}
-          link={link}
-          targetRadius={nodeRadius(nodes[link.targetId])}
-          strokeOpacity={link.score * 0.6}
-        />
-      ))}
-    </ForceGraph>
+          return (
+            <ForceGraphNode
+              key={node.id}
+              node={node}
+              r={nodeRadius(node)}
+              fill={fill}
+              fillOpacity={score}
+            >
+              <title>{node.id}</title>
+            </ForceGraphNode>
+          );
+        })}
+        {Object.values(links).map((link) => (
+          <ForceGraphArrowLink
+            key={link.id}
+            link={link}
+            targetRadius={nodeRadius(nodes[link.targetId])}
+            strokeOpacity={link.score * 0.6}
+          />
+        ))}
+      </ForceGraph>
+    </React.Fragment>
   );
 };
 
@@ -345,7 +420,6 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                   {/* Show submission explanation */}
                   {answer.explanation && (
                     <Grid item>
-                      <Typography variant="body1">Explanation</Typography>
                       <AnswerExplanationGraph
                         explanation={answer.explanation}
                       />
