@@ -10,9 +10,9 @@ import stores.{DataResources, WithResource}
 import scala.io.Source
 
 class KgDataResources(
-                                 val edgesCsvBz2ResourceName: String,
-                                 val nodesCsvBz2ResourceName: String,
-                                 val pathsJsonlResourceName: String,
+  val edgesCsvBz2ResourceName: String,
+  val nodesCsvBz2ResourceName: String,
+  val pathsJsonlResourceName: String,
 ) extends DataResources with WithResource {
   def getEdgesCsvResourceAsStream(): InputStream =
     getResourceAsStream(edgesCsvBz2ResourceName)
