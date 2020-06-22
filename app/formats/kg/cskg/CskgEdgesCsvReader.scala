@@ -33,5 +33,10 @@ final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdg
 
 object CskgEdgesCsvReader {
   def open(filePath: Path) = new CskgEdgesCsvReader(CskgCsvReader.openCsvReader(filePath))
-  def open(inputStream: InputStream) = new CskgEdgesCsvReader(CskgCsvReader.openCsvReader(inputStream))
+  def open(inputStream: InputStream) =
+    if (inputStream != null) {
+      new CskgEdgesCsvReader(CskgCsvReader.openCsvReader(inputStream))
+    } else {
+      throw new NullPointerException
+    }
 }

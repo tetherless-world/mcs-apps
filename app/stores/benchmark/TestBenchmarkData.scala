@@ -1,0 +1,3 @@
+package stores.benchmark
+
+object TestBenchmarkData extends BenchmarkData(TestBenchmarkDataResources)
