@@ -5,4 +5,5 @@ export type ForceGraphLinkDatum<NodeDatum extends ForceGraphNodeDatum> = {
   id: string;
   sourceId: string;
   targetId: string;
+  label: string;
 } & d3.SimulationLinkDatum<NodeDatum>;
