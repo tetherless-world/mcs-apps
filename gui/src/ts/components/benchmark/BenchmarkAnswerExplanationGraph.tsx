@@ -74,61 +74,59 @@ const extractNodeAndLinks = (explanation: AnswerExplanation) => {
         paths.forEach(({path, score}, index) => {
           const pathId = `${questionAnswerPathId}-${index}`;
 
-          // path is [node link node link node]
-          for (let i = 0; i < path.length; i++) {
-            // Extract nodes from path
-            if (i % 2 === 0) {
-              const nodeId = path[i];
-              if (!nodes[nodeId]) {
-                nodes[nodeId] = {
-                  id: nodeId,
-                  label: nodeId,
-                  incomingEdges: 0,
-                  outgoingEdges: 0,
-                  paths: [],
-                };
-              }
-
-              // Extract links from path
-            } else {
-              const sourceNodeId = path[i - 1];
-              const targetNodeId = path[i + 1];
-
-              const linkId = `${pathId}-${i}`;
-              const pathInfo = {
-                questionAnswerPathId,
-                choiceAnalysisId,
-                score,
+          // Extract nodes from path
+          for (let i = 0; i < path.length; i += 2) {
+            const nodeId = path[i];
+            if (!nodes[nodeId]) {
+              nodes[nodeId] = {
+                id: nodeId,
+                label: nodeId,
+                incomingEdges: 0,
+                outgoingEdges: 0,
+                paths: [],
               };
-              // Add path info to link
-              links[linkId] = {
-                source: sourceNodeId,
-                target: targetNodeId,
-                sourceId: sourceNodeId,
-                targetId: targetNodeId,
-                id: linkId,
-                pathId,
-                label: path[i],
-                ...pathInfo,
-              };
-
-              const sourceNode = nodes[sourceNodeId];
-              const targetNode = nodes[targetNodeId];
-
-              // Increment node edge counts
-              sourceNode.outgoingEdges += 1;
-              targetNode.incomingEdges += 1;
-
-              // Add path info to node
-              sourceNode.paths.push({
-                id: pathId,
-                ...pathInfo,
-              });
-              targetNode.paths.push({
-                id: pathId,
-                ...pathInfo,
-              });
             }
+          }
+
+          // Extract links from path is [node link node link node]
+          for (let i = 1; i < path.length; i += 2) {
+            const sourceNodeId = path[i - 1];
+            const targetNodeId = path[i + 1];
+
+            const linkId = `${pathId}-${i}`;
+            const pathInfo = {
+              questionAnswerPathId,
+              choiceAnalysisId,
+              score,
+            };
+            // Add path info to link
+            links[linkId] = {
+              source: sourceNodeId,
+              target: targetNodeId,
+              sourceId: sourceNodeId,
+              targetId: targetNodeId,
+              id: linkId,
+              pathId,
+              label: path[i],
+              ...pathInfo,
+            };
+
+            const sourceNode = nodes[sourceNodeId];
+            const targetNode = nodes[targetNodeId];
+
+            // Increment node edge counts
+            sourceNode.outgoingEdges += 1;
+            targetNode.incomingEdges += 1;
+
+            // Add path info to node
+            sourceNode.paths.push({
+              id: pathId,
+              ...pathInfo,
+            });
+            targetNode.paths.push({
+              id: pathId,
+              ...pathInfo,
+            });
           }
         });
       });
