@@ -119,10 +119,6 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       actualCount should equal(0)
     }
 
-    "get paths" in {
-      sut.getPaths.sortBy(path => path.id) should equal(TestKgData.paths.sortBy(path => path.id))
-    }
-
     "get a path by id" in {
       val expected = TestKgData.paths(0)
       sut.getPathById(expected.id) should equal(Some(expected))

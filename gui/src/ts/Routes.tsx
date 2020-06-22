@@ -6,7 +6,6 @@ import {NoRoute} from "components/error/NoRoute";
 import {KgHomePage} from "components/kg/KgHomePage";
 import {Hrefs} from "Hrefs";
 import {RandomKgNodePage} from "components/kg/node/RandomKgNodePage";
-import {KgPathPage} from "components/kg/path/KgPathPage";
 import {kgId} from "api/kgId";
 import {BenchmarksPage} from "components/benchmark/BenchmarksPage";
 import {BenchmarkPage} from "components/benchmark/BenchmarkPage";
@@ -71,7 +70,6 @@ export const Routes: React.FunctionComponent = () => (
         path={Hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
         component={KgNodePage}
       />
-      <Route path={Hrefs.kg({id: kgId}).paths} component={KgPathPage} />
       <Route
         exact
         path={Hrefs.kg({id: kgId}).randomNode}

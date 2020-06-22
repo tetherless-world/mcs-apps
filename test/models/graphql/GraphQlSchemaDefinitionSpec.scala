@@ -253,25 +253,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       ))
     }
 
-    "get KG paths" in {
-      val query =
-        graphql"""
-          query KgPathsQuery($$kgId: String!) {
-            kgById(id: $$kgId) {
-              paths {
-                id
-              }
-            }
-          }
-        """
-
-      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId)))
-      for (path <- TestKgData.paths) {
-        result must include(path.id)
-      }
-    }
-
-    "get path by id" in {
+    "get KG path by id" in {
       val query =
         graphql"""
           query PathQuery($$kgId: String!, $$pathId: String!) {
@@ -290,7 +272,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
       }
     }
 
-    "get path edges and their nodes" in {
+    "get KG path edges and their nodes" in {
       val query =
         graphql"""
         query PathQuery($$kgId: String!, $$pathId: String!) {

@@ -1,5 +1,9 @@
 import * as React from "react";
-import * as d3 from "d3";
+
+import {
+  ForceGraphNodeDatum,
+  ForceGraphNodePosition,
+} from "models/data/forceGraph";
 
 const defaultNodeOptions: React.SVGProps<SVGCircleElement> = {
   stroke: "#fff",
@@ -9,15 +13,29 @@ const defaultNodeOptions: React.SVGProps<SVGCircleElement> = {
   opacity: 1,
 };
 
-export type ForceGraphNodeProps<
-  NodeDatum extends d3.SimulationNodeDatum
-> = React.SVGProps<SVGCircleElement> & {
-  node: NodeDatum;
-};
+export type ForceGraphNodeProps<NodeDatum> = React.SVGProps<SVGCircleElement> &
+  Partial<ForceGraphNodePosition> & {
+    node: NodeDatum;
+  };
 
-export const ForceGraphNode = <NodeDatum extends d3.SimulationNodeDatum>({
+export const ForceGraphNode = <NodeDatum extends ForceGraphNodeDatum>({
   node,
   ...props
-}: ForceGraphNodeProps<NodeDatum>) => (
-  <circle {...defaultNodeOptions} {...props} />
-);
+}: ForceGraphNodeProps<NodeDatum>) => {
+  const {cx, cy, r} = props;
+  return (
+    <React.Fragment>
+      <circle {...defaultNodeOptions} {...props} />
+      {cx && cy && (
+        <React.Fragment>
+          <text x={cx} y={cy} fontSize={r || 10} strokeWidth={2} stroke="white">
+            {node.label}
+          </text>
+          <text x={cx} y={cy} fontSize={r || 10}>
+            {node.label}
+          </text>
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+};

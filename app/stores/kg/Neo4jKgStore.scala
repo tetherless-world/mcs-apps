@@ -306,17 +306,17 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  override def getPaths: List[KgPath] =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run(
-          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
-            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
-            |""".stripMargin
-        ).toPaths
-      }
-    }
-
+//  override def getPaths: List[KgPath] =
+//    withSession { session =>
+//      session.readTransaction { transaction =>
+//        transaction.run(
+//          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
+//            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
+//            |""".stripMargin
+//        ).toPaths
+//      }
+//    }
+//
   override def getPathById(id: String): Option[KgPath] = {
     withSession { session =>
       session.readTransaction { transaction =>

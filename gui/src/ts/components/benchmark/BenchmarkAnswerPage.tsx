@@ -12,6 +12,7 @@ import {Grid, Typography, Card, CardContent} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
 import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {BenchmarkAnswerExplanationGraph} from "components/benchmark/BenchmarkAnswerExplanationGraph";
 
 //localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -100,12 +101,12 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <Grid item md={6} container direction="column" justify="center">
                   <Grid item>
                     <Typography variant="h4" data-cy="questionText">
-                      {question?.text}
+                      {question.text}
                     </Typography>
                   </Grid>
                 </Grid>
                 <Grid item md={6} container direction="column" spacing={3}>
-                  {question?.choices.map((choice) => (
+                  {question.choices.map((choice) => (
                     <Grid item key={choice.label}>
                       <QuestionAnswerChoiceCard
                         choice={choice}
@@ -122,7 +123,6 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <br />
               </Grid>
 
-              {!answer && <NotFound label={`Answer for ${questionId} `} />}
               {answer && (
                 <React.Fragment>
                   {/* Show submission answer */}
@@ -146,7 +146,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                     <Grid item md={6} spacing={3}>
                       <QuestionAnswerChoiceCard
                         choice={
-                          question?.choices.find(
+                          question.choices.find(
                             (choice) => choice.label === answer.choiceLabel
                           )!
                         }
@@ -156,9 +156,13 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                   </Grid>
 
                   {/* Show submission explanation */}
-                  <Grid item>
-                    <Typography variant="body1">Explanation</Typography>
-                  </Grid>
+                  {answer.explanation && (
+                    <Grid item>
+                      <BenchmarkAnswerExplanationGraph
+                        explanation={answer.explanation}
+                      />
+                    </Grid>
+                  )}
                 </React.Fragment>
               )}
             </Grid>
