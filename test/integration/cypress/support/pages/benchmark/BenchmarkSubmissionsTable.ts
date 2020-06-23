@@ -5,6 +5,10 @@ class BenchmarkSubmissionTableRow {
 
   readonly selector: string;
 
+  get datasetName() {
+    return cy.get(this.selector + " [data-cy=submission-dataset-name]");
+  }
+
   get name() {
     return cy.get(this.selector + " [data-cy=submission-name]");
   }

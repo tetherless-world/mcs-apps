@@ -36,7 +36,7 @@ export const BenchmarkSubmissionsTable: React.FunctionComponent<{
               />
             </TableCell>
             {benchmarkDatasets ? (
-              <TableCell>
+              <TableCell data-cy="submission-dataset-name">
                 <BenchmarkDatasetLink
                   benchmarkDataset={
                     dataset
