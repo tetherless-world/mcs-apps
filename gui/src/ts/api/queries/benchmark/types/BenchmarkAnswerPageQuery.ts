@@ -16,6 +16,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById
   __typename: "BenchmarkQuestion";
   choices: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices[];
   text: string;
+  correctChoiceLabel: string;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths {
