@@ -30,6 +30,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
   endNodeId: string;
   startNodeId: string;
   paths: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths[];
+  score: number;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses {
