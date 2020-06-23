@@ -100,6 +100,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
                       <CardHeader title="Submissions" />
                       <CardContent>
                         <BenchmarkSubmissionsTable
+                          benchmarkDatasets={benchmark.datasets}
                           benchmarkSubmissions={benchmark.submissions.map(
                             (submission) => ({
                               ...submission,

@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import {BenchmarkDataset} from "models/benchmark/BenchmarkDataset";
 import {BenchmarkSubmissionLink} from "components/benchmark/BenchmarkSubmissionLink";
+import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";
 
 export const BenchmarkSubmissionsTable: React.FunctionComponent<{
   benchmarkDatasets?: BenchmarkDataset[];
@@ -36,7 +37,14 @@ export const BenchmarkSubmissionsTable: React.FunctionComponent<{
             </TableCell>
             {benchmarkDatasets ? (
               <TableCell>
-                {dataset ? dataset.name : submission.datasetId}
+                <BenchmarkDatasetLink
+                  benchmarkDataset={
+                    dataset
+                      ? dataset
+                      : {id: submission.datasetId, name: submission.datasetId}
+                  }
+                  benchmarkId={submission.benchmarkId}
+                />
               </TableCell>
             ) : null}
           </TableRow>
