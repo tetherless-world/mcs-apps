@@ -6,6 +6,8 @@ import {ForceGraphLinkProps} from "./ForceGraphLink";
 import {
   ForceGraphNodePosition,
   ForceGraphLinkPosition,
+  ForceGraphNodeDatum,
+  ForceGraphLinkDatum,
 } from "models/data/forceGraph";
 
 // Positions
@@ -19,16 +21,18 @@ interface LinkPositions {
 
 // Reference https://github.com/uber/react-vis-force
 export const ForceGraph = <
-  NodeDatum extends d3.SimulationNodeDatum & {id: string},
-  LinkDatum extends d3.SimulationLinkDatum<NodeDatum> & {id: string}
+  NodeDatum extends ForceGraphNodeDatum,
+  LinkDatum extends ForceGraphLinkDatum<NodeDatum>
 >({
   height,
   width,
+  boundNodes,
   simulation,
   children,
 }: React.PropsWithChildren<{
   height: number;
   width: number;
+  boundNodes?: boolean;
   simulation: d3.Simulation<NodeDatum, LinkDatum>;
 }>) => {
   const [nodePositions, setNodePositions] = React.useState<NodePositions>({});
@@ -79,8 +83,18 @@ export const ForceGraph = <
         (positions, node) => ({
           ...positions,
           [node.id]: {
-            cx: node.x!,
-            cy: node.y!,
+            cx: boundNodes
+              ? Math.max(
+                  Math.min(node.x!, width / 2 - node.r),
+                  -width / 2 + node.r
+                )
+              : node.x!,
+            cy: boundNodes
+              ? Math.max(
+                  Math.min(node.y!, height / 2 - node.r),
+                  -height / 2 + node.r
+                )
+              : node.y!,
           },
         }),
         prevPositions
@@ -88,18 +102,13 @@ export const ForceGraph = <
     );
   }, []);
 
-  React.useEffect(() => {
-    simulation.on("tick", updatePositions).on("end", () => {
-      simulation.on("tick", null);
-    });
-  }, [simulation]);
-
   // When nodes or links are changed, update simulation
   React.useEffect(() => {
     simulation
       .nodes(nodes)
       .force<d3.ForceLink<NodeDatum, LinkDatum>>("link")!
       .links(links);
+    simulation.on("tick", updatePositions);
   }, [nodes, links]);
 
   // Create children elements
