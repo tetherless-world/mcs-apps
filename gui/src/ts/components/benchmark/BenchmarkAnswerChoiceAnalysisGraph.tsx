@@ -126,9 +126,9 @@ const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
     }
   );
 
-  // Sort paths of each node by score
+  // Sort paths of each node by score descending
   for (const node of Object.values(nodes)) {
-    node.paths = node.paths.sort((path1, path2) => path1.score - path2.score);
+    node.paths = node.paths.sort((path1, path2) => path2.score - path1.score);
   }
 
   return {nodes, links};
@@ -230,8 +230,12 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
         {Object.values(nodes)
           .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
           .map((node) => {
-            const path = node.paths[0];
-            const score = path.score;
+            // const path = node.paths[0];
+            const score =
+              node.paths.reduce(
+                (totalScore, path) => totalScore + path.score,
+                0
+              ) / node.paths.length;
             // Color by choice analysis (aka choiceLabel)
             // const fill =
             //   node.paths.length > 1
