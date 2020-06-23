@@ -224,7 +224,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
              |SKIP ${offset}
              |LIMIT ${limit}
              |""".stripMargin,
-          queryParameters(Map(
+          toTransactionRunParameters(Map(
             "objectNodeId" -> objectNodeId
           ))
         ).toEdges
@@ -244,7 +244,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
              |SKIP ${offset}
              |LIMIT ${limit}
              |""".stripMargin,
-          queryParameters(Map(
+          toTransactionRunParameters(Map(
             "subjectNodeId" -> subjectNodeId
           ))
         ).toEdges
@@ -253,40 +253,36 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
     }
   }
 
-  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: String): List[KgNode] = {
+  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
     val cypherFilters = CypherFilters(filters)
 
     withSession { session =>
       session.readTransaction { transaction =>
         transaction.run(
-          s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
+          s"""${textMatchToCypherMatch(text)}
              |${cypherFilters.toCypherString}
              |RETURN ${nodePropertyNamesString}
              |SKIP ${offset}
              |LIMIT ${limit}
              |""".stripMargin,
-          queryParameters(Map(
-            "text" -> text
-          ) ++ cypherFilters.toCypherBindingsMap)
+          toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
         ).toNodes
       }
     }
   }
 
-  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: String): Int = {
+  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
     val cypherFilters = CypherFilters(filters)
 
     withSession { session =>
       session.readTransaction { transaction =>
         val result =
           transaction.run(
-            s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score
+            s"""${textMatchToCypherMatch(text)}
                |${cypherFilters.toCypherString}
                |RETURN COUNT(node)
                |""".stripMargin,
-            queryParameters(Map(
-              "text" -> text
-            ) ++ cypherFilters.toCypherBindingsMap)
+            toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
           )
         val record = result.single()
         record.get("COUNT(node)").asInt()
@@ -299,7 +295,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       session.readTransaction { transaction => {
         transaction.run(
           s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
-          queryParameters(Map("id" -> id))
+          toTransactionRunParameters(Map("id" -> id))
         ).toNodes.headOption
       }
       }
@@ -324,7 +320,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
           s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
              |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
              |""".stripMargin,
-          queryParameters(Map("id" -> id))
+          toTransactionRunParameters(Map("id" -> id))
         ).toPaths.headOption
       }
     }
@@ -367,7 +363,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
 
-  private def queryParameters(map: Map[String, Any]) =
+  private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
@@ -378,7 +374,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
           |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
           |REMOVE rel.noOp
           |""".stripMargin,
-        queryParameters(Map(
+        toTransactionRunParameters(Map(
           "datasource" -> edge.datasource,
           "object" -> edge.`object`,
           "other" -> edge.other.getOrElse(null),
@@ -395,7 +391,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
         "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
-        queryParameters(Map(
+        toTransactionRunParameters(Map(
           "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
           "datasource" -> node.datasource,
           "id" -> node.id,
@@ -416,7 +412,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
             |WHERE subject.id = $subject AND object.id = $object
             |CREATE (subject)-[path:PATH {datasource: $pathDatasource, id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate}]->(object)
             |""".stripMargin,
-          queryParameters(Map(
+          toTransactionRunParameters(Map(
             "object" -> pathEdge.`object`,
             "pathDatasource" -> path.datasource,
             "pathEdgeIndex" -> pathEdgeIndex,
@@ -460,6 +456,22 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
       }
     }
   }
+
+  private def textMatchToCypherBindingsMap(text: Option[String]) =
+    if (text.isDefined) {
+      Map(
+        "text" -> text
+      )
+    } else {
+      Map()
+    }
+
+  private def textMatchToCypherMatch(text: Option[String]) =
+    if (text.isDefined) {
+      s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score"""
+    } else {
+      "MATCH (node: Node)"
+    }
 
   private def withSession[V](f: Session => V): V =
     withResource[Session, V](driver.session())(f)
