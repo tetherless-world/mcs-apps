@@ -7,37 +7,41 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import {Link} from "react-router-dom";
-import {Hrefs} from "Hrefs";
+import {BenchmarkDataset} from "models/benchmark/BenchmarkDataset";
+import {BenchmarkSubmissionLink} from "components/benchmark/BenchmarkSubmissionLink";
 
 export const BenchmarkSubmissionsTable: React.FunctionComponent<{
+  benchmarkDatasets?: BenchmarkDataset[];
   benchmarkSubmissions: BenchmarkSubmission[];
-}> = ({benchmarkSubmissions}) => (
+}> = ({benchmarkDatasets, benchmarkSubmissions}) => (
   <Table>
     <TableHead>
       <TableRow>
         <TableCell>Name</TableCell>
+        {benchmarkDatasets ? <TableCell>Dataset</TableCell> : null}
       </TableRow>
     </TableHead>
     <TableBody>
-      {benchmarkSubmissions.map((submission) => (
-        <TableRow data-cy={"submission-" + submission.id} key={submission.id}>
-          <TableCell data-cy={"submission-name"}>
-            <Link
-              style={{fontSize: "larger"}}
-              to={
-                Hrefs.benchmark({id: submission.benchmarkId})
-                  .dataset({
-                    id: submission.datasetId,
-                  })
-                  .submission({id: submission.id}).home
-              }
-            >
-              {submission.name}
-            </Link>
-          </TableCell>
-        </TableRow>
-      ))}
+      {benchmarkSubmissions.map((submission) => {
+        const dataset = benchmarkDatasets?.find(
+          (dataset) => dataset.id === submission.datasetId
+        );
+        return (
+          <TableRow data-cy={"submission-" + submission.id} key={submission.id}>
+            <TableCell data-cy={"submission-name"}>
+              <BenchmarkSubmissionLink
+                benchmarkSubmission={submission}
+                style={{fontSize: "larger"}}
+              />
+            </TableCell>
+            {benchmarkDatasets ? (
+              <TableCell>
+                {dataset ? dataset.name : submission.datasetId}
+              </TableCell>
+            ) : null}
+          </TableRow>
+        );
+      })}
     </TableBody>
   </Table>
 );
