@@ -11,9 +11,8 @@ import {
   Grid,
   CardHeader,
 } from "@material-ui/core";
-import {Link} from "react-router-dom";
-import {Hrefs} from "Hrefs";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {BenchmarkLink} from "components/benchmark/BenchmarkLink";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const query = useQuery<BenchmarksQuery>(BenchmarksPageQueryDocument);
@@ -28,15 +27,12 @@ export const BenchmarksPage: React.FunctionComponent = () => {
                 <CardHeader title="Benchmarks" />
                 <CardContent>
                   <List>
-                    {data.benchmarks.map((bm) => (
-                      <ListItem key={bm.id}>
-                        <Link
+                    {data.benchmarks.map((benchmark) => (
+                      <ListItem key={benchmark.id}>
+                        <BenchmarkLink
+                          benchmark={benchmark}
                           style={{fontSize: "larger"}}
-                          to={Hrefs.benchmark({id: bm.id}).home}
-                          data-cy={`benchmark-${bm.id}`}
-                        >
-                          {bm.name}
-                        </Link>
+                        />
                       </ListItem>
                     ))}
                   </List>
