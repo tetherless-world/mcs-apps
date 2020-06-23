@@ -2,7 +2,7 @@ package stores.kg
 
 import com.outr.lucene4s._
 import com.outr.lucene4s.field.Field
-import com.outr.lucene4s.query.{Condition, SearchTerm}
+import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import models.kg.{KgEdge, KgNode, KgPath}
 import stores.StringFilter
 
@@ -65,12 +65,12 @@ class MemKgStore extends KgStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: String): List[KgNode] = {
+  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
     val results = lucene.query().filter(toSearchTerms(filters, text):_*).limit(limit).offset(offset).search()
     results.results.toList.map(searchResult => nodesById(searchResult(luceneNodeIdField)))
   }
 
-  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: String): Int = {
+  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
     val results = lucene.query().filter(toSearchTerms(filters, text):_*).search()
     results.total.intValue
   }
@@ -110,8 +110,8 @@ class MemKgStore extends KgStore {
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }
 
-  private def toSearchTerms(filters: Option[KgNodeFilters], text: String): List[SearchTerm] = {
-    val textSearchTerm = string2ParsableSearchTerm(text)
+  private def toSearchTerms(filters: Option[KgNodeFilters], text: Option[String]): List[SearchTerm] = {
+    val textSearchTerm = text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
     if (filters.isDefined) {
       val filterSearchTerms = toSearchTerms(filters.get)
       if (!filterSearchTerms.isEmpty) {

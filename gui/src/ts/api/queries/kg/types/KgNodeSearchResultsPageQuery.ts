@@ -29,10 +29,10 @@ export interface KgNodeSearchResultsPageQuery {
 }
 
 export interface KgNodeSearchResultsPageQueryVariables {
-  filters: KgNodeFilters;
+  filters?: KgNodeFilters | null;
   kgId: string;
   limit: number;
   offset: number;
-  text: string;
+  text?: string | null;
   withCount: boolean;
 }

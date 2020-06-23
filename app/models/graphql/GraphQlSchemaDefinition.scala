@@ -14,6 +14,8 @@ import stores.kg.KgNodeFilters
 object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments
   val IdArgument = Argument("id", StringType)
+  val OptionalTextArgument = Argument("text", OptionInputType(StringType))
+
 
   // Object types
   implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
@@ -149,8 +151,8 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Query types
   val KgQueryType = ObjectType("Kg", fields[GraphQlSchemaContext, String](
     Field("datasources", ListType(StringType), resolve = ctx => ctx.ctx.stores.kgStore.getDatasources),
-    Field("matchingNodes", ListType(KgNodeType), arguments = KgNodeFiltersArgument :: LimitArgument :: OffsetArgument :: TextArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getMatchingNodes(filters = ctx.args.arg(KgNodeFiltersArgument), limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), text = ctx.args.arg(TextArgument))),
-    Field("matchingNodesCount", IntType, arguments = KgNodeFiltersArgument :: TextArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getMatchingNodesCount(filters = ctx.args.arg(KgNodeFiltersArgument), text = ctx.args.arg(TextArgument))),
+    Field("matchingNodes", ListType(KgNodeType), arguments = KgNodeFiltersArgument :: LimitArgument :: OffsetArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getMatchingNodes(filters = ctx.args.arg(KgNodeFiltersArgument), limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), text = ctx.args.arg(OptionalTextArgument))),
+    Field("matchingNodesCount", IntType, arguments = KgNodeFiltersArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getMatchingNodesCount(filters = ctx.args.arg(KgNodeFiltersArgument), text = ctx.args.arg(OptionalTextArgument))),
     Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getPathById(ctx.args.arg(IdArgument))),
     Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getRandomNode),
