@@ -107,7 +107,7 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
               ]}
               data={questions}
               options={{
-                count: dataset.questionCount,
+                count: dataset.questionsCount,
                 filter: false,
                 onTableChange: (action, tableState) => {
                   switch (action) {

@@ -21,7 +21,7 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissi
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById {
   __typename: "BenchmarkDataset";
   name: string;
-  questionCount: number;
+  questionsCount: number;
   questions: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions[];
   submissionById: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissionById | null;
 }
