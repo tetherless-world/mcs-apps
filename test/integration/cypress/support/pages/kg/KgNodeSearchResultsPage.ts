@@ -28,7 +28,7 @@ class KgNodeResultsNodeTableRowKgNodeLink {
   constructor(private readonly row: KgNodeResultsTableRow) {}
 
   click() {
-    this.row.get().find("a").click();
+    this.row.get().find("[data-cy=node-link]").click();
   }
 }
 
