@@ -14,7 +14,16 @@ import {
 } from "api/queries/kg/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {Frame} from "components/frame/Frame";
-import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  List,
+  ListItemText,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
 import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
 import {kgId} from "api/kgId";
@@ -127,19 +136,27 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
                 </Switch>
               </Grid>
               <Grid item xs={2}>
-                <h3>
-                  Data source:{" "}
-                  <span data-cy="node-datasource">{node.datasource}</span>
-                </h3>
-                {node.aliases ? (
-                  <React.Fragment>
-                    <h3>Aliases</h3>
+                <Card>
+                  <CardHeader title="Datasource(s)"></CardHeader>
+                  <CardContent>
                     <List>
-                      {[...new Set(node.aliases)].map((alias) => (
-                        <ListItemText key={alias}>{alias}</ListItemText>
-                      ))}
+                      <ListItemText data-cy="node-datasource">
+                        {node.datasource}
+                      </ListItemText>
                     </List>
-                  </React.Fragment>
+                  </CardContent>
+                </Card>
+                {node.aliases ? (
+                  <Card>
+                    <CardHeader title="Aliases" />
+                    <CardContent>
+                      <List>
+                        {[...new Set(node.aliases)].map((alias) => (
+                          <ListItemText key={alias}>{alias}</ListItemText>
+                        ))}
+                      </List>
+                    </CardContent>
+                  </Card>
                 ) : null}
               </Grid>
             </Grid>
