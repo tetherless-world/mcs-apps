@@ -460,7 +460,7 @@ final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends
   private def textMatchToCypherBindingsMap(text: Option[String]) =
     if (text.isDefined) {
       Map(
-        "text" -> text
+        "text" -> text.get
       )
     } else {
       Map()

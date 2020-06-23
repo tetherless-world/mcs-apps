@@ -64,6 +64,15 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       actual.size should be(0)
     }
 
+    "get matching nodes count with no text search and no filters" in {
+      sut.getMatchingNodesCount(filters = None, text = None) should equal(TestKgData.nodes.size)
+    }
+
+    "get matching nodes count with no text search but with filters" in {
+      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).datasource)))))), text = None) should equal(TestKgData.nodes.size)
+      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).datasource)))))), text = None) should equal(0)
+    }
+
     "get matching nodes by datasource and label" in {
       val expected = TestKgData.nodes(0)
       val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""datasource:${expected.datasource} label:"${expected.label}""""))
