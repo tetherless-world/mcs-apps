@@ -195,6 +195,8 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
   const nodeRadius = (node: AnswerChoiceAnalysisGraphNodeDatum) =>
     node.incomingEdges > 0 ? 8 * Math.log2(node.incomingEdges) + 10 : 10;
 
+  const colorScale = d3.interpolateRgb("red", "green");
+
   return (
     <React.Fragment>
       <List className={classes.graphLegendContainer}>
@@ -208,11 +210,14 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
           <ListItemText primary="Less edges" />
         </ListItem>
         <ListItem>
-          <AnswerChoiceAnalysisGraphLegendNode />
+          <AnswerChoiceAnalysisGraphLegendNode color={colorScale(1)} />
           <ListItemText primary="High score" />
         </ListItem>
         <ListItem>
-          <AnswerChoiceAnalysisGraphLegendNode opacity={0.5} />
+          <AnswerChoiceAnalysisGraphLegendNode
+            opacity={0.5}
+            color={colorScale(0)}
+          />
           <ListItemText primary="Low score" />
         </ListItem>
       </List>
@@ -239,21 +244,24 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 key={node.id}
                 node={node}
                 r={nodeRadius(node)}
-                // fill={fill}
+                fill={colorScale(score)}
                 fillOpacity={score}
               >
                 <title>{node.id}</title>
               </ForceGraphNode>
             );
           })}
-        {Object.values(links).map((link) => (
-          <ForceGraphArrowLink
-            key={link.id}
-            link={link}
-            targetRadius={nodeRadius(nodes[link.targetId])}
-            strokeOpacity={link.score * 0.6}
-          />
-        ))}
+        {Object.values(links)
+          .sort((link1, link2) => link1.score - link2.score)
+          .map((link) => (
+            <ForceGraphArrowLink
+              key={link.id}
+              link={link}
+              stroke={colorScale(link.score)}
+              targetRadius={nodeRadius(nodes[link.targetId])}
+              strokeOpacity={link.score * 0.6}
+            />
+          ))}
       </ForceGraph>
     </React.Fragment>
   );

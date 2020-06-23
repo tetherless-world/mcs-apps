@@ -208,7 +208,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <br />
               </Grid>
               {choiceAnalyses?.map((choiceAnalysis) => (
-                <Grid item>
+                <Grid item key={choiceAnalysis.choiceLabel}>
                   <BenchmarkAnswerChoiceAnalysisGraph
                     choiceAnalysis={choiceAnalysis}
                   />
