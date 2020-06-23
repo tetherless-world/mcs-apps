@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {
   BenchmarkPageQuery,
   BenchmarkPageQuery_benchmarkById_datasets,
@@ -17,11 +17,11 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import {Hrefs} from "Hrefs";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {Frame} from "components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "./BenchmarkFrame";
+import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";
 
 const BenchmarkDatasetsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -31,6 +31,7 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
     <TableHead>
       <TableRow>
         <TableCell>Name</TableCell>
+        <TableCell>Questions</TableCell>
         <TableCell>Submissions</TableCell>
       </TableRow>
     </TableHead>
@@ -38,16 +39,14 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
       {datasets.map((dataset) => (
         <TableRow key={dataset.id} data-cy={"dataset-" + dataset.id}>
           <TableCell data-cy="dataset-name">
-            <Link
+            <BenchmarkDatasetLink
+              benchmarkDataset={dataset}
+              benchmarkId={benchmarkId}
               style={{fontSize: "larger"}}
-              to={
-                Hrefs.benchmark({id: benchmarkId}).dataset({
-                  id: dataset.id,
-                }).home
-              }
-            >
-              {dataset.name}
-            </Link>
+            />
+          </TableCell>
+          <TableCell data-cy="dataset-questions-count">
+            {dataset.questionsCount}
           </TableCell>
           <TableCell data-cy="dataset-submissions-count">
             {dataset.submissionsCount}
@@ -101,6 +100,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
                       <CardHeader title="Submissions" />
                       <CardContent>
                         <BenchmarkSubmissionsTable
+                          benchmarkDatasets={benchmark.datasets}
                           benchmarkSubmissions={benchmark.submissions.map(
                             (submission) => ({
                               ...submission,

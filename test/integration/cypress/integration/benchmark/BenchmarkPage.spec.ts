@@ -2,19 +2,24 @@ import {TestData} from "../../support/TestData";
 import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
 import {Benchmark} from "../../support/models/benchmark/Benchmark";
 import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
+import {BenchmarkQuestion} from "../../support/models/benchmark/BenchmarkQuestion";
 
 context("Benchmark page", () => {
   let benchmark: Benchmark;
+  let benchmarkQuestions: BenchmarkQuestion[];
   let benchmarkSubmissions: BenchmarkSubmission[];
   let page: BenchmarkPage;
 
   before(() => {
     TestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
-      TestData.benchmarkSubmissions.then((submissions) => {
-        benchmarkSubmissions = submissions;
-        page = new BenchmarkPage(benchmark.id);
-        page.visit();
+      TestData.benchmarkQuestions.then((questions) => {
+        benchmarkQuestions = questions;
+        TestData.benchmarkSubmissions.then((submissions) => {
+          benchmarkSubmissions = submissions;
+          page = new BenchmarkPage(benchmark.id);
+          page.visit();
+        });
       });
     });
   });
@@ -30,9 +35,15 @@ context("Benchmark page", () => {
           submission.benchmarkId === benchmark.id &&
           submission.datasetId === dataset.id
       );
+      const questions = benchmarkQuestions.filter(
+        (question) => question.datasetId === dataset.id
+      );
       page.datasetsTable
         .dataset(dataset.id)
         .name.should("have.text", dataset.name);
+      page.datasetsTable
+        .dataset(dataset.id)
+        .questionsCount.should("have.text", questions.length);
       page.datasetsTable
         .dataset(dataset.id)
         .submissionsCount.should("have.text", submissions.length);
@@ -40,15 +51,19 @@ context("Benchmark page", () => {
   });
 
   it("should show submissions", () => {
-    TestData.benchmarkSubmissions.then((submissions) => {
-      submissions
-        .filter((submission) => submission.benchmarkId == benchmark.id)
-        .forEach((submission) => {
-          page.submissionsTable
-            .submission(submission.id)
-            .name.should("have.text", submission.name);
-        });
-    });
+    TestData.benchmarks.then(benchmarks => {
+      TestData.benchmarkSubmissions.then((submissions) => {
+        submissions
+          .filter((submission) => submission.benchmarkId == benchmark.id)
+          .forEach((submission) => {
+            const benchmark = benchmarks.find(benchmark => benchmark.id === submission.benchmarkId)!;
+            const dataset = benchmark.datasets.find(dataset => dataset.id === submission.datasetId)!;
+            const tableRow = page.submissionsTable
+              .submission(submission.id);
+            tableRow.datasetName.should("have.text", dataset.name)
+            tableRow.name.should("have.text", submission.name);
+          });
+      });
   });
 
   // it("should link back to benchmarks page", () => {

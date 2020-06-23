@@ -12,6 +12,10 @@ class BenchmarkDatasetTableRow {
     return cy.get(this.selector + " [data-cy=dataset-name]");
   }
 
+  get questionsCount() {
+    return cy.get(this.selector + " [data-cy=dataset-questions-count]");
+  }
+
   get submissionsCount() {
     return cy.get(this.selector + " [data-cy=dataset-submissions-count]");
   }

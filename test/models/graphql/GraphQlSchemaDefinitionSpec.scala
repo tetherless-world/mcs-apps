@@ -44,7 +44,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
             benchmarkById(id: $$benchmarkId) {
               datasets {
                 id
-                questionCount
+                questionsCount
                 questions(limit: 1000, offset: 0) {
                   choices {
                     label

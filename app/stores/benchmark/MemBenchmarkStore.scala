@@ -29,7 +29,7 @@ class MemBenchmarkStore(
   final override def getBenchmarkById(benchmarkId: String): Option[Benchmark] =
     benchmarks.find(benchmark => benchmark.id == benchmarkId)
 
-  final override def getBenchmarkQuestionCountByDataset(benchmarkDatasetId: String): Int =
+  final override def getBenchmarkQuestionsCountByDataset(benchmarkDatasetId: String): Int =
     benchmarkQuestions
       .count(question => question.datasetId == benchmarkDatasetId)
 

@@ -56,11 +56,6 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionById(ctx.args.arg(IdArgument))
       ),
       Field(
-        "questionCount",
-        IntType,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionCountByDataset(benchmarkDatasetId = ctx.value.id)
-      ),
-      Field(
         "questions",
         ListType(BenchmarkQuestionType),
         arguments = LimitArgument :: OffsetArgument :: Nil,
@@ -69,6 +64,11 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
           limit = ctx.args.arg(LimitArgument),
           offset = ctx.args.arg(OffsetArgument)
         )
+      ),
+      Field(
+        "questionsCount",
+        IntType,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsCountByDataset(benchmarkDatasetId = ctx.value.id)
       ),
       Field(
         "submissionById",
