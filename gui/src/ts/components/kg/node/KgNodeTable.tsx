@@ -15,10 +15,11 @@ import {
 import {KgNode} from "models/kg/KgNode";
 import {KgNodeLink} from "components/kg/node/KgNodeLink";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
+import {KgDatasourceLink} from "components/kg/search/KgDatasourceLink";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
-    <React.Fragment>
+    <React.Fragment key={item}>
       {item}
       <br />
     </React.Fragment>
@@ -40,7 +41,7 @@ export const KgNodeTable: React.FunctionComponent<{
             <TableCell></TableCell>
             <TableCell>Label</TableCell>
             <TableCell>Aliases</TableCell>
-            <TableCell>DataSource</TableCell>
+            <TableCell>Datasource</TableCell>
             <TableCell>Other</TableCell>
             <TableCell>Pos</TableCell>
           </TableRow>
@@ -57,7 +58,12 @@ export const KgNodeTable: React.FunctionComponent<{
               </TableCell>
               <TableCell>
                 {node.datasource &&
-                  showListAsColumn(node.datasource.split(","))}
+                  node.datasource.split(",").map((datasource) => (
+                    <React.Fragment key={datasource}>
+                      <KgDatasourceLink datasource={datasource} />
+                      <br />
+                    </React.Fragment>
+                  ))}
               </TableCell>
               <TableCell>{node.other}</TableCell>
               <TableCell>

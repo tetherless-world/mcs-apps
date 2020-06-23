@@ -1,11 +1,11 @@
 #import "./KgNodeFieldsFragment.graphql"
 
 query KgNodeSearchResultsPageQuery(
-  $filters: KgNodeFilters!
+  $filters: KgNodeFilters
   $kgId: String!
   $limit: Int!
   $offset: Int!
-  $text: String!
+  $text: String
   $withCount: Boolean!
 ) {
   kgById(id: $kgId) {

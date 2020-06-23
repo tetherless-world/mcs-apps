@@ -28,6 +28,7 @@ import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
 import {kgId} from "api/kgId";
 import {NotFound} from "components/error/NotFound";
+import {KgDatasourceLink} from "components/kg/search/KgDatasourceLink";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({
@@ -143,7 +144,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
                       <CardContent>
                         <List>
                           <ListItemText data-cy="node-datasource">
-                            {node.datasource}
+                            <KgDatasourceLink datasource={node.datasource} />
                           </ListItemText>
                         </List>
                       </CardContent>
