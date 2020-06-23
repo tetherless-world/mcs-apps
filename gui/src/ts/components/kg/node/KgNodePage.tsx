@@ -14,7 +14,16 @@ import {
 } from "api/queries/kg/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {Frame} from "components/frame/Frame";
-import {Grid, List, ListItemText, Tab, Tabs} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  List,
+  ListItemText,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
 import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
 import {kgId} from "api/kgId";
@@ -110,7 +119,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
 
             <Grid item container>
               <Grid item xs={10}>
-                <h2 data-cy="node-title">{title}</h2>
+                <h1 data-cy="node-title">{title}</h1>
                 <Switch>
                   <Route exact path={tabRoutes.grid.path}>
                     <KgNodePredicateGrid
@@ -127,20 +136,34 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
                 </Switch>
               </Grid>
               <Grid item xs={2}>
-                <h3>
-                  Data source:{" "}
-                  <span data-cy="node-datasource">{node.datasource}</span>
-                </h3>
-                {node.aliases ? (
-                  <React.Fragment>
-                    <h3>Aliases</h3>
-                    <List>
-                      {[...new Set(node.aliases)].map((alias) => (
-                        <ListItemText key={alias}>{alias}</ListItemText>
-                      ))}
-                    </List>
-                  </React.Fragment>
-                ) : null}
+                <Grid container direction="column" spacing={6}>
+                  <Grid item>
+                    <Card>
+                      <CardHeader title="Datasource(s)"></CardHeader>
+                      <CardContent>
+                        <List>
+                          <ListItemText data-cy="node-datasource">
+                            {node.datasource}
+                          </ListItemText>
+                        </List>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  {node.aliases ? (
+                    <Grid item>
+                      <Card>
+                        <CardHeader title="Aliases" />
+                        <CardContent>
+                          <List>
+                            {[...new Set(node.aliases)].map((alias) => (
+                              <ListItemText key={alias}>{alias}</ListItemText>
+                            ))}
+                          </List>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ) : null}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
