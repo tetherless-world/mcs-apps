@@ -136,28 +136,34 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
                 </Switch>
               </Grid>
               <Grid item xs={2}>
-                <Card>
-                  <CardHeader title="Datasource(s)"></CardHeader>
-                  <CardContent>
-                    <List>
-                      <ListItemText data-cy="node-datasource">
-                        {node.datasource}
-                      </ListItemText>
-                    </List>
-                  </CardContent>
-                </Card>
-                {node.aliases ? (
-                  <Card>
-                    <CardHeader title="Aliases" />
-                    <CardContent>
-                      <List>
-                        {[...new Set(node.aliases)].map((alias) => (
-                          <ListItemText key={alias}>{alias}</ListItemText>
-                        ))}
-                      </List>
-                    </CardContent>
-                  </Card>
-                ) : null}
+                <Grid container direction="column" spacing={6}>
+                  <Grid item>
+                    <Card>
+                      <CardHeader title="Datasource(s)"></CardHeader>
+                      <CardContent>
+                        <List>
+                          <ListItemText data-cy="node-datasource">
+                            {node.datasource}
+                          </ListItemText>
+                        </List>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  {node.aliases ? (
+                    <Grid item>
+                      <Card>
+                        <CardHeader title="Aliases" />
+                        <CardContent>
+                          <List>
+                            {[...new Set(node.aliases)].map((alias) => (
+                              <ListItemText key={alias}>{alias}</ListItemText>
+                            ))}
+                          </List>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ) : null}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
