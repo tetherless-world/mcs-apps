@@ -193,18 +193,18 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
 
   // Scale radius of nodes by number of incoming edges
   const nodeRadius = (node: AnswerChoiceAnalysisGraphNodeDatum) =>
-    node.incomingEdges > 0 ? 10 * Math.log2(node.incomingEdges) + 10 : 10;
+    node.incomingEdges > 0 ? 8 * Math.log2(node.incomingEdges) + 10 : 10;
 
   return (
     <React.Fragment>
       <List className={classes.graphLegendContainer}>
         <ListItem>Choice {choiceAnalysis.choiceLabel}</ListItem>
         <ListItem>
-          <AnswerChoiceAnalysisGraphLegendNode radius={25} />
+          <AnswerChoiceAnalysisGraphLegendNode radius={30} />
           <ListItemText primary="More edges" />
         </ListItem>
         <ListItem>
-          <AnswerChoiceAnalysisGraphLegendNode radius={15} />
+          <AnswerChoiceAnalysisGraphLegendNode radius={10} />
           <ListItemText primary="Less edges" />
         </ListItem>
         <ListItem>
@@ -223,7 +223,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
         simulation={answerChoiceAnalysisGraphSimulation}
       >
         {Object.values(nodes)
-          .sort((node1, node2) => nodeRadius(node1) - nodeRadius(node2))
+          .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
           .map((node) => {
             const path = node.paths[0];
             const score = path.score;
