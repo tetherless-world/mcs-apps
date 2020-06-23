@@ -21,9 +21,9 @@ import {
 import {NotFound} from "components/error/NotFound";
 import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
-import {BenchmarkAnswerExplanationGraph} from "components/benchmark/BenchmarkAnswerExplanationGraph";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {BenchmarkAnswerChoiceAnalysisGraph} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
 
 // http://localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -141,6 +141,9 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
           return <NotFound label={submissionId} />;
         }
 
+        const explanation = answer?.explanation;
+        const choiceAnalyses = explanation?.choiceAnalyses;
+
         return (
           <BenchmarkFrame
             {...{
@@ -204,13 +207,13 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <br />
                 <br />
               </Grid>
-              {answer && answer.explanation && (
+              {choiceAnalyses?.map((choiceAnalysis) => (
                 <Grid item>
-                  <BenchmarkAnswerExplanationGraph
-                    explanation={answer.explanation}
+                  <BenchmarkAnswerChoiceAnalysisGraph
+                    choiceAnalysis={choiceAnalysis}
                   />
                 </Grid>
-              )}
+              ))}
             </Grid>
           </BenchmarkFrame>
         );
