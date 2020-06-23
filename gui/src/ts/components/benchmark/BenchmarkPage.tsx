@@ -31,6 +31,7 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
     <TableHead>
       <TableRow>
         <TableCell>Name</TableCell>
+        <TableCell>Questions</TableCell>
         <TableCell>Submissions</TableCell>
       </TableRow>
     </TableHead>
@@ -48,6 +49,9 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
             >
               {dataset.name}
             </Link>
+          </TableCell>
+          <TableCell data-cy="dataset-questions-count">
+            {dataset.questionsCount}
           </TableCell>
           <TableCell data-cy="dataset-submissions-count">
             {dataset.submissionsCount}
