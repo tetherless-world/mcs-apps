@@ -119,7 +119,7 @@ export const KgNodePage: React.FunctionComponent<RouteComponentProps<
 
             <Grid item container>
               <Grid item xs={10}>
-                <h2 data-cy="node-title">{title}</h2>
+                <h1 data-cy="node-title">{title}</h1>
                 <Switch>
                   <Route exact path={tabRoutes.grid.path}>
                     <KgNodePredicateGrid
