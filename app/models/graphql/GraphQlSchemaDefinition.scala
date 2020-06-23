@@ -18,8 +18,43 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
 
 
   // Object types
+  // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
+  // https://github.com/sangria-graphql/sangria/issues/54
+  lazy val KgEdgeType: ObjectType[GraphQlSchemaContext, KgEdge] = ObjectType("KgEdge", () => fields[GraphQlSchemaContext, KgEdge](
+    Field("datasource", StringType, resolve = _.value.datasource),
+    Field("object", StringType, resolve = _.value.`object`),
+    // Assume the edge is not dangling
+    Field("objectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.`object`).head),
+    Field("other", OptionType(StringType), resolve = _.value.other),
+    Field("predicate", StringType, resolve = _.value.predicate),
+    Field("subject", StringType, resolve = _.value.subject),
+    // Assume the edge is not dangling
+    Field("subjectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.subject).head),
+    Field("weight", OptionType(FloatType), resolve = _.value.weight)
+  ))
+  lazy val KgNodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[GraphQlSchemaContext, KgNode](
+    Field("aliases", OptionType(ListType(StringType)), resolve = _.value.aliases),
+    Field("datasource", StringType, resolve = _.value.datasource),
+    Field("id", StringType, resolve = _.value.id),
+    Field("label", OptionType(StringType), resolve = _.value.label),
+    Field("objectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
+    Field("other", OptionType(StringType), resolve = _.value.other),
+    Field("pos", OptionType(StringType), resolve = _.value.pos),
+    Field("subjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
+  ))
+  val KgPathType = deriveObjectType[GraphQlSchemaContext, KgPath](
+    AddFields(
+      Field("edges", ListType(KgEdgeType), resolve = _.value.edges)
+    )
+  )
+
   implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
-  implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths]()
+  implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths](
+    AddFields(
+      Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.endNodeId)),
+      Field("startNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.startNodeId)),
+    )
+  )
   implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()
   implicit val BenchmarkAnswerExplanationType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswerExplanation]()
   implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
@@ -105,36 +140,6 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id)
       ),
       Field("submissionsCount", IntType, resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsCountByBenchmark(benchmarkId = ctx.value.id))
-    )
-  )
-
-  // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
-  // https://github.com/sangria-graphql/sangria/issues/54
-  lazy val KgEdgeType: ObjectType[GraphQlSchemaContext, KgEdge] = ObjectType("KgEdge", () => fields[GraphQlSchemaContext, KgEdge](
-    Field("datasource", StringType, resolve = _.value.datasource),
-    Field("object", StringType, resolve = _.value.`object`),
-    // Assume the edge is not dangling
-    Field("objectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.`object`).head),
-    Field("other", OptionType(StringType), resolve = _.value.other),
-    Field("predicate", StringType, resolve = _.value.predicate),
-    Field("subject", StringType, resolve = _.value.subject),
-    // Assume the edge is not dangling
-    Field("subjectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.subject).head),
-    Field("weight", OptionType(FloatType), resolve = _.value.weight)
-  ))
-  lazy val KgNodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[GraphQlSchemaContext, KgNode](
-    Field("aliases", OptionType(ListType(StringType)), resolve = _.value.aliases),
-    Field("datasource", StringType, resolve = _.value.datasource),
-    Field("id", StringType, resolve = _.value.id),
-    Field("label", OptionType(StringType), resolve = _.value.label),
-    Field("objectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
-    Field("other", OptionType(StringType), resolve = _.value.other),
-    Field("pos", OptionType(StringType), resolve = _.value.pos),
-    Field("subjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.stores.kgStore.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
-  ))
-  val KgPathType = deriveObjectType[GraphQlSchemaContext, KgPath](
-    AddFields(
-      Field("edges", ListType(KgEdgeType), resolve = _.value.edges)
     )
   )
 
