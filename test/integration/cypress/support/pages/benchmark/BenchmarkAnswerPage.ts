@@ -1,18 +1,6 @@
 import {Page} from "../Page";
 import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
 
-class Answer {
-  constructor(private readonly selector: string) {}
-
-  get label() {
-    return cy.get(this.selector + " [data-cy=label]");
-  }
-
-  get text() {
-    return cy.get(this.selector + " [data-cy=text]");
-  }
-}
-
 export class BenchmarkAnswerPage extends Page {
   constructor(
     private readonly benchmarkId: string,
@@ -34,6 +22,17 @@ export class BenchmarkAnswerPage extends Page {
 
     answer(choiceLabel: string) {
       return {
+        assertCorrectSubmissionAnswer() {
+          cy.get(
+            "[data-cy=questionAnswer] [data-cy=correctSubmissionAnswerIcon]"
+          );
+        },
+        assertCorrectChoice() {
+          cy.get("[data-cy=questionAnswer] [data-cy=correctChoiceIcon]");
+        },
+        assertSubmissionChoice() {
+          cy.get("[data-cy=questionAnswer] [data-cy=submissionChoiceIcon]");
+        },
         label: cy
           .get("[data-cy=questionAnswer] [data-cy=label]")
           .contains(new RegExp(`^${choiceLabel}$`))
@@ -52,8 +51,6 @@ export class BenchmarkAnswerPage extends Page {
     get id() {
       return cy.get("[data-cy=submissionId]");
     },
-
-    answer: new Answer("[data-cy=submissionAnswer]"),
   };
 
   readonly relativeUrl: string = `/benchmark/${this.benchmarkId}/dataset/${this.datasetId}/submission/${this.submissionId}/question/${this.questionId}`;

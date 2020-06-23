@@ -1,34 +1,40 @@
-query BenchmarkAnswerPageQuery($benchmarkId: String!, $questionId: String!, $datasetId: String!, $submissionId: String!) {
-    benchmarkById(id: $benchmarkId) {
-        name
-        datasetById(id: $datasetId) {
-            name
-            questionById(id: $questionId) {
-                choices {
-                    label
-                    text
-                }
-                text
-            }
-            submissionById(id: $submissionId) {
-                answerByQuestionId(id: $questionId) {
-                    choiceLabel
-                    explanation {
-                        choiceAnalyses {
-                            choiceLabel
-                            questionAnswerPaths {
-                                endNodeId
-                                startNodeId
-                                paths {
-                                    path
-                                    score
-                                }
-                            }
-                        }
-                    }
-                }
-                name
-            }
+query BenchmarkAnswerPageQuery(
+  $benchmarkId: String!
+  $questionId: String!
+  $datasetId: String!
+  $submissionId: String!
+) {
+  benchmarkById(id: $benchmarkId) {
+    name
+    datasetById(id: $datasetId) {
+      name
+      questionById(id: $questionId) {
+        choices {
+          label
+          text
         }
+        text
+        correctChoiceLabel
+      }
+      submissionById(id: $submissionId) {
+        answerByQuestionId(id: $questionId) {
+          choiceLabel
+          explanation {
+            choiceAnalyses {
+              choiceLabel
+              questionAnswerPaths {
+                endNodeId
+                startNodeId
+                paths {
+                  path
+                  score
+                }
+              }
+            }
+          }
+        }
+        name
+      }
     }
+  }
 }

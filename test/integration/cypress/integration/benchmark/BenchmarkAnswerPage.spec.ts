@@ -70,20 +70,13 @@ context("BenchmarkAnswerPage", () => {
     });
   });
 
-  it("should show submission id", () => {
-    page.submission.id.should("have.text", submission.id);
-  });
-
-  it("should show submission's answer ", () => {
-    const answerQuestionChoice = question.choices.find(
-      (choice) => choice.label === answer.choiceLabel
-    );
-    cy.wrap(answerQuestionChoice).should("not.be.undefined");
-    page.submission.answer.label.should(
-      "have.text",
-      answerQuestionChoice!.label
-    );
-    page.submission.answer.text.should("have.text", answerQuestionChoice!.text);
+  it("should show appropriate question answer icons", () => {
+    if (answer.choiceLabel === question.correctChoiceLabel) {
+      page.question.answer(answer.choiceLabel).assertCorrectSubmissionAnswer();
+    } else {
+      page.question.answer(answer.choiceLabel).assertSubmissionChoice();
+      page.question.answer(question.correctChoiceLabel).assertCorrectChoice();
+    }
   });
 
   it("should go to benchmark page", () => {

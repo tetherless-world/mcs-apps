@@ -6,8 +6,9 @@ import {
 } from "models/data/forceGraph";
 
 const defaultNodeOptions: React.SVGProps<SVGCircleElement> = {
-  stroke: "#fff",
-  strokeWidth: 2,
+  // stroke: "#fff",
+  // strokeWidth: 2,
+  stroke: "none",
   r: 10,
   fill: "#808080",
   opacity: 1,

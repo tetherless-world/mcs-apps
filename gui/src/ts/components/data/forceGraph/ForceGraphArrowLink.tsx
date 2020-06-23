@@ -32,7 +32,11 @@ export const ForceGraphArrowLink = <
           refY={0}
           orient="auto"
         >
-          <path d="M 0,-5 L 10 ,0 L 0,5" fill={fill} />
+          <path
+            d="M 0,-5 L 10 ,0 L 0,5"
+            fill={fill}
+            fillOpacity={linkProps.strokeOpacity}
+          />
         </marker>
       </defs>
 
