@@ -38,6 +38,16 @@ query BenchmarkAnswerPageQuery(
                 }
                 paths {
                   path
+                  edges {
+                    objectNode {
+                      label
+                      pos
+                    }
+                    subjectNode {
+                      label
+                      pos
+                    }
+                  }
                   score
                 }
                 score
