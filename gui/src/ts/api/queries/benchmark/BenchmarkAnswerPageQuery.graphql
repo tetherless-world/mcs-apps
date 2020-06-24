@@ -10,18 +10,21 @@ query BenchmarkAnswerPageQuery(
       name
       questionById(id: $questionId) {
         choices {
-          label
+          id
           text
         }
-        text
-        correctChoiceLabel
+        correctChoiceId
+        prompts {
+          text
+          type
+        }
       }
       submissionById(id: $submissionId) {
         answerByQuestionId(id: $questionId) {
-          choiceLabel
+          choiceId
           explanation {
             choiceAnalyses {
-              choiceLabel
+              choiceId
               questionAnswerPaths {
                 startNodeId
                 startNode {
