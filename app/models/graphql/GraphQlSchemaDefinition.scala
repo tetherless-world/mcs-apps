@@ -48,7 +48,11 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     )
   )
 
-  implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath]()
+  implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath](
+    AddFields(
+      Field("edges", ListType(KgEdgeType), resolve = _.value.edges)
+    )
+  )
   implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths](
     AddFields(
       Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.endNodeId)),
