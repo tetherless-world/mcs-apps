@@ -38,7 +38,7 @@ const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
   const links: {[linkId: string]: AnswerChoiceAnalysisGraphLinkDatum} = {};
 
   choiceAnalysis.questionAnswerPaths.forEach(
-    ({paths, endNodeId, startNodeId}) => {
+    ({paths, startNodeId, endNodeId, endNode, startNode}) => {
       const questionAnswerPathId = `${startNodeId}-${endNodeId}`;
 
       paths.forEach(({path, score}, index) => {
@@ -57,6 +57,15 @@ const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
               r: 0,
             };
           }
+        }
+
+        // Update label of start and end node
+        if (nodes[startNodeId] && startNode && startNode.label) {
+          nodes[startNodeId].label = startNode.label;
+        }
+
+        if (nodes[endNodeId] && endNode && endNode.label) {
+          nodes[endNodeId].label = endNode.label;
         }
 
         // Extract links from path is [node link node link node]
@@ -232,7 +241,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 opacity={score}
                 cursor="pointer"
               >
-                <title>{node.id}</title>
+                <title>{node.label}</title>
               </ForceGraphNode>
             );
           })}

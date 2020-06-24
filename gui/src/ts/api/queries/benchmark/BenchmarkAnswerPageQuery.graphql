@@ -23,8 +23,16 @@ query BenchmarkAnswerPageQuery(
             choiceAnalyses {
               choiceLabel
               questionAnswerPaths {
-                endNodeId
                 startNodeId
+                startNode {
+                  id
+                  label
+                }
+                endNodeId
+                endNode {
+                  id
+                  label
+                }
                 paths {
                   path
                   score
