@@ -1,23 +1,37 @@
 import * as React from "react";
 import * as d3 from "d3";
 
-import {ForceGraphNodeProps} from "./ForceGraphNode";
-import {ForceGraphLinkProps} from "./ForceGraphLink";
-import {
-  ForceGraphNodePosition,
-  ForceGraphLinkPosition,
-  ForceGraphNodeDatum,
-  ForceGraphLinkDatum,
-} from "models/data/forceGraph";
+import {ForceGraphNodeDatum, ForceGraphLinkDatum} from "models/data/forceGraph";
 
-// Positions
-interface NodePositions {
-  [nodeId: string]: ForceGraphNodePosition;
-}
+const dragHandler = <
+  NodeDatum extends ForceGraphNodeDatum,
+  LinkDatum extends ForceGraphLinkDatum<NodeDatum>
+>(
+  simulation: d3.Simulation<NodeDatum, LinkDatum>
+) => {
+  function dragstarted(d: NodeDatum) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
 
-interface LinkPositions {
-  [linkId: string]: ForceGraphLinkPosition;
-}
+  function dragged(d: NodeDatum) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  function dragended(d: NodeDatum) {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
+  return d3
+    .drag<SVGGElement, NodeDatum>()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended);
+};
 
 // Reference https://github.com/uber/react-vis-force
 export const ForceGraph = <
@@ -26,23 +40,21 @@ export const ForceGraph = <
 >({
   height,
   width,
-  boundNodes,
   simulation,
   children,
 }: React.PropsWithChildren<{
   height: number;
   width: number;
-  boundNodes?: boolean;
   simulation: d3.Simulation<NodeDatum, LinkDatum>;
 }>) => {
-  const [nodePositions, setNodePositions] = React.useState<NodePositions>({});
-  const [linkPositions, setLinkPositions] = React.useState<LinkPositions>({});
+  const svgRef = React.useRef<SVGSVGElement>(null);
 
-  // Extract node and link data from children props
-  const {nodes, links} = React.useMemo<{
-    nodes: NodeDatum[];
-    links: LinkDatum[];
-  }>(() => {
+  // When nodes or links are changed, update simulation
+  React.useEffect(() => {
+    if (!svgRef.current) {
+      return;
+    }
+
     const nodes: NodeDatum[] = [];
     const links: LinkDatum[] = [];
 
@@ -59,93 +71,86 @@ export const ForceGraph = <
       }
     });
 
-    return {nodes, links};
-  }, [children]);
-
-  const updatePositions = React.useCallback(() => {
-    setLinkPositions((prevPositions) =>
-      links.reduce<LinkPositions>(
-        (positions, link) => ({
-          ...positions,
-          [link.id]: {
-            x1: (link.source as NodeDatum).x!,
-            y1: (link.source as NodeDatum).y!,
-            x2: (link.target as NodeDatum).x!,
-            y2: (link.target as NodeDatum).y!,
-          },
-        }),
-        prevPositions
-      )
-    );
-
-    setNodePositions((prevPositions) =>
-      nodes.reduce<NodePositions>(
-        (positions, node) => ({
-          ...positions,
-          [node.id]: {
-            cx: boundNodes
-              ? Math.max(
-                  Math.min(node.x!, width / 2 - node.r),
-                  -width / 2 + node.r
-                )
-              : node.x!,
-            cy: boundNodes
-              ? Math.max(
-                  Math.min(node.y!, height / 2 - node.r),
-                  -height / 2 + node.r
-                )
-              : node.y!,
-          },
-        }),
-        prevPositions
-      )
-    );
-  }, []);
-
-  // When nodes or links are changed, update simulation
-  React.useEffect(() => {
     simulation
       .nodes(nodes)
       .force<d3.ForceLink<NodeDatum, LinkDatum>>("link")!
       .links(links);
-    simulation.on("tick", updatePositions);
-  }, [nodes, links]);
 
-  // Create children elements
-  const nodeElements: React.ReactNode[] = [];
-  const linkElements: React.ReactNode[] = [];
+    const svg = d3.select<SVGSVGElement, null>(svgRef.current);
 
-  React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) {
-      return;
-    }
+    const zoomContainer = svg.select<SVGGElement>("g.zoom");
+    d3.zoom<SVGSVGElement, null>().on("zoom", () => {
+      zoomContainer.attr("transform", d3.event.transform);
+    })(svg);
 
-    // Check component type by checking props
-    const {node, link}: {node: NodeDatum; link: LinkDatum} = child.props;
-    if (node) {
-      nodeElements.push(
-        // Use clone element to insert position attributes
-        React.cloneElement<ForceGraphNodeProps<NodeDatum>>(child, {
-          ...nodePositions[node.id],
-        })
-      );
-    } else if (link) {
-      linkElements.push(
-        React.cloneElement<ForceGraphLinkProps<LinkDatum>>(child, {
-          ...linkPositions[link.id],
-        })
-      );
-    }
-  });
+    const linkSelection = svg
+      .selectAll<SVGGElement, LinkDatum>("g.link")
+      .data(links, function (link) {
+        return link ? link.id : d3.select(this).attr("id");
+      });
+
+    const linkElementSelection = linkSelection
+      .selectAll<SVGCircleElement, LinkDatum>("line")
+      .data((link) => [link]);
+
+    const linkLabelSelection = linkSelection
+      .selectAll<SVGTextElement, LinkDatum>("text")
+      .data((link) => [link, link]);
+
+    const nodeSelection = svg
+      .selectAll<SVGGElement, NodeDatum>("g.node")
+      .data(nodes, function (node) {
+        return node ? node.id : d3.select(this).attr("id");
+      })
+      .call(dragHandler(simulation));
+
+    const nodeElementSelection = nodeSelection
+      .selectAll<SVGCircleElement, NodeDatum>("circle")
+      .data((node) => [node]);
+
+    const nodeLabelSelection = nodeSelection
+      .selectAll<SVGTextElement, NodeDatum>("text")
+      .data((node) => [node, node]);
+
+    simulation.on("tick", () => {
+      linkElementSelection
+        .attr("x1", (link) => (link.source as NodeDatum).x!)
+        .attr("y1", (link) => (link.source as NodeDatum).y!)
+        .attr("x2", (link) => (link.target as NodeDatum).x!)
+        .attr("y2", (link) => (link.target as NodeDatum).y!);
+
+      linkLabelSelection
+        .attr(
+          "x",
+          (link) =>
+            ((link.source as NodeDatum).x! + (link.target as NodeDatum).x!) / 2
+        )
+        .attr(
+          "y",
+          (link) =>
+            ((link.source as NodeDatum).y! + (link.target as NodeDatum).y!) / 2
+        );
+
+      nodeElementSelection
+        .attr("cx", (node) => node.x!)
+        .attr("cy", (node) => node.y!);
+
+      nodeLabelSelection
+        .attr("x", (node) => node.x!)
+        .attr("y", (node) => node.y!);
+    });
+  }, [svgRef, children]);
 
   return (
     <svg
+      ref={svgRef}
       height={height}
       width={width}
       viewBox={[-width / 2, -height / 2, width, height].join(" ")}
+      cursor="move"
+      style={{border: "1px solid black"}}
     >
-      <g className="links">{linkElements}</g>
-      <g className="nodes">{nodeElements}</g>
+      <g className="zoom">{children}</g>
     </svg>
   );
 };

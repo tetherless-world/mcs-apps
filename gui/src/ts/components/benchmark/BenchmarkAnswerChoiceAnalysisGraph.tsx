@@ -33,31 +33,7 @@ interface AnswerChoiceAnalysisGraphLinkDatum
   score: number;
 }
 
-const answerChoiceAnalysisGraphSimulation = d3
-  .forceSimulation<
-    AnswerChoiceAnalysisGraphNodeDatum,
-    AnswerChoiceAnalysisGraphLinkDatum
-  >()
-  .force(
-    "link",
-    d3
-      .forceLink<
-        AnswerChoiceAnalysisGraphNodeDatum,
-        AnswerChoiceAnalysisGraphLinkDatum
-      >()
-      .id((node) => node.id)
-    // .distance(100)
-    // .strength(1)
-  )
-  // .force("center", d3.forceCenter())
-  // .force("charge", d3.forceManyBody().strength(-300))
-  .force("x", d3.forceX())
-  .force("y", d3.forceY())
-  .force("collide", d3.forceCollide(50));
-
 const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
-  // const choiceAnalyses = explanation.choiceAnalyses;
-
   const nodes: {[nodeId: string]: AnswerChoiceAnalysisGraphNodeDatum} = {};
   const links: {[linkId: string]: AnswerChoiceAnalysisGraphLinkDatum} = {};
 
@@ -134,7 +110,7 @@ const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
   return {nodes, links};
 };
 
-const answerExplanationGraphStyles = makeStyles({
+const answerChoiceAnalysisGraphStyles = makeStyles({
   graphLegendContainer: {
     display: "flex",
     flexDirection: "row",
@@ -174,28 +150,44 @@ const AnswerChoiceAnalysisGraphLegendNode: React.FunctionComponent<{
 export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
   choiceAnalysis: AnswerChoiceAnalysis;
 }> = ({choiceAnalysis}) => {
-  const classes = answerExplanationGraphStyles();
-
-  // const choiceAnalyses = explanation.choiceAnalyses ?? [];
-
-  // const [
-  //   selectedChoiceAnalysis,
-  //   setSelectedChoiceAnalysis,
-  // ] = React.useState<AnswerChoiceAnalysis | null>(choiceAnalyses?.[0] ?? null);
+  const classes = answerChoiceAnalysisGraphStyles();
 
   const {nodes, links} = React.useMemo<{
     nodes: {[nodeId: string]: AnswerChoiceAnalysisGraphNodeDatum};
     links: {[linkId: string]: AnswerChoiceAnalysisGraphLinkDatum};
   }>(() => extractNodeAndLinks(choiceAnalysis), [choiceAnalysis]);
 
+  const simulation = React.useMemo(
+    () =>
+      d3
+        .forceSimulation<
+          AnswerChoiceAnalysisGraphNodeDatum,
+          AnswerChoiceAnalysisGraphLinkDatum
+        >()
+        .force(
+          "link",
+          d3
+            .forceLink<
+              AnswerChoiceAnalysisGraphNodeDatum,
+              AnswerChoiceAnalysisGraphLinkDatum
+            >()
+            .id((node) => node.id)
+            .distance(100)
+          // .strength(1)
+        )
+        // .force("center", d3.forceCenter())
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY()),
+    // .force("collide", d3.forceCollide(50)),
+    []
+  );
   // Initialize color scale
-  // const pathColorScale = d3.scaleOrdinal(d3.schemeCategory10);
+  const colorScale = d3.interpolateRgb("red", "green");
 
   // Scale radius of nodes by number of incoming edges
   const nodeRadius = (node: AnswerChoiceAnalysisGraphNodeDatum) =>
     node.incomingEdges > 0 ? 8 * Math.log2(node.incomingEdges) + 10 : 10;
-
-  const colorScale = d3.interpolateRgb("red", "green");
 
   return (
     <React.Fragment>
@@ -221,27 +213,15 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
           <ListItemText primary="Low score" />
         </ListItem>
       </List>
-      <ForceGraph
-        height={800}
-        width={1200}
-        boundNodes
-        simulation={answerChoiceAnalysisGraphSimulation}
-      >
+      <ForceGraph height={800} width={1200} simulation={simulation}>
         {Object.values(nodes)
           .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
           .map((node) => {
-            // const path = node.paths[0];
             const score =
               node.paths.reduce(
                 (totalScore, path) => totalScore + path.score,
                 0
               ) / node.paths.length;
-            // Color by choice analysis (aka choiceLabel)
-            // const fill =
-            //   node.paths.length > 1
-            //     ? "#999"
-            //     : pathColorScale();
-            // Opacity based on score
 
             return (
               <ForceGraphNode
@@ -249,7 +229,8 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 node={node}
                 r={nodeRadius(node)}
                 fill={colorScale(score)}
-                fillOpacity={score}
+                opacity={score}
+                cursor="pointer"
               >
                 <title>{node.id}</title>
               </ForceGraphNode>
@@ -263,7 +244,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
               link={link}
               stroke={colorScale(link.score)}
               targetRadius={nodeRadius(nodes[link.targetId])}
-              strokeOpacity={link.score * 0.6}
+              opacity={link.score * 0.6}
             />
           ))}
       </ForceGraph>
