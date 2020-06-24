@@ -94,6 +94,9 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
                           label
                         }
                         paths {
+                          edges {
+                            predicate
+                          }
                           path
                           score
                         }
