@@ -40,14 +40,35 @@ export const ForceGraph = <
 >({
   height,
   width,
-  simulation,
+  simulation: userDefinedSimulation,
   children,
 }: React.PropsWithChildren<{
   height: number;
   width: number;
-  simulation: d3.Simulation<NodeDatum, LinkDatum>;
+  simulation?: d3.Simulation<NodeDatum, LinkDatum>;
 }>) => {
   const svgRef = React.useRef<SVGSVGElement>(null);
+
+  const simulation = React.useMemo(
+    () =>
+      userDefinedSimulation ??
+      d3
+        .forceSimulation<NodeDatum, LinkDatum>()
+        .force(
+          "link",
+          d3
+            .forceLink<NodeDatum, LinkDatum>()
+            .id((node) => node.id)
+            .distance(100)
+          // .strength(1)
+        )
+        // .force("center", d3.forceCenter())
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY()),
+    // .force("collide", d3.forceCollide(50)),
+    []
+  );
 
   // When nodes or links are changed, update simulation
   React.useEffect(() => {
