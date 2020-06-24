@@ -1,7 +1,10 @@
 package formats
 
+import java.io.InputStream
+
 import io.circe.{Decoder, Json}
 import io.circe.parser._
+import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
 import org.slf4j.LoggerFactory
 
 import scala.io.Source
@@ -38,4 +41,15 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable with Iterabl
       }
     )
   }
+}
+
+object JsonlReader {
+  def openSource(inputStream: InputStream) =
+    Source.fromInputStream(
+      try {
+        new CompressorStreamFactory().createCompressorInputStream(inputStream)
+      } catch {
+        case _: CompressorException => inputStream // CompressorStreamFactory throws an exception if it can't recognize a signature
+      }
+    )
 }
