@@ -29,6 +29,7 @@ query BenchmarkAnswerPageQuery(
                   path
                   score
                 }
+                score
               }
             }
           }

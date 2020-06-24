@@ -8,7 +8,7 @@ export const KgNodeLink: React.FunctionComponent<{
   datasource?: string;
 }> = ({node, datasource}) => {
   return (
-    <Link to={Hrefs.kg({id: kgId}).node({id: node.id})}>
+    <Link data-cy="node-link" to={Hrefs.kg({id: kgId}).node({id: node.id})}>
       {(node.label ? node.label : node.id) +
         (node.pos ? " (" + node.pos + ")" : "") +
         (datasource ? " - " + datasource : "")}

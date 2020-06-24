@@ -81,6 +81,26 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
                 answers(limit: 1000, offset: 0) {
                   choiceLabel
                   questionId
+                  explanation {
+                    choiceAnalyses {
+                      choiceLabel
+                      questionAnswerPaths {
+                        endNode {
+                          id
+                          label
+                        }
+                        startNode {
+                          id
+                          label
+                        }
+                        paths {
+                          path
+                          score
+                        }
+                        score
+                      }
+                    }
+                  }
                 }
                 id
               }
