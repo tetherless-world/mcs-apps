@@ -1,3 +1,3 @@
 package models.benchmark
 
-final case class BenchmarkQuestionChoice(label: String, text: String, `type`: BenchmarkQuestionChoiceType)
+final case class BenchmarkQuestionChoice(id: String, text: String, `type`: BenchmarkQuestionChoiceType)

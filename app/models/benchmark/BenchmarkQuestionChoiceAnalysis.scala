@@ -1,3 +1,3 @@
 package models.benchmark
 
-final case class BenchmarkQuestionChoiceAnalysis(choiceLabel: String, questionAnswerPaths: List[BenchmarkQuestionAnswerPaths])
+final case class BenchmarkQuestionChoiceAnalysis(choiceId: String, questionAnswerPaths: List[BenchmarkQuestionAnswerPaths])
