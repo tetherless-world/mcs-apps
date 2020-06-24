@@ -2,21 +2,29 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { BenchmarkQuestionPromptType } from "./../../../graphqlGlobalTypes";
+
 // ====================================================
 // GraphQL query operation: BenchmarkAnswerPageQuery
 // ====================================================
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices {
   __typename: "BenchmarkQuestionChoice";
-  label: string;
+  id: string;
   text: string;
+}
+
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts {
+  __typename: "BenchmarkQuestionPrompt";
+  text: string;
+  type: BenchmarkQuestionPromptType;
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById {
   __typename: "BenchmarkQuestion";
   choices: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices[];
-  text: string;
-  correctChoiceLabel: string;
+  correctChoiceId: string;
+  prompts: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts[];
 }
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_startNode {
@@ -68,7 +76,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses {
   __typename: "BenchmarkQuestionChoiceAnalysis";
-  choiceLabel: string;
+  choiceId: string;
   questionAnswerPaths: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths[];
 }
 
@@ -79,7 +87,7 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
 
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId {
   __typename: "BenchmarkAnswer";
-  choiceLabel: string;
+  choiceId: string;
   explanation: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation | null;
 }
 

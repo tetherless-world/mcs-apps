@@ -32,14 +32,13 @@ object CskgCsvReader {
   }
 
   def openCsvReader(inputStream: InputStream): CSVReader = {
-    val compressedInputStream =
+     openCsvReader(new InputStreamReader(
       try {
         new CompressorStreamFactory().createCompressorInputStream(inputStream)
       } catch {
-        case _: CompressorException => inputStream  // CompressorStreamFactory throws an exception if it can't recognize a signature
-      }
-
-    openCsvReader(new InputStreamReader(compressedInputStream, CSVReader.DEFAULT_ENCODING))
+        case _: CompressorException => inputStream // CompressorStreamFactory throws an exception if it can't recognize a signature
+      }, CSVReader.DEFAULT_ENCODING)
+    )
   }
 
   def openCsvReader(reader: Reader): CSVReader =

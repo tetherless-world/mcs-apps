@@ -47,12 +47,17 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
                 questionsCount
                 questions(limit: 1000, offset: 0) {
                   choices {
-                    label
+                    id
                     text
+                    type
                   }
                   concept
                   id
-                  text
+                  prompts {
+                    text
+                    type
+                  }
+                  type
                 }
               }
             }
@@ -79,11 +84,11 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
             benchmarkById(id: $$benchmarkId) {
               submissions {
                 answers(limit: 1000, offset: 0) {
-                  choiceLabel
+                  choiceId
                   questionId
                   explanation {
                     choiceAnalyses {
-                      choiceLabel
+                      choiceId
                       questionAnswerPaths {
                         endNode {
                           id
@@ -132,7 +137,7 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
               datasetById(id: $$benchmarkDatasetId) {
                 submissions {
                   answers(limit: 1000, offset: 0) {
-                    choiceLabel
+                    choiceId
                     questionId
                   }
                   id

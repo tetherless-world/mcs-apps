@@ -59,8 +59,8 @@ class BenchmarkData(val benchmarks: List[Benchmark], val benchmarkAnswers: List[
       if (!question.isDefined) {
         throw new IllegalArgumentException(s"answer refers to missing question ${answer.questionId}")
       }
-      if (!question.get.choices.exists(choice => choice.label == answer.choiceLabel)) {
-        throw new IllegalArgumentException(s"answer refers to missing choice ${answer.choiceLabel}")
+      if (!question.get.choices.exists(choice => choice.id == answer.choiceId)) {
+        throw new IllegalArgumentException(s"answer refers to missing choice ${answer.choiceId}")
       }
     }
   }
