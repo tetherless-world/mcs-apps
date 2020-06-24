@@ -31,9 +31,28 @@ export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionBy
   label: string | null;
 }
 
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges_objectNode {
+  __typename: "KgNode";
+  label: string | null;
+  pos: string | null;
+}
+
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges_subjectNode {
+  __typename: "KgNode";
+  label: string | null;
+  pos: string | null;
+}
+
+export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges {
+  __typename: "KgEdge";
+  objectNode: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges_objectNode;
+  subjectNode: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges_subjectNode;
+}
+
 export interface BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths {
   __typename: "BenchmarkQuestionAnswerPath";
   path: string[];
+  edges: BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths_paths_edges[];
   score: number;
 }
 
