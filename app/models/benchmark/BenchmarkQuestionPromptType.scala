@@ -7,7 +7,7 @@ sealed abstract class BenchmarkQuestionPromptType(val value: String) extends Str
 
 case object BenchmarkQuestionPromptType extends StringEnum[BenchmarkQuestionPromptType] with StringCirceEnum[BenchmarkQuestionPromptType] {
   case object Goal extends BenchmarkQuestionPromptType("GOAL")
-  case object Observation extends BenchmarkQuestionPromptType("Observation")
+  case object Observation extends BenchmarkQuestionPromptType("OBSERVATION")
   case object Question extends BenchmarkQuestionPromptType("QUESTION")
   val sangriaType = deriveEnumType[BenchmarkQuestionPromptType]()
   val values = findValues

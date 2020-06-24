@@ -47,12 +47,17 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
                 questionsCount
                 questions(limit: 1000, offset: 0) {
                   choices {
-                    label
+                    id
                     text
+                    type
                   }
                   concept
                   id
-                  text
+                  prompts {
+                    text
+                    type
+                  }
+                  type
                 }
               }
             }
