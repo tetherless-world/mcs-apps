@@ -79,7 +79,7 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
           </Grid>
           <Grid item xs={2}>
             <Typography variant="h6" data-cy="label">
-              {choice.label}
+              {choice.id}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -180,22 +180,18 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <Grid item md={6} container direction="column" justify="center">
                   <Grid item>
                     <Typography variant="h4" data-cy="questionText">
-                      {question.text}
+                      {question.prompts[0]}
                     </Typography>
                   </Grid>
                 </Grid>
                 <Grid item md={6} container direction="column" spacing={3}>
                   {question.choices.map((choice) => (
-                    <Grid item key={choice.label}>
+                    <Grid item key={choice.id}>
                       <QuestionAnswerChoiceCard
                         choice={choice}
                         dataCy="questionAnswer"
-                        isSubmissionChoice={
-                          answer?.choiceLabel === choice.label
-                        }
-                        isCorrectChoice={
-                          question.correctChoiceLabel === choice.label
-                        }
+                        isSubmissionChoice={answer?.choiceId === choice.id}
+                        isCorrectChoice={question.correctChoiceId === choice.id}
                       />
                     </Grid>
                   ))}
@@ -208,7 +204,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <br />
               </Grid>
               {choiceAnalyses?.map((choiceAnalysis) => (
-                <Grid item key={choiceAnalysis.choiceLabel}>
+                <Grid item key={choiceAnalysis.choiceId}>
                   <BenchmarkAnswerChoiceAnalysisGraph
                     choiceAnalysis={choiceAnalysis}
                   />

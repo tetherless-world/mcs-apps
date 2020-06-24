@@ -143,7 +143,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
   return (
     <React.Fragment>
       <HorizontalList>
-        <ListItem>Choice {choiceAnalysis.choiceLabel}</ListItem>
+        <ListItem>Choice {choiceAnalysis.choiceId}</ListItem>
         <ListItem>
           <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={30} />
           <ListItemText primary="More edges" />
