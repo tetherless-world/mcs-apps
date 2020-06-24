@@ -8,6 +8,7 @@ lazy val app = (project in file("."))
   .enablePlugins(PlayScala)
   .settings(
     libraryDependencies ++= Seq(
+      "com.beachape" %% "enumeratum-circe" % "1.6.1",
       "com.github.tototoshi" %% "scala-csv" % "1.3.6",
       // Implement search in the MemStore (and thus the TestStore)
       "com.outr" %% "lucene4s" % "1.9.1",
