@@ -24,12 +24,12 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     Field("datasource", StringType, resolve = _.value.datasource),
     Field("object", StringType, resolve = _.value.`object`),
     // Assume the edge is not dangling
-    Field("objectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.`object`).head),
+    Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.`object`)),
     Field("other", OptionType(StringType), resolve = _.value.other),
     Field("predicate", StringType, resolve = _.value.predicate),
     Field("subject", StringType, resolve = _.value.subject),
     // Assume the edge is not dangling
-    Field("subjectNode", KgNodeType, resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.subject).head),
+    Field("subjectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.subject)),
     Field("weight", OptionType(FloatType), resolve = _.value.weight)
   ))
   lazy val KgNodeType: ObjectType[GraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[GraphQlSchemaContext, KgNode](
