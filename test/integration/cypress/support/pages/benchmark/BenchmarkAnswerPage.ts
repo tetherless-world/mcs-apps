@@ -20,7 +20,7 @@ export class BenchmarkAnswerPage extends Page {
       return cy.get("[data-cy=questionText]");
     },
 
-    answer(choiceLabel: string) {
+    answer(choiceId: string) {
       return {
         assertCorrectSubmissionAnswer() {
           cy.get(
@@ -35,12 +35,12 @@ export class BenchmarkAnswerPage extends Page {
         },
         label: cy
           .get("[data-cy=questionAnswer] [data-cy=label]")
-          .contains(new RegExp(`^${choiceLabel}$`))
+          .contains(new RegExp(`^${choiceId}$`))
           .parentsUntil("[data-cy=questionAnswer]")
           .find("[data-cy=label]"),
         text: cy
           .get("[data-cy=questionAnswer] [data-cy=label]")
-          .contains(new RegExp(`^${choiceLabel}$`))
+          .contains(new RegExp(`^${choiceId}$`))
           .parentsUntil("[data-cy=questionAnswer]")
           .find("[data-cy=text]"),
       };

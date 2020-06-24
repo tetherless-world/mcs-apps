@@ -9,7 +9,7 @@ export const BenchmarkQuestionText: React.FunctionComponent<{
     (prompt) => prompt.type === BenchmarkQuestionPromptType.Question
   );
   if (questionPrompt) {
-    return <span>{questionPrompt.text}</span>;
+    return <span data-cy="questionText">{questionPrompt.text}</span>;
   } else {
     throw new EvalError();
   }

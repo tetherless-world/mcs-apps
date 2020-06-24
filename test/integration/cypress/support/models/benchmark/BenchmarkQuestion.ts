@@ -1,11 +1,16 @@
 export interface BenchmarkQuestion {
   choices: {
-    label: string;
+    id: string;
     text: string;
+    type: string;
   }[];
   concept?: string;
-  correctChoiceLabel: string;
+  correctChoiceId: string;
   datasetId: string;
   id: string;
-  text: string;
+  prompts: {
+    text: string;
+    type: string;
+  }[];
+  type: string;
 }

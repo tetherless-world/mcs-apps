@@ -24,6 +24,7 @@ import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {BenchmarkAnswerChoiceAnalysisGraph} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
+import {BenchmarkQuestionText} from "./BenchmarkQuestionText";
 
 // http://localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
 
@@ -179,9 +180,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
               <Grid item container>
                 <Grid item md={6} container direction="column" justify="center">
                   <Grid item>
-                    <Typography variant="h4" data-cy="questionText">
-                      {question.prompts[0]}
-                    </Typography>
+                    <BenchmarkQuestionText prompts={question.prompts} />
                   </Grid>
                 </Grid>
                 <Grid item md={6} container direction="column" spacing={3}>
