@@ -1,42 +1,45 @@
 import * as React from "react";
 
-import {
-  ForceGraphNodeDatum,
-  ForceGraphNodePosition,
-} from "models/data/forceGraph";
+import {ForceGraphNodeDatum} from "models/data/forceGraph";
 
 const defaultNodeOptions: React.SVGProps<SVGCircleElement> = {
-  // stroke: "#fff",
-  // strokeWidth: 2,
   stroke: "none",
-  r: 10,
   fill: "#808080",
   opacity: 1,
 };
 
-export type ForceGraphNodeProps<NodeDatum> = React.SVGProps<SVGCircleElement> &
-  Partial<ForceGraphNodePosition> & {
-    node: NodeDatum;
-  };
+export type ForceGraphNodeProps<NodeDatum> = React.SVGProps<
+  SVGCircleElement
+> & {
+  node: NodeDatum;
+};
 
 export const ForceGraphNode = <NodeDatum extends ForceGraphNodeDatum>({
   node,
+  opacity,
+  cursor,
+  onClick,
+  fontSize: userDefinedFontSize,
+  r,
   ...props
 }: ForceGraphNodeProps<NodeDatum>) => {
-  const {cx, cy, r} = props;
+  const radius = r ?? 10;
+  const fontSize = userDefinedFontSize ?? radius;
+
   return (
-    <React.Fragment>
-      <circle {...defaultNodeOptions} {...props} />
-      {cx && cy && (
-        <React.Fragment>
-          <text x={cx} y={cy} fontSize={r || 10} strokeWidth={2} stroke="white">
-            {node.label}
-          </text>
-          <text x={cx} y={cy} fontSize={r || 10}>
-            {node.label}
-          </text>
-        </React.Fragment>
-      )}
-    </React.Fragment>
+    <g
+      id={node.id}
+      className="node"
+      opacity={opacity}
+      cursor={cursor}
+      onClick={onClick}
+    >
+      <circle {...defaultNodeOptions} {...props} r={radius} />
+
+      <text fontSize={fontSize} strokeWidth={2} stroke="white">
+        {node.label}
+      </text>
+      <text fontSize={fontSize}>{node.label}</text>
+    </g>
   );
 };

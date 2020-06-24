@@ -21,7 +21,7 @@ export const ForceGraphArrowLink = <
   const fill = linkProps.stroke || linkProps.color || "#999";
 
   return (
-    <g>
+    <React.Fragment>
       <defs>
         <marker
           viewBox="-0 -5 10 10"
@@ -41,6 +41,6 @@ export const ForceGraphArrowLink = <
       </defs>
 
       <ForceGraphLink {...linkProps} link={link} markerEnd={`url(#${id})`} />
-    </g>
+    </React.Fragment>
   );
 };
