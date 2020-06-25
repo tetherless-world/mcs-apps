@@ -202,7 +202,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
           ))}
       </ForceGraph>
       {choiceAnalysis.questionAnswerPaths
-        .filter(({score}) => score < MIN_QUESTION_ANSWER_PATH_SCORE)
+        .filter(({score}) => score > MIN_QUESTION_ANSWER_PATH_SCORE)
         .sort((a, b) => b.score - a.score)
         .map((questionAnswerPath) => {
           const questionAnswerPathNodes = _.cloneDeep(
