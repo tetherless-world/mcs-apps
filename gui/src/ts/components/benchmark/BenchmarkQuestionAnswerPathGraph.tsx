@@ -8,6 +8,13 @@ import {
   ListItemAvatar,
   Grid,
   withStyles,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@material-ui/core";
 import {
   ForceGraph,
@@ -135,9 +142,36 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
           </ForceGraph>
         </Grid>
         <Grid item md={8}>
-          <code>{JSON.stringify(questionAnswerPath)}</code>
+          <QuestionAnswerPathTable questionAnswerPath={questionAnswerPath} />
         </Grid>
       </Grid>
     </div>
+  );
+};
+
+const QuestionAnswerPathTable: React.FunctionComponent<{
+  questionAnswerPath: QuestionAnswerPath;
+}> = ({questionAnswerPath: {paths}}) => {
+  return (
+    <TableContainer component={Paper}>
+      <Table data-cy="matchingNodesTable">
+        <TableHead>
+          <TableRow>
+            <TableCell>Score</TableCell>
+            <TableCell>Number of nodes</TableCell>
+            <TableCell>Path</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {paths.map(({score, path}, index) => (
+            <TableRow key={index}>
+              <TableCell>{score}</TableCell>
+              <TableCell>{Math.ceil(path.length / 2)}</TableCell>
+              <TableCell>{path.join(" ")}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
