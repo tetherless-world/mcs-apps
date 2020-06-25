@@ -15,15 +15,19 @@ import {
   BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkDatasetQuestionPaginationQueryVariables,
 } from "api/queries/benchmark/types/BenchmarkDatasetQuestionPaginationQuery";
+import * as _ from "lodash";
 
 const QUESTIONS_PER_PAGE = 10;
 
 export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
-  const {benchmarkId, datasetId, submissionId} = useParams<{
-    benchmarkId: string;
-    datasetId: string;
-    submissionId: string;
-  }>();
+  const {benchmarkId, datasetId, submissionId} = _.mapValues(
+    useParams<{
+      benchmarkId: string;
+      datasetId: string;
+      submissionId: string;
+    }>(),
+    decodeURIComponent
+  );
 
   const apolloClient = useApolloClient();
 

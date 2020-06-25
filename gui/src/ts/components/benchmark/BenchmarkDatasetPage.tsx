@@ -8,12 +8,16 @@ import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissio
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import * as _ from "lodash";
 
 export const BenchmarkDatasetPage: React.FunctionComponent = () => {
-  const {benchmarkId, datasetId} = useParams<{
-    benchmarkId: string;
-    datasetId: string;
-  }>();
+  const {benchmarkId, datasetId} = _.mapValues(
+    useParams<{
+      benchmarkId: string;
+      datasetId: string;
+    }>(),
+    decodeURIComponent
+  );
 
   const query = useQuery<BenchmarkDatasetPageQuery>(
     BenchmarkDatasetPageQueryDocument,
