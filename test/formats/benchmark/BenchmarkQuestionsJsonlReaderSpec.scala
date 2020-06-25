@@ -17,6 +17,10 @@ class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with With
           question.choices should not be empty
           for (choice <- question.choices) {
             choice.id should not be empty
+            choice.identifier should not be None
+            choice.identifier.get should not be empty
+            choice.position should be >= 0
+            choice.position should be < question.choices.size
             choice.text should not be empty
           }
           if (question.concept.isDefined) {
