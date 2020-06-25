@@ -1,6 +1,17 @@
 import {Page} from "../Page";
 import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
-import {BenchmarkQuestion} from "./BenchmarkQuestion";
+import {BenchmarkQuestionPromptType} from "../../models/benchmark/BenchmarkQuestion";
+
+class BenchmarkQuestion {
+  constructor(
+    private readonly type: BenchmarkQuestionPromptType,
+    private readonly index: number
+  ) {}
+
+  get text() {
+    return cy.get(`[data-cy=${this.type.toLowerCase()}-${this.index}]`);
+  }
+}
 
 export class BenchmarkAnswerPage extends Page {
   constructor(
@@ -16,8 +27,8 @@ export class BenchmarkAnswerPage extends Page {
     return new BenchmarkBreadcrumbs("[data-cy=breadcrumbs]");
   }
 
-  question(questionId: string) {
-    return new BenchmarkQuestion(questionId);
+  question(type: BenchmarkQuestionPromptType, index: number) {
+    return new BenchmarkQuestion(type, index);
   }
 
   answer(choiceId: string) {
@@ -37,7 +48,7 @@ export class BenchmarkAnswerPage extends Page {
         .get("[data-cy=questionAnswer] [data-cy=id]")
         .contains(new RegExp(`^${choiceId}$`))
         .parentsUntil("[data-cy=questionAnswer]")
-        .find("[data-cy=label]"),
+        .find("[data-cy=id]"),
       text: cy
         .get("[data-cy=questionAnswer] [data-cy=id]")
         .contains(new RegExp(`^${choiceId}$`))

@@ -1,7 +1,7 @@
-enum BenchmarkQuestionPromptType {
-  Goal = "Goal",
-  Observation = "Observation",
-  Question = "Question",
+export enum BenchmarkQuestionPromptType {
+  Goal = "GOAL",
+  Observation = "OBSERVATION",
+  Question = "QUESTION",
 }
 
 interface BenchmarkQuestionPrompt {

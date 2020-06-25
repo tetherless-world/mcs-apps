@@ -3,7 +3,10 @@ import {TestData} from "../../support/TestData";
 import {Benchmark} from "../../support/models/benchmark/Benchmark";
 import {BenchmarkDataset} from "../../support/models/benchmark/BenchmarkDataset";
 import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
-import {BenchmarkQuestion} from "../../support/models/benchmark/BenchmarkQuestion";
+import {
+  BenchmarkQuestion,
+  BenchmarkQuestionPromptType,
+} from "../../support/models/benchmark/BenchmarkQuestion";
 import {BenchmarkAnswer} from "../../support/models/benchmark/BenchmarkAnswer";
 import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
 import {BenchmarkDatasetPage} from "../../support/pages/benchmark/BenchmarkDatasetPage";
@@ -61,8 +64,18 @@ context("BenchmarkAnswerPage", () => {
   beforeEach(() => page.visit());
 
   it("should show question text", () => {
+    const promptTypeIndices: {
+      [key in BenchmarkQuestionPromptType]: number;
+    } = {
+      [BenchmarkQuestionPromptType.Goal]: 0,
+      [BenchmarkQuestionPromptType.Observation]: 0,
+      [BenchmarkQuestionPromptType.Question]: 0,
+    };
     question.prompts.forEach((prompt) => {
-      page.question(question.id).text.should("contain", prompt.text);
+      page
+        .question(prompt.type, promptTypeIndices[prompt.type])
+        .text.should("contain", prompt.text);
+      promptTypeIndices[prompt.type]++;
     });
   });
 
