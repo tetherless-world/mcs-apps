@@ -74,17 +74,19 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
   return (
     <Card data-cy={dataCy}>
       <CardContent>
-        <Grid container>
-          <Grid item xs={2}>
-            {icon}
+        <Grid container direction="column">
+          <Grid item container>
+            <Grid item xs={1}>
+              {icon}
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" data-cy="label">
+                {choice.id}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={2}>
-            <Typography variant="h6" data-cy="label">
-              {choice.id}
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography variant="body1" data-cy="text">
+          <Grid item>
+            <Typography variant="h6" data-cy="text">
               {choice.text}
             </Typography>
           </Grid>
