@@ -5,6 +5,7 @@ import {Hrefs} from "Hrefs";
 import {BenchmarkQuestionText} from "components/benchmark/BenchmarkQuestionText";
 import {List, Typography, ListItemText} from "@material-ui/core";
 import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
+import {BenchmarkQuestionType} from "api/graphqlGlobalTypes";
 
 export const BenchmarkQuestionsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -55,6 +56,24 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
       },
     },
   });
+  if (questions.some((question) => question.type !== null)) {
+    columns.push({
+      name: "type",
+      label: "Type",
+      options: {
+        customBodyRender: (type) => {
+          switch (type) {
+            case BenchmarkQuestionType.MultipleChoice:
+              return "Multiple Choice";
+            case BenchmarkQuestionType.TrueFalse:
+              return "True/False";
+            default:
+              throw new EvalError();
+          }
+        },
+      },
+    });
+  }
   if (questions.some((question) => question.categories)) {
     columns.push({
       name: "categories",
