@@ -36,7 +36,7 @@ class KgDataResources(
   }
 
   def readPaths(): List[KgPath] = {
-    withResource(new KgPathsJsonlReader(Source.fromInputStream(getPathsJsonlResourceAsStream(), "UTF-8"))) { reader =>
+    withResource(KgPathsJsonlReader.open(getPathsJsonlResourceAsStream())) { reader =>
       reader.iterator.toList
     }
   }

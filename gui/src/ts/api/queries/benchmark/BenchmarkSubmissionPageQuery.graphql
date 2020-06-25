@@ -6,7 +6,10 @@ query BenchmarkSubmissionPageQuery($benchmarkId: String!, $datasetId: String!, $
             questions(limit: $questionLimit, offset: $questionOffset) {
                 concept
                 id
-                text
+                prompts {
+                    text
+                    type
+                }
             }
             submissionById(id: $submissionId) {
                 name

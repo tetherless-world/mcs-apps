@@ -3,10 +3,10 @@ package models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkDataset, BenchmarkSubmission}
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkDataset, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkQuestionChoiceType, BenchmarkQuestionPrompt, BenchmarkSubmission}
 import models.kg.{KgEdge, KgNode, KgPath}
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
+import sangria.macros.derive.{AddFields, deriveEnumType, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
 import stores.StringFilter
 import stores.kg.KgNodeFilters
@@ -86,7 +86,11 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     )
   )
 
+  implicit val BenchmarkQuestionChoiceTypeType = models.benchmark.BenchmarkQuestionChoiceType.sangriaType
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
+  implicit val BenchmarkQuestionPromptTypeType = models.benchmark.BenchmarkQuestionPromptType.sangriaType
+  implicit val BenchmarkQuestionPromptType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionPrompt]()
+  implicit val BenchmarkQuestionTypeType = models.benchmark.BenchmarkQuestionType.sangriaType
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion]()
   implicit val BenchmarkDatasetType = deriveObjectType[GraphQlSchemaContext, BenchmarkDataset](
     AddFields(

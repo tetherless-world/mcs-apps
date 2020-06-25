@@ -6,6 +6,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum BenchmarkQuestionPromptType {
+  Goal = "Goal",
+  Observation = "Observation",
+  Question = "Question",
+}
+
 export interface KgNodeFilters {
   datasource?: StringFilter | null;
 }

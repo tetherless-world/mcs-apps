@@ -16,7 +16,7 @@ export interface KgNodePageQuery_kgById_nodeById_subjectOfEdges_objectNode {
 export interface KgNodePageQuery_kgById_nodeById_subjectOfEdges {
   __typename: "KgEdge";
   object: string;
-  objectNode: KgNodePageQuery_kgById_nodeById_subjectOfEdges_objectNode;
+  objectNode: KgNodePageQuery_kgById_nodeById_subjectOfEdges_objectNode | null;
   predicate: string;
 }
 

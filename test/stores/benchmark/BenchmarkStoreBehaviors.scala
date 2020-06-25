@@ -36,11 +36,11 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
           for (answer <- answers) {
             val question = sut.getBenchmarkQuestionById(answer.questionId)
             question should not be None
-            question.get.choices.exists(choice => choice.label == answer.choiceLabel) should be(true)
+            question.get.choices.exists(choice => choice.id == answer.choiceId) should be(true)
             answer.explanation should not be None
             answer.explanation.get.choiceAnalyses should not be None
             for (choiceAnalysis <- answer.explanation.get.choiceAnalyses.get) {
-              question.get.choices.exists(choice => choice.label == choiceAnalysis.choiceLabel) should be (true)
+              question.get.choices.exists(choice => choice.id == choiceAnalysis.choiceId) should be (true)
             }
           }
         }

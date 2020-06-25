@@ -4,7 +4,10 @@ query BenchmarkDatasetQuestionPaginationQuery($benchmarkId: String!, $datasetId:
             questions(limit: $questionLimit, offset: $questionOffset) {
                 concept
                 id
-                text
+                prompts {
+                    text
+                    type
+                }
             }
         }
     }

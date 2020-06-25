@@ -27,25 +27,25 @@ class BenchmarkDataResources(
     getResourceAsStream(benchmarkSubmissionsJsonlResourceName)
 
   def readBenchmarkAnswers(): List[BenchmarkAnswer] = {
-    withResource(new BenchmarkAnswersJsonlReader(Source.fromInputStream(getBenchmarkAnswersJsonlResourceAsStream()))) { reader =>
+    withResource(BenchmarkAnswersJsonlReader.open(getBenchmarkAnswersJsonlResourceAsStream())) { reader =>
       reader.iterator.toList
     }
   }
 
   def readBenchmarks(): List[Benchmark] = {
-    withResource(new BenchmarksJsonlReader(Source.fromInputStream(getBenchmarksJsonlResourceAsStream()))) { reader =>
+    withResource(BenchmarksJsonlReader.open(getBenchmarksJsonlResourceAsStream())) { reader =>
       reader.iterator.toList
     }
   }
 
   def readBenchmarkQuestions(): List[BenchmarkQuestion] = {
-    withResource(new BenchmarkQuestionsJsonlReader(Source.fromInputStream(getBenchmarkQuestionsJsonlResourceAsStream()))) { reader =>
+    withResource(BenchmarkQuestionsJsonlReader.open(getBenchmarkQuestionsJsonlResourceAsStream())) { reader =>
       reader.iterator.toList
     }
   }
 
   def readBenchmarkSubmissions(): List[BenchmarkSubmission] = {
-    withResource(new BenchmarkSubmissionsJsonlReader(Source.fromInputStream(getBenchmarkSubmissionsJsonlResourceAsStream()))) { reader =>
+    withResource(BenchmarkSubmissionsJsonlReader.open(getBenchmarkSubmissionsJsonlResourceAsStream())) { reader =>
       reader.iterator.toList
     }
   }
