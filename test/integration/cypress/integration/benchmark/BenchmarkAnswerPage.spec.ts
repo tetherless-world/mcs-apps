@@ -3,7 +3,10 @@ import {TestData} from "../../support/TestData";
 import {Benchmark} from "../../support/models/benchmark/Benchmark";
 import {BenchmarkDataset} from "../../support/models/benchmark/BenchmarkDataset";
 import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
-import {BenchmarkQuestion} from "../../support/models/benchmark/BenchmarkQuestion";
+import {
+  BenchmarkQuestion,
+  BenchmarkQuestionPromptType,
+} from "../../support/models/benchmark/BenchmarkQuestion";
 import {BenchmarkAnswer} from "../../support/models/benchmark/BenchmarkAnswer";
 import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
 import {BenchmarkDatasetPage} from "../../support/pages/benchmark/BenchmarkDatasetPage";
@@ -61,21 +64,33 @@ context("BenchmarkAnswerPage", () => {
   beforeEach(() => page.visit());
 
   it("should show question text", () => {
-    page.question.text.should("have.text", question.text);
+    const promptTypeIndices: {
+      [key in BenchmarkQuestionPromptType]: number;
+    } = {
+      [BenchmarkQuestionPromptType.Goal]: 0,
+      [BenchmarkQuestionPromptType.Observation]: 0,
+      [BenchmarkQuestionPromptType.Question]: 0,
+    };
+    question.prompts.forEach((prompt) => {
+      page
+        .question(prompt.type, promptTypeIndices[prompt.type])
+        .text.should("contain", prompt.text);
+      promptTypeIndices[prompt.type]++;
+    });
   });
 
   it("should show question answer choices", () => {
     question.choices.forEach((choice) => {
-      page.question.answer(choice.label).text.should("have.text", choice.text);
+      page.answer(choice.id).text.should("have.text", choice.text);
     });
   });
 
   it("should show appropriate question answer icons", () => {
-    if (answer.choiceLabel === question.correctChoiceLabel) {
-      page.question.answer(answer.choiceLabel).assertCorrectSubmissionAnswer();
+    if (answer.choiceId === question.correctChoiceId) {
+      page.answer(answer.choiceId).assertCorrectSubmissionAnswer();
     } else {
-      page.question.answer(answer.choiceLabel).assertSubmissionChoice();
-      page.question.answer(question.correctChoiceLabel).assertCorrectChoice();
+      page.answer(answer.choiceId).assertSubmissionChoice();
+      page.answer(question.correctChoiceId).assertCorrectChoice();
     }
   });
 

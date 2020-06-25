@@ -184,6 +184,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 fill={colorScale(score)}
                 opacity={score}
                 cursor="pointer"
+                showLabel
               >
                 <title>{node.label}</title>
               </ForceGraphNode>
@@ -197,12 +198,13 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
               link={link}
               stroke={colorScale(link.score)}
               targetRadius={nodeRadius(nodes[link.targetId])}
-              opacity={link.score * 0.6}
+              opacity={link.score}
+              showLabel
             />
           ))}
       </ForceGraph>
       {choiceAnalysis.questionAnswerPaths
-        .filter(({score}) => score < MIN_QUESTION_ANSWER_PATH_SCORE)
+        .filter(({score}) => score > MIN_QUESTION_ANSWER_PATH_SCORE)
         .sort((a, b) => b.score - a.score)
         .map((questionAnswerPath) => {
           const questionAnswerPathNodes = _.cloneDeep(
