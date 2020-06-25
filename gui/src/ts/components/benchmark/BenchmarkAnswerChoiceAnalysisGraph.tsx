@@ -241,6 +241,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 fill={colorScale(score)}
                 opacity={score}
                 cursor="pointer"
+                showLabel
               >
                 <title>{node.label}</title>
               </ForceGraphNode>
@@ -254,7 +255,8 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
               link={link}
               stroke={colorScale(link.score)}
               targetRadius={nodeRadius(nodes[link.targetId])}
-              opacity={link.score * 0.6}
+              opacity={link.score}
+              showLabel
             />
           ))}
       </ForceGraph>
@@ -366,34 +368,39 @@ const QuestionAnswerPathGraphs: React.FunctionComponent<{
                 stroke = "purple";
               }
 
+              const focused = node.paths.some(
+                (path) => path.id === highestScorePathId
+              );
+
               return (
                 <ForceGraphNode
                   key={node.id}
                   node={node}
                   r={nodeRadius(node)}
                   fill={colorScale(score)}
-                  opacity={
-                    node.paths.some((path) => path.id === highestScorePathId)
-                      ? 1
-                      : 0.2
-                  }
+                  fillOpacity={score}
                   cursor="pointer"
                   stroke={stroke}
                   strokeWidth={4}
+                  showLabel={focused}
                 >
                   <title>{node.label}</title>
                 </ForceGraphNode>
               );
             })}
-            {links.map((link) => (
-              <ForceGraphArrowLink
-                key={link.id}
-                link={link}
-                stroke={colorScale(link.score)}
-                targetRadius={nodeRadius(nodesIndexed[link.targetId])}
-                opacity={highestScorePathId === link.pathId ? 1 : 0.2}
-              />
-            ))}
+            {links.map((link) => {
+              const focused = highestScorePathId === link.pathId;
+              return (
+                <ForceGraphArrowLink
+                  key={link.id}
+                  link={link}
+                  stroke={colorScale(link.score)}
+                  targetRadius={nodeRadius(nodesIndexed[link.targetId])}
+                  showLabel={focused}
+                  opacity={focused ? 1 : link.score}
+                />
+              );
+            })}
           </ForceGraph>
         </Grid>
         <Grid item md={8}>

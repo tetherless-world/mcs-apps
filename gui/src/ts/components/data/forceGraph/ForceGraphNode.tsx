@@ -12,6 +12,8 @@ export type ForceGraphNodeProps<NodeDatum> = React.SVGProps<
   SVGCircleElement
 > & {
   node: NodeDatum;
+  showLabel?: boolean;
+  labelOpacity?: number;
 };
 
 export const ForceGraphNode = <NodeDatum extends ForceGraphNodeDatum>({
@@ -21,10 +23,13 @@ export const ForceGraphNode = <NodeDatum extends ForceGraphNodeDatum>({
   onClick,
   fontSize: userDefinedFontSize,
   r,
+  showLabel,
+  labelOpacity: userDefinedLabelOpacity,
   ...props
 }: ForceGraphNodeProps<NodeDatum>) => {
   const radius = r ?? 10;
   const fontSize = userDefinedFontSize ?? radius;
+  const labelOpacity = userDefinedLabelOpacity ?? opacity ?? 1;
 
   return (
     <g
@@ -36,10 +41,19 @@ export const ForceGraphNode = <NodeDatum extends ForceGraphNodeDatum>({
     >
       <circle {...defaultNodeOptions} {...props} r={radius} />
 
-      <text fontSize={fontSize} strokeWidth={2} stroke="white">
-        {node.label}
-      </text>
-      <text fontSize={fontSize}>{node.label}</text>
+      {showLabel && (
+        <>
+          {labelOpacity > 0.8 && (
+            <text fontSize={fontSize} strokeWidth={2} stroke="white">
+              {node.label}
+            </text>
+          )}
+
+          <text fontSize={fontSize} fillOpacity={labelOpacity}>
+            {node.label}
+          </text>
+        </>
+      )}
     </g>
   );
 };
