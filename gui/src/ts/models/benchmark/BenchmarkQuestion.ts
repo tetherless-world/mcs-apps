@@ -1,0 +1,3 @@
+import {BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions} from "api/queries/benchmark/types/BenchmarkDatasetQuestionPaginationQuery";
+
+export type BenchmarkQuestion = BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions;
