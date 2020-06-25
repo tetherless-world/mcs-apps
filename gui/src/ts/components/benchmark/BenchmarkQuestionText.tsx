@@ -19,19 +19,27 @@ export const BenchmarkQuestionText: React.FunctionComponent<{
     <React.Fragment>
       {observations.length
         ? observations.map((observation, observationIndex) => (
-            <span key={"observation-" + observationIndex}>
+            <span
+              key={"observation-" + observationIndex}
+              data-cy={"observation-" + observationIndex}
+            >
               Observation: {observation.text}
             </span>
           ))
         : null}
       {goals.length
         ? goals.map((goal, goalIndex) => (
-            <span key={"goal-" + goalIndex}>Goal: {goal.text}</span>
+            <span key={"goal-" + goalIndex} data-cy={"goal-" + goalIndex}>
+              Goal: {goal.text}
+            </span>
           ))
         : null}
       {questions.length
         ? questions.map((question, questionIndex) => (
-            <span key={"question-" + questionIndex}>
+            <span
+              key={"question-" + questionIndex}
+              data-cy={"question-" + questionIndex}
+            >
               Question: {question.text}
             </span>
           ))

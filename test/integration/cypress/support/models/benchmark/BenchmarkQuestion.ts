@@ -1,7 +1,7 @@
-enum BenchmarkQuestionPromptType {
-  Goal = "Goal",
-  Observation = "Observation",
-  Question = "Question",
+export enum BenchmarkQuestionPromptType {
+  Goal = "GOAL",
+  Observation = "OBSERVATION",
+  Question = "QUESTION",
 }
 
 interface BenchmarkQuestionPrompt {
@@ -17,7 +17,7 @@ export interface BenchmarkQuestion {
     text: string;
   }[];
   concept?: string;
-  correctChoiceLabel: string;
+  correctChoiceId: string;
   datasetId: string;
   id: string;
   prompts: BenchmarkQuestionPrompt[];

@@ -8,6 +8,13 @@ import {
   ListItemAvatar,
   Grid,
   withStyles,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@material-ui/core";
 import {
   ForceGraph,
@@ -104,40 +111,73 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
                 stroke = "purple";
               }
 
+              const focused = node.paths.some(
+                (path) => path.id === highestScorePathId
+              );
+
               return (
                 <ForceGraphNode
                   key={node.id}
                   node={node}
                   r={nodeRadius(node)}
                   fill={colorScale(score)}
-                  opacity={
-                    node.paths.some((path) => path.id === highestScorePathId)
-                      ? 1
-                      : 0.2
-                  }
+                  fillOpacity={score}
                   cursor="pointer"
                   stroke={stroke}
                   strokeWidth={4}
+                  showLabel={focused}
                 >
                   <title>{node.label}</title>
                 </ForceGraphNode>
               );
             })}
-            {links.map((link) => (
-              <ForceGraphArrowLink
-                key={link.id}
-                link={link}
-                stroke={colorScale(link.score)}
-                targetRadius={nodeRadius(nodesIndexed[link.targetId])}
-                opacity={highestScorePathId === link.pathId ? 1 : 0.2}
-              />
-            ))}
+            {links.map((link) => {
+              const focused = highestScorePathId === link.pathId;
+
+              return (
+                <ForceGraphArrowLink
+                  key={link.id}
+                  link={link}
+                  stroke={colorScale(link.score)}
+                  targetRadius={nodeRadius(nodesIndexed[link.targetId])}
+                  opacity={focused ? 1 : link.score}
+                  showLabel={focused}
+                />
+              );
+            })}
           </ForceGraph>
         </Grid>
         <Grid item md={8}>
-          <code>{JSON.stringify(questionAnswerPath)}</code>
+          <QuestionAnswerPathTable questionAnswerPath={questionAnswerPath} />
         </Grid>
       </Grid>
     </div>
+  );
+};
+
+const QuestionAnswerPathTable: React.FunctionComponent<{
+  questionAnswerPath: QuestionAnswerPath;
+}> = ({questionAnswerPath: {paths}}) => {
+  return (
+    <TableContainer component={Paper}>
+      <Table data-cy="matchingNodesTable">
+        <TableHead>
+          <TableRow>
+            <TableCell>Score</TableCell>
+            <TableCell>Number of nodes</TableCell>
+            <TableCell>Path</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {paths.map(({score, path}, index) => (
+            <TableRow key={index}>
+              <TableCell>{score}</TableCell>
+              <TableCell>{Math.ceil(path.length / 2)}</TableCell>
+              <TableCell>{path.join(" ")}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };

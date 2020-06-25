@@ -11,12 +11,12 @@ interface BenchmarkAnswerQuestionAnswerPath {
 }
 
 interface BenchmarkAnswerChoiceAnalysis {
-  choiceLabel: string;
+  choiceId: string;
   questionAnswerPaths: BenchmarkAnswerQuestionAnswerPath[];
 }
 
 export interface BenchmarkAnswer {
-  choiceLabel: string;
+  choiceId: string;
   questionId: string;
   submissionId: string;
   explanation: {
