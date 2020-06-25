@@ -1,9 +1,9 @@
 import * as React from "react";
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
 import {Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {BenchmarkQuestionText} from "components/benchmark/BenchmarkQuestionText";
-import {Typography} from "@material-ui/core";
+import {List, Typography, ListItemText} from "@material-ui/core";
 import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 
 export const BenchmarkQuestionsTable: React.FunctionComponent<{
@@ -23,37 +23,63 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
 }) => {
   const getRowQuestionId = (rowData: any[]) => rowData[2];
 
+  const columns: MUIDataTableColumnDef[] = [];
+  columns.push({
+    name: "prompts",
+    label: "Text",
+    options: {
+      customBodyRender: (prompts, tableMeta) => {
+        if (submissionId) {
+          return (
+            <Link
+              data-cy="question-text"
+              to={Hrefs.benchmark({id: benchmarkId})
+                .dataset({id: datasetId})
+                .submission({id: submissionId})
+                .question({
+                  id: getRowQuestionId(tableMeta.rowData),
+                })}
+            >
+              <BenchmarkQuestionText prompts={prompts} />
+            </Link>
+          );
+        } else {
+          return <BenchmarkQuestionText prompts={prompts} />;
+        }
+      },
+    },
+  });
+  if (questions.some((question) => question.categories)) {
+    columns.push({
+      name: "categories",
+      label: "Categories",
+      options: {
+        customBodyRender: (
+          categories: string[] | undefined,
+          tableMeta: any
+        ) => {
+          if (categories) {
+            return (
+              <List>
+                {categories.map((category) => (
+                  <ListItemText key={category}>{category}</ListItemText>
+                ))}
+              </List>
+            );
+          } else {
+            return <></>;
+          }
+        },
+      },
+    });
+  }
+  if (questions.some((question) => question.concept)) {
+    columns.push({name: "concept", label: "Concept"});
+  }
+
   return (
     <MUIDataTable
-      columns={[
-        {
-          name: "prompts",
-          label: "Text",
-          options: {
-            customBodyRender: (prompts, tableMeta) => {
-              if (submissionId) {
-                return (
-                  <Link
-                    data-cy="question-text"
-                    to={Hrefs.benchmark({id: benchmarkId})
-                      .dataset({id: datasetId})
-                      .submission({id: submissionId})
-                      .question({
-                        id: getRowQuestionId(tableMeta.rowData),
-                      })}
-                  >
-                    <BenchmarkQuestionText prompts={prompts} />
-                  </Link>
-                );
-              } else {
-                return <BenchmarkQuestionText prompts={prompts} />;
-              }
-            },
-          },
-        },
-        {name: "concept", label: "Concept"},
-        {name: "id", label: "Id"},
-      ]}
+      columns={columns}
       data={questions}
       options={{
         count: questionsTotal,

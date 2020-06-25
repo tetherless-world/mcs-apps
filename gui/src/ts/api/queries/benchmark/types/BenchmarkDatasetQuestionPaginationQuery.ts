@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { BenchmarkQuestionPromptType } from "./../../../graphqlGlobalTypes";
+import { BenchmarkQuestionPromptType, BenchmarkQuestionType } from "./../../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: BenchmarkDatasetQuestionPaginationQuery
@@ -16,9 +16,11 @@ export interface BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetBy
 
 export interface BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions {
   __typename: "BenchmarkQuestion";
+  categories: string[] | null;
   concept: string | null;
   id: string;
   prompts: BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById_questions_prompts[];
+  type: BenchmarkQuestionType | null;
 }
 
 export interface BenchmarkDatasetQuestionPaginationQuery_benchmarkById_datasetById {
