@@ -21,9 +21,15 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   questionsTotal,
   submissionId,
 }) => {
-  const getRowQuestionId = (rowData: any[]) => rowData[2];
+  const getRowQuestionId = (rowData: any[]) => rowData[0];
 
   const columns: MUIDataTableColumnDef[] = [];
+  columns.push({
+    name: "id",
+    options: {
+      display: "false",
+    },
+  });
   columns.push({
     name: "prompts",
     label: "Text",
