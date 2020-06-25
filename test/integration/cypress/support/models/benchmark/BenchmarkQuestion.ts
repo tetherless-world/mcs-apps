@@ -1,11 +1,24 @@
+enum BenchmarkQuestionPromptType {
+  Goal = "Goal",
+  Observation = "Observation",
+  Question = "Question",
+}
+
+interface BenchmarkQuestionPrompt {
+  text: string;
+  type: BenchmarkQuestionPromptType;
+}
+
 export interface BenchmarkQuestion {
   choices: {
-    label: string;
+    id: string;
+    identifier?: string;
+    position: number;
     text: string;
   }[];
   concept?: string;
   correctChoiceLabel: string;
   datasetId: string;
   id: string;
-  text: string;
+  prompts: BenchmarkQuestionPrompt[];
 }
