@@ -22,6 +22,7 @@ import {Frame} from "components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "./BenchmarkFrame";
 import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";
+import * as _ from "lodash";
 
 const BenchmarkDatasetsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -58,7 +59,10 @@ const BenchmarkDatasetsTable: React.FunctionComponent<{
 );
 
 export const BenchmarkPage: React.FunctionComponent = () => {
-  const {benchmarkId} = useParams<{benchmarkId: string}>();
+  const {benchmarkId} = _.mapValues(
+    useParams<{benchmarkId: string}>(),
+    decodeURIComponent
+  );
 
   const query = useQuery<BenchmarkPageQuery>(BenchmarkPageQueryDocument, {
     variables: {benchmarkId},
