@@ -1,27 +1,41 @@
 import * as React from "react";
-import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
+import MUIDataTable, {
+  MUIDataTableColumnDef,
+  MUIDataTableState,
+} from "mui-datatables";
 import {Link} from "react-router-dom";
 import {Hrefs} from "Hrefs";
 import {BenchmarkQuestionText} from "components/benchmark/BenchmarkQuestionText";
 import {List, Typography, ListItemText} from "@material-ui/core";
 import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 import {BenchmarkQuestionType} from "api/graphqlGlobalTypes";
+import {
+  BenchmarkDatasetQuestionsPaginationQuery,
+  BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions,
+  BenchmarkDatasetQuestionsPaginationQueryVariables,
+} from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
+import {useApolloClient} from "@apollo/react-hooks";
+import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionsPaginationQuery.graphql";
 
 export const BenchmarkQuestionsTable: React.FunctionComponent<{
   benchmarkId: string;
   datasetId: string;
-  onChangePage: (kwds: {limit: number; offset: number}) => void;
-  questions: BenchmarkQuestion[];
+  initialQuestions: BenchmarkQuestion[];
   questionsTotal: number;
   submissionId?: string;
 }> = ({
   benchmarkId,
   datasetId,
-  onChangePage,
-  questions,
+  initialQuestions,
   questionsTotal,
   submissionId,
 }) => {
+  const apolloClient = useApolloClient();
+
+  const [questions, setQuestions] = React.useState<
+    BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions[]
+  >(initialQuestions);
+
   const getRowQuestionId = (rowData: any[]) => rowData[0];
 
   const columns: MUIDataTableColumnDef[] = [];
@@ -102,6 +116,32 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
     columns.push({name: "concept", label: "Concept"});
   }
 
+  const onChangePage = (tableState: MUIDataTableState) => {
+    // Use another query to paginate instead of refetch so that we don't re-render the whole frame when loading goes back to true.
+    // We also don't request redundant data.
+    apolloClient
+      .query<
+        BenchmarkDatasetQuestionsPaginationQuery,
+        BenchmarkDatasetQuestionsPaginationQueryVariables
+      >({
+        query: BenchmarkDatasetQuestionsPaginationQueryDocument,
+        variables: {
+          benchmarkId,
+          datasetId,
+          questionsLimit: tableState.rowsPerPage,
+          questionsOffset: tableState.page * tableState.rowsPerPage,
+        },
+      })
+      .then(({data, errors, loading}) => {
+        if (errors) {
+        } else if (loading) {
+        } else if (!data) {
+          throw new EvalError();
+        }
+        setQuestions(data.benchmarkById!.datasetById!.questions);
+      });
+  };
+
   return (
     <MUIDataTable
       columns={columns}
@@ -112,10 +152,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
         onTableChange: (action, tableState) => {
           switch (action) {
             case "changePage": {
-              onChangePage({
-                limit: tableState.rowsPerPage,
-                offset: tableState.page * tableState.rowsPerPage,
-              });
+              onChangePage(tableState);
               break;
             }
           }

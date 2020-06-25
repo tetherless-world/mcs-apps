@@ -1,18 +1,11 @@
 #import "./BenchmarkQuestionsTableFragment.graphql"
 
-query BenchmarkDatasetPageQuery($benchmarkId: String!, $datasetId: String!, $questionsLimit: Int!, $questionsOffset: Int!) {
+query BenchmarkDatasetQuestionsPaginationQuery($benchmarkId: String!, $datasetId: String!, $questionsLimit: Int!, $questionsOffset: Int!) {
     benchmarkById(id: $benchmarkId) {
         datasetById(id: $datasetId) {
-            name
-            questionsCount
             questions(limit: $questionsLimit, offset: $questionsOffset) {
                 ... BenchmarkQuestionsTableFragment
             }
-            submissions {
-                id
-                name
-            }
         }
-        name
     }
 }

@@ -49,7 +49,7 @@ export interface BenchmarkSubmissionPageQuery {
 export interface BenchmarkSubmissionPageQueryVariables {
   benchmarkId: string;
   datasetId: string;
-  questionLimit: number;
-  questionOffset: number;
+  questionsLimit: number;
+  questionsOffset: number;
   submissionId: string;
 }
