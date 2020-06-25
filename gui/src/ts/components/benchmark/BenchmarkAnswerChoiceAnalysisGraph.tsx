@@ -184,6 +184,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
                 fill={colorScale(score)}
                 opacity={score}
                 cursor="pointer"
+                showLabel
               >
                 <title>{node.label}</title>
               </ForceGraphNode>
@@ -197,7 +198,8 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
               link={link}
               stroke={colorScale(link.score)}
               targetRadius={nodeRadius(nodes[link.targetId])}
-              opacity={link.score * 0.6}
+              opacity={link.score}
+              showLabel
             />
           ))}
       </ForceGraph>
