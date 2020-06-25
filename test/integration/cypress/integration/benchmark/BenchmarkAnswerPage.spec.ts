@@ -61,24 +61,23 @@ context("BenchmarkAnswerPage", () => {
   beforeEach(() => page.visit());
 
   it("should show question text", () => {
-    page.question.text.should(
-      "have.text",
-      question.prompts.find((prompt) => prompt.type === "QUESTION")!.text
-    );
+    question.prompts.forEach((prompt) => {
+      page.question(question.id).text.should("contain", prompt.text);
+    });
   });
 
   it("should show question answer choices", () => {
     question.choices.forEach((choice) => {
-      page.question.answer(choice.id).text.should("have.text", choice.text);
+      page.answer(choice.id).text.should("have.text", choice.text);
     });
   });
 
   it("should show appropriate question answer icons", () => {
     if (answer.choiceId === question.correctChoiceId) {
-      page.question.answer(answer.choiceId).assertCorrectSubmissionAnswer();
+      page.answer(answer.choiceId).assertCorrectSubmissionAnswer();
     } else {
-      page.question.answer(answer.choiceId).assertSubmissionChoice();
-      page.question.answer(question.correctChoiceId).assertCorrectChoice();
+      page.answer(answer.choiceId).assertSubmissionChoice();
+      page.answer(question.correctChoiceId).assertCorrectChoice();
     }
   });
 

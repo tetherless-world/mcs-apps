@@ -80,7 +80,7 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
               {icon}
             </Grid>
             <Grid item>
-              <Typography variant="body1" data-cy="label">
+              <Typography variant="body1" data-cy="id">
                 {choice.id}
               </Typography>
             </Grid>
