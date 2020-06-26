@@ -21,6 +21,9 @@ class MemBenchmarkStore(
   override def getBenchmarkAnswerByQuestion(benchmarkQuestionId: String, benchmarkSubmissionId: String): Option[BenchmarkAnswer] =
     benchmarkAnswers.find(answer => answer.questionId == benchmarkQuestionId && answer.submissionId == benchmarkSubmissionId)
 
+  override def getBenchmarkAnswersByQuestion(benchmarkQuestionId: String): List[BenchmarkAnswer] =
+    benchmarkAnswers.filter(answer => answer.questionId == benchmarkQuestionId)
+
   final override def getBenchmarkAnswersBySubmission(benchmarkSubmissionId: String, limit: Int, offset: Int): List[BenchmarkAnswer] =
     benchmarkAnswers
       .filter(answer => answer.submissionId == benchmarkSubmissionId)
