@@ -2,7 +2,7 @@ import * as React from "react";
 import {Frame} from "components/frame/Frame";
 import {useParams} from "react-router-dom";
 import * as BenchmarkDatasetPageQueryDocument from "api/queries/benchmark/BenchmarkDatasetPageQuery.graphql";
-import {useQuery} from "@apollo/react-hooks";
+import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
@@ -10,6 +10,12 @@ import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";
 import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
+import {
+  BenchmarkDatasetQuestionsPaginationQuery,
+  BenchmarkDatasetQuestionsPaginationQueryVariables,
+} from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
+import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionsPaginationQuery.graphql";
+import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 
 const QUESTIONS_PER_PAGE = 10;
 
@@ -34,6 +40,12 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
     }
   );
 
+  const apolloClient = useApolloClient();
+
+  const [questions, setQuestions] = React.useState<BenchmarkQuestion[] | null>(
+    null
+  );
+
   return (
     <Frame {...query}>
       {({data: initialData}) => {
@@ -44,6 +56,10 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
         const dataset = benchmark.datasetById;
         if (!dataset) {
           return <NotFound label={datasetId} />;
+        }
+        if (questions === null) {
+          setQuestions(dataset.questions);
+          return null;
         }
 
         return (
@@ -79,7 +95,34 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
                 <BenchmarkQuestionsTable
                   benchmarkId={benchmarkId}
                   datasetId={datasetId}
-                  initialQuestions={dataset.questions}
+                  onChangePage={({limit, offset}) => {
+                    // Use another query to paginate instead of refetch so that we don't re-render the whole frame when loading goes back to true.
+                    // We also don't request redundant data.
+                    apolloClient
+                      .query<
+                        BenchmarkDatasetQuestionsPaginationQuery,
+                        BenchmarkDatasetQuestionsPaginationQueryVariables
+                      >({
+                        query: BenchmarkDatasetQuestionsPaginationQueryDocument,
+                        variables: {
+                          benchmarkId,
+                          datasetId,
+                          questionsLimit: limit,
+                          questionsOffset: offset,
+                        },
+                      })
+                      .then(({data, errors, loading}) => {
+                        if (errors) {
+                        } else if (loading) {
+                        } else if (!data) {
+                          throw new EvalError();
+                        }
+                        setQuestions(
+                          data.benchmarkById!.datasetById!.questions
+                        );
+                      });
+                  }}
+                  questions={questions}
                   questionsTotal={dataset.questionsCount}
                   submissions={dataset.submissions.map((submission) => ({
                     benchmarkId,
