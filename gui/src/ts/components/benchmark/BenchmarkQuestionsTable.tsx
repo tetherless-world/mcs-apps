@@ -137,7 +137,9 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
       }
     }
     for (const answerSubmissionId of answerSubmissionIds) {
-      const submission = submissions?.find((submission) => submission.id);
+      const submission = submissions?.find(
+        (submission) => submission.id === answerSubmissionId
+      );
       const submissionName = submission ? submission.name : answerSubmissionId;
       columns.push({
         label: submissionName,
