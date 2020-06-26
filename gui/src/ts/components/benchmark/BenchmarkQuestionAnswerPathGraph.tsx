@@ -15,6 +15,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  makeStyles,
 } from "@material-ui/core";
 import {
   ForceGraph,
@@ -74,6 +75,9 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
           <ListItemText primary={"Score: " + score.toFixed(3)} />
         </ListItem>
         <ListItem>
+          <ListItemText primary={paths.length + " paths"} />
+        </ListItem>
+        <ListItem>
           <ListItemAvatar>
             <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
               color="none"
@@ -81,7 +85,7 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
             />
           </ListItemAvatar>
           <ListItemText
-            primary={"Start: " + (startNode?.label ?? startNodeId)}
+            primary={"Start node: " + (startNode?.label ?? startNodeId)}
           />
         </ListItem>
         <ListItem>
@@ -91,12 +95,14 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
               border="2px solid purple"
             />
           </ListItemAvatar>
-          <ListItemText primary={"End: " + (endNode?.label ?? endNodeId)} />
+          <ListItemText
+            primary={"End node: " + (endNode?.label ?? endNodeId)}
+          />
         </ListItem>
       </HorizontalList>
-      <Grid container>
-        <Grid item md={4}>
-          <ForceGraph height={400} width={400}>
+      <Grid container spacing={2}>
+        <Grid item md={6}>
+          <ForceGraph height={500} width={500}>
             {nodes.map((node) => {
               const score =
                 node.paths.reduce(
@@ -147,7 +153,7 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
             })}
           </ForceGraph>
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={6}>
           <QuestionAnswerPathTable questionAnswerPath={questionAnswerPath} />
         </Grid>
       </Grid>
@@ -155,9 +161,22 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
   );
 };
 
+const useStylesQuestionAnswerPathTable = makeStyles({
+  selectedRow: {
+    backgroundColor: "lightgrey !important",
+  },
+  tableRow: {
+    "&:hover": {
+      backgroundColor: "lightgrey !important",
+    },
+  },
+});
+
 const QuestionAnswerPathTable: React.FunctionComponent<{
   questionAnswerPath: QuestionAnswerPath;
 }> = ({questionAnswerPath: {paths}}) => {
+  const classes = useStylesQuestionAnswerPathTable();
+
   return (
     <TableContainer component={Paper}>
       <Table data-cy="matchingNodesTable">
@@ -170,10 +189,14 @@ const QuestionAnswerPathTable: React.FunctionComponent<{
         </TableHead>
         <TableBody>
           {paths.map(({score, path}, index) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              classes={{selected: classes.selectedRow}}
+              selected={index === 0}
+            >
               <TableCell>{score}</TableCell>
               <TableCell>{Math.ceil(path.length / 2)}</TableCell>
-              <TableCell>{path.join(" ")}</TableCell>
+              <TableCell>{path.join("\t")}</TableCell>
             </TableRow>
           ))}
         </TableBody>

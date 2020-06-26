@@ -166,7 +166,8 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
       <HorizontalList>
         <ListItem>
           <Typography variant="body1">
-            Answer Paths for <strong>{choice.text}</strong>
+            Answer Paths for{" "}
+            <strong style={{fontSize: "1.5rem"}}>{choice.text}</strong>
           </Typography>
           <IconButton
             onClick={() => {
