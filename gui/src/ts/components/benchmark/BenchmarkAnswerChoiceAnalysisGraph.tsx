@@ -1,6 +1,14 @@
 import * as React from "react";
 import * as _ from "lodash";
-import {List, ListItem, ListItemText, withStyles} from "@material-ui/core";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  withStyles,
+  Collapse,
+  IconButton,
+} from "@material-ui/core";
 import {
   ForceGraph,
   ForceGraphNode,
@@ -8,13 +16,18 @@ import {
 } from "components/data/forceGraph";
 
 import * as d3 from "d3";
-import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses as AnswerChoiceAnalysis} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
+import {
+  BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses as AnswerChoiceAnalysis,
+  BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices as QuestionAnswerChoice,
+} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {BenchmarkQuestionAnswerPathGraph} from "components/benchmark/BenchmarkQuestionAnswerPathGraph";
 import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
 import {BenchmarkAnswerChoiceAnalysisGraphLinkDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphLinkDatum";
 import {BenchmarkAnswerChoiceAnalysisGraphLegendCircle} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraphLegendCircle";
 import {getQuestionAnswerPathId} from "util/benchmark/getQuestionAnswerPathId";
 import {getAnswerPathId} from "util/benchmark/getAnswerPathId";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 
 const extractNodeAndLinks = (choiceAnalysis: AnswerChoiceAnalysis) => {
   const nodes: {
@@ -134,16 +147,37 @@ const MIN_QUESTION_ANSWER_PATH_SCORE = 0.001;
 
 export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
   choiceAnalysis: AnswerChoiceAnalysis;
-}> = ({choiceAnalysis}) => {
+  choices: QuestionAnswerChoice[];
+}> = ({choiceAnalysis, choices}) => {
+  const [showAggregateGraph, setShowAggregateGraph] = React.useState<boolean>(
+    false
+  );
+
   const {nodes, links} = React.useMemo<{
     nodes: {[nodeId: string]: BenchmarkAnswerChoiceAnalysisGraphNodeDatum};
     links: {[linkId: string]: BenchmarkAnswerChoiceAnalysisGraphLinkDatum};
   }>(() => extractNodeAndLinks(choiceAnalysis), [choiceAnalysis]);
+  const choice = choices.find(
+    (choice) => choice.id === choiceAnalysis.choiceId
+  )!;
 
   return (
     <React.Fragment>
       <HorizontalList>
-        <ListItem>Choice {choiceAnalysis.choiceId}</ListItem>
+        <ListItem>
+          <Typography variant="body1">
+            Answer Paths for <strong>{choice.text}</strong>
+          </Typography>
+          <IconButton
+            onClick={() => {
+              setShowAggregateGraph((prev) => !prev);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={showAggregateGraph ? faChevronUp : faChevronDown}
+            />
+          </IconButton>
+        </ListItem>
         <ListItem>
           <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={30} />
           <ListItemText primary="More edges" />
@@ -166,43 +200,45 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
           <ListItemText primary="Low score" />
         </ListItem>
       </HorizontalList>
-      <ForceGraph height={800} width={1200}>
-        {Object.values(nodes)
-          .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
-          .map((node) => {
-            const score =
-              node.paths.reduce(
-                (totalScore, path) => totalScore + path.score,
-                0
-              ) / node.paths.length;
+      <Collapse in={showAggregateGraph}>
+        <ForceGraph height={800} width={800}>
+          {Object.values(nodes)
+            .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
+            .map((node) => {
+              const score =
+                node.paths.reduce(
+                  (totalScore, path) => totalScore + path.score,
+                  0
+                ) / node.paths.length;
 
-            return (
-              <ForceGraphNode
-                key={node.id}
-                node={node}
-                r={nodeRadius(node)}
-                fill={colorScale(score)}
-                opacity={score}
-                cursor="pointer"
+              return (
+                <ForceGraphNode
+                  key={node.id}
+                  node={node}
+                  r={nodeRadius(node)}
+                  fill={colorScale(score)}
+                  opacity={score}
+                  cursor="pointer"
+                  showLabel
+                >
+                  <title>{node.label}</title>
+                </ForceGraphNode>
+              );
+            })}
+          {Object.values(links)
+            .sort((link1, link2) => link1.score - link2.score)
+            .map((link) => (
+              <ForceGraphArrowLink
+                key={link.id}
+                link={link}
+                stroke={colorScale(link.score)}
+                targetRadius={nodeRadius(nodes[link.targetId])}
+                opacity={link.score}
                 showLabel
-              >
-                <title>{node.label}</title>
-              </ForceGraphNode>
-            );
-          })}
-        {Object.values(links)
-          .sort((link1, link2) => link1.score - link2.score)
-          .map((link) => (
-            <ForceGraphArrowLink
-              key={link.id}
-              link={link}
-              stroke={colorScale(link.score)}
-              targetRadius={nodeRadius(nodes[link.targetId])}
-              opacity={link.score}
-              showLabel
-            />
-          ))}
-      </ForceGraph>
+              />
+            ))}
+        </ForceGraph>
+      </Collapse>
       {choiceAnalysis.questionAnswerPaths
         .filter(({score}) => score > MIN_QUESTION_ANSWER_PATH_SCORE)
         .sort((a, b) => b.score - a.score)
