@@ -1,55 +1,55 @@
 [
     {
         "benchmarkId": "benchmark0",
-        "id": "benchmark0-submission",
+        "id": "benchmark0-dev-submission",
         "datasetId": "benchmark0-dev",
         "name": "Benchmark 0 test submission"
     },
     {
         "benchmarkId": "benchmark0",
-        "id": "benchmark0-submission",
+        "id": "benchmark0-test-submission",
         "datasetId": "benchmark0-test",
         "name": "Benchmark 0 test submission"
     },
     {
         "benchmarkId": "benchmark0",
-        "id": "benchmark0-submission",
+        "id": "benchmark0-train-submission",
         "datasetId": "benchmark0-train",
         "name": "Benchmark 0 test submission"
     },
     {
         "benchmarkId": "benchmark1",
-        "id": "benchmark1-submission",
+        "id": "benchmark1-dev-submission",
         "datasetId": "benchmark1-dev",
         "name": "Benchmark 1 test submission"
     },
     {
         "benchmarkId": "benchmark1",
-        "id": "benchmark1-submission",
+        "id": "benchmark1-test-submission",
         "datasetId": "benchmark1-test",
         "name": "Benchmark 1 test submission"
     },
     {
         "benchmarkId": "benchmark1",
-        "id": "benchmark1-submission",
+        "id": "benchmark1-train-submission",
         "datasetId": "benchmark1-train",
         "name": "Benchmark 1 test submission"
     },
     {
         "benchmarkId": "benchmark2",
-        "id": "benchmark2-submission",
+        "id": "benchmark2-dev-submission",
         "datasetId": "benchmark2-dev",
         "name": "Benchmark 2 test submission"
     },
     {
         "benchmarkId": "benchmark2",
-        "id": "benchmark2-submission",
+        "id": "benchmark2-test-submission",
         "datasetId": "benchmark2-test",
         "name": "Benchmark 2 test submission"
     },
     {
         "benchmarkId": "benchmark2",
-        "id": "benchmark2-submission",
+        "id": "benchmark2-train-submission",
         "datasetId": "benchmark2-train",
         "name": "Benchmark 2 test submission"
     }
