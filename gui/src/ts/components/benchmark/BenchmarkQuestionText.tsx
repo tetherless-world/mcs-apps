@@ -1,6 +1,7 @@
 import * as React from "react";
 import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {BenchmarkQuestionPromptType} from "api/graphqlGlobalTypes";
+import {Typography} from "@material-ui/core";
 
 export const BenchmarkQuestionText: React.FunctionComponent<{
   prompts: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts[];
@@ -36,12 +37,13 @@ export const BenchmarkQuestionText: React.FunctionComponent<{
         : null}
       {questions.length
         ? questions.map((question, questionIndex) => (
-            <span
+            <Typography
+              variant="h6"
               key={"question-" + questionIndex}
               data-cy={"question-" + questionIndex}
             >
               Question: {question.text}
-            </span>
+            </Typography>
           ))
         : null}
     </React.Fragment>

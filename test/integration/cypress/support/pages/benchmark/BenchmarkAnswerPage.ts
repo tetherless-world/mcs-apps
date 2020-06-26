@@ -35,25 +35,20 @@ export class BenchmarkAnswerPage extends Page {
     return {
       assertCorrectSubmissionAnswer() {
         cy.get(
-          "[data-cy=questionAnswer] [data-cy=correctSubmissionAnswerIcon]"
+          `[data-cy=question-answer-${choiceId}] [data-cy=correctSubmissionAnswerIcon]`
         );
       },
       assertCorrectChoice() {
-        cy.get("[data-cy=questionAnswer] [data-cy=correctChoiceIcon]");
+        cy.get(
+          `[data-cy=question-answer-${choiceId}] [data-cy=correctChoiceIcon]`
+        );
       },
       assertSubmissionChoice() {
-        cy.get("[data-cy=questionAnswer] [data-cy=submissionChoiceIcon]");
+        cy.get(
+          `[data-cy=question-answer-${choiceId}] [data-cy=submissionChoiceIcon]`
+        );
       },
-      id: cy
-        .get("[data-cy=questionAnswer] [data-cy=id]")
-        .contains(new RegExp(`^${choiceId}$`))
-        .parentsUntil("[data-cy=questionAnswer]")
-        .find("[data-cy=id]"),
-      text: cy
-        .get("[data-cy=questionAnswer] [data-cy=id]")
-        .contains(new RegExp(`^${choiceId}$`))
-        .parentsUntil("[data-cy=questionAnswer]")
-        .find("[data-cy=text]"),
+      text: cy.get(`[data-cy=question-answer-${choiceId}] [data-cy=text]`),
     };
   }
 
