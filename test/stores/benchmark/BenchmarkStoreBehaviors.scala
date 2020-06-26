@@ -37,6 +37,26 @@ trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
       sut.getBenchmarkQuestionsByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id, limit = 1000, offset = 0) should equal(TestBenchmarkData.benchmarkQuestions.filter(question => question.datasetId == TestBenchmarkData.benchmarkDataset.id))
     }
 
+    "get benchmark submissions by benchmark" in {
+      sut.getBenchmarkSubmissionsByBenchmark(benchmarkId = TestBenchmarkData.benchmark.id) should equal(TestBenchmarkData.benchmarkSubmissions.filter(submission => submission.benchmarkId == TestBenchmarkData.benchmark.id))
+    }
+
+    "get benchmark submission by id" in {
+      sut.getBenchmarkSubmissionById(benchmarkSubmissionId = TestBenchmarkData.benchmarkSubmission.id) should equal(Some(TestBenchmarkData.benchmarkSubmission))
+    }
+
+    "get benchmark submissions by dataset" in {
+      sut.getBenchmarkSubmissionsByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id) should equal(TestBenchmarkData.benchmarkSubmissions.filter(submission => submission.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
+    "get benchmark submissions count by benchmark" in {
+      sut.getBenchmarkSubmissionsCountByBenchmark(benchmarkId = TestBenchmarkData.benchmark.id) should equal(TestBenchmarkData.benchmarkSubmissions.count(submission => submission.benchmarkId == TestBenchmarkData.benchmark.id))
+    }
+
+    "get benchmark submissions count by dataset" in {
+      sut.getBenchmarkSubmissionsCountByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id) should equal(TestBenchmarkData.benchmarkSubmissions.count(submission => submission.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
     "get benchmark trees" in {
       val benchmarks = sut.getBenchmarks
       benchmarks should not be empty

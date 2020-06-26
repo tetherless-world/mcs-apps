@@ -16,8 +16,8 @@ trait BenchmarkStore {
   def getBenchmarkQuestionsByDataset(benchmarkDatasetId: String, limit: Int, offset: Int): List[BenchmarkQuestion]
 
   def getBenchmarkSubmissionsByBenchmark(benchmarkId: String): List[BenchmarkSubmission]
-  def getBenchmarkSubmissionById(submissionId: String): Option[BenchmarkSubmission]
-  def getBenchmarkSubmissionsByDataset(datasetId: String): List[BenchmarkSubmission]
+  def getBenchmarkSubmissionById(benchmarkSubmissionId: String): Option[BenchmarkSubmission]
+  def getBenchmarkSubmissionsByDataset(benchmarkDatasetId: String): List[BenchmarkSubmission]
   def getBenchmarkSubmissionsCountByBenchmark(benchmarkId: String): Int
-  def getBenchmarkSubmissionsCountByDataset(datasetId: String): Int
+  def getBenchmarkSubmissionsCountByDataset(benchmarkDatasetId: String): Int
 }
