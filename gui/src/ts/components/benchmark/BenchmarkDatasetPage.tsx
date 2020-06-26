@@ -12,10 +12,10 @@ import * as _ from "lodash";
 import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
 import {
   BenchmarkDatasetQuestionsPaginationQuery,
+  BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkDatasetQuestionsPaginationQueryVariables,
 } from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
 import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionsPaginationQuery.graphql";
-import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 
 const QUESTIONS_PER_PAGE = 10;
 
@@ -42,9 +42,10 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
 
   const apolloClient = useApolloClient();
 
-  const [questions, setQuestions] = React.useState<BenchmarkQuestion[] | null>(
-    null
-  );
+  const [questions, setQuestions] = React.useState<
+    | BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions[]
+    | null
+  >(null);
 
   return (
     <Frame {...query}>

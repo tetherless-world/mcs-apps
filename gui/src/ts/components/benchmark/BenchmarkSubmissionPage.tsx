@@ -8,9 +8,9 @@ import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";
 import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
-import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 import {
   BenchmarkSubmissionQuestionsPaginationQuery,
+  BenchmarkSubmissionQuestionsPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkSubmissionQuestionsPaginationQueryVariables,
 } from "api/queries/benchmark/types/BenchmarkSubmissionQuestionsPaginationQuery";
 import * as BenchmarkSubmissionQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkSubmissionQuestionsPaginationQuery.graphql";
@@ -42,9 +42,10 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
 
   const apolloClient = useApolloClient();
 
-  const [questions, setQuestions] = React.useState<BenchmarkQuestion[] | null>(
-    null
-  );
+  const [questions, setQuestions] = React.useState<
+    | BenchmarkSubmissionQuestionsPaginationQuery_benchmarkById_datasetById_questions[]
+    | null
+  >(null);
 
   return (
     <Frame {...initialQuery}>
@@ -107,8 +108,20 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
                     setQuestions(data.benchmarkById!.datasetById!.questions);
                   });
               }}
-              questions={questions}
+              questions={questions.map((question) => {
+                const {answerBySubmissionId, ...questionProps} = question;
+                if (!answerBySubmissionId) {
+                  return questionProps;
+                }
+                return {
+                  answers: [{submissionId, ...answerBySubmissionId}],
+                  ...questionProps,
+                };
+              })}
               questionsTotal={dataset.questionsCount}
+              submissions={[
+                {benchmarkId, datasetId, id: submissionId, ...submission},
+              ]}
               submissionId={submissionId}
             />
           </BenchmarkFrame>
