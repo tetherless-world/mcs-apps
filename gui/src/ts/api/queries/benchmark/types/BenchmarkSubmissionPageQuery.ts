@@ -23,6 +23,7 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_question
   __typename: "BenchmarkQuestion";
   categories: string[] | null;
   concept: string | null;
+  correctChoiceId: string;
   id: string;
   prompts: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_prompts[];
   type: BenchmarkQuestionType | null;

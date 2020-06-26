@@ -1,3 +1,20 @@
-import {BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions} from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
+import {
+  BenchmarkQuestionPromptType,
+  BenchmarkQuestionType,
+} from "api/graphqlGlobalTypes";
 
-export type BenchmarkQuestion = BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions;
+export interface BenchmarkQuestion {
+  answers?: {
+    choiceId: string;
+    submissionId: string;
+  }[];
+  categories: string[] | null;
+  concept: string | null;
+  correctChoiceId: string;
+  id: string;
+  prompts: {
+    text: string;
+    type: BenchmarkQuestionPromptType;
+  }[];
+  type: BenchmarkQuestionType | null;
+}

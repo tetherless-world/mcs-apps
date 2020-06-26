@@ -81,6 +81,11 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
                   datasetId={datasetId}
                   initialQuestions={dataset.questions}
                   questionsTotal={dataset.questionsCount}
+                  submissions={dataset.submissions.map((submission) => ({
+                    benchmarkId,
+                    datasetId,
+                    ...submission,
+                  }))}
                 />
               </Grid>
             </Grid>

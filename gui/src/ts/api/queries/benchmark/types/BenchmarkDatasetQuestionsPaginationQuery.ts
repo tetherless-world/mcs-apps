@@ -24,6 +24,7 @@ export interface BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetB
   __typename: "BenchmarkQuestion";
   categories: string[] | null;
   concept: string | null;
+  correctChoiceId: string;
   id: string;
   prompts: BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions_prompts[];
   type: BenchmarkQuestionType | null;

@@ -1,6 +1,7 @@
 fragment BenchmarkQuestionsTableFragment on BenchmarkQuestion {
     categories
     concept
+    correctChoiceId
     id
     prompts {
         text
