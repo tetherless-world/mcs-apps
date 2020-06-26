@@ -16,6 +16,8 @@ import {
   TableCell,
   TableBody,
   makeStyles,
+  Card,
+  CardContent,
 } from "@material-ui/core";
 import {
   ForceGraph,
@@ -69,95 +71,97 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
   );
 
   return (
-    <div>
-      <HorizontalList>
-        <ListItem>
-          <ListItemText primary={"Score: " + score.toFixed(3)} />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary={paths.length + " paths"} />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
-              color="none"
-              border="2px solid blue"
+    <Card>
+      <CardContent>
+        <HorizontalList>
+          <ListItem>
+            <ListItemText primary={"Score: " + score.toFixed(3)} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={paths.length + " paths"} />
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
+                color="none"
+                border="2px solid blue"
+              />
+            </ListItemAvatar>
+            <ListItemText
+              primary={"Start node: " + (startNode?.label ?? startNodeId)}
             />
-          </ListItemAvatar>
-          <ListItemText
-            primary={"Start node: " + (startNode?.label ?? startNodeId)}
-          />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
-              color="none"
-              border="2px solid purple"
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
+                color="none"
+                border="2px solid purple"
+              />
+            </ListItemAvatar>
+            <ListItemText
+              primary={"End node: " + (endNode?.label ?? endNodeId)}
             />
-          </ListItemAvatar>
-          <ListItemText
-            primary={"End node: " + (endNode?.label ?? endNodeId)}
-          />
-        </ListItem>
-      </HorizontalList>
-      <Grid container spacing={2}>
-        <Grid item md={6}>
-          <ForceGraph height={600} width={600}>
-            {nodes.map((node) => {
-              const score =
-                node.paths.reduce(
-                  (totalScore, path) =>
-                    totalScore + (path.questionAnswerPathId ? path.score : 0),
-                  0
-                ) / node.paths.length;
-              let stroke = undefined;
-              if (node.id === startNodeId) {
-                stroke = "blue";
-              } else if (node.id === endNodeId) {
-                stroke = "purple";
-              }
+          </ListItem>
+        </HorizontalList>
+        <Grid container spacing={2}>
+          <Grid item md={6}>
+            <ForceGraph height={500} width={500}>
+              {nodes.map((node) => {
+                const score =
+                  node.paths.reduce(
+                    (totalScore, path) =>
+                      totalScore + (path.questionAnswerPathId ? path.score : 0),
+                    0
+                  ) / node.paths.length;
+                let stroke = undefined;
+                if (node.id === startNodeId) {
+                  stroke = "blue";
+                } else if (node.id === endNodeId) {
+                  stroke = "purple";
+                }
 
-              const focused = node.paths.some(
-                (path) => path.id === highestScorePathId
-              );
+                const focused = node.paths.some(
+                  (path) => path.id === highestScorePathId
+                );
 
-              return (
-                <ForceGraphNode
-                  key={node.id}
-                  node={node}
-                  r={nodeRadius(node)}
-                  fill={colorScale(score)}
-                  fillOpacity={score}
-                  cursor="pointer"
-                  stroke={stroke}
-                  strokeWidth={4}
-                  showLabel={focused}
-                >
-                  <title>{node.label}</title>
-                </ForceGraphNode>
-              );
-            })}
-            {links.map((link) => {
-              const focused = highestScorePathId === link.pathId;
+                return (
+                  <ForceGraphNode
+                    key={node.id}
+                    node={node}
+                    r={nodeRadius(node)}
+                    fill={colorScale(score)}
+                    fillOpacity={score}
+                    cursor="pointer"
+                    stroke={stroke}
+                    strokeWidth={4}
+                    showLabel={focused}
+                  >
+                    <title>{node.label}</title>
+                  </ForceGraphNode>
+                );
+              })}
+              {links.map((link) => {
+                const focused = highestScorePathId === link.pathId;
 
-              return (
-                <ForceGraphArrowLink
-                  key={link.id}
-                  link={link}
-                  stroke={colorScale(link.score)}
-                  targetRadius={nodeRadius(nodesIndexed[link.targetId])}
-                  opacity={focused ? 1 : link.score}
-                  showLabel={focused}
-                />
-              );
-            })}
-          </ForceGraph>
+                return (
+                  <ForceGraphArrowLink
+                    key={link.id}
+                    link={link}
+                    stroke={colorScale(link.score)}
+                    targetRadius={nodeRadius(nodesIndexed[link.targetId])}
+                    opacity={focused ? 1 : link.score}
+                    showLabel={focused}
+                  />
+                );
+              })}
+            </ForceGraph>
+          </Grid>
+          <Grid item md={6}>
+            <QuestionAnswerPathTable questionAnswerPath={questionAnswerPath} />
+          </Grid>
         </Grid>
-        <Grid item md={6}>
-          <QuestionAnswerPathTable questionAnswerPath={questionAnswerPath} />
-        </Grid>
-      </Grid>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

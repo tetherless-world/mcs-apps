@@ -8,6 +8,8 @@ import {
   withStyles,
   Collapse,
   IconButton,
+  Card,
+  CardContent,
 } from "@material-ui/core";
 import {
   ForceGraph,
@@ -162,120 +164,124 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
   )!;
 
   return (
-    <React.Fragment>
-      <HorizontalList>
-        <ListItem>
-          <Typography variant="body1">
-            Answer Paths for{" "}
-            <strong style={{fontSize: "1.5rem"}}>{choice.text}</strong>
-          </Typography>
-          <IconButton
-            onClick={() => {
-              setShowAggregateGraph((prev) => !prev);
-            }}
-          >
-            <FontAwesomeIcon
-              icon={showAggregateGraph ? faChevronUp : faChevronDown}
-            />
-          </IconButton>
-        </ListItem>
-        <ListItem>
-          <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={30} />
-          <ListItemText primary="More edges" />
-        </ListItem>
-        <ListItem>
-          <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={10} />
-          <ListItemText primary="Fewer edges" />
-        </ListItem>
-        <ListItem>
-          <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
-            color={colorScale(1)}
-          />
-          <ListItemText primary="High score" />
-        </ListItem>
-        <ListItem>
-          <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
-            opacity={0.5}
-            color={colorScale(0)}
-          />
-          <ListItemText primary="Low score" />
-        </ListItem>
-      </HorizontalList>
-      <Collapse in={showAggregateGraph}>
-        <ForceGraph height={800} width={800}>
-          {Object.values(nodes)
-            .sort((node1, node2) => node1.paths[0].score - node2.paths[0].score)
-            .map((node) => {
-              const score =
-                node.paths.reduce(
-                  (totalScore, path) => totalScore + path.score,
-                  0
-                ) / node.paths.length;
-
-              return (
-                <ForceGraphNode
-                  key={node.id}
-                  node={node}
-                  r={nodeRadius(node)}
-                  fill={colorScale(score)}
-                  opacity={score}
-                  cursor="pointer"
-                  showLabel
-                >
-                  <title>{node.label}</title>
-                </ForceGraphNode>
-              );
-            })}
-          {Object.values(links)
-            .sort((link1, link2) => link1.score - link2.score)
-            .map((link) => (
-              <ForceGraphArrowLink
-                key={link.id}
-                link={link}
-                stroke={colorScale(link.score)}
-                targetRadius={nodeRadius(nodes[link.targetId])}
-                opacity={link.score}
-                showLabel
+    <Card>
+      <CardContent>
+        <HorizontalList>
+          <ListItem>
+            <Typography variant="body1">
+              Answer Paths for{" "}
+              <strong style={{fontSize: "1.5rem"}}>{choice.text}</strong>
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setShowAggregateGraph((prev) => !prev);
+              }}
+            >
+              <FontAwesomeIcon
+                icon={showAggregateGraph ? faChevronUp : faChevronDown}
               />
-            ))}
-        </ForceGraph>
-      </Collapse>
-      {choiceAnalysis.questionAnswerPaths
-        .filter(({score}) => score > MIN_QUESTION_ANSWER_PATH_SCORE)
-        .sort((a, b) => b.score - a.score)
-        .map((questionAnswerPath) => {
-          const questionAnswerPathNodes = _.cloneDeep(
-            Object.values(nodes)
-              .filter((node) =>
-                node.paths.some(
-                  (path) =>
-                    path.questionAnswerPathId ===
-                    getQuestionAnswerPathId(questionAnswerPath)
-                )
-              )
+            </IconButton>
+          </ListItem>
+          <ListItem>
+            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={30} />
+            <ListItemText primary="More edges" />
+          </ListItem>
+          <ListItem>
+            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={10} />
+            <ListItemText primary="Fewer edges" />
+          </ListItem>
+          <ListItem>
+            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
+              color={colorScale(1)}
+            />
+            <ListItemText primary="High score" />
+          </ListItem>
+          <ListItem>
+            <BenchmarkAnswerChoiceAnalysisGraphLegendCircle
+              opacity={0.5}
+              color={colorScale(0)}
+            />
+            <ListItemText primary="Low score" />
+          </ListItem>
+        </HorizontalList>
+        <Collapse in={showAggregateGraph}>
+          <ForceGraph height={800} width={800}>
+            {Object.values(nodes)
               .sort(
                 (node1, node2) => node1.paths[0].score - node2.paths[0].score
               )
-          );
-          const questionAnswerPathLinks = _.cloneDeep(
-            Object.values(links)
-              .filter(
-                (link) =>
-                  link.questionAnswerPathId ===
-                  getQuestionAnswerPathId(questionAnswerPath)
-              )
+              .map((node) => {
+                const score =
+                  node.paths.reduce(
+                    (totalScore, path) => totalScore + path.score,
+                    0
+                  ) / node.paths.length;
+
+                return (
+                  <ForceGraphNode
+                    key={node.id}
+                    node={node}
+                    r={nodeRadius(node)}
+                    fill={colorScale(score)}
+                    opacity={score}
+                    cursor="pointer"
+                    showLabel
+                  >
+                    <title>{node.label}</title>
+                  </ForceGraphNode>
+                );
+              })}
+            {Object.values(links)
               .sort((link1, link2) => link1.score - link2.score)
-          );
-          return (
-            <BenchmarkQuestionAnswerPathGraph
-              key={getQuestionAnswerPathId(questionAnswerPath)}
-              questionAnswerPath={questionAnswerPath}
-              nodes={questionAnswerPathNodes}
-              links={questionAnswerPathLinks}
-              nodesIndexed={nodes}
-            />
-          );
-        })}
-    </React.Fragment>
+              .map((link) => (
+                <ForceGraphArrowLink
+                  key={link.id}
+                  link={link}
+                  stroke={colorScale(link.score)}
+                  targetRadius={nodeRadius(nodes[link.targetId])}
+                  opacity={link.score}
+                  showLabel
+                />
+              ))}
+          </ForceGraph>
+        </Collapse>
+        {choiceAnalysis.questionAnswerPaths
+          .filter(({score}) => score > MIN_QUESTION_ANSWER_PATH_SCORE)
+          .sort((a, b) => b.score - a.score)
+          .map((questionAnswerPath) => {
+            const questionAnswerPathNodes = _.cloneDeep(
+              Object.values(nodes)
+                .filter((node) =>
+                  node.paths.some(
+                    (path) =>
+                      path.questionAnswerPathId ===
+                      getQuestionAnswerPathId(questionAnswerPath)
+                  )
+                )
+                .sort(
+                  (node1, node2) => node1.paths[0].score - node2.paths[0].score
+                )
+            );
+            const questionAnswerPathLinks = _.cloneDeep(
+              Object.values(links)
+                .filter(
+                  (link) =>
+                    link.questionAnswerPathId ===
+                    getQuestionAnswerPathId(questionAnswerPath)
+                )
+                .sort((link1, link2) => link1.score - link2.score)
+            );
+            return (
+              <BenchmarkQuestionAnswerPathGraph
+                key={getQuestionAnswerPathId(questionAnswerPath)}
+                questionAnswerPath={questionAnswerPath}
+                nodes={questionAnswerPathNodes}
+                links={questionAnswerPathLinks}
+                nodesIndexed={nodes}
+              />
+            );
+          })}
+      </CardContent>
+    </Card>
   );
 };
