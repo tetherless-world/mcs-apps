@@ -74,16 +74,9 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
   return (
     <Card data-cy={dataCy}>
       <CardContent>
-        <Grid container direction="column">
-          <Grid item container>
-            <Grid item xs={1}>
-              {icon}
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" data-cy="id">
-                {choice.id}
-              </Typography>
-            </Grid>
+        <Grid item container>
+          <Grid item xs={1}>
+            {icon}
           </Grid>
           <Grid item>
             <Typography variant="h6" data-cy="text">
@@ -190,7 +183,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                     <Grid item key={choice.id}>
                       <QuestionAnswerChoiceCard
                         choice={choice}
-                        dataCy="questionAnswer"
+                        dataCy={"question-answer-" + choice.id}
                         isSubmissionChoice={answer?.choiceId === choice.id}
                         isCorrectChoice={question.correctChoiceId === choice.id}
                       />
