@@ -8,17 +8,7 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Divider,
-} from "@material-ui/core";
+import {Grid, Typography, Card, CardContent, Divider} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
 import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
@@ -167,49 +157,55 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 ))}
               </Grid>
               <Grid item container justify="flex-end">
-                <Grid item>
-                  <List
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      padding: 0,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <ListItem>
-                      <ListItemAvatar>
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          color="green"
-                          size="1x"
-                          data-cy="correctSubmissionAnswerIcon"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText secondary="Submission answered correctly" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <FontAwesomeIcon
-                          icon={faTimes}
-                          color="red"
-                          size="1x"
-                          data-cy="submissionChoiceIcon"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText secondary="Submission answered incorrectly" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <FontAwesomeIcon
-                          icon={faStar}
-                          color="purple"
-                          size="1x"
-                          data-cy="correctChoiceIcon"
-                        />
-                      </ListItemAvatar>
-                      <ListItemText secondary="Correct answer to question" />
-                    </ListItem>
-                  </List>
+                <Grid item container spacing={4} style={{whiteSpace: "nowrap"}}>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      color="green"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="correctSubmissionAnswerIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Submission answered correctly
+                    </Typography>
+                  </Grid>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      color="red"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="submissionChoiceIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Submission answered incorrectly
+                    </Typography>
+                  </Grid>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      color="purple"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="correctChoiceIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Correct answer to question
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
 
