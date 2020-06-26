@@ -170,7 +170,10 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
               </Grid>
 
               <Grid item>
-                <BenchmarkQuestionText prompts={question.prompts} />
+                <BenchmarkQuestionText
+                  prompts={question.prompts}
+                  questionStyle={{fontSize: "1.3rem", fontWeight: "bold"}}
+                />
               </Grid>
               <Grid item container spacing={2}>
                 {question.choices.map((choice) => (
