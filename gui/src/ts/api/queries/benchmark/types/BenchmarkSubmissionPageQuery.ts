@@ -14,6 +14,11 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_question
   type: BenchmarkQuestionPromptType;
 }
 
+export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_answerBySubmissionId {
+  __typename: "BenchmarkAnswer";
+  choiceId: string;
+}
+
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions {
   __typename: "BenchmarkQuestion";
   categories: string[] | null;
@@ -21,6 +26,7 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_question
   id: string;
   prompts: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_prompts[];
   type: BenchmarkQuestionType | null;
+  answerBySubmissionId: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_answerBySubmissionId | null;
 }
 
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissionById {

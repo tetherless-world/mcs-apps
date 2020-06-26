@@ -94,6 +94,12 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion](
     AddFields(
       Field(
+        "answerBySubmissionId",
+        OptionType(BenchmarkAnswerType),
+        arguments = IdArgument :: Nil,
+        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswerByQuestion(benchmarkQuestionId = ctx.value.id, benchmarkSubmissionId = ctx.args.arg(IdArgument))
+      ),
+      Field(
         "answers",
         ListType(BenchmarkAnswerType),
         resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswersByQuestion(benchmarkQuestionId = ctx.value.id)
