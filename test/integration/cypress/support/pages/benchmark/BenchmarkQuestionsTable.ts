@@ -7,11 +7,9 @@ class BenchmarkQuestionsTableRow {
 }
 
 export class BenchmarkQuestionsTable {
-  constructor(readonly selector: string) {}
-
   question(questionId: string) {
     return new BenchmarkQuestionsTableRow(
-      `${this.selector} [data-cy=question-${questionId}]`
+      `[data-cy=benchmark-questions] [data-cy=question-${questionId}]`
     );
   }
 }

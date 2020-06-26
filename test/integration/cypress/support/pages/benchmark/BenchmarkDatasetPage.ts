@@ -1,5 +1,6 @@
 import {Page} from "../Page";
 import {BenchmarkSubmissionsTable} from "./BenchmarkSubmissionsTable";
+import {BenchmarkQuestionsTable} from "./BenchmarkQuestionsTable";
 
 export class BenchmarkDatasetPage extends Page {
   constructor(readonly benchmarkId: string, readonly datasetId: string) {
@@ -10,7 +11,11 @@ export class BenchmarkDatasetPage extends Page {
     return cy.get(`[data-cy=benchmark-frame-title]`);
   }
 
-  get submissionsTable() {
+  get questions() {
+    return new BenchmarkQuestionsTable();
+  }
+
+  get submissions() {
     return new BenchmarkSubmissionsTable();
   }
 

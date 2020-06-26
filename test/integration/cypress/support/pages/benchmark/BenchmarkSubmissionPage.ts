@@ -11,7 +11,7 @@ export class BenchmarkSubmissionPage extends Page {
   }
 
   get questions() {
-    return new BenchmarkQuestionsTable("[data-cy=benchmark-questions]");
+    return new BenchmarkQuestionsTable();
   }
 
   get submissionName() {

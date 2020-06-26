@@ -50,23 +50,25 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
     label: "Text",
     options: {
       customBodyRender: (prompts, tableMeta) => {
-        if (submissionId) {
-          return (
-            <Link
-              data-cy="question-text"
-              to={Hrefs.benchmark({id: benchmarkId})
-                .dataset({id: datasetId})
-                .submission({id: submissionId})
-                .question({
-                  id: getRowQuestionId(tableMeta.rowData),
-                })}
-            >
+        return (
+          <span data-cy="question-text">
+            {submissionId ? (
+              <Link
+                data-cy="question-text"
+                to={Hrefs.benchmark({id: benchmarkId})
+                  .dataset({id: datasetId})
+                  .submission({id: submissionId})
+                  .question({
+                    id: getRowQuestionId(tableMeta.rowData),
+                  })}
+              >
+                <BenchmarkQuestionText prompts={prompts} />
+              </Link>
+            ) : (
               <BenchmarkQuestionText prompts={prompts} />
-            </Link>
-          );
-        } else {
-          return <BenchmarkQuestionText prompts={prompts} />;
-        }
+            )}
+          </span>
+        );
       },
     },
   });
