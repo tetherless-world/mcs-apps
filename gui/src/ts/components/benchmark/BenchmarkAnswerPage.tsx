@@ -23,7 +23,7 @@ import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {BenchmarkAnswerChoiceAnalysisGraph} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
+// import {BenchmarkAnswerChoiceAnalysisGraph} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
 import {BenchmarkQuestionText} from "./BenchmarkQuestionText";
 
 // http://localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
@@ -35,6 +35,7 @@ const CorrectSubmissionAnswerIcon = (
     icon={faCheck}
     color="green"
     size="2x"
+    style={{display: "inline", marginRight: "10px", marginBottom: "-10px"}}
     data-cy="correctSubmissionAnswerIcon"
   />
 );
@@ -43,6 +44,7 @@ const CorrectChoiceIcon = (
     icon={faStar}
     color="purple"
     size="2x"
+    style={{display: "inline", marginRight: "10px", marginBottom: "-10px"}}
     data-cy="correctChoiceIcon"
   />
 );
@@ -51,6 +53,7 @@ const SubmissionChoiceIcon = (
     icon={faTimes}
     color="red"
     size="2x"
+    style={{display: "inline", marginRight: "10px", marginBottom: "-10px"}}
     data-cy="submissionChoiceIcon"
   />
 );
@@ -60,7 +63,7 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
   dataCy: string;
   isCorrectChoice?: boolean;
   isSubmissionChoice?: boolean;
-}> = ({choice, children, dataCy, isCorrectChoice, isSubmissionChoice}) => {
+}> = ({choice, dataCy, isCorrectChoice, isSubmissionChoice}) => {
   let icon = null;
 
   if (isCorrectChoice && isSubmissionChoice) {
@@ -74,17 +77,10 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
   return (
     <Card data-cy={dataCy}>
       <CardContent>
-        <Grid item container>
-          <Grid item xs={1}>
-            {icon}
-          </Grid>
-          <Grid item>
-            <Typography variant="h6" data-cy="text">
-              {choice.text}
-            </Typography>
-          </Grid>
-        </Grid>
-        {children}
+        {icon}
+        <Typography variant="body1" style={{display: "inline"}} data-cy="text">
+          {choice.text}
+        </Typography>
       </CardContent>
     </Card>
   );
@@ -137,8 +133,8 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
           return <NotFound label={submissionId} />;
         }
 
-        const explanation = answer?.explanation;
-        const choiceAnalyses = explanation?.choiceAnalyses;
+        // const explanation = answer?.explanation;
+        // const choiceAnalyses = explanation?.choiceAnalyses;
 
         return (
           <BenchmarkFrame
@@ -150,7 +146,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
             }}
           >
             {/* Show question and answer choices*/}
-            <Grid container direction="column">
+            <Grid container direction="column" spacing={2}>
               <Grid item>
                 <List
                   style={{display: "flex", flexDirection: "row", padding: 0}}
@@ -172,24 +168,20 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 </List>
               </Grid>
 
-              <Grid item container>
-                <Grid item md={6} container direction="column" justify="center">
-                  <Grid item>
-                    <BenchmarkQuestionText prompts={question.prompts} />
+              <Grid item>
+                <BenchmarkQuestionText prompts={question.prompts} />
+              </Grid>
+              <Grid item container spacing={2}>
+                {question.choices.map((choice) => (
+                  <Grid item key={choice.id} md>
+                    <QuestionAnswerChoiceCard
+                      choice={choice}
+                      dataCy={"question-answer-" + choice.id}
+                      isSubmissionChoice={answer?.choiceId === choice.id}
+                      isCorrectChoice={question.correctChoiceId === choice.id}
+                    />
                   </Grid>
-                </Grid>
-                <Grid item md={6} container direction="column" spacing={3}>
-                  {question.choices.map((choice) => (
-                    <Grid item key={choice.id}>
-                      <QuestionAnswerChoiceCard
-                        choice={choice}
-                        dataCy={"question-answer-" + choice.id}
-                        isSubmissionChoice={answer?.choiceId === choice.id}
-                        isCorrectChoice={question.correctChoiceId === choice.id}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
+                ))}
               </Grid>
 
               {/* Extra spacing hack */}
@@ -197,13 +189,13 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 <br />
                 <br />
               </Grid>
-              {choiceAnalyses?.map((choiceAnalysis) => (
+              {/* {choiceAnalyses?.map((choiceAnalysis) => (
                 <Grid item key={choiceAnalysis.choiceId}>
                   <BenchmarkAnswerChoiceAnalysisGraph
                     choiceAnalysis={choiceAnalysis}
                   />
                 </Grid>
-              ))}
+              ))} */}
             </Grid>
           </BenchmarkFrame>
         );
