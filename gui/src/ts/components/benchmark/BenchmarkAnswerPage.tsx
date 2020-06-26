@@ -213,28 +213,32 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 </Grid>
               </Grid>
 
-              {/* Extra spacing hack */}
-              <Grid item>
-                <br />
-                <br />
-              </Grid>
-              <Grid item>
-                <Divider />
-              </Grid>
-              <Grid item>
-                <Typography variant="h6">
-                  {submission.name} submission answer choice analyses
-                </Typography>
-              </Grid>
+              {choiceAnalyses && (
+                <>
+                  {/* Extra spacing hack */}
+                  <Grid item>
+                    <br />
+                    <br />
+                  </Grid>
+                  <Grid item>
+                    <Divider />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h6">
+                      {submission.name} submission answer choice analyses
+                    </Typography>
+                  </Grid>
 
-              {choiceAnalyses?.map((choiceAnalysis) => (
-                <Grid item key={choiceAnalysis.choiceId}>
-                  <BenchmarkAnswerChoiceAnalysisGraph
-                    choiceAnalysis={choiceAnalysis}
-                    choices={question.choices}
-                  />
-                </Grid>
-              ))}
+                  {choiceAnalyses.map((choiceAnalysis) => (
+                    <Grid item key={choiceAnalysis.choiceId}>
+                      <BenchmarkAnswerChoiceAnalysisGraph
+                        choiceAnalysis={choiceAnalysis}
+                        choices={question.choices}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
             </Grid>
           </BenchmarkFrame>
         );
