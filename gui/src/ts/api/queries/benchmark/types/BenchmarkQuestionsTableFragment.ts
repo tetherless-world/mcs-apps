@@ -18,6 +18,7 @@ export interface BenchmarkQuestionsTableFragment {
   __typename: "BenchmarkQuestion";
   categories: string[] | null;
   concept: string | null;
+  correctChoiceId: string;
   id: string;
   prompts: BenchmarkQuestionsTableFragment_prompts[];
   type: BenchmarkQuestionType | null;

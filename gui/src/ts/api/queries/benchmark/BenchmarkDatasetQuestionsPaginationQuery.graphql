@@ -5,6 +5,10 @@ query BenchmarkDatasetQuestionsPaginationQuery($benchmarkId: String!, $datasetId
         datasetById(id: $datasetId) {
             questions(limit: $questionsLimit, offset: $questionsOffset) {
                 ... BenchmarkQuestionsTableFragment
+                answers {
+                    choiceId
+                    submissionId
+                }
             }
         }
     }

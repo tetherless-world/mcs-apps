@@ -7,6 +7,10 @@ query BenchmarkDatasetPageQuery($benchmarkId: String!, $datasetId: String!, $que
             questionsCount
             questions(limit: $questionsLimit, offset: $questionsOffset) {
                 ... BenchmarkQuestionsTableFragment
+                answers {
+                    choiceId
+                    submissionId
+                }
             }
             submissions {
                 id

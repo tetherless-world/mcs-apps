@@ -11,11 +11,13 @@ import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
 import {BenchmarkQuestionType} from "api/graphqlGlobalTypes";
 import {
   BenchmarkDatasetQuestionsPaginationQuery,
-  BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkDatasetQuestionsPaginationQueryVariables,
 } from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
 import {useApolloClient} from "@apollo/react-hooks";
 import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionsPaginationQuery.graphql";
+import {BenchmarkSubmission} from "models/benchmark/BenchmarkSubmission";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 export const BenchmarkQuestionsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -23,18 +25,20 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   initialQuestions: BenchmarkQuestion[];
   questionsTotal: number;
   submissionId?: string;
+  submissions?: BenchmarkSubmission[];
 }> = ({
   benchmarkId,
   datasetId,
   initialQuestions,
   questionsTotal,
   submissionId,
+  submissions,
 }) => {
   const apolloClient = useApolloClient();
 
-  const [questions, setQuestions] = React.useState<
-    BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions[]
-  >(initialQuestions);
+  const [questions, setQuestions] = React.useState<BenchmarkQuestion[]>(
+    initialQuestions
+  );
 
   const getRowQuestionId = (rowData: any[]) => rowData[0];
 
@@ -116,6 +120,58 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   }
   if (questions.some((question) => question.concept)) {
     columns.push({name: "concept", label: "Concept"});
+  }
+  if (questions.some((question) => question.answers)) {
+    const answerSubmissionIds: string[] = []; // No flatMap until ES2019
+    for (const question of questions) {
+      if (question.answers) {
+        for (const answer of question.answers) {
+          if (
+            !answerSubmissionIds.some(
+              (submissionId) => submissionId === answer.submissionId
+            )
+          ) {
+            answerSubmissionIds.push(answer.submissionId);
+          }
+        }
+      }
+    }
+    for (const answerSubmissionId of answerSubmissionIds) {
+      const submission = submissions?.find(
+        (submission) => submission.id === answerSubmissionId
+      );
+      const submissionName = submission ? submission.name : answerSubmissionId;
+      columns.push({
+        label: submissionName,
+        name: answerSubmissionId,
+        options: {
+          empty: true,
+          customBodyRender: (value, tableMeta) => {
+            const question = questions[tableMeta.rowIndex];
+            const answer = question.answers!.find(
+              (answer) => answer.submissionId === tableMeta.columnData.name
+            )!;
+            const correct = answer.choiceId === question.correctChoiceId;
+            return (
+              <Link
+                to={Hrefs.benchmark({id: benchmarkId})
+                  .dataset({id: datasetId})
+                  .submission({id: answer.submissionId})
+                  .question({
+                    id: getRowQuestionId(tableMeta.rowData),
+                  })}
+              >
+                {correct ? (
+                  <FontAwesomeIcon icon={faCheck} color="green" />
+                ) : (
+                  <FontAwesomeIcon icon={faTimes} color="red" />
+                )}
+              </Link>
+            );
+          },
+        },
+      });
+    }
   }
 
   const onChangePage = (tableState: MUIDataTableState) => {

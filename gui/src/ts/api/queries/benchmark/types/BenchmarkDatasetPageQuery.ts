@@ -14,13 +14,21 @@ export interface BenchmarkDatasetPageQuery_benchmarkById_datasetById_questions_p
   type: BenchmarkQuestionPromptType;
 }
 
+export interface BenchmarkDatasetPageQuery_benchmarkById_datasetById_questions_answers {
+  __typename: "BenchmarkAnswer";
+  choiceId: string;
+  submissionId: string;
+}
+
 export interface BenchmarkDatasetPageQuery_benchmarkById_datasetById_questions {
   __typename: "BenchmarkQuestion";
   categories: string[] | null;
   concept: string | null;
+  correctChoiceId: string;
   id: string;
   prompts: BenchmarkDatasetPageQuery_benchmarkById_datasetById_questions_prompts[];
   type: BenchmarkQuestionType | null;
+  answers: BenchmarkDatasetPageQuery_benchmarkById_datasetById_questions_answers[];
 }
 
 export interface BenchmarkDatasetPageQuery_benchmarkById_datasetById_submissions {
