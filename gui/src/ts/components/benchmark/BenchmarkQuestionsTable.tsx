@@ -143,28 +143,30 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   };
 
   return (
-    <MUIDataTable
-      columns={columns}
-      data={questions}
-      options={{
-        count: questionsTotal,
-        filter: false,
-        onTableChange: (action, tableState) => {
-          switch (action) {
-            case "changePage": {
-              onChangePage(tableState);
-              break;
+    <div data-cy="benchmark-questions">
+      <MUIDataTable
+        columns={columns}
+        data={questions}
+        options={{
+          count: questionsTotal,
+          filter: false,
+          onTableChange: (action, tableState) => {
+            switch (action) {
+              case "changePage": {
+                onChangePage(tableState);
+                break;
+              }
             }
-          }
-        },
-        rowsPerPage: questions.length,
-        serverSide: true,
-        setRowProps: (row) => ({
-          "data-cy": "question-" + getRowQuestionId(row),
-        }),
-        sort: false,
-      }}
-      title={<Typography variant="h6">Questions</Typography>}
-    />
+          },
+          rowsPerPage: questions.length,
+          serverSide: true,
+          setRowProps: (row) => ({
+            "data-cy": "question-" + getRowQuestionId(row),
+          }),
+          sort: false,
+        }}
+        title={<Typography variant="h6">Questions</Typography>}
+      />
+    </div>
   );
 };

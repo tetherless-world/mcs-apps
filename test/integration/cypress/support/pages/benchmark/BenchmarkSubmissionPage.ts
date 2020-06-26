@@ -1,14 +1,5 @@
 import {Page} from "../Page";
-
-class BenchmarkQuestion {
-  constructor(private readonly questionId: string) {}
-
-  readonly selector = `[data-cy=question-${this.questionId}]`;
-
-  get text() {
-    return cy.get(this.selector + " [data-cy=question-text]");
-  }
-}
+import {BenchmarkQuestionsTable} from "./BenchmarkQuestionsTable";
 
 export class BenchmarkSubmissionPage extends Page {
   constructor(
@@ -19,8 +10,8 @@ export class BenchmarkSubmissionPage extends Page {
     super();
   }
 
-  question(questionId: string) {
-    return new BenchmarkQuestion(questionId);
+  get questions() {
+    return new BenchmarkQuestionsTable("[data-cy=benchmark-questions]");
   }
 
   get submissionName() {

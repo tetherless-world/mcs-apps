@@ -48,7 +48,9 @@ context("Benchmark submission page", () => {
         .slice(0, 10)
         .forEach((question) => {
           question.prompts.forEach((prompt) => {
-            page.question(question.id).text.should("contain", prompt.text);
+            page.questions
+              .question(question.id)
+              .text.should("contain", prompt.text);
           });
         });
     });
