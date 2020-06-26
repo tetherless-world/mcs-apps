@@ -9,6 +9,9 @@ import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDa
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";
+import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
+
+const QUESTIONS_PER_PAGE = 10;
 
 export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   const {benchmarkId, datasetId} = _.mapValues(
@@ -21,13 +24,20 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
 
   const query = useQuery<BenchmarkDatasetPageQuery>(
     BenchmarkDatasetPageQueryDocument,
-    {variables: {benchmarkId, datasetId}}
+    {
+      variables: {
+        benchmarkId,
+        datasetId,
+        questionsLimit: QUESTIONS_PER_PAGE,
+        questionsOffset: 0,
+      },
+    }
   );
 
   return (
     <Frame {...query}>
-      {({data}) => {
-        const benchmark = data.benchmarkById;
+      {({data: initialData}) => {
+        const benchmark = initialData.benchmarkById;
         if (!benchmark) {
           return <NotFound label={benchmarkId} />;
         }
@@ -44,13 +54,13 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
               dataset: {id: datasetId, name: dataset.name},
             }}
           >
-            <Grid container direction="column">
-              {dataset.submissions.length > 0 ? (
-                <Grid item container>
-                  <Grid item xs={6}>
-                    <Card>
-                      <CardHeader title="Submissions" />
-                      <CardContent>
+            <Grid container direction="column" spacing={6}>
+              <Grid item container>
+                <Grid item xs={6}>
+                  <Card>
+                    <CardHeader title="Submissions" />
+                    <CardContent>
+                      {dataset.submissions.length > 0 ? (
                         <BenchmarkSubmissionsTable
                           benchmarkSubmissions={dataset.submissions.map(
                             (submission) => ({
@@ -60,11 +70,19 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
                             })
                           )}
                         />
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                      ) : null}
+                    </CardContent>
+                  </Card>
                 </Grid>
-              ) : null}
+              </Grid>
+              <Grid item>
+                <BenchmarkQuestionsTable
+                  benchmarkId={benchmarkId}
+                  datasetId={datasetId}
+                  initialQuestions={dataset.questions}
+                  questionsTotal={dataset.questionsCount}
+                />
+              </Grid>
             </Grid>
           </BenchmarkFrame>
         );

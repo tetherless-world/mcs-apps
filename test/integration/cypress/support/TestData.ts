@@ -18,6 +18,18 @@ export class TestData {
     return cy.fixture("benchmark/benchmark_questions.json");
   }
 
+  static benchmarkQuestionsByDataset(datasetId: string) {
+    return TestData.benchmarkQuestions.then((questions) =>
+      questions
+        .filter((question) => question.datasetId === datasetId)
+        .sort(
+          (left, right) =>
+            parseInt(left.id.split("-").pop()!) -
+            parseInt(right.id.split("-").pop()!)
+        )
+    );
+  }
+
   static get benchmarkSubmissions(): Cypress.Chainable<BenchmarkSubmission[]> {
     return cy.fixture("benchmark/benchmark_submissions.json");
   }

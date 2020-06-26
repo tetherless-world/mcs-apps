@@ -40,7 +40,7 @@ export class BenchmarkPage extends Page {
     return new BenchmarkDatasetsTable();
   }
 
-  get submissionsTable() {
+  get submissions() {
     return new BenchmarkSubmissionsTable();
   }
 

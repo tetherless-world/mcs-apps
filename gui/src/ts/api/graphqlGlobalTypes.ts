@@ -12,6 +12,11 @@ export enum BenchmarkQuestionPromptType {
   Question = "Question",
 }
 
+export enum BenchmarkQuestionType {
+  MultipleChoice = "MultipleChoice",
+  TrueFalse = "TrueFalse",
+}
+
 export interface KgNodeFilters {
   datasource?: StringFilter | null;
 }

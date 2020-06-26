@@ -37,20 +37,14 @@ context("Benchmark submission page", () => {
   });
 
   it("should show questions", () => {
-    TestData.benchmarkQuestions.then((questions) => {
-      questions
-        .filter((question) => question.datasetId === dataset.id)
-        .sort(
-          (left, right) =>
-            parseInt(left.id.split("-").pop()!) -
-            parseInt(right.id.split("-").pop()!)
-        )
-        .slice(0, 10)
-        .forEach((question) => {
-          question.prompts.forEach((prompt) => {
-            page.question(question.id).text.should("contain", prompt.text);
-          });
+    TestData.benchmarkQuestionsByDataset(dataset.id).then((questions) => {
+      questions.slice(0, 10).forEach((question) => {
+        question.prompts.forEach((prompt) => {
+          page.questions
+            .question(question.id)
+            .text.should("contain", prompt.text);
         });
+      });
     });
   });
 });

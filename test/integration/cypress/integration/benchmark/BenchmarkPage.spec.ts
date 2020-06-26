@@ -58,7 +58,7 @@ context("Benchmark page", () => {
           .forEach((submission) => {
             const benchmark = benchmarks.find(benchmark => benchmark.id === submission.benchmarkId)!;
             const dataset = benchmark.datasets.find(dataset => dataset.id === submission.datasetId)!;
-            const tableRow = page.submissionsTable
+            const tableRow = page.submissions
               .submission(submission.id);
             tableRow.datasetName.should("have.text", dataset.name)
             tableRow.name.should("have.text", submission.name);

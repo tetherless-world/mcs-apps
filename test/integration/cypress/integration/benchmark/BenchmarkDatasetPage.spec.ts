@@ -23,6 +23,18 @@ context("Benchmark dataset page", () => {
     page.datasetName.should("have.text", dataset.name);
   });
 
+  it("should show questions", () => {
+    TestData.benchmarkQuestionsByDataset(dataset.id).then((questions) => {
+      questions.slice(0, 10).forEach((question) => {
+        question.prompts.forEach((prompt) => {
+          page.questions
+            .question(question.id)
+            .text.should("contain", prompt.text);
+        });
+      });
+    });
+  });
+
   it("should show submissions", () => {
     TestData.benchmarkSubmissions.then((submissions) => {
       submissions
@@ -32,7 +44,7 @@ context("Benchmark dataset page", () => {
             submission.datasetId == dataset.id
         )
         .forEach((submission) => {
-          page.submissionsTable
+          page.submissions
             .submission(submission.id)
             .name.should("have.text", submission.name);
         });

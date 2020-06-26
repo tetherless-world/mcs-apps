@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { BenchmarkQuestionPromptType } from "./../../../graphqlGlobalTypes";
+import { BenchmarkQuestionPromptType, BenchmarkQuestionType } from "./../../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: BenchmarkSubmissionPageQuery
@@ -16,9 +16,11 @@ export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_question
 
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions {
   __typename: "BenchmarkQuestion";
+  categories: string[] | null;
   concept: string | null;
   id: string;
   prompts: BenchmarkSubmissionPageQuery_benchmarkById_datasetById_questions_prompts[];
+  type: BenchmarkQuestionType | null;
 }
 
 export interface BenchmarkSubmissionPageQuery_benchmarkById_datasetById_submissionById {
@@ -47,7 +49,7 @@ export interface BenchmarkSubmissionPageQuery {
 export interface BenchmarkSubmissionPageQueryVariables {
   benchmarkId: string;
   datasetId: string;
-  questionLimit: number;
-  questionOffset: number;
+  questionsLimit: number;
+  questionsOffset: number;
   submissionId: string;
 }

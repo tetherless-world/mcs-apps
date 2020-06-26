@@ -1,0 +1,10 @@
+fragment BenchmarkQuestionsTableFragment on BenchmarkQuestion {
+    categories
+    concept
+    id
+    prompts {
+        text
+        type
+    }
+    type
+}
