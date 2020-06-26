@@ -8,16 +8,7 @@ import {
 } from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from "@material-ui/core";
+import {Grid, Typography, Card, CardContent, Divider} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
 import {Frame} from "components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
@@ -76,7 +67,7 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
 
   return (
     <Card data-cy={dataCy}>
-      <CardContent>
+      <CardContent style={{textAlign: "center"}}>
         {icon}
         <Typography variant="body1" style={{display: "inline"}} data-cy="text">
           {choice.text}
@@ -148,28 +139,10 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
             {/* Show question and answer choices*/}
             <Grid container direction="column" spacing={2}>
               <Grid item>
-                <List
-                  style={{display: "flex", flexDirection: "row", padding: 0}}
-                >
-                  <ListItem>
-                    <ListItemAvatar>
-                      {CorrectSubmissionAnswerIcon}
-                    </ListItemAvatar>
-                    <ListItemText primary="Submission answered correctly" />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>{SubmissionChoiceIcon}</ListItemAvatar>
-                    <ListItemText primary="Submission answered incorrectly" />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>{CorrectChoiceIcon}</ListItemAvatar>
-                    <ListItemText primary="Correct answer to question" />
-                  </ListItem>
-                </List>
-              </Grid>
-
-              <Grid item>
-                <BenchmarkQuestionText prompts={question.prompts} />
+                <BenchmarkQuestionText
+                  prompts={question.prompts}
+                  questionStyle={{fontSize: "1.3rem", fontWeight: "bold"}}
+                />
               </Grid>
               <Grid item container spacing={2}>
                 {question.choices.map((choice) => (
@@ -183,19 +156,85 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                   </Grid>
                 ))}
               </Grid>
-
-              {/* Extra spacing hack */}
-              <Grid item>
-                <br />
-                <br />
-              </Grid>
-              {choiceAnalyses?.map((choiceAnalysis) => (
-                <Grid item key={choiceAnalysis.choiceId}>
-                  <BenchmarkAnswerChoiceAnalysisGraph
-                    choiceAnalysis={choiceAnalysis}
-                  />
+              <Grid item container justify="flex-end">
+                <Grid item container spacing={4} style={{whiteSpace: "nowrap"}}>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      color="green"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="correctSubmissionAnswerIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Submission answered correctly
+                    </Typography>
+                  </Grid>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      color="red"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="submissionChoiceIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Submission answered incorrectly
+                    </Typography>
+                  </Grid>
+                  <Grid item md>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      color="purple"
+                      size="1x"
+                      style={{display: "inline"}}
+                      data-cy="correctChoiceIcon"
+                    />{" "}
+                    <Typography
+                      variant="body2"
+                      display="inline"
+                      color="textSecondary"
+                    >
+                      Correct answer to question
+                    </Typography>
+                  </Grid>
                 </Grid>
-              ))}
+              </Grid>
+
+              {choiceAnalyses && (
+                <>
+                  {/* Extra spacing hack */}
+                  <Grid item>
+                    <br />
+                    <br />
+                  </Grid>
+                  <Grid item>
+                    <Divider />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h6">
+                      {submission.name} submission answer choice analyses
+                    </Typography>
+                  </Grid>
+
+                  {choiceAnalyses.map((choiceAnalysis) => (
+                    <Grid item key={choiceAnalysis.choiceId}>
+                      <BenchmarkAnswerChoiceAnalysisGraph
+                        choiceAnalysis={choiceAnalysis}
+                        choices={question.choices}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
             </Grid>
           </BenchmarkFrame>
         );
