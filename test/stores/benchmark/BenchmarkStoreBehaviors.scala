@@ -5,6 +5,58 @@ import stores.StringFilter
 
 trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
   def store(sut: BenchmarkStore) {
+    "get benchmarks" in {
+      sut.getBenchmarks should equal(TestBenchmarkData.benchmarks)
+    }
+
+    "get benchmark answer by question" in {
+      sut.getBenchmarkAnswerByQuestion(benchmarkQuestionId = TestBenchmarkData.benchmarkQuestion.id, benchmarkSubmissionId = TestBenchmarkData.benchmarkSubmission.id) should equal(Some(TestBenchmarkData.benchmarkAnswer))
+    }
+
+    "get benchmark answers by question" in {
+      sut.getBenchmarkAnswersByQuestion(benchmarkQuestionId = TestBenchmarkData.benchmarkQuestion.id) should equal(List(TestBenchmarkData.benchmarkAnswer))
+    }
+
+    "get benchmark answers by submission" in {
+      sut.getBenchmarkAnswersBySubmission(benchmarkSubmissionId = TestBenchmarkData.benchmarkSubmission.id, limit = 1000, offset = 0) should equal(TestBenchmarkData.benchmarkAnswers.filter(answer => answer.submissionId == TestBenchmarkData.benchmarkSubmission.id))
+    }
+
+    "get benchmark by id" in {
+      sut.getBenchmarkById(TestBenchmarkData.benchmark.id) should equal(Some(TestBenchmarkData.benchmark))
+    }
+
+    "get benchmark question by id" in {
+      sut.getBenchmarkQuestionById(benchmarkQuestionId = TestBenchmarkData.benchmarkQuestion.id) should equal(Some(TestBenchmarkData.benchmarkQuestion))
+    }
+
+    "get benchmark questions count by dataset" in {
+      sut.getBenchmarkQuestionsCountByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id) should equal(TestBenchmarkData.benchmarkQuestions.count(question => question.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
+    "get benchmark questions by dataset" in {
+      sut.getBenchmarkQuestionsByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id, limit = 1000, offset = 0) should equal(TestBenchmarkData.benchmarkQuestions.filter(question => question.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
+    "get benchmark submissions by benchmark" in {
+      sut.getBenchmarkSubmissionsByBenchmark(benchmarkId = TestBenchmarkData.benchmark.id) should equal(TestBenchmarkData.benchmarkSubmissions.filter(submission => submission.benchmarkId == TestBenchmarkData.benchmark.id))
+    }
+
+    "get benchmark submission by id" in {
+      sut.getBenchmarkSubmissionById(benchmarkSubmissionId = TestBenchmarkData.benchmarkSubmission.id) should equal(Some(TestBenchmarkData.benchmarkSubmission))
+    }
+
+    "get benchmark submissions by dataset" in {
+      sut.getBenchmarkSubmissionsByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id) should equal(TestBenchmarkData.benchmarkSubmissions.filter(submission => submission.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
+    "get benchmark submissions count by benchmark" in {
+      sut.getBenchmarkSubmissionsCountByBenchmark(benchmarkId = TestBenchmarkData.benchmark.id) should equal(TestBenchmarkData.benchmarkSubmissions.count(submission => submission.benchmarkId == TestBenchmarkData.benchmark.id))
+    }
+
+    "get benchmark submissions count by dataset" in {
+      sut.getBenchmarkSubmissionsCountByDataset(benchmarkDatasetId = TestBenchmarkData.benchmarkDataset.id) should equal(TestBenchmarkData.benchmarkSubmissions.count(submission => submission.datasetId == TestBenchmarkData.benchmarkDataset.id))
+    }
+
     "get benchmark trees" in {
       val benchmarks = sut.getBenchmarks
       benchmarks should not be empty
