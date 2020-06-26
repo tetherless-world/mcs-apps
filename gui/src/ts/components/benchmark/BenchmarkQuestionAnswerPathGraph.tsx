@@ -102,7 +102,7 @@ export const BenchmarkQuestionAnswerPathGraph: React.FunctionComponent<{
       </HorizontalList>
       <Grid container spacing={2}>
         <Grid item md={6}>
-          <ForceGraph height={500} width={500}>
+          <ForceGraph height={600} width={600}>
             {nodes.map((node) => {
               const score =
                 node.paths.reduce(

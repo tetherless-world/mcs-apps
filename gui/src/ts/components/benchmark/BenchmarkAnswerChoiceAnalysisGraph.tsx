@@ -185,7 +185,7 @@ export const BenchmarkAnswerChoiceAnalysisGraph: React.FunctionComponent<{
         </ListItem>
         <ListItem>
           <BenchmarkAnswerChoiceAnalysisGraphLegendCircle radius={10} />
-          <ListItemText primary="Less edges" />
+          <ListItemText primary="Fewer edges" />
         </ListItem>
         <ListItem>
           <BenchmarkAnswerChoiceAnalysisGraphLegendCircle

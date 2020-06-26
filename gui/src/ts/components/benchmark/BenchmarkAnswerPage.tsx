@@ -77,7 +77,7 @@ const QuestionAnswerChoiceCard: React.FunctionComponent<{
 
   return (
     <Card data-cy={dataCy}>
-      <CardContent>
+      <CardContent style={{textAlign: "center"}}>
         {icon}
         <Typography variant="body1" style={{display: "inline"}} data-cy="text">
           {choice.text}
@@ -149,27 +149,6 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
             {/* Show question and answer choices*/}
             <Grid container direction="column" spacing={2}>
               <Grid item>
-                <List
-                  style={{display: "flex", flexDirection: "row", padding: 0}}
-                >
-                  <ListItem>
-                    <ListItemAvatar>
-                      {CorrectSubmissionAnswerIcon}
-                    </ListItemAvatar>
-                    <ListItemText primary="Submission answered correctly" />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>{SubmissionChoiceIcon}</ListItemAvatar>
-                    <ListItemText primary="Submission answered incorrectly" />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemAvatar>{CorrectChoiceIcon}</ListItemAvatar>
-                    <ListItemText primary="Correct answer to question" />
-                  </ListItem>
-                </List>
-              </Grid>
-
-              <Grid item>
                 <BenchmarkQuestionText
                   prompts={question.prompts}
                   questionStyle={{fontSize: "1.3rem", fontWeight: "bold"}}
@@ -186,6 +165,52 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                     />
                   </Grid>
                 ))}
+              </Grid>
+              <Grid item container justify="flex-end">
+                <Grid item>
+                  <List
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      padding: 0,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <ListItem>
+                      <ListItemAvatar>
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          color="green"
+                          size="1x"
+                          data-cy="correctSubmissionAnswerIcon"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText secondary="Submission answered correctly" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          color="red"
+                          size="1x"
+                          data-cy="submissionChoiceIcon"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText secondary="Submission answered incorrectly" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          color="purple"
+                          size="1x"
+                          data-cy="correctChoiceIcon"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText secondary="Correct answer to question" />
+                    </ListItem>
+                  </List>
+                </Grid>
               </Grid>
 
               {/* Extra spacing hack */}
