@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Wait for the server to start
           command: |
-            sleep 60
+            sleep 120
             docker exec mcs-portal-app curl --retry 10 --retry-connrefused -s http://localhost:9000
             docker exec mcs-portal-gui curl --retry 10 --retry-connrefused -s http://localhost
       - run:
@@ -29,7 +29,7 @@ jobs:
             # Can't do volume mounts in CircleCI Docker, so have to copy
             docker cp conf/data/test/kg/ mcs-portal-app:/app/data/import/
             script/import-cskg-nodes
-            sleep 120
+            sleep 60
             script/import-cskg-edges
       - run:
           name: Test that the database is loaded
