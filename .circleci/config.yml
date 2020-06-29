@@ -18,6 +18,7 @@ jobs:
       - run:
           name: Wait for the server to start
           command: |
+            sleep 60
             docker exec mcs-portal-app curl --retry 5 --retry-connrefused -s http://localhost:9000
             docker exec mcs-portal-gui curl --retry 5 --retry-connrefused -s http://localhost
       - run:
