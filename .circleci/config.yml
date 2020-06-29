@@ -29,7 +29,7 @@ jobs:
             # Can't do volume mounts in CircleCI Docker, so have to copy
             docker cp conf/data/test/kg/ mcs-portal-app:/app/data/import/
             script/import-cskg-nodes
-            sleep 60
+            sleep 120
             script/import-cskg-edges
       - run:
           name: Test that the database is loaded
