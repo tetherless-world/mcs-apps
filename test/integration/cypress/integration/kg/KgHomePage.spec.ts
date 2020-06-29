@@ -6,15 +6,6 @@ context("KG Home Page", () => {
 
   beforeEach(() => page.visit());
 
-  it("should show total node and edge counts", () => {
-    TestData.kgNodes.then((nodes) => {
-      page.totalNodeCount.should("have.text", `${nodes.length} nodes`);
-    });
-    TestData.kgEdges.then((edges) => {
-      page.totalEdgeCount.should("have.text", `${edges.length} relationships`);
-    });
-  });
-
   it("should show all datasources", () => {
     page.search.selectedDatasource.should("have.text", "All datasources");
   });
