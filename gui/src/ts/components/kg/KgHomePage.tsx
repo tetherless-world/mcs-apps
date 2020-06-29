@@ -80,17 +80,6 @@ export const KgHomePage: React.FunctionComponent = () => {
             <Grid item>
               {data && (
                 <React.Fragment>
-                  <Typography>
-                    Search{" "}
-                    <strong data-cy="totalNodeCount">
-                      {data.kgById.totalNodesCount} nodes
-                    </strong>{" "}
-                    with{" "}
-                    <strong data-cy="totalEdgeCount">
-                      {data.kgById.totalEdgesCount} relationships
-                    </strong>
-                  </Typography>
-
                   <KgNodeSearchBox
                     autoFocus
                     datasources={data.kgById.datasources}

@@ -9,8 +9,6 @@
 export interface KgHomePageQuery_kgById {
   __typename: "Kg";
   datasources: string[];
-  totalNodesCount: number;
-  totalEdgesCount: number;
 }
 
 export interface KgHomePageQuery {
