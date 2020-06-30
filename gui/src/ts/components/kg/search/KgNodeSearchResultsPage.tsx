@@ -1,11 +1,12 @@
 import * as React from "react";
 import {Grid, Typography} from "@material-ui/core";
 import {Frame} from "components/frame/Frame";
-
-import {useQuery} from "@apollo/react-hooks";
+import * as ReactDOM from "react-dom";
+import {useQuery, useApolloClient} from "@apollo/react-hooks";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
+  KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
 } from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "components/kg/node/KgNodeTable";
@@ -52,7 +53,9 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
       // For some reasoon, if no datasource is provided, qs parse
       // returns {datasource: ""} so here we need falsy check
       // for filter attributes to return null instead
-      {datasource: !filters.datasource ? null : filters.datasource},
+      filters
+        ? {datasource: !filters.datasource ? null : filters.datasource}
+        : undefined,
       offset === undefined ? undefined : +offset,
       limit === undefined ? undefined : +limit
     );
@@ -72,9 +75,6 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   }
 }
 
-// Lift to avoid extra render from useState
-var count: number | null = null;
-
 export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   const history = useHistory();
 
@@ -88,53 +88,88 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     KgNodeSearchResultsPageQuery,
     KgNodeSearchResultsPageQueryVariables
   >(KgNodeSearchResultsPageQueryDocument, {
-    variables: {kgId, ...searchVariables.object, withCount: count === null},
+    variables: {
+      kgId,
+      text: searchVariables.text,
+      limit: 10,
+      offset: 0,
+      withCount: true,
+    },
   });
 
-  // If loading new query, reset count
-  if (loading && count !== null) {
-    count = null;
-  }
+  const apolloClient = useApolloClient();
 
-  // If just loaded new query, initialize count
-  if (data?.kgById.matchingNodesCount && count === null) {
-    count = data.kgById.matchingNodesCount;
-  }
+  const [nodes, setNodes] = React.useState<KgNode[] | null>(null);
+
+  const tableUpdateQuery = (
+    newSearchVariables: QueryStringKgNodeSearchVariables
+  ) => {
+    apolloClient
+      .query<
+        KgNodeSearchResultsPageQuery,
+        KgNodeSearchResultsPageQueryVariables
+      >({
+        query: KgNodeSearchResultsPageQueryDocument,
+        variables: {
+          kgId,
+          ...newSearchVariables.object,
+          withCount: false,
+        },
+      })
+      .then(({data, errors, loading}) => {
+        if (errors) {
+        } else if (loading) {
+        } else if (!data) {
+          throw new EvalError();
+        }
+        // React does not batch updates called in
+        // "timouts, promises, async" code, so we
+        // manually do it
+        // Might be change in v17
+        ReactDOM.unstable_batchedUpdates(() => {
+          setNodes(data.kgById.matchingNodes);
+          history.push(newSearchVariables.stringify());
+        });
+      });
+  };
 
   return (
     <Frame data={data} error={error} loading={loading}>
-      {({data}) => (
+      {({
+        data: {
+          kgById: {matchingNodes: initialNodes, matchingNodesCount: count},
+        },
+      }) => (
         <Grid container spacing={3}>
-          <Grid item md={8} data-cy="visualizationContainer">
+          <Grid item xs data-cy="visualizationContainer">
             <Typography variant="h6">
               {count || "No"} results for "{searchVariables.text}"
             </Typography>
+
             {count && (
               <KgNodeTable
-                nodes={data?.kgById.matchingNodes || []}
+                nodes={nodes ?? initialNodes}
                 rowsPerPage={searchVariables.limit}
                 count={count}
                 page={searchVariables.page}
-                onChangePage={(newPage: number) => {
-                  history.push(
-                    searchVariables
-                      .replace({offset: newPage * searchVariables.limit})
-                      .stringify()
-                  );
-                }}
-                onChangeRowsPerPage={(newRowsPerPage: number) => {
-                  history.push(
-                    searchVariables
-                      .replace({offset: 0, limit: newRowsPerPage})
-                      .stringify()
-                  );
-                }}
+                onChangePage={(newPage: number) =>
+                  tableUpdateQuery(
+                    searchVariables.replace({
+                      offset: newPage * searchVariables.limit,
+                    })
+                  )
+                }
+                onChangeRowsPerPage={(newRowsPerPage: number) =>
+                  tableUpdateQuery(
+                    searchVariables.replace({
+                      offset: 0,
+                      limit: newRowsPerPage,
+                    })
+                  )
+                }
               />
             )}
           </Grid>
-          {/* <Grid item xs={4} container direction="column">
-          <Grid item>Extra information</Grid>
-        </Grid> */}
         </Grid>
       )}
     </Frame>
