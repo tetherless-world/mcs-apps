@@ -21,7 +21,7 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
 
   private constructor(
     public readonly text: string,
-    public readonly filters: KgNodeFilters = {datasource: null},
+    public readonly filters: KgNodeFilters | undefined = undefined,
     public readonly offset: number = 0,
     public readonly limit: number = 10
   ) {}
@@ -44,18 +44,13 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
       ignoreQueryPrefix: true,
     }) as unknown) as {
       text: string;
-      filters: KgNodeFilters;
+      filters: KgNodeFilters | undefined;
       offset: string;
       limit: string;
     };
     return new QueryStringKgNodeSearchVariables(
       text,
-      // For some reasoon, if no datasource is provided, qs parse
-      // returns {datasource: ""} so here we need falsy check
-      // for filter attributes to return null instead
-      filters
-        ? {datasource: !filters.datasource ? null : filters.datasource}
-        : undefined,
+      filters,
       offset === undefined ? undefined : +offset,
       limit === undefined ? undefined : +limit
     );
