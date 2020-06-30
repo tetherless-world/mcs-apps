@@ -49,7 +49,10 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
     };
     return new QueryStringKgNodeSearchVariables(
       text,
-      filters,
+      // For some reasoon, if no datasource is provided, qs parse
+      // returns {datasource: ""} so here we need falsy check
+      // for filter attributes to return null instead
+      {datasource: !filters.datasource ? null : filters.datasource},
       offset === undefined ? undefined : +offset,
       limit === undefined ? undefined : +limit
     );
