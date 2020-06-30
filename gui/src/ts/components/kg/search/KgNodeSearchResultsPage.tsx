@@ -72,6 +72,9 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   }
 }
 
+// Lift to avoid extra render from useState
+var count: number | null = null;
+
 export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   const history = useHistory();
 
@@ -81,8 +84,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     location.search
   );
 
-  const [count, setCount] = React.useState<number | null>(null);
-
   const {data, loading, error} = useQuery<
     KgNodeSearchResultsPageQuery,
     KgNodeSearchResultsPageQueryVariables
@@ -90,12 +91,14 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     variables: {kgId, ...searchVariables.object, withCount: count === null},
   });
 
+  // If loading new query, reset count
   if (loading && count !== null) {
-    setCount(null);
+    count = null;
   }
 
+  // If just loaded new query, initialize count
   if (data?.kgById.matchingNodesCount && count === null) {
-    setCount(data.kgById.matchingNodesCount);
+    count = data.kgById.matchingNodesCount;
   }
 
   return (
@@ -112,20 +115,20 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
                 rowsPerPage={searchVariables.limit}
                 count={count}
                 page={searchVariables.page}
-                onChangePage={(newPage: number) =>
+                onChangePage={(newPage: number) => {
                   history.push(
                     searchVariables
                       .replace({offset: newPage * searchVariables.limit})
                       .stringify()
-                  )
-                }
-                onChangeRowsPerPage={(newRowsPerPage: number) =>
+                  );
+                }}
+                onChangeRowsPerPage={(newRowsPerPage: number) => {
                   history.push(
                     searchVariables
                       .replace({offset: 0, limit: newRowsPerPage})
                       .stringify()
-                  )
-                }
+                  );
+                }}
               />
             )}
           </Grid>
