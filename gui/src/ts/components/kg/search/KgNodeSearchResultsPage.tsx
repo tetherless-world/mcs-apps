@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Grid, Typography} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {Frame} from "components/frame/Frame";
 import * as ReactDOM from "react-dom";
 import {useQuery, useApolloClient} from "@apollo/react-hooks";
@@ -137,33 +137,28 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
       }) => (
         <Grid container spacing={3}>
           <Grid item xs data-cy="visualizationContainer">
-            <Typography variant="h6">
-              {count || "No"} results for "{searchVariables.text}"
-            </Typography>
-
-            {count && (
-              <KgNodeTable
-                nodes={nodes ?? initialNodes}
-                rowsPerPage={searchVariables.limit}
-                count={count}
-                page={searchVariables.page}
-                onChangePage={(newPage: number) =>
-                  tableUpdateQuery(
-                    searchVariables.replace({
-                      offset: newPage * searchVariables.limit,
-                    })
-                  )
-                }
-                onChangeRowsPerPage={(newRowsPerPage: number) =>
-                  tableUpdateQuery(
-                    searchVariables.replace({
-                      offset: 0,
-                      limit: newRowsPerPage,
-                    })
-                  )
-                }
-              />
-            )}
+            <KgNodeTable
+              title={`${count || "No"} results for "${searchVariables.text}"`}
+              nodes={nodes ?? initialNodes}
+              rowsPerPage={searchVariables.limit}
+              count={count}
+              page={searchVariables.page}
+              onChangePage={(newPage: number) =>
+                tableUpdateQuery(
+                  searchVariables.replace({
+                    offset: newPage * searchVariables.limit,
+                  })
+                )
+              }
+              onChangeRowsPerPage={(newRowsPerPage: number) =>
+                tableUpdateQuery(
+                  searchVariables.replace({
+                    offset: 0,
+                    limit: newRowsPerPage,
+                  })
+                )
+              }
+            />
           </Grid>
         </Grid>
       )}
