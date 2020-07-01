@@ -70,6 +70,36 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   }
 }
 
+const makeTitle = (
+  text: string,
+  count: number,
+  filters?: KgNodeFilters
+): string => {
+  let title: string[] = [];
+
+  title.push(count + "" || "No");
+
+  title.push("results");
+
+  if (text) {
+    title.push(`for "${text}"`);
+  }
+
+  if (filters) {
+    if (filters.datasource) {
+      const {include} = filters.datasource;
+
+      if (include) {
+        title.push("in");
+
+        title.push(include.join(", "));
+      }
+    }
+  }
+
+  return title.join(" ");
+};
+
 export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   const history = useHistory();
 
@@ -136,9 +166,13 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
         },
       }) => (
         <Grid container spacing={3}>
-          <Grid item xs data-cy="visualizationContainer">
+          <Grid item xs>
             <KgNodeTable
-              title={`${count || "No"} results for "${searchVariables.text}"`}
+              title={makeTitle(
+                searchVariables.text,
+                count,
+                searchVariables.filters
+              )}
               nodes={nodes ?? initialNodes}
               rowsPerPage={searchVariables.limit}
               count={count}

@@ -200,6 +200,8 @@ export const KgNodeSearchBox: React.FunctionComponent<{
               __typename: "KgNodeSearchVariables",
               text,
               filters: search.filters,
+              offset: 0,
+              limit: 10,
             })
           );
         } else if (value.__typename === "KgNode") {

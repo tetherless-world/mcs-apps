@@ -5,6 +5,7 @@ import {KgNodeLink} from "components/kg/node/KgNodeLink";
 import {KgDatasourceLink} from "components/kg/search/KgDatasourceLink";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
+import {Typography} from "@material-ui/core";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
@@ -141,13 +142,17 @@ export const KgNodeTable: React.FunctionComponent<{
   };
 
   return (
-    <div>
+    <div data-cy="matchingNodesTable">
       <MUIDataTable
         // Is a @material-ui property
         // but missing in types
         // @ts-ignore
         innerRef={tableCallbackRef}
-        title={title}
+        title={
+          <Typography variant="h6" data-cy="title">
+            {title}
+          </Typography>
+        }
         data={nodes}
         columns={columns}
         options={{
@@ -157,6 +162,9 @@ export const KgNodeTable: React.FunctionComponent<{
           filter: false,
           onChangePage,
           onChangeRowsPerPage,
+          setRowProps(_, rowIndex) {
+            return {"data-cy": "node-" + rowIndex};
+          },
         }}
       />
     </div>
