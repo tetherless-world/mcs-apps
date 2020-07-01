@@ -44,4 +44,18 @@ context("KgNodeSearchResultsPage", () => {
       `${totalNodes} results in ${node.datasource}${totalNodes} results in ${node.datasource}`
     );
   });
+
+  it("Should show rows per page", () => {
+    page.resultsTable.rowsPerPage.should("have.text", 10);
+  });
+
+  it("Pagination should not break", () => {
+    page.resultsTable.paginateNext();
+
+    page.resultsTable;
+
+    page.resultsTable.paginateBack();
+
+    page.resultsTable;
+  });
 });

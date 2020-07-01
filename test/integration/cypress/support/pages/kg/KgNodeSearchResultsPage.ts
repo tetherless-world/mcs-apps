@@ -8,13 +8,12 @@ class MUIDataTable {
     return cy.get(this.selector);
   }
 
-  // None of these work, not sure why
   paginateBack() {
-    this.get().find("tfoot button[data-testid=pagination-back]");
+    this.get().find("tfoot [data-testid=pagination-back]");
   }
 
   paginateNext() {
-    cy.get(this.selector + " tfoot button[data-testid=paginate-next]");
+    this.get().find("tfoot [data-testid=pagination-next]");
   }
 
   get rowsPerPage() {
