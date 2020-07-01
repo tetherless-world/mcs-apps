@@ -1,11 +1,12 @@
 import * as React from "react";
-import {Grid, Typography} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {Frame} from "components/frame/Frame";
-
-import {useQuery} from "@apollo/react-hooks";
+import * as ReactDOM from "react-dom";
+import {useQuery, useApolloClient} from "@apollo/react-hooks";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
+  KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
 } from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "components/kg/node/KgNodeTable";
@@ -20,7 +21,7 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
 
   private constructor(
     public readonly text: string,
-    public readonly filters: KgNodeFilters = {datasource: null},
+    public readonly filters: KgNodeFilters | undefined = undefined,
     public readonly offset: number = 0,
     public readonly limit: number = 10
   ) {}
@@ -43,7 +44,7 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
       ignoreQueryPrefix: true,
     }) as unknown) as {
       text: string;
-      filters: KgNodeFilters;
+      filters: KgNodeFilters | undefined;
       offset: string;
       limit: string;
     };
@@ -69,6 +70,36 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   }
 }
 
+const makeTitle = (
+  text: string,
+  count: number,
+  filters?: KgNodeFilters
+): string => {
+  let title: string[] = [];
+
+  title.push(count + "" || "No");
+
+  title.push("results");
+
+  if (text) {
+    title.push(`for "${text}"`);
+  }
+
+  if (filters) {
+    if (filters.datasource) {
+      const {include} = filters.datasource;
+
+      if (include) {
+        title.push("in");
+
+        title.push(include.join(", "));
+      }
+    }
+  }
+
+  return title.join(" ");
+};
+
 export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   const history = useHistory();
 
@@ -78,57 +109,91 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
     location.search
   );
 
-  const [count, setCount] = React.useState<number | null>(null);
-
   const {data, loading, error} = useQuery<
     KgNodeSearchResultsPageQuery,
     KgNodeSearchResultsPageQueryVariables
   >(KgNodeSearchResultsPageQueryDocument, {
-    variables: {kgId, ...searchVariables.object, withCount: count === null},
+    variables: {
+      kgId,
+      text: searchVariables.text,
+      limit: 10,
+      offset: 0,
+      withCount: true,
+    },
   });
 
-  if (loading && count !== null) {
-    setCount(null);
-  }
+  const apolloClient = useApolloClient();
 
-  if (data?.kgById.matchingNodesCount && count === null) {
-    setCount(data.kgById.matchingNodesCount);
-  }
+  const [nodes, setNodes] = React.useState<KgNode[] | null>(null);
+
+  const tableUpdateQuery = (
+    newSearchVariables: QueryStringKgNodeSearchVariables
+  ) => {
+    apolloClient
+      .query<
+        KgNodeSearchResultsPageQuery,
+        KgNodeSearchResultsPageQueryVariables
+      >({
+        query: KgNodeSearchResultsPageQueryDocument,
+        variables: {
+          kgId,
+          ...newSearchVariables.object,
+          withCount: false,
+        },
+      })
+      .then(({data, errors, loading}) => {
+        if (errors) {
+        } else if (loading) {
+        } else if (!data) {
+          throw new EvalError();
+        }
+        // React does not batch updates called in
+        // "timouts, promises, async" code, so we
+        // manually do it
+        // Might be change in v17
+        ReactDOM.unstable_batchedUpdates(() => {
+          setNodes(data.kgById.matchingNodes);
+          history.push(newSearchVariables.stringify());
+        });
+      });
+  };
 
   return (
     <Frame data={data} error={error} loading={loading}>
-      {({data}) => (
+      {({
+        data: {
+          kgById: {matchingNodes: initialNodes, matchingNodesCount: count},
+        },
+      }) => (
         <Grid container spacing={3}>
-          <Grid item md={8} data-cy="visualizationContainer">
-            <Typography variant="h6">
-              {count || "No"} results for "{searchVariables.text}"
-            </Typography>
-            {count && (
-              <KgNodeTable
-                nodes={data?.kgById.matchingNodes || []}
-                rowsPerPage={searchVariables.limit}
-                count={count}
-                page={searchVariables.page}
-                onChangePage={(newPage: number) =>
-                  history.push(
-                    searchVariables
-                      .replace({offset: newPage * searchVariables.limit})
-                      .stringify()
-                  )
-                }
-                onChangeRowsPerPage={(newRowsPerPage: number) =>
-                  history.push(
-                    searchVariables
-                      .replace({offset: 0, limit: newRowsPerPage})
-                      .stringify()
-                  )
-                }
-              />
-            )}
+          <Grid item xs>
+            <KgNodeTable
+              title={makeTitle(
+                searchVariables.text,
+                count,
+                searchVariables.filters
+              )}
+              nodes={nodes ?? initialNodes}
+              rowsPerPage={searchVariables.limit}
+              count={count}
+              page={searchVariables.page}
+              onChangePage={(newPage: number) =>
+                tableUpdateQuery(
+                  searchVariables.replace({
+                    offset: newPage * searchVariables.limit,
+                  })
+                )
+              }
+              onChangeRowsPerPage={(newRowsPerPage: number) =>
+                tableUpdateQuery(
+                  searchVariables.replace({
+                    offset: 0,
+                    limit: newRowsPerPage,
+                  })
+                )
+              }
+            />
           </Grid>
-          {/* <Grid item xs={4} container direction="column">
-          <Grid item>Extra information</Grid>
-        </Grid> */}
         </Grid>
       )}
     </Frame>
