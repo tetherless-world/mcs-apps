@@ -6,13 +6,13 @@ import akka.stream.OverflowStrategy
 import controllers.Assets
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.path.KgPathsJsonlReader
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
 import me.tongfei.progressbar.{DelegatingProgressBarConsumer, ProgressBar, ProgressBarBuilder}
 import org.slf4j.LoggerFactory
 import play.api.Configuration
 import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
-import stores.WithResource
 import stores.kg.KgStore
 
 import scala.io.Source

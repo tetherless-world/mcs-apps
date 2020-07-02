@@ -1,7 +1,7 @@
 package formats.kg.path
 
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
-import stores.WithResource
 import stores.kg.{TestKgData, TestKgDataResources}
 
 import scala.io.Source

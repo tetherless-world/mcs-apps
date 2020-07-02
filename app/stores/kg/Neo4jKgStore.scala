@@ -1,12 +1,13 @@
 package stores.kg
 
 import com.google.inject.Inject
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath}
 import org.neo4j.driver._
 import org.neo4j.driver.exceptions.TransientException
 import org.slf4j.LoggerFactory
-import stores.{Neo4jStoreConfiguration, StringFilter, WithResource}
+import stores.{Neo4jStoreConfiguration, StringFilter}
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable

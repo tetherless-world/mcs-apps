@@ -4,8 +4,9 @@ import java.io.InputStream
 
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.path.KgPathsJsonlReader
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.kg.{KgEdge, KgNode, KgPath}
-import stores.{DataResources, WithResource}
+import stores.DataResources
 
 import scala.io.Source
 
