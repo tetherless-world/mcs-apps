@@ -1,8 +1,8 @@
 package formats.kg.cskg
 
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
-import stores.WithResource
-import stores.kg.{TestKgData, TestKgDataResources}
+import stores.kg.{TestKgDataResources}
 
 class CskgEdgesCsvReaderSpec extends WordSpec with Matchers with WithResource {
   "CSKG edges CSV reader" can {

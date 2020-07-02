@@ -3,8 +3,9 @@ package stores.benchmark
 import java.io.{BufferedInputStream, InputStream}
 
 import formats.benchmark.{BenchmarkAnswersJsonlReader, BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
+import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkSubmission}
-import stores.{DataResources, WithResource}
+import stores.DataResources
 
 import scala.io.Source
 
