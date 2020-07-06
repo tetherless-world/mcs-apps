@@ -48,123 +48,6 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
     )
   )
 
-  implicit val BenchmarkQuestionAnswerPath = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPath](
-    AddFields(
-      Field("edges", ListType(KgEdgeType), resolve = _.value.edges)
-    )
-  )
-  implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionAnswerPaths](
-    AddFields(
-      Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.endNodeId)),
-      Field("startNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.stores.kgStore.getNodeById(ctx.value.startNodeId)),
-    )
-  )
-  implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()
-  implicit val BenchmarkAnswerExplanationType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswerExplanation]()
-  implicit val BenchmarkAnswerType = deriveObjectType[GraphQlSchemaContext, BenchmarkAnswer]()
-  implicit val BenchmarkSubmissionType = deriveObjectType[GraphQlSchemaContext, BenchmarkSubmission](
-    AddFields(
-      Field(
-        "answerByQuestionId",
-        OptionType(BenchmarkAnswerType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswerByQuestion(
-          benchmarkQuestionId = ctx.args.arg(IdArgument),
-          benchmarkSubmissionId = ctx.value.id
-        )
-      ),
-      Field(
-        "answers",
-        ListType(BenchmarkAnswerType),
-        arguments = LimitArgument :: OffsetArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswersBySubmission(
-          benchmarkSubmissionId = ctx.value.id,
-          limit = ctx.args.arg(LimitArgument),
-          offset = ctx.args.arg(OffsetArgument)
-        )
-      )
-    )
-  )
-
-  implicit val BenchmarkQuestionChoiceTypeType = models.benchmark.BenchmarkQuestionChoiceType.sangriaType
-  implicit val BenchmarkQuestionChoiceType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionChoice]()
-  implicit val BenchmarkQuestionPromptTypeType = models.benchmark.BenchmarkQuestionPromptType.sangriaType
-  implicit val BenchmarkQuestionPromptType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestionPrompt]()
-  implicit val BenchmarkQuestionTypeType = models.benchmark.BenchmarkQuestionType.sangriaType
-  implicit val BenchmarkQuestionType = deriveObjectType[GraphQlSchemaContext, BenchmarkQuestion](
-    AddFields(
-      Field(
-        "answerBySubmissionId",
-        OptionType(BenchmarkAnswerType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswerByQuestion(benchmarkQuestionId = ctx.value.id, benchmarkSubmissionId = ctx.args.arg(IdArgument))
-      ),
-      Field(
-        "answers",
-        ListType(BenchmarkAnswerType),
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkAnswersByQuestion(benchmarkQuestionId = ctx.value.id)
-      )
-    )
-  )
-  implicit val BenchmarkDatasetType = deriveObjectType[GraphQlSchemaContext, BenchmarkDataset](
-    AddFields(
-      Field(
-        "questionById",
-        OptionType(BenchmarkQuestionType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionById(ctx.args.arg(IdArgument))
-      ),
-      Field(
-        "questions",
-        ListType(BenchmarkQuestionType),
-        arguments = LimitArgument :: OffsetArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsByDataset(
-          benchmarkDatasetId = ctx.value.id,
-          limit = ctx.args.arg(LimitArgument),
-          offset = ctx.args.arg(OffsetArgument)
-        )
-      ),
-      Field(
-        "questionsCount",
-        IntType,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkQuestionsCountByDataset(benchmarkDatasetId = ctx.value.id)
-      ),
-      Field(
-        "submissionById",
-        OptionType(BenchmarkSubmissionType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
-      ),
-      Field("submissions", ListType(BenchmarkSubmissionType), resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByDataset(benchmarkDatasetId = ctx.value.id)),
-      Field("submissionsCount", IntType, resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsCountByDataset(benchmarkDatasetId = ctx.value.id))
-    )
-  )
-  implicit val BenchmarkType = deriveObjectType[GraphQlSchemaContext, Benchmark](
-    AddFields(
-      Field(
-        "datasetById",
-        OptionType(BenchmarkDatasetType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => {
-          val datasetId = ctx.args.arg(IdArgument)
-          ctx.value.datasets.find(dataset => dataset.id == datasetId)
-        }
-      ),
-      Field(
-        "submissionById",
-        OptionType(BenchmarkSubmissionType),
-        arguments = IdArgument :: Nil,
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionById(ctx.args.arg(IdArgument))
-      ),
-      Field(
-        "submissions",
-        ListType(BenchmarkSubmissionType),
-        resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsByBenchmark(benchmarkId = ctx.value.id)
-      ),
-      Field("submissionsCount", IntType, resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkSubmissionsCountByBenchmark(benchmarkId = ctx.value.id))
-    )
-  )
-
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
   implicit val kgNodeFiltersDecoder: Decoder[KgNodeFilters] = deriveDecoder
@@ -188,8 +71,6 @@ object GraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   ))
 
   val RootQueryType = ObjectType("RootQuery",  fields[GraphQlSchemaContext, Unit](
-    Field("benchmarks", ListType(BenchmarkType), resolve = _.ctx.stores.benchmarkStore.getBenchmarks),
-    Field("benchmarkById", OptionType(BenchmarkType), arguments = IdArgument :: Nil,resolve = ctx => ctx.ctx.stores.benchmarkStore.getBenchmarkById(ctx.args.arg(IdArgument))),
     Field("kgById", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
   ))
 
