@@ -66,7 +66,7 @@ jobs:
             cp -p -R app/kg/target/test-reports test-reports/kg-app
             cp -p -R lib/scala/benchmark/target/test-reports test-reports/benchmark-lib
             cp -p -R lib/scala/kg/target/test-reports test-reports/kg-lib
-            cd app/kg/target/universal && unzip -qq kg-app*.zip && rm kg-app*.zip && mkdir ~/dist && mv kg-app-*-SNAPSHOT ~/dist/kg-app
+            cd app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mkdir ~/dist && mv mcs-kg-app-*-SNAPSHOT ~/dist/kg-app
       - store_test_results:
           path: test-reports
       - persist_to_workspace:
@@ -140,7 +140,7 @@ workflows:
             cp ~/project/.circleci/cypress.json .
             apt-get update && apt-get install -y default-jre
             cd ~/dist/kg-app
-            bin/kg-app -DtestIntegration
+            bin/mcs-kg-app -DtestIntegration
           wait-on: "http-get://localhost:9000/index.html"
           working_directory: app/kg/test/integration
       - kg-app-docker:
