@@ -1,16 +1,16 @@
 version: "3.5"
 networks:
-  mcs-portal:
-    name: mcs-portal
+  mcs:
+    name: mcs
 services:
   neo4j:
     build:
       # Use the same context to share a .dockerignore
       context: ..
       dockerfile: neo4j/Dockerfile
-    container_name: mcs-portal-neo4j
+    container_name: mcs-neo4j
     networks:
-      - mcs-portal
+      - mcs
     ports:
       - 7474:7474 # HTTP
       - 7687:7687 # Bolt
