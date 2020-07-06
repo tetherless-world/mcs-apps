@@ -43,7 +43,7 @@ jobs:
           name: Test that the user interface is up
           command: |
             docker exec mcs-kg-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
-  kg-app-scala:
+  scala:
     docker:
       - image: circleci/openjdk:11
       - image: neo4j:4.0.4
@@ -74,6 +74,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
+            - dist/benchmark-app
             - dist/kg-app
       - save_cache:
           key: sbt-cache-v1
@@ -81,7 +82,7 @@ jobs:
             - "~/.ivy2/cache"
             - "~/.m2"
             - "~/.sbt"
-  kg-app-ts:
+  ts:
     working_directory: ~/project
     docker:
       - image: circleci/node:12
@@ -119,7 +120,7 @@ workflows:
       - cypress/install:
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "app/kg/test/integration/package.json" }}'
           requires:
-            - kg-app-scala
+            - scala
           working_directory: app/kg/test/integration
           post-steps:
             - slack/status:
@@ -151,13 +152,13 @@ workflows:
               only: master
           post-steps:
             - slack/status
-      - kg-app-scala:
+      - scala:
           requires:
-            - kg-app-ts
+            - ts
           post-steps:
             - slack/status:
                 fail_only: true
-      - kg-app-ts:
+      - ts:
           post-steps:
             - slack/status:
                 fail_only: true
