@@ -1,0 +1,7 @@
+{
+  "packages": [
+    "app/kg/gui",
+    "lib/ts/*"
+  ],
+  "version": "1.0.0"
+}

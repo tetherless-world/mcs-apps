@@ -7,6 +7,7 @@ node_modules/
 *.iml
 logs/
 .metals/
+/package-lock.json
 *.pyc
 /project/project/
 /project/metals.sbt
