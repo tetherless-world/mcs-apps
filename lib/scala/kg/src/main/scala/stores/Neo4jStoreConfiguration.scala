@@ -1,7 +1,6 @@
 package stores
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 
 @Singleton
