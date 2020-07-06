@@ -8,7 +8,7 @@ scalaVersion in ThisBuild := "2.12.10"
 version in ThisBuild := "1.0.0-SNAPSHOT"
 
 
-lazy val app = (project in file("app/kg"))
+lazy val kgApp = (project in file("app/kg"))
   .dependsOn(benchmarkLib, kgLib)
   .enablePlugins(PlayScala)
   .settings(
