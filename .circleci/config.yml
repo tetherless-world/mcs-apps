@@ -72,7 +72,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - dist/app
+            - dist/kg-app
       - save_cache:
           key: sbt-cache-v1
           paths:
