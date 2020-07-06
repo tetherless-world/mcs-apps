@@ -62,9 +62,13 @@ jobs:
           command: |
             cp -p -R /tmp/workspace/dist/gui public
             sbt test playUpdateSecret dist
+            mkdir -p test-results
+            cp -p -R target/test-results test-results/app
+            cp -p -R lib/scala/benchmark/target/test-results test-results/benchmark-lib
+            cp -p -R lib/scala/kg/target/test-results test-results/kg-lib
             cd target/universal && unzip -qq mcs-portal-app*.zip && rm mcs-portal-app*.zip && mkdir ~/dist && mv mcs-portal-app-*-SNAPSHOT ~/dist/app
       - store_test_results:
-          path: target/test-reports
+          path: test-results
       - persist_to_workspace:
           root: ~/
           paths:
