@@ -117,7 +117,7 @@ workflows:
       - cypress/install:
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "app/kg/test/integration/package.json" }}'
           requires:
-            - scala
+            - kg-app-scala
           working_directory: app/kg/test/integration
           post-steps:
             - slack/status:
