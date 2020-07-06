@@ -19,6 +19,16 @@ lazy val kgApp = (project in file("app/kg"))
     name := "mcs-kg-app",
   )
 
+lazy val benchmarkApp = (project in file("app/benchmark"))
+  .dependsOn(benchmarkLib, kgLib)
+  .enablePlugins(PlayScala)
+  .settings(
+    libraryDependencies ++= Seq(
+      "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test
+    ),
+    name := "mcs-benchmark-app",
+  )
+
 lazy val benchmarkLib =
   (project in file("lib/scala/benchmark"))
     .dependsOn(kgLib)
