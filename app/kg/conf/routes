@@ -1,13 +1,13 @@
 # GraphQL
-GET         /api/graphql                    controllers.graphql.GraphQlController.graphql(query: String, variables: Option[String], operation: Option[String])
-POST        /api/graphql                    controllers.graphql.GraphQlController.graphqlBody
-GET         /api/graphql-schema             controllers.graphql.GraphQlController.renderSchema
+GET         /api/graphql                    controllers.graphql.KgGraphQlController.graphql(query: String, variables: Option[String], operation: Option[String])
+POST        /api/graphql                    controllers.graphql.KgGraphQlController.graphqlBody
+GET         /api/graphql-schema             controllers.graphql.KgGraphQlController.renderSchema
 
 # Import
 #DELETE      /api/import/                                       controllers.import_.ImportController.clear
-PUT         /api/import/edges/:edgesCsvFileName                controllers.import_.ImportController.putEdges(edgesCsvFileName: String)
-PUT         /api/import/nodes/:nodesCsvFileName                controllers.import_.ImportController.putNodes(nodesCsvFileName: String)
+PUT         /api/import/edges/:edgesCsvFileName                controllers.import_.KgImportController.putEdges(edgesCsvFileName: String)
+PUT         /api/import/nodes/:nodesCsvFileName                controllers.import_.KgImportController.putNodes(nodesCsvFileName: String)
 
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
-GET         /$path<.*>    controllers.test.TestController.frontEndPath(path)
+GET         /$path<.*>    controllers.test.KgTestController.frontEndPath(path)
