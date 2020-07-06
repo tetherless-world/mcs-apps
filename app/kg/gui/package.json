@@ -1,7 +1,7 @@
 {
-  "name": "mcs-portal-kg-gui",
+  "name": "mcs-kg-gui",
   "version": "1.0.0",
-  "description": "MCS Portal",
+  "description": "Knowledge graph graphical user interface",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

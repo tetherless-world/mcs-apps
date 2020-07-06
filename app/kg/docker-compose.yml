@@ -3,24 +3,24 @@ networks:
   mcs:
     name: mcs
 services:
-  app:
+  mcs-kg-app:
     build:
       context: ../..
       dockerfile: app/kg/Dockerfile
-    container_name: kg-app
+    container_name: mcs-kg-app
     networks:
       - mcs
     restart: unless-stopped
     volumes:
       - ./data:/app/data
-  gui:
+  mcs-kg-gui:
     build:
       # Use the same context to share a .dockerignore
       context: ../..
       dockerfile: app/kg/gui/Dockerfile
-    container_name: kg-gui
+    container_name: mcs-kg-gui
     depends_on:
-      - app
+      - mcs-kg-app
     networks:
       - mcs
     ports:

@@ -16,7 +16,7 @@ lazy val kgApp = (project in file("app/kg"))
       "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
       "me.tongfei" % "progressbar" % "0.8.1",
     ),
-    name := "kg-app",
+    name := "mcs-kg-app",
   )
 
 lazy val benchmarkLib =
@@ -26,7 +26,7 @@ lazy val benchmarkLib =
       libraryDependencies ++= Seq(
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
       ),
-      name := "benchmark-lib"
+      name := "mcs-benchmark-lib"
     )
 
 lazy val kgLib =
@@ -40,5 +40,5 @@ lazy val kgLib =
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
         "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1"
       ),
-      name := "kg-lib"
+      name := "mcs-kg-lib"
     )

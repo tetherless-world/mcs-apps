@@ -14,8 +14,8 @@ FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y curl default-jre-headless unzip
 
-COPY --from=build /build/app/kg/target/universal/kg-app-1.0.0-SNAPSHOT.zip /
-RUN unzip -q kg-app-1.0.0-SNAPSHOT.zip && mv /kg-app-1.0.0-SNAPSHOT /app && chmod +x /app/bin/kg-app
+COPY --from=build /build/app/kg/target/universal/mcs-kg-app-1.0.0-SNAPSHOT.zip /
+RUN unzip -q mcs-kg-app-1.0.0-SNAPSHOT.zip && mv /mcs-kg-app-1.0.0-SNAPSHOT /app && chmod +x /app/bin/mcs-kg-app
 
 COPY /app/kg/docker-entrypoint.sh /
 

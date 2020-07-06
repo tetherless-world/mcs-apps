@@ -9,25 +9,25 @@ jobs:
       - run:
           name: Build
           command: |
-            docker-compose -f app/kg/docker-compose.yml -f neo4j/docker-compose.yml build
+            docker-compose -f app/kg/docker-compose.yml -f db/neo4j/docker-compose.yml build
       - run:
           name: Run
           background: true
           command: |
-            docker-compose -f neo4j/docker-compose.yml -f app/kg/docker-copmose.yml up --abort-on-container-exit
+            docker-compose -f db/neo4j/docker-compose.yml -f app/kg/docker-compose.yml up --abort-on-container-exit
       - run:
           name: Wait for the server to start
           command: |
             sleep 120
-            docker exec mcs-portal-kg-app curl --retry 10 --retry-connrefused -s http://localhost:9000
-            docker exec mcs-portal-kg-gui curl --retry 10 --retry-connrefused -s http://localhost
+            docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost:9000
+            docker exec mcs-kg-gui curl --retry 10 --retry-connrefused -s http://localhost
       - run:
           name: Load the database
           command: |
             bzip2 -dc conf/data/test/kg/edges.csv.bz2 >conf/data/test/kg/edges.csv
             bzip2 -dc conf/data/test/kg/nodes.csv.bz2 >conf/data/test/kg/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker cp conf/data/test/kg/ mcs-portal-kg-app:/app/data/import/
+            docker cp conf/data/test/kg/ mcs-kg-app:/app/data/import/
             app/kg/script/import-cskg-nodes
             sleep 60
             app/kg/script/import-cskg-edges
@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Test that the user interface is up
           command: |
-            docker exec kg-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
+            docker exec mcs-kg-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
   kg-app-scala:
     docker:
       - image: circleci/openjdk:11
@@ -142,7 +142,7 @@ workflows:
             cd ~/dist/kg-app
             bin/kg-app -DtestIntegration
           wait-on: "http-get://localhost:9000/index.html"
-          working_directory: test/integration
+          working_directory: app/kg/test/integration
       - kg-app-docker:
           filters:
             branches:
