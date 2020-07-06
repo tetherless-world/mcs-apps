@@ -63,6 +63,7 @@ jobs:
             cp -p -R /tmp/workspace/dist/kg-gui app/kg/public
             sbt test playUpdateSecret dist
             mkdir -p test-reports
+            cp -p -R app/benchmark/target/test-reports test-reports/benchmark-app
             cp -p -R app/kg/target/test-reports test-reports/kg-app
             cp -p -R lib/scala/benchmark/target/test-reports test-reports/benchmark-lib
             cp -p -R lib/scala/kg/target/test-reports test-reports/kg-lib
