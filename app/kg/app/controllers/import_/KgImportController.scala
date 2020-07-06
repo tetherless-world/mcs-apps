@@ -18,7 +18,7 @@ import stores.kg.KgStore
 import scala.io.Source
 
 @Singleton
-class ImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) extends InjectedController with WithResource {
+class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) extends InjectedController with WithResource {
   private val logger = LoggerFactory.getLogger(getClass)
 
   @Inject

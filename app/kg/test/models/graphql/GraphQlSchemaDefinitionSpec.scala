@@ -1,6 +1,5 @@
 package models.graphql
 
-import data.benchmark.TestBenchmarkData
 import data.kg.TestKgData
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsObject, Json}
@@ -9,7 +8,6 @@ import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
-import stores.Stores
 import stores.kg.TestKgStore
 
 import scala.concurrent.Await
@@ -193,9 +191,9 @@ class GraphQlSchemaDefinitionSpec extends PlaySpec {
   }
 
   def executeQuery(query: Document, vars: JsObject = Json.obj()) = {
-    val futureResult = Executor.execute(GraphQlSchemaDefinition.schema, query,
+    val futureResult = Executor.execute(KgGraphQlSchemaDefinition.schema, query,
       variables = vars,
-      userContext = new GraphQlSchemaContext(FakeRequest(), new Stores(kgStore = new TestKgStore()))
+      userContext = new KgGraphQlSchemaContext(new TestKgStore, FakeRequest())
     )
     Await.result(futureResult, 10.seconds)
   }

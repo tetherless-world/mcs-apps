@@ -3,7 +3,7 @@ package controllers.`import`
 import java.io.{File, FileOutputStream}
 import java.nio.file.{Files, Path}
 
-import controllers.import_.ImportController
+import controllers.import_.KgImportController
 import data.kg.{TestKgData, TestKgDataResources}
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import org.scalatest.BeforeAndAfterEach
@@ -17,7 +17,7 @@ import stores.kg.{KgStore, MemKgStore}
 import scala.reflect.io.Directory
 
 class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results {
-  private var sut: ImportController = _
+  private var sut: KgImportController = _
   private var importDirectoryPath: Path = _
   private var store: KgStore = _
 
@@ -29,7 +29,7 @@ class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results
     importDirectoryPath = Files.createTempDirectory(null)
     Files.createDirectory(importDirectoryPath.resolve("kg"))
     store = new MemKgStore
-    sut = new ImportController(importDirectoryPath, store)
+    sut = new KgImportController(importDirectoryPath, store)
     sut.setControllerComponents(Helpers.stubControllerComponents())
   }
 

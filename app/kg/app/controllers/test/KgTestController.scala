@@ -7,4 +7,4 @@ import play.api.Environment
 import play.api.mvc.InjectedController
 
 @Singleton
-class TestController @Inject()(assets: Assets) extends BaseTestController(assets)
+class KgTestController @Inject()(assets: Assets) extends BaseTestController(assets)
