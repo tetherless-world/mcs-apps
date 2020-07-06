@@ -4,8 +4,8 @@ import java.nio.file.Paths
 
 import akka.stream.OverflowStrategy
 import controllers.Assets
-import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
-import formats.kg.path.KgPathsJsonlReader
+import formats.kg.cskg.CskgNodesCsvReader
+import formats.path.KgPathsJsonlReader
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
 import me.tongfei.progressbar.{DelegatingProgressBarConsumer, ProgressBar, ProgressBarBuilder}
