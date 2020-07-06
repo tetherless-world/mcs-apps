@@ -16,7 +16,7 @@ import stores.kg.{KgStore, MemKgStore}
 
 import scala.reflect.io.Directory
 
-class ImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results {
+class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Results {
   private var sut: KgImportController = _
   private var importDirectoryPath: Path = _
   private var store: KgStore = _

@@ -14,7 +14,7 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class GraphQlSchemaDefinitionSpec extends PlaySpec {
+class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
   private val KgId = "test"
 
   "GraphQL schema" must {
