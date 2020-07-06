@@ -8,7 +8,7 @@ scalaVersion in ThisBuild := "2.12.10"
 version in ThisBuild := "1.0.0-SNAPSHOT"
 
 
-lazy val app = (project in file("."))
+lazy val app = (project in file("app/kg"))
   .dependsOn(benchmarkLib, kgLib)
   .enablePlugins(PlayScala)
   .settings(
@@ -16,7 +16,7 @@ lazy val app = (project in file("."))
       "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
       "me.tongfei" % "progressbar" % "0.8.1",
     ),
-    name := "mcs-portal-app",
+    name := "mcs-portal-app-kg",
   )
 
 lazy val benchmarkLib =
