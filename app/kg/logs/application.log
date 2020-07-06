@@ -1,9 +1,0 @@
-2020-06-29 10:03:41,097 [INFO] from Driver in play-dev-mode-akka.actor.default-dispatcher-5 - Direct driver instance 1393539564 created for server address mcs-portal-neo4j:7687
-2020-06-29 10:03:46,500 [INFO] from stores.kg.Neo4jStore in play-dev-mode-akka.actor.default-dispatcher-5 - neo4j indices already exist
-2020-06-29 10:03:46,545 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-6 - Slf4jLogger started
-2020-06-29 10:03:46,892 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-5 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.headers.SecurityHeadersFilter
-    play.filters.cors.CORSFilter
-
-2020-06-29 10:03:46,897 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-5 - Application started (Dev) (no global state)
