@@ -1,5 +1,6 @@
 package stores.benchmark
 
+import data.benchmark.TestBenchmarkData
 import org.scalatest.{Matchers, WordSpec}
 import stores.StringFilter
 

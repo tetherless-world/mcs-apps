@@ -72,7 +72,7 @@ final case class PathRecord(
 }
 
 @Singleton
-final class Neo4jStore @Inject()(configuration: Neo4jStoreConfiguration) extends KgStore with WithResource {
+final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) extends KgStore with WithResource {
   private var bootstrapped: Boolean = false
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("datasource", "other", "weight")

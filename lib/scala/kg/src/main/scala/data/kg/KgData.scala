@@ -1,4 +1,4 @@
-package stores.kg
+package data.kg
 
 import models.kg.{KgEdge, KgNode, KgPath}
 

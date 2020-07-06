@@ -1,5 +1,6 @@
-package formats.cskg
+package formats.kg.cskg
 
+import data.kg.TestKgDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 

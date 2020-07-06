@@ -6,7 +6,6 @@ import javax.inject.{Inject, Singleton}
 import models.graphql.{GraphQlSchemaContext, GraphQlSchemaDefinition}
 import play.api.mvc.Request
 import stores.Stores
-import stores.kg.KgStore
 
 @Singleton
 class GraphQlController @Inject()(stores: Stores, system: ActorSystem) extends BaseGraphQlController[GraphQlSchemaContext](GraphQlSchemaDefinition.schema, system) {

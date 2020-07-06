@@ -1,4 +1,4 @@
-package formats.path
+package formats.kg.path
 
 import java.io.InputStream
 

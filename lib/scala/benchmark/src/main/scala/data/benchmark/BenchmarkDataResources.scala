@@ -1,13 +1,11 @@
-package stores.benchmark
+package data.benchmark
 
-import java.io.{BufferedInputStream, InputStream}
+import java.io.InputStream
 
+import data.DataResources
 import formats.benchmark.{BenchmarkAnswersJsonlReader, BenchmarkQuestionsJsonlReader, BenchmarkSubmissionsJsonlReader, BenchmarksJsonlReader}
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkSubmission}
-import stores.DataResources
-
-import scala.io.Source
 
 class BenchmarkDataResources(
                                     val benchmarkAnswersJsonlResourceName: String,

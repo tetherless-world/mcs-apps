@@ -3,7 +3,7 @@ package stores.kg
 import com.google.inject.ImplementedBy
 import models.kg.{KgEdge, KgNode, KgPath}
 
-@ImplementedBy(classOf[Neo4jStore])
+@ImplementedBy(classOf[Neo4jKgStore])
 trait KgStore {
   /**
    * Clear the store.

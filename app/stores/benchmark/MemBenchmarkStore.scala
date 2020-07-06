@@ -1,6 +1,7 @@
 package stores.benchmark
 
-import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkDataset, BenchmarkSubmission}
+import data.benchmark.BenchmarkData
+import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkDataset, BenchmarkQuestion, BenchmarkSubmission}
 
 class MemBenchmarkStore(
                         private val benchmarks: List[Benchmark],

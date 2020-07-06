@@ -1,4 +1,4 @@
-package formats.cskg
+package formats.kg.cskg
 
 import java.io._
 import java.nio.file.Path

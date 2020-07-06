@@ -1,4 +1,4 @@
-package stores
+package data
 
 import java.io.BufferedInputStream
 

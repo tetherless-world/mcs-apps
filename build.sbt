@@ -12,6 +12,10 @@ lazy val app = (project in file("."))
   .dependsOn(benchmarkLib, kgLib)
   .enablePlugins(PlayScala)
   .settings(
+    libraryDependencies ++= Seq(
+      "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
+      "me.tongfei" % "progressbar" % "0.8.1",
+    ),
     name := "mcs-portal-app",
   )
 
@@ -19,6 +23,9 @@ lazy val benchmarkLib =
   (project in file("lib/scala/benchmark"))
     .dependsOn(kgLib)
     .settings(
+      libraryDependencies ++= Seq(
+        "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
+      ),
       name := "mcs-portal-benchmark-lib"
     )
 
@@ -31,7 +38,6 @@ lazy val kgLib =
         "com.outr" %% "lucene4s" % "1.9.1",
         "io.github.tetherless-world" %% "twxplore-base" % twxploreVersion,
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
-        "me.tongfei" % "progressbar" % "0.8.1",
         "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1"
       ),
       name := "mcs-portal-kg-lib"

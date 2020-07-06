@@ -1,6 +1,8 @@
 package formats.benchmark
 
+import data.benchmark.TestBenchmarkDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
+import org.scalatest.{Matchers, WordSpec}
 
 class BenchmarkAnswersJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "Benchmark answers .jsonl reader" can {

@@ -1,4 +1,4 @@
-package stores.benchmark
+package data.benchmark
 
 object TestBenchmarkData extends BenchmarkData(TestBenchmarkDataResources) {
   val benchmark = benchmarks(0)

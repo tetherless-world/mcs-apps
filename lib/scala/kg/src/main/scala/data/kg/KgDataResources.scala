@@ -1,14 +1,12 @@
-package stores.kg
+package data.kg
 
 import java.io.InputStream
 
-import formats.kg.cskg.CskgNodesCsvReader
-import formats.path.KgPathsJsonlReader
+import data.DataResources
+import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
+import formats.kg.path.KgPathsJsonlReader
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.kg.{KgEdge, KgNode, KgPath}
-import stores.DataResources
-
-import scala.io.Source
 
 class KgDataResources(
   val edgesCsvBz2ResourceName: String,

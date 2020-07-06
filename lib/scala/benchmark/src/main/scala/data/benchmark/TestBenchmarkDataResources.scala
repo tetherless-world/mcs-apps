@@ -1,4 +1,4 @@
-package stores.benchmark
+package data.benchmark
 
 object TestBenchmarkDataResources extends BenchmarkDataResources(
   benchmarkAnswersJsonlResourceName = "/data/test/benchmark/benchmark_answers.jsonl.bz2",

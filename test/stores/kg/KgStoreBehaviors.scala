@@ -1,5 +1,6 @@
 package stores.kg
 
+import data.kg.TestKgData
 import org.scalatest.{Matchers, WordSpec}
 import stores.StringFilter
 

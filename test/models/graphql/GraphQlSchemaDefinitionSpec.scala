@@ -1,5 +1,7 @@
 package models.graphql
 
+import data.benchmark.TestBenchmarkData
+import data.kg.TestKgData
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsObject, Json}
 import play.api.test.FakeRequest
@@ -8,8 +10,8 @@ import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
 import stores.Stores
-import stores.benchmark.{TestBenchmarkData, TestBenchmarkStore}
-import stores.kg.{TestKgData, TestKgStore}
+import stores.benchmark.TestBenchmarkStore
+import stores.kg.TestKgStore
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global

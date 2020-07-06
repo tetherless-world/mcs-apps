@@ -4,6 +4,7 @@ import java.io.{File, FileOutputStream}
 import java.nio.file.{Files, Path}
 
 import controllers.import_.ImportController
+import data.kg.{TestKgData, TestKgDataResources}
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
@@ -11,7 +12,7 @@ import play.api.mvc.{AnyContent, Results}
 import play.api.test.{FakeRequest, Helpers}
 import play.api.test._
 import play.api.test.Helpers._
-import stores.kg.{KgStore, MemKgStore, TestKgData, TestKgDataResources}
+import stores.kg.{KgStore, MemKgStore}
 
 import scala.reflect.io.Directory
 

@@ -1,4 +1,4 @@
-package stores.benchmark
+package data.benchmark
 
 import models.benchmark.{Benchmark, BenchmarkAnswer, BenchmarkQuestion, BenchmarkSubmission}
 
