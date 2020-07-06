@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  docker:
+  kg-app-docker:
     docker:
       - image: circleci/python:3.8
     steps:
@@ -9,28 +9,28 @@ jobs:
       - run:
           name: Build
           command: |
-            docker-compose build
+            docker-compose -f app/kg/docker-compose.yml -f neo4j/docker-compose.yml build
       - run:
           name: Run
           background: true
           command: |
-            docker-compose up --abort-on-container-exit
+            docker-compose -f neo4j/docker-compose.yml -f app/kg/docker-copmose.yml up --abort-on-container-exit
       - run:
           name: Wait for the server to start
           command: |
             sleep 120
-            docker exec mcs-portal-app curl --retry 10 --retry-connrefused -s http://localhost:9000
-            docker exec mcs-portal-gui curl --retry 10 --retry-connrefused -s http://localhost
+            docker exec mcs-portal-kg-app curl --retry 10 --retry-connrefused -s http://localhost:9000
+            docker exec mcs-portal-kg-gui curl --retry 10 --retry-connrefused -s http://localhost
       - run:
           name: Load the database
           command: |
             bzip2 -dc conf/data/test/kg/edges.csv.bz2 >conf/data/test/kg/edges.csv
             bzip2 -dc conf/data/test/kg/nodes.csv.bz2 >conf/data/test/kg/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker cp conf/data/test/kg/ mcs-portal-app:/app/data/import/
-            script/import-cskg-nodes
+            docker cp conf/data/test/kg/ mcs-portal-kg-app:/app/data/import/
+            app/kg/script/import-cskg-nodes
             sleep 60
-            script/import-cskg-edges
+            app/kg/script/import-cskg-edges
       - run:
           name: Test that the database is loaded
           command: |
@@ -42,8 +42,8 @@ jobs:
       - run:
           name: Test that the user interface is up
           command: |
-            docker exec mcs-portal-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
-  scala:
+            docker exec mcs-portal-kg-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
+  kg-app-scala:
     docker:
       - image: circleci/openjdk:11
       - image: neo4j:4.0.4
@@ -66,7 +66,7 @@ jobs:
             cp -p -R app/kg/target/test-reports test-reports/kg-app
             cp -p -R lib/scala/benchmark/target/test-reports test-reports/benchmark-lib
             cp -p -R lib/scala/kg/target/test-reports test-reports/kg-lib
-            cd target/universal && unzip -qq mcs-portal-app*.zip && rm mcs-portal-app*.zip && mkdir ~/dist && mv mcs-portal-app-*-SNAPSHOT ~/dist/app
+            cd app/kg/target/universal && unzip -qq mcs-portal-kg-app*.zip && rm mcs-portal-kg-app*.zip && mkdir ~/dist && mv mcs-portal-kg-app-*-SNAPSHOT ~/dist/kg-app
       - store_test_results:
           path: test-reports
       - persist_to_workspace:
@@ -79,7 +79,7 @@ jobs:
             - "~/.ivy2/cache"
             - "~/.m2"
             - "~/.sbt"
-  ts:
+  kg-app-ts:
     working_directory: ~/project
     docker:
       - image: circleci/node:12
@@ -112,26 +112,26 @@ orbs:
   slack: circleci/slack@3.4.2
 workflows:
   version: 2
-  build:
+  kg-app:
     jobs:
       - cypress/install:
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "app/kg/test/integration/package.json" }}'
           requires:
             - scala
-          working_directory: test/integration
+          working_directory: app/kg/test/integration
           post-steps:
             - slack/status:
                 fail_only: true
       - cypress/run:
           attach-workspace: true
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "test/integration/package.json" }}'
+          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "app/kg/test/integration/package.json" }}'
           post-steps:
             - store_test_results:
-                path: test/integration/results
+                path: app/kg/test/integration/results
             - store_artifacts:
-                path: test/integration/cypress/screenshots
+                path: app/kg/test/integration/cypress/screenshots
             - store_artifacts:
-                path: test/integration/cypress/videos
+                path: app/kg/test/integration/cypress/videos
             - slack/status
           requires:
             - cypress/install
@@ -139,23 +139,23 @@ workflows:
             pwd
             cp ~/project/.circleci/cypress.json .
             apt-get update && apt-get install -y default-jre
-            cd ~/dist/app
-            bin/mcs-portal-app -DtestIntegration
+            cd ~/dist/kg-app
+            bin/mcs-portal-kg-app -DtestIntegration
           wait-on: "http-get://localhost:9000/index.html"
           working_directory: test/integration
-      - docker:
+      - kg-app-docker:
           filters:
             branches:
               only: master
           post-steps:
             - slack/status
-      - scala:
+      - kg-app-scala:
           requires:
-            - ts
+            - kg-app-ts
           post-steps:
             - slack/status:
                 fail_only: true
-      - ts:
+      - kg-app-ts:
           post-steps:
             - slack/status:
                 fail_only: true
