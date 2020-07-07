@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {KgNodeSearchBox} from "shared/components/kg/search/KgNodeSearchBox";
+import {KgNodeSearchBox} from "kg/components/kg/search/KgNodeSearchBox";
 import {Frame} from "kg/components/frame/Frame";
 
 import {
