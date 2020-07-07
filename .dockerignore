@@ -1,9 +1,12 @@
+/app/benchmark/test/
 /app/kg/data/
+/app/kg/test/
 /.circleci/
 /.git/
 **/.DS_Store
 **/dist/
 /.idea/
+/integration/
 LICENSE/
 **/*.log
 README.md

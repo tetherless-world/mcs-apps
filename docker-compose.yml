@@ -3,9 +3,9 @@ networks:
   mcs:
     name: mcs
 services:
-  mcs-kg-app:
+  kg-app:
     build:
-      context: ../..
+      context: .
       dockerfile: app/kg/Dockerfile
     container_name: mcs-kg-app
     networks:
@@ -21,7 +21,7 @@ services:
       # so docker-compose -f app/test/docker-compose.yml -f db/neo4j/docker-compose.yml
       # Paths are relative to app/test, not the current docker-compose.yml file.
       # That's why the directory tree has the depth it does.
-      context: ../..
+      context: .
       dockerfile: db/neo4j/Dockerfile
     container_name: mcs-neo4j
     networks:
