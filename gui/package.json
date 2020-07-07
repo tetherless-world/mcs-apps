@@ -49,7 +49,7 @@
     "webpack-merge": "^4.2.2"
   },
   "license": "Apache-2.0",
-  "repository": "https://github.com/tetherless-world/mcs-portal.git",
+  "repository": "https://github.com/tetherless-world/mcs-apps.git",
   "scripts": {
     "build-benchmark": "webpack --config config/benchmark/webpack.config.js --mode production -p",
     "build-kg": "webpack --config config/kg/webpack.config.js --mode production -p",
