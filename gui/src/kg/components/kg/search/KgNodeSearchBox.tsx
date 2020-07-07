@@ -15,7 +15,7 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "shared/models/kg/KgNode";
-import {KgDatasourceSelect} from "shared/components/kg/search/KgDatasourceSelect";
+import {KgDatasourceSelect} from "kg/components/kg/search/KgDatasourceSelect";
 import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
