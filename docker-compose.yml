@@ -3,6 +3,16 @@ networks:
   mcs:
     name: mcs
 services:
+  mcs-kg-app:
+    build:
+      context: ../..
+      dockerfile: app/kg/Dockerfile
+    container_name: mcs-kg-app
+    networks:
+      - mcs
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
   neo4j:
     build:
       # Use the same context to share a .dockerignore
