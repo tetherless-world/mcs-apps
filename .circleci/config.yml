@@ -9,18 +9,17 @@ jobs:
       - run:
           name: Build
           command: |
-            docker-compose -f app/kg/docker-compose.yml -f db/neo4j/docker-compose.yml build
+            docker-compose build kg-app neo4j
       - run:
           name: Run
           background: true
           command: |
-            docker-compose -f db/neo4j/docker-compose.yml -f app/kg/docker-compose.yml up --abort-on-container-exit
+            docker-compose up --abort-on-container-exit kg-app neo4j
       - run:
           name: Wait for the server to start
           command: |
             sleep 120
-            docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost:9000
-            docker exec mcs-kg-gui curl --retry 10 --retry-connrefused -s http://localhost
+            docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
       - run:
           name: Load the database
           command: |
@@ -42,7 +41,7 @@ jobs:
       - run:
           name: Test that the user interface is up
           command: |
-            docker exec mcs-kg-gui curl --retry 5 --retry-connrefused http://localhost &>/dev/null
+            docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
   scala:
     docker:
       - image: circleci/openjdk:11
