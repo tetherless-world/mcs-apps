@@ -10,4 +10,4 @@ PUT         /api/import/nodes/:nodesCsvFileName                controllers.impor
 
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
-GET         /$path<.*>    controllers.test.KgTestController.frontEndPath(path)
+GET         /$path<.*>    controllers.assets.KgAssetsController.frontEndPath(path)

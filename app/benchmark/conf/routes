@@ -5,4 +5,4 @@ GET         /api/graphql-schema             controllers.graphql.BenchmarkGraphQl
 
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
-GET         /$path<.*>    controllers.test.BenchmarkTestController.frontEndPath(path)
+GET         /$path<.*>    controllers.assets.BenchmarkAssetsController.frontEndPath(path)

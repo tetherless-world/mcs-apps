@@ -1,0 +1,44 @@
+version: "3.5"
+networks:
+  mcs:
+    name: mcs
+services:
+  kg-app:
+    build:
+      context: .
+      dockerfile: app/kg/Dockerfile
+    container_name: mcs-kg-app
+    networks:
+      - mcs
+    ports:
+      - 127.0.0.1:8080:80
+    restart: unless-stopped
+    volumes:
+      - ./app/kg/data:/app/data
+  neo4j:
+    build:
+      # Use the same context to share a .dockerignore
+      # Note that relative paths are to the first docker-compose.yml specified with -f
+      # https://forums.docker.com/t/relative-path-of-build-context-in-docker-compose-configuration-is-not-resolved-relative-to-the-compose-yml-file-location/41784
+      # so docker-compose -f app/test/docker-compose.yml -f db/neo4j/docker-compose.yml
+      # Paths are relative to app/test, not the current docker-compose.yml file.
+      # That's why the directory tree has the depth it does.
+      context: .
+      dockerfile: db/neo4j/Dockerfile
+    container_name: mcs-neo4j
+    networks:
+      - mcs
+    ports:
+      - 7474:7474 # HTTP
+      - 7687:7687 # Bolt
+    restart: unless-stopped
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+      - neo4j-plugins:/plugins
+volumes:
+  neo4j-data:
+  neo4j-import:
+  neo4j-logs:
+  neo4j-plugins:
