@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec mcs-portal-kg-app curl -XPUT -s http://localhost:9000/api/import/edges/edges.csv

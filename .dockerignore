@@ -1,8 +1,8 @@
+/app/kg/data/
 /.circleci/
 /.git/
-/data/
 **/.DS_Store
-/gui/dist/
+**/dist/
 /.idea/
 LICENSE/
 **/*.log
