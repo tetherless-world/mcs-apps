@@ -10,7 +10,7 @@ import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent, Divider} from "@material-ui/core";
 import {NotFound} from "components/error/NotFound";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import {KgNodeSearchBox} from "components/kg/search/KgNodeSearchBox";
-import {Frame} from "components/frame/Frame";
+import {KgNodeSearchBox} from "kg/components/search/KgNodeSearchBox";
+import {Frame} from "kg/components/frame/Frame";
 
 import {
   Grid,
@@ -14,12 +14,12 @@ import {
 
 import {useHistory, Link} from "react-router-dom";
 
-import {Hrefs} from "Hrefs";
-import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
-import {kgId} from "api/kgId";
+import {Hrefs} from "kg/Hrefs";
+import {KgNodeSearchBoxValue} from "kg/models/kg/KgNodeSearchBoxValue";
+import {kgId} from "kg/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
-import {KgHomePageQuery} from "api/queries/kg/types/KgHomePageQuery";
-import * as KgHomePageQueryDocument from "api/queries/kg/KgHomePageQuery.graphql";
+import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
+import * as KgHomePageQueryDocument from "kg/api/queries/KgHomePageQuery.graphql";
 
 const useStyles = makeStyles((theme) =>
   createStyles({

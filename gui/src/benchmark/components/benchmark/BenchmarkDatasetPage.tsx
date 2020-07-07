@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import {useParams} from "react-router-dom";
 import * as BenchmarkDatasetPageQueryDocument from "api/queries/benchmark/BenchmarkDatasetPageQuery.graphql";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";

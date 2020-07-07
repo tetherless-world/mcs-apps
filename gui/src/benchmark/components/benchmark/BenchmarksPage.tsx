@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import * as BenchmarksPageQueryDocument from "api/queries/benchmark/BenchmarksPageQuery.graphql";
 import {BenchmarksQuery} from "api/queries/benchmark/types/BenchmarksQuery";
 import {useQuery} from "@apollo/react-hooks";

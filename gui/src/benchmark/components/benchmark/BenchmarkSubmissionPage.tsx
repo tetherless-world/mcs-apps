@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import * as BenchmarkSubmissionPageQueryDocument from "api/queries/benchmark/BenchmarkSubmissionPageQuery.graphql";
 import {BenchmarkSubmissionPageQuery} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";

@@ -1,4 +1,4 @@
-import {KgNodePageQuery_kgById_nodeById_subjectOfEdges} from "api/queries/kg/types/KgNodePageQuery";
+import {KgNodePageQuery_kgById_nodeById_subjectOfEdges} from "kg/api/queries/types/KgNodePageQuery";
 import {
   Card,
   CardContent,

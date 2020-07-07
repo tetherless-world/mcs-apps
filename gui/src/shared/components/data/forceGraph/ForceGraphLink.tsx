@@ -1,5 +1,8 @@
 import * as React from "react";
-import {ForceGraphLinkDatum, ForceGraphNodeDatum} from "models/data/forceGraph";
+import {
+  ForceGraphLinkDatum,
+  ForceGraphNodeDatum,
+} from "shared/models/data/forceGraph";
 
 const defaultLinkOptions: React.SVGProps<SVGLineElement> = {
   stroke: "#999",

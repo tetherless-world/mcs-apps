@@ -1,7 +1,10 @@
 import * as React from "react";
 import * as d3 from "d3";
 
-import {ForceGraphNodeDatum, ForceGraphLinkDatum} from "models/data/forceGraph";
+import {
+  ForceGraphNodeDatum,
+  ForceGraphLinkDatum,
+} from "shared/models/data/forceGraph";
 
 const dragHandler = <
   NodeDatum extends ForceGraphNodeDatum,

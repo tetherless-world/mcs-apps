@@ -6,14 +6,14 @@ import {
   Switch,
   useLocation,
 } from "react-router-dom";
-import * as NodePageQueryDocument from "api/queries/kg/KgNodePageQuery.graphql";
+import * as NodePageQueryDocument from "kg/api/queries/KgNodePageQuery.graphql";
 import {
   KgNodePageQuery,
   KgNodePageQuery_kgById_nodeById_subjectOfEdges,
   KgNodePageQueryVariables,
-} from "api/queries/kg/types/KgNodePageQuery";
+} from "kg/api/queries/types/KgNodePageQuery";
 import {useQuery} from "@apollo/react-hooks";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import {
   Card,
   CardContent,
@@ -24,11 +24,11 @@ import {
   Tab,
   Tabs,
 } from "@material-ui/core";
-import {KgNodePredicateGrid} from "components/kg/node/KgNodePredicateGrid";
-import {KgNodePredicateList} from "components/kg/node/KgNodePredicateList";
-import {kgId} from "api/kgId";
-import {NotFound} from "components/error/NotFound";
-import {KgDatasourceLink} from "components/kg/search/KgDatasourceLink";
+import {KgNodePredicateGrid} from "kg/components/node/KgNodePredicateGrid";
+import {KgNodePredicateList} from "kg/components/node/KgNodePredicateList";
+import {kgId} from "kg/api/kgId";
+import {NotFound} from "shared/components/error/NotFound";
+import {KgDatasourceLink} from "kg/components/search/KgDatasourceLink";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({

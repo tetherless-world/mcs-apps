@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {Hrefs} from "kg/Hrefs";
+import {Hrefs} from "benchmark/Hrefs";
 import {Link, useLocation} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>

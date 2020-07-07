@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {ForceGraphNodeDatum} from "models/data/forceGraph";
+import {ForceGraphNodeDatum} from "shared/models/data/forceGraph";
 
 const defaultNodeOptions: React.SVGProps<SVGCircleElement> = {
   stroke: "none",

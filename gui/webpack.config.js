@@ -17,8 +17,8 @@ module.exports = function (env, argv) {
       "kg-gui": "./kg/main.tsx",
     },
     output: {
-      path: path.join(distPath, "[name]"),
-      filename: "js/[name].js",
+      path: distPath,
+      filename: "[name]/js/[name].js",
       publicPath: "",
     },
     plugins: [

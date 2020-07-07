@@ -1,20 +1,20 @@
 import * as React from "react";
 import {Grid} from "@material-ui/core";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import * as ReactDOM from "react-dom";
 import {useQuery, useApolloClient} from "@apollo/react-hooks";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
   KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
-} from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
-import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
-import {KgNodeTable} from "components/kg/node/KgNodeTable";
+} from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
+import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
+import {KgNodeTable} from "kg/components/node/KgNodeTable";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
-import {KgNodeFilters} from "api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "models/kg/KgNodeSearchVariables";
-import {kgId} from "api/kgId";
+import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
+import {KgNodeSearchVariables} from "kg/models/kg/KgNodeSearchVariables";
+import {kgId} from "kg/api/kgId";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   public readonly __typename = "KgNodeSearchVariables";

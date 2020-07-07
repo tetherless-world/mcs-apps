@@ -1,4 +1,4 @@
-import {apolloClient} from "kg/api/apolloClient";
+import {apolloClient} from "api/apolloClient";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {ApolloProvider} from "react-apollo";

@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
-import {Frame} from "components/frame/Frame";
+import {Frame} from "kg/components/frame/Frame";
 import {NotFound} from "components/error/NotFound";
 import {BenchmarkFrame} from "./BenchmarkFrame";
 import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";

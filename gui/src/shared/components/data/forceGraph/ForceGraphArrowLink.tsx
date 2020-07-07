@@ -1,7 +1,10 @@
 import * as React from "react";
 
 import {ForceGraphLinkProps, ForceGraphLink} from "./ForceGraphLink";
-import {ForceGraphNodeDatum, ForceGraphLinkDatum} from "models/data/forceGraph";
+import {
+  ForceGraphNodeDatum,
+  ForceGraphLinkDatum,
+} from "shared/models/data/forceGraph";
 
 interface ForceGraphArrowLinkProps<LinkDatum>
   extends ForceGraphLinkProps<LinkDatum> {

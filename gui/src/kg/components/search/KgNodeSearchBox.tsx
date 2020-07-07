@@ -5,21 +5,21 @@ import {Paper, InputAdornment, InputBase, IconButton} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {useHistory} from "react-router-dom";
-import {Hrefs} from "Hrefs";
+import {Hrefs} from "kg/Hrefs";
 import {GraphQLError} from "graphql";
 import {
   KgNodeSearchResultsPageQuery,
   KgNodeSearchResultsPageQueryVariables,
-} from "api/queries/kg/types/KgNodeSearchResultsPageQuery";
+} from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgNodeSearchResultsPageQueryDocument from "api/queries/kg/KgNodeSearchResultsPageQuery.graphql";
+import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {KgNode} from "models/kg/KgNode";
-import {KgDatasourceSelect} from "components/kg/search/KgDatasourceSelect";
+import {KgNode} from "kg/models/kg/KgNode";
+import {KgDatasourceSelect} from "kg/components/search/KgDatasourceSelect";
 import {KgNodeFilters, StringFilter} from "api/graphqlGlobalTypes";
-import {KgNodeSearchBoxValue} from "models/kg/KgNodeSearchBoxValue";
-import {KgNodeLink} from "components/kg/node/KgNodeLink";
-import {kgId} from "api/kgId";
+import {KgNodeSearchBoxValue} from "kg/models/kg/KgNodeSearchBoxValue";
+import {KgNodeLink} from "kg/components/node/KgNodeLink";
+import {kgId} from "kg/api/kgId";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
