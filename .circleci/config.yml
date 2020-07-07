@@ -60,23 +60,23 @@ jobs:
       - run:
           name: Build and test
           command: |
-            cp -p -R /tmp/workspace/dist/kg-gui app/kg/public
+            cp -p -R /tmp/workspace/dist/gui/benchmark app/benchmark/public
+            cp -p -R /tmp/workspace/dist/gui/kg app/kg/public
             sbt test playUpdateSecret dist
             mkdir -p test-reports
             cp -p -R app/benchmark/target/test-reports test-reports/benchmark-app
             cp -p -R app/kg/target/test-reports test-reports/kg-app
             cp -p -R lib/scala/benchmark/target/test-reports test-reports/benchmark-lib
             cp -p -R lib/scala/kg/target/test-reports test-reports/kg-lib
-            mkdir ~/dist
-            cd app/benchmark/target/universal && unzip -qq mcs-benchmark-app*.zip && rm mcs-benchmark-app*.zip && mv mcs-benchmark-app-*-SNAPSHOT ~/dist/benchmark-app
-            cd ~/project/app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mv mcs-kg-app-*-SNAPSHOT ~/dist/kg-app
+            mkdir ~/dist/app
+            cd app/benchmark/target/universal && unzip -qq mcs-benchmark-app*.zip && rm mcs-benchmark-app*.zip && mv mcs-benchmark-app-*-SNAPSHOT ~/dist/app/benchmark
+            cd ~/project/app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mv mcs-kg-app-*-SNAPSHOT ~/dist/app/kg
       - store_test_results:
           path: test-reports
       - persist_to_workspace:
           root: ~/
           paths:
-            - dist/benchmark-app
-            - dist/kg-app
+            - dist/app
       - save_cache:
           key: sbt-cache-v1
           paths:
@@ -90,27 +90,28 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: ts-dependency-cache-v2-{{ checksum "app/kg/gui/package.json" }}
+          key: ts-dependency-cache-v2-{{ checksum "gui/package.json" }}
       - run:
           name: Install dependencies
           command: |
             cd app/kg/gui
             npm install
       - save_cache:
-          key: ts-dependency-cache-v2-{{ checksum "app/kg/gui/package.json" }}
+          key: ts-dependency-cache-v2-{{ checksum "gui/package.json" }}
           paths:
-            - app/kg/gui/node_modules
+            - gui/node_modules
       - run:
           name: Build
           command: |
-            cd app/kg/gui
-            npm run build
-            mkdir ~/dist
-            mv dist ~/dist/kg-gui
+            cd gui
+            npm run build-benchmark
+            npm run build-kg
+            mkdir -p ~/dist
+            mv dist ~/dist/gui
       - persist_to_workspace:
           root: ~/
           paths:
-            - dist/kg-gui
+            - dist/gui
 orbs:
   cypress: cypress-io/cypress@1
   slack: circleci/slack@3.4.2
@@ -143,7 +144,7 @@ workflows:
             pwd
             cp ~/project/.circleci/cypress.json .
             apt-get update && apt-get install -y default-jre
-            cd ~/dist/kg-app
+            cd ~/dist/app/kg
             bin/mcs-kg-app -DtestIntegration
           wait-on: "http-get://localhost:9000/index.html"
           working_directory: app/kg/test/integration
