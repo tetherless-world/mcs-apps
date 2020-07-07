@@ -1,7 +1,7 @@
-import {KgNodeSearchResultsPage} from "../../support/pages/kg/KgNodeSearchResultsPage";
-import {KgNode} from "../../support/models/kg/KgNode";
-import {TestData} from "../../support/TestData";
-import {KgNodePage} from "../../support/pages/kg/KgNodePage";
+import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
+import {KgNode} from "../../support/kg/models/KgNode";
+import {TestData} from "../../support/kg/KgTestData";
+import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 
 context("KgNodeSearchResultsPage", () => {
   let page: KgNodeSearchResultsPage;

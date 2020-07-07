@@ -1,16 +1,16 @@
-import {BenchmarkAnswerPage} from "../../support/pages/benchmark/BenchmarkAnswerPage";
-import {TestData} from "../../support/TestData";
-import {Benchmark} from "../../support/models/benchmark/Benchmark";
-import {BenchmarkDataset} from "../../support/models/benchmark/BenchmarkDataset";
-import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
+import {BenchmarkAnswerPage} from "../../support/benchmark/pages/BenchmarkAnswerPage";
+import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {Benchmark} from "../../support/benchmark/models/Benchmark";
+import {BenchmarkDataset} from "../../support/benchmark/models/BenchmarkDataset";
+import {BenchmarkSubmission} from "../../support/benchmark/models/BenchmarkSubmission";
 import {
   BenchmarkQuestion,
   BenchmarkQuestionPromptType,
-} from "../../support/models/benchmark/BenchmarkQuestion";
-import {BenchmarkAnswer} from "../../support/models/benchmark/BenchmarkAnswer";
-import {BenchmarkPage} from "../../support/pages/benchmark/BenchmarkPage";
-import {BenchmarkDatasetPage} from "../../support/pages/benchmark/BenchmarkDatasetPage";
-import {BenchmarkSubmissionPage} from "../../support/pages/benchmark/BenchmarkSubmissionPage";
+} from "../../support/benchmark/models/BenchmarkQuestion";
+import {BenchmarkAnswer} from "../../support/benchmark/models/BenchmarkAnswer";
+import {BenchmarkPage} from "../../support/benchmark/pages/BenchmarkPage";
+import {BenchmarkDatasetPage} from "../../support/benchmark/pages/BenchmarkDatasetPage";
+import {BenchmarkSubmissionPage} from "../../support/benchmark/pages/BenchmarkSubmissionPage";
 
 context("BenchmarkAnswerPage", () => {
   let benchmark: Benchmark;

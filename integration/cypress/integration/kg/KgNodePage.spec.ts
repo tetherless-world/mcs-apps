@@ -1,7 +1,7 @@
-import {KgNodePage, KgNodePageTab} from "../../support/pages/kg/KgNodePage";
-import {KgNode} from "../../support/models/kg/KgNode";
-import {TestData} from "../../support/TestData";
-import {KgEdge} from "../../support/models/kg/KgEdge";
+import {KgNodePage, KgNodePageTab} from "../../support/kg/pages/KgNodePage";
+import {KgNode} from "../../support/kg/models/KgNode";
+import {TestData} from "../../support/kg/KgTestData";
+import {KgEdge} from "../../support/kg/models/KgEdge";
 
 context("KG node page", () => {
   let page: KgNodePage;

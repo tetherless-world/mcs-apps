@@ -1,8 +1,8 @@
-import {KgHomePage} from "../../support/pages/kg/KgHomePage";
-import {TestData} from "../../support/TestData";
-import {KgNodePage} from "../../support/pages/kg/KgNodePage";
-import {KgNode} from "../../support/models/kg/KgNode";
-import {KgNodeSearchResultsPage} from "../../support/pages/kg/KgNodeSearchResultsPage";
+import {KgHomePage} from "../../support/kg/pages/KgHomePage";
+import {TestData} from "../../support/kg/KgTestData";
+import {KgNodePage} from "../../support/kg/pages/KgNodePage";
+import {KgNode} from "../../support/kg/models/KgNode";
+import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
 
 context("KG Home Page", () => {
   const page = new KgHomePage();

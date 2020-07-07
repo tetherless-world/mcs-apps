@@ -1,8 +1,8 @@
-import {TestData} from "../../support/TestData";
-import {Benchmark} from "../../support/models/benchmark/Benchmark";
-import {BenchmarkDataset} from "../../support/models/benchmark/BenchmarkDataset";
-import {BenchmarkSubmissionPage} from "../../support/pages/benchmark/BenchmarkSubmissionPage";
-import {BenchmarkSubmission} from "../../support/models/benchmark/BenchmarkSubmission";
+import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {Benchmark} from "../../support/benchmark/models/Benchmark";
+import {BenchmarkDataset} from "../../support/benchmark/models/BenchmarkDataset";
+import {BenchmarkSubmissionPage} from "../../support/benchmark/pages/BenchmarkSubmissionPage";
+import {BenchmarkSubmission} from "../../support/benchmark/models/BenchmarkSubmission";
 
 context("Benchmark submission page", () => {
   let benchmark: Benchmark;
