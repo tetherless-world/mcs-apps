@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {KgNode} from "kg/models/kg/KgNode";
+import {KgNode} from "shared/models/kg/KgNode";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {KgDatasourceLink} from "shared/components/kg/search/KgDatasourceLink";
 

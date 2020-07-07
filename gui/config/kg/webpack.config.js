@@ -4,7 +4,7 @@ const merge = require("webpack-merge");
 const path = require("path");
 
 // variables
-const distPath = path.join(__dirname, "dist");
+const distPath = path.join(__dirname, "..", "..", "dist", "kg");
 
 // plugins
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -12,20 +12,20 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = function (env, argv) {
   return merge(configBase(env, argv), configDevServer(distPath), {
-    context: path.join(__dirname, "src"),
+    context: path.join(__dirname, "..", "..", "src"),
     entry: {
       "kg-gui": "./kg/main.tsx",
     },
     output: {
       path: distPath,
-      filename: "[name]/js/[name].js",
+      filename: "js/[name].js",
       publicPath: "",
     },
     plugins: [
-      new CopyWebpackPlugin(["robots.txt"]),
+      new CopyWebpackPlugin([{from: "shared/robots.txt", to: "robots.txt"}]),
       new HtmlWebpackPlugin({
         hash: true,
-        template: "index.html",
+        template: "kg/index.html",
       }),
     ],
   });

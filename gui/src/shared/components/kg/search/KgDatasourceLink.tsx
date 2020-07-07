@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {Hrefs} from "kg/Hrefs";
+import {Hrefs} from "shared/Hrefs";
 import * as React from "react";
 import {CSSProperties} from "@material-ui/core/styles/withStyles";
 import {kgId} from "shared/api/kgId";

@@ -1,8 +1,7 @@
 import * as React from "react";
 
 import {Select, MenuItem, Paper} from "@material-ui/core";
-
-import {StringFilter} from "kg/api/graphqlGlobalTypes";
+import {StringFilter} from "shared/models/StringFilter";
 
 export const KgDatasourceSelect: React.FunctionComponent<{
   datasources: string[];

@@ -1,4 +1,4 @@
-import {apolloClient} from "api/apolloClient";
+import {apolloClient} from "benchmark/api/apolloClient";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {ApolloProvider} from "react-apollo";
