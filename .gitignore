@@ -1,8 +1,8 @@
 *.bloop
 /app/kg/data/import/kg/*.csv
 node_modules/
-**/gui/dist/
-**/gui/package-lock.json
+/gui/dist/
+/gui/package-lock.json
 /.idea/
 *.iml
 logs/
