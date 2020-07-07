@@ -1,6 +1,6 @@
-import {Page} from "../Page";
-import {BenchmarkSubmissionsTable} from "./BenchmarkSubmissionsTable";
-import {BenchmarkQuestionsTable} from "./BenchmarkQuestionsTable";
+import { Page } from "../../Page";
+import { BenchmarkSubmissionsTable } from "./BenchmarkSubmissionsTable";
+import { BenchmarkQuestionsTable } from "./BenchmarkQuestionsTable";
 
 export class BenchmarkDatasetPage extends Page {
   constructor(readonly benchmarkId: string, readonly datasetId: string) {

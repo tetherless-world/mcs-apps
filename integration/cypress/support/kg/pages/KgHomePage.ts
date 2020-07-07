@@ -1,5 +1,5 @@
-import {Page} from "../Page";
-import {KgNodeSearchBox} from "./KgNodeSearchBox";
+import { Page } from "../../Page";
+import { KgNodeSearchBox } from "./KgNodeSearchBox";
 
 export class KgHomePage extends Page {
   get search() {

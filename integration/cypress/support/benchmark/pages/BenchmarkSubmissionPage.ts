@@ -1,5 +1,5 @@
-import {Page} from "../Page";
-import {BenchmarkQuestionsTable} from "./BenchmarkQuestionsTable";
+import { Page } from "../../Page";
+import { BenchmarkQuestionsTable } from "./BenchmarkQuestionsTable";
 
 export class BenchmarkSubmissionPage extends Page {
   constructor(

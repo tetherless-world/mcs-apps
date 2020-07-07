@@ -1,6 +1,6 @@
-import {Page} from "../Page";
-import {BenchmarkBreadcrumbs} from "./BenchmarkBreadcrumbs";
-import {BenchmarkQuestionPromptType} from "../../models/benchmark/BenchmarkQuestion";
+import { Page } from "../../Page";
+import { BenchmarkBreadcrumbs } from "./BenchmarkBreadcrumbs";
+import { BenchmarkQuestionPromptType } from "../models/BenchmarkQuestion";
 
 class BenchmarkQuestion {
   constructor(

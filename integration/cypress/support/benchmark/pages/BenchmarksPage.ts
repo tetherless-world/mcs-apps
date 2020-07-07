@@ -1,4 +1,4 @@
-import {Page} from "../Page";
+import { Page } from "../../Page";
 
 export class BenchmarksPage extends Page {
   benchmark(benchmarkId: string) {

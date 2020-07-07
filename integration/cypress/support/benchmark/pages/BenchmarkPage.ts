@@ -1,5 +1,5 @@
-import {Page} from "../Page";
-import {BenchmarkSubmissionsTable} from "./BenchmarkSubmissionsTable";
+import { Page } from "../../Page";
+import { BenchmarkSubmissionsTable } from "./BenchmarkSubmissionsTable";
 
 class BenchmarkDatasetTableRow {
   constructor(readonly datasetId: string) {
