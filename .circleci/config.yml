@@ -94,7 +94,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd app/kg/gui
+            cd gui
             npm install
       - save_cache:
           key: ts-dependency-cache-v2-{{ checksum "gui/package.json" }}
