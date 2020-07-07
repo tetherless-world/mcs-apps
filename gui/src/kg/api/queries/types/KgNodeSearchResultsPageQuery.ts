@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { KgNodeFilters } from "./../../../graphqlGlobalTypes";
+import { KgNodeFilters } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: KgNodeSearchResultsPageQuery

@@ -1,7 +1,7 @@
 {
-  "name": "mcs-kg-gui",
+  "name": "mcs-gui",
   "version": "1.0.0",
-  "description": "Knowledge graph graphical user interface",
+  "description": "Graphical user interfaces",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -52,7 +52,8 @@
   "repository": "https://github.com/tetherless-world/mcs-portal.git",
   "scripts": {
     "build": "webpack --mode production -p",
-    "generate": "graphql-codegen --config graphql-codegen-config.yml && node_modules/.bin/apollo codegen:generate --endpoint http://localhost:9000/api/graphql --target=typescript --includes=src/ts/**/*.graphql,src/ts/**/*.ts --tagName=gql --addTypename --globalTypesFile=src/ts/api/graphqlGlobalTypes.ts types",
+    "generate-benchmark": "graphql-codegen --config src/benchmark/api/graphql-codegen-config.yml && node_modules/.bin/apollo codegen:generate --endpoint http://localhost:9000/api/graphql --target=typescript --includes=src/benchmark/**/*.graphql --tagName=gql --addTypename --globalTypesFile=src/benchmark/api/graphqlGlobalTypes.ts types",
+    "generate-kg": "graphql-codegen --config src/kg/api/graphql-codegen-config.yml && node_modules/.bin/apollo codegen:generate --endpoint http://localhost:9000/api/graphql --target=typescript --includes=src/kg/**/*.graphql --tagName=gql --addTypename --globalTypesFile=src/kg/api/graphqlGlobalTypes.ts types",
     "start": "webpack-dev-server --mode development --hot --info-verbosity verbose --inline"
   }
 }
