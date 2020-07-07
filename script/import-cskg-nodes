@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec mcs-portal-kg-app curl -XPUT -s http://localhost:9000/api/import/nodes/nodes.csv
+docker exec mcs-kg-app curl -XPUT -s http://localhost:9000/api/import/nodes/nodes.csv
