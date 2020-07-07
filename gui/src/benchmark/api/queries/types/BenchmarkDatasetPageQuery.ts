@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { BenchmarkQuestionPromptType, BenchmarkQuestionType } from "./../../../graphqlGlobalTypes";
+import { BenchmarkQuestionPromptType, BenchmarkQuestionType } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: BenchmarkDatasetPageQuery

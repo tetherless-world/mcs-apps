@@ -17,15 +17,6 @@ export enum BenchmarkQuestionType {
   TrueFalse = "TrueFalse",
 }
 
-export interface KgNodeFilters {
-  datasource?: StringFilter | null;
-}
-
-export interface StringFilter {
-  exclude?: string[] | null;
-  include?: string[] | null;
-}
-
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
