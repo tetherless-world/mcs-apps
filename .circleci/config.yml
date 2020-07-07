@@ -68,7 +68,7 @@ jobs:
             cp -p -R app/kg/target/test-reports test-reports/kg-app
             cp -p -R lib/scala/benchmark/target/test-reports test-reports/benchmark-lib
             cp -p -R lib/scala/kg/target/test-reports test-reports/kg-lib
-            mkdir ~/dist/app
+            mkdir -p ~/dist/app
             cd app/benchmark/target/universal && unzip -qq mcs-benchmark-app*.zip && rm mcs-benchmark-app*.zip && mv mcs-benchmark-app-*-SNAPSHOT ~/dist/app/benchmark
             cd ~/project/app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mv mcs-kg-app-*-SNAPSHOT ~/dist/app/kg
       - store_test_results:
