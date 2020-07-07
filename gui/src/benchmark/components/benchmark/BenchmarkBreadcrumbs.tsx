@@ -6,13 +6,13 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import {Hrefs} from "Hrefs";
+import {Hrefs} from "benchmark/Hrefs";
 import HomeIcon from "@material-ui/icons/Home";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import DoneIcon from "@material-ui/icons/Done";
 import ShutterSpeedIcon from "@material-ui/icons/ShutterSpeed";
-import {BenchmarkBreadcrumbsProps} from "components/benchmark/BenchmarkBreadcrumbsProps";
+import {BenchmarkBreadcrumbsProps} from "benchmark/components/benchmark/BenchmarkBreadcrumbsProps";
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {

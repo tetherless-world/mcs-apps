@@ -1,4 +1,4 @@
-import {KgNodeFilters} from "api/graphqlGlobalTypes";
+import {KgNodeFilters} from "shared/models/kg/KgNodeFilters";
 
 export interface KgNodeSearchVariables {
   __typename: "KgNodeSearchVariables";

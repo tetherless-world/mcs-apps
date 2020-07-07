@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as d3 from "d3";
-import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths as QuestionAnswerPath} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
+import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths as QuestionAnswerPath} from "benchmark/api/queries/types/BenchmarkAnswerPageQuery";
 import {
   List,
   ListItem,
@@ -23,11 +23,11 @@ import {
   ForceGraph,
   ForceGraphNode,
   ForceGraphArrowLink,
-} from "components/data/forceGraph";
-import {BenchmarkAnswerChoiceAnalysisGraphLinkDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphLinkDatum";
-import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
-import {getAnswerPathId} from "util/benchmark/getAnswerPathId";
-import {BenchmarkAnswerChoiceAnalysisGraphLegendCircle} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraphLegendCircle";
+} from "shared/components/data/forceGraph";
+import {BenchmarkAnswerChoiceAnalysisGraphLinkDatum} from "benchmark/models/benchmark/BenchmarkAnswerChoiceAnalysisGraphLinkDatum";
+import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "benchmark/models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
+import {getAnswerPathId} from "benchmark/util/benchmark/getAnswerPathId";
+import {BenchmarkAnswerChoiceAnalysisGraphLegendCircle} from "benchmark/components/benchmark/BenchmarkAnswerChoiceAnalysisGraphLegendCircle";
 
 const HorizontalList = withStyles({
   root: {

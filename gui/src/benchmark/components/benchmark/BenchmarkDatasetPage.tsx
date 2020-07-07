@@ -1,21 +1,21 @@
 import * as React from "react";
-import {Frame} from "kg/components/frame/Frame";
+import {Frame} from "benchmark/components/frame/Frame";
 import {useParams} from "react-router-dom";
-import * as BenchmarkDatasetPageQueryDocument from "api/queries/benchmark/BenchmarkDatasetPageQuery.graphql";
+import * as BenchmarkDatasetPageQueryDocument from "benchmark/api/queries/BenchmarkDatasetPageQuery.graphql";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
-import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
-import {BenchmarkDatasetPageQuery} from "api/queries/benchmark/types/BenchmarkDatasetPageQuery";
-import {NotFound} from "components/error/NotFound";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {BenchmarkSubmissionsTable} from "benchmark/components/benchmark/BenchmarkSubmissionsTable";
+import {BenchmarkDatasetPageQuery} from "benchmark/api/queries/types/BenchmarkDatasetPageQuery";
+import {NotFound} from "shared/components/error/NotFound";
+import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";
-import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
+import {BenchmarkQuestionsTable} from "benchmark/components/benchmark/BenchmarkQuestionsTable";
 import {
   BenchmarkDatasetQuestionsPaginationQuery,
   BenchmarkDatasetQuestionsPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkDatasetQuestionsPaginationQueryVariables,
-} from "api/queries/benchmark/types/BenchmarkDatasetQuestionsPaginationQuery";
-import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkDatasetQuestionsPaginationQuery.graphql";
+} from "benchmark/api/queries/types/BenchmarkDatasetQuestionsPaginationQuery";
+import * as BenchmarkDatasetQuestionsPaginationQueryDocument from "benchmark/api/queries/BenchmarkDatasetQuestionsPaginationQuery.graphql";
 
 const QUESTIONS_PER_PAGE = 10;
 

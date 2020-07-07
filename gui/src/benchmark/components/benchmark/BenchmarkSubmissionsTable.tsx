@@ -1,5 +1,5 @@
 import * as React from "react";
-import {BenchmarkSubmission} from "models/benchmark/BenchmarkSubmission";
+import {BenchmarkSubmission} from "benchmark/models/benchmark/BenchmarkSubmission";
 import {
   Table,
   TableBody,
@@ -7,9 +7,9 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import {BenchmarkDataset} from "models/benchmark/BenchmarkDataset";
-import {BenchmarkSubmissionLink} from "components/benchmark/BenchmarkSubmissionLink";
-import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";
+import {BenchmarkDataset} from "benchmark/models/benchmark/BenchmarkDataset";
+import {BenchmarkSubmissionLink} from "benchmark/components/benchmark/BenchmarkSubmissionLink";
+import {BenchmarkDatasetLink} from "benchmark/components/benchmark/BenchmarkDatasetLink";
 
 export const BenchmarkSubmissionsTable: React.FunctionComponent<{
   benchmarkDatasets?: BenchmarkDataset[];

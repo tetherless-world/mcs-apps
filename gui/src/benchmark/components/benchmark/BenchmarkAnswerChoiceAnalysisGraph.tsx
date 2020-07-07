@@ -15,19 +15,19 @@ import {
   ForceGraph,
   ForceGraphNode,
   ForceGraphArrowLink,
-} from "components/data/forceGraph";
+} from "shared/components/data/forceGraph";
 
 import * as d3 from "d3";
 import {
   BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses as AnswerChoiceAnalysis,
   BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices as QuestionAnswerChoice,
-} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
-import {BenchmarkQuestionAnswerPathGraph} from "components/benchmark/BenchmarkQuestionAnswerPathGraph";
-import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
-import {BenchmarkAnswerChoiceAnalysisGraphLinkDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphLinkDatum";
-import {BenchmarkAnswerChoiceAnalysisGraphLegendCircle} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraphLegendCircle";
-import {getQuestionAnswerPathId} from "util/benchmark/getQuestionAnswerPathId";
-import {getAnswerPathId} from "util/benchmark/getAnswerPathId";
+} from "benchmark/api/queries/types/BenchmarkAnswerPageQuery";
+import {BenchmarkQuestionAnswerPathGraph} from "benchmark/components/benchmark/BenchmarkQuestionAnswerPathGraph";
+import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "benchmark/models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
+import {BenchmarkAnswerChoiceAnalysisGraphLinkDatum} from "benchmark/models/benchmark/BenchmarkAnswerChoiceAnalysisGraphLinkDatum";
+import {BenchmarkAnswerChoiceAnalysisGraphLegendCircle} from "benchmark/components/benchmark/BenchmarkAnswerChoiceAnalysisGraphLegendCircle";
+import {getQuestionAnswerPathId} from "benchmark/util/benchmark/getQuestionAnswerPathId";
+import {getAnswerPathId} from "benchmark/util/benchmark/getAnswerPathId";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 

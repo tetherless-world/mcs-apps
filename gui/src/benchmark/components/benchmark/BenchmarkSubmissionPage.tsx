@@ -1,19 +1,19 @@
 import * as React from "react";
 import {useParams} from "react-router-dom";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
-import * as BenchmarkSubmissionPageQueryDocument from "api/queries/benchmark/BenchmarkSubmissionPageQuery.graphql";
-import {BenchmarkSubmissionPageQuery} from "api/queries/benchmark/types/BenchmarkSubmissionPageQuery";
-import {Frame} from "kg/components/frame/Frame";
-import {NotFound} from "components/error/NotFound";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import * as BenchmarkSubmissionPageQueryDocument from "benchmark/api/queries/BenchmarkSubmissionPageQuery.graphql";
+import {BenchmarkSubmissionPageQuery} from "benchmark/api/queries/types/BenchmarkSubmissionPageQuery";
+import {Frame} from "benchmark/components/frame/Frame";
+import {NotFound} from "shared/components/error/NotFound";
+import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
 import * as _ from "lodash";
-import {BenchmarkQuestionsTable} from "components/benchmark/BenchmarkQuestionsTable";
+import {BenchmarkQuestionsTable} from "benchmark/components/benchmark/BenchmarkQuestionsTable";
 import {
   BenchmarkSubmissionQuestionsPaginationQuery,
   BenchmarkSubmissionQuestionsPaginationQuery_benchmarkById_datasetById_questions,
   BenchmarkSubmissionQuestionsPaginationQueryVariables,
-} from "api/queries/benchmark/types/BenchmarkSubmissionQuestionsPaginationQuery";
-import * as BenchmarkSubmissionQuestionsPaginationQueryDocument from "api/queries/benchmark/BenchmarkSubmissionQuestionsPaginationQuery.graphql";
+} from "benchmark/api/queries/types/BenchmarkSubmissionQuestionsPaginationQuery";
+import * as BenchmarkSubmissionQuestionsPaginationQueryDocument from "benchmark/api/queries/BenchmarkSubmissionQuestionsPaginationQuery.graphql";
 
 const QUESTIONS_PER_PAGE = 10;
 

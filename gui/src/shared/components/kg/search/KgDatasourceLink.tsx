@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import {Hrefs} from "kg/Hrefs";
 import * as React from "react";
 import {CSSProperties} from "@material-ui/core/styles/withStyles";
-import {kgId} from "kg/api/kgId";
+import {kgId} from "shared/api/kgId";
 
 export const KgDatasourceLink: React.FunctionComponent<{
   datasource: string;

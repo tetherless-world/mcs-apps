@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {KgNodeSearchBox} from "kg/components/search/KgNodeSearchBox";
+import {KgNodeSearchBox} from "shared/components/kg/search/KgNodeSearchBox";
 import {Frame} from "kg/components/frame/Frame";
 
 import {
@@ -15,8 +15,8 @@ import {
 import {useHistory, Link} from "react-router-dom";
 
 import {Hrefs} from "kg/Hrefs";
-import {KgNodeSearchBoxValue} from "kg/models/kg/KgNodeSearchBoxValue";
-import {kgId} from "kg/api/kgId";
+import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
+import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
 import * as KgHomePageQueryDocument from "kg/api/queries/KgHomePageQuery.graphql";

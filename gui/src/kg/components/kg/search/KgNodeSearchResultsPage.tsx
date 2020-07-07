@@ -9,12 +9,12 @@ import {
   KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
 } from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
-import {KgNodeTable} from "kg/components/node/KgNodeTable";
+import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
 import {useLocation, useHistory} from "react-router-dom";
 import * as qs from "qs";
 import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "kg/models/kg/KgNodeSearchVariables";
-import {kgId} from "kg/api/kgId";
+import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
+import {kgId} from "shared/api/kgId";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   public readonly __typename = "KgNodeSearchVariables";

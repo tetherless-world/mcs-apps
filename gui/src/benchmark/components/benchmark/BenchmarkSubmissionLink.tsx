@@ -1,8 +1,8 @@
 import {Link} from "react-router-dom";
-import {Hrefs} from "Hrefs";
+import {Hrefs} from "benchmark/Hrefs";
 import * as React from "react";
 import {CSSProperties} from "@material-ui/core/styles/withStyles";
-import {BenchmarkSubmission} from "models/benchmark/BenchmarkSubmission";
+import {BenchmarkSubmission} from "benchmark/models/benchmark/BenchmarkSubmission";
 
 export const BenchmarkSubmissionLink: React.FunctionComponent<{
   benchmarkSubmission: BenchmarkSubmission;

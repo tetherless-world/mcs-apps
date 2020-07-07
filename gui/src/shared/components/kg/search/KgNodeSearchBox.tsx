@@ -15,11 +15,11 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "kg/models/kg/KgNode";
-import {KgDatasourceSelect} from "kg/components/search/KgDatasourceSelect";
+import {KgDatasourceSelect} from "shared/components/kg/search/KgDatasourceSelect";
 import {KgNodeFilters, StringFilter} from "api/graphqlGlobalTypes";
 import {KgNodeSearchBoxValue} from "kg/models/kg/KgNodeSearchBoxValue";
-import {KgNodeLink} from "kg/components/node/KgNodeLink";
-import {kgId} from "kg/api/kgId";
+import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
+import {kgId} from "shared/api/kgId";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests

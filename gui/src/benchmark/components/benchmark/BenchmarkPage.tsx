@@ -3,8 +3,8 @@ import {useParams} from "react-router-dom";
 import {
   BenchmarkPageQuery,
   BenchmarkPageQuery_benchmarkById_datasets,
-} from "api/queries/benchmark/types/BenchmarkPageQuery";
-import * as BenchmarkPageQueryDocument from "api/queries/benchmark/BenchmarkPageQuery.graphql";
+} from "benchmark/api/queries/types/BenchmarkPageQuery";
+import * as BenchmarkPageQueryDocument from "benchmark/api/queries/BenchmarkPageQuery.graphql";
 import {useQuery} from "@apollo/react-hooks";
 import {
   Card,
@@ -17,11 +17,11 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import {BenchmarkSubmissionsTable} from "components/benchmark/BenchmarkSubmissionsTable";
-import {Frame} from "kg/components/frame/Frame";
-import {NotFound} from "components/error/NotFound";
+import {BenchmarkSubmissionsTable} from "benchmark/components/benchmark/BenchmarkSubmissionsTable";
+import {Frame} from "benchmark/components/frame/Frame";
+import {NotFound} from "shared/components/error/NotFound";
 import {BenchmarkFrame} from "./BenchmarkFrame";
-import {BenchmarkDatasetLink} from "components/benchmark/BenchmarkDatasetLink";
+import {BenchmarkDatasetLink} from "benchmark/components/benchmark/BenchmarkDatasetLink";
 import * as _ from "lodash";
 
 const BenchmarkDatasetsTable: React.FunctionComponent<{

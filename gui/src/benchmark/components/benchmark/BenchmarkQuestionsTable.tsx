@@ -1,12 +1,12 @@
 import * as React from "react";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
 import {Link} from "react-router-dom";
-import {Hrefs} from "Hrefs";
-import {BenchmarkQuestionText} from "components/benchmark/BenchmarkQuestionText";
+import {Hrefs} from "benchmark/Hrefs";
+import {BenchmarkQuestionText} from "benchmark/components/benchmark/BenchmarkQuestionText";
 import {List, Typography, ListItemText} from "@material-ui/core";
-import {BenchmarkQuestion} from "models/benchmark/BenchmarkQuestion";
-import {BenchmarkQuestionType} from "api/graphqlGlobalTypes";
-import {BenchmarkSubmission} from "models/benchmark/BenchmarkSubmission";
+import {BenchmarkQuestion} from "benchmark/models/benchmark/BenchmarkQuestion";
+import {BenchmarkQuestionType} from "benchmark/api/graphqlGlobalTypes";
+import {BenchmarkSubmission} from "benchmark/models/benchmark/BenchmarkSubmission";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 

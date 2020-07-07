@@ -1,12 +1,12 @@
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import {KgNodeSearchResultsPage} from "kg/components/search/KgNodeSearchResultsPage";
+import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
-import {KgNodePage} from "kg/components/node/KgNodePage";
+import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {NoRoute} from "benchmark/components/error/NoRoute";
-import {KgHomePage} from "kg/components/KgHomePage";
+import {KgHomePage} from "kg/components/kg/KgHomePage";
 import {Hrefs} from "kg/Hrefs";
-import {RandomKgNodePage} from "kg/components/node/RandomKgNodePage";
-import {kgId} from "kg/api/kgId";
+import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
+import {kgId} from "shared/api/kgId";
 
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>

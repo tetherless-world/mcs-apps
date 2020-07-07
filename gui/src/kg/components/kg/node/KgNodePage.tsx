@@ -24,11 +24,11 @@ import {
   Tab,
   Tabs,
 } from "@material-ui/core";
-import {KgNodePredicateGrid} from "kg/components/node/KgNodePredicateGrid";
-import {KgNodePredicateList} from "kg/components/node/KgNodePredicateList";
-import {kgId} from "kg/api/kgId";
+import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
+import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
+import {kgId} from "shared/api/kgId";
 import {NotFound} from "shared/components/error/NotFound";
-import {KgDatasourceLink} from "kg/components/search/KgDatasourceLink";
+import {KgDatasourceLink} from "shared/components/kg/search/KgDatasourceLink";
 // import {makeStyles} from "@material-ui/core/styles";
 
 // const useStyles = makeStyles((theme) => ({

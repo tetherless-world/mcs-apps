@@ -1,5 +1,5 @@
-import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths as QuestionAnswerPath} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
-import {getQuestionAnswerPathId} from "util/benchmark/getQuestionAnswerPathId";
+import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_submissionById_answerByQuestionId_explanation_choiceAnalyses_questionAnswerPaths as QuestionAnswerPath} from "benchmark/api/queries/types/BenchmarkAnswerPageQuery";
+import {getQuestionAnswerPathId} from "benchmark/util/benchmark/getQuestionAnswerPathId";
 
 export const getAnswerPathId = (
   questionAnswerPathId: QuestionAnswerPath,

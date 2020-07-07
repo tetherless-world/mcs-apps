@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Frame} from "kg/components/frame/Frame";
-import * as BenchmarksPageQueryDocument from "api/queries/benchmark/BenchmarksPageQuery.graphql";
-import {BenchmarksQuery} from "api/queries/benchmark/types/BenchmarksQuery";
+import {Frame} from "benchmark/components/frame/Frame";
+import * as BenchmarksPageQueryDocument from "benchmark/api/queries/BenchmarksPageQuery.graphql";
+import {BenchmarksQuery} from "benchmark/api/queries/types/BenchmarksQuery";
 import {useQuery} from "@apollo/react-hooks";
 import {
   ListItem,
@@ -11,8 +11,8 @@ import {
   Grid,
   CardHeader,
 } from "@material-ui/core";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
-import {BenchmarkLink} from "components/benchmark/BenchmarkLink";
+import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
+import {BenchmarkLink} from "benchmark/components/benchmark/BenchmarkLink";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const query = useQuery<BenchmarksQuery>(BenchmarksPageQueryDocument);

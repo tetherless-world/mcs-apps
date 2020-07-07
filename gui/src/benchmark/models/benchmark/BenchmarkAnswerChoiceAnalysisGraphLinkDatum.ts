@@ -1,5 +1,5 @@
 import {ForceGraphLinkDatum} from "models/data/forceGraph/ForceGraphLinkDatum";
-import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
+import {BenchmarkAnswerChoiceAnalysisGraphNodeDatum} from "benchmark/models/benchmark/BenchmarkAnswerChoiceAnalysisGraphNodeDatum";
 
 export interface BenchmarkAnswerChoiceAnalysisGraphLinkDatum
   extends ForceGraphLinkDatum<BenchmarkAnswerChoiceAnalysisGraphNodeDatum> {

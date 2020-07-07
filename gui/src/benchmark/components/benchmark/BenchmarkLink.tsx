@@ -1,6 +1,6 @@
-import {Benchmark} from "models/benchmark/Benchmark";
+import {Benchmark} from "benchmark/models/benchmark/Benchmark";
 import {Link} from "react-router-dom";
-import {Hrefs} from "Hrefs";
+import {Hrefs} from "benchmark/Hrefs";
 import * as React from "react";
 import {CSSProperties} from "@material-ui/core/styles/withStyles";
 

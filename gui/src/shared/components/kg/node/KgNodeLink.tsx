@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Hrefs} from "kg/Hrefs";
+import {Hrefs} from "shared/Hrefs";
 import {Link} from "react-router-dom";
-import {kgId} from "kg/api/kgId";
+import {kgId} from "shared/api/kgId";
 
 export const KgNodeLink: React.FunctionComponent<{
   node: {id: string; label: string | null; pos: string | null};

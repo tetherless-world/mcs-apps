@@ -1,7 +1,7 @@
 import * as React from "react";
-import {BenchmarkBreadcrumbsProps} from "components/benchmark/BenchmarkBreadcrumbsProps";
+import {BenchmarkBreadcrumbsProps} from "benchmark/components/benchmark/BenchmarkBreadcrumbsProps";
 import {Grid, Typography} from "@material-ui/core";
-import {BenchmarkBreadcrumbs} from "components/benchmark/BenchmarkBreadcrumbs";
+import {BenchmarkBreadcrumbs} from "benchmark/components/benchmark/BenchmarkBreadcrumbs";
 
 interface Props extends BenchmarkBreadcrumbsProps {
   children: React.ReactNode;

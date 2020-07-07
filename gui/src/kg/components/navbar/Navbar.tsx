@@ -40,10 +40,7 @@ export const Navbar: React.FunctionComponent<{}> = () => {
 
   const location = useLocation();
 
-  const topLevelPaths: TopLevelPath[] = [
-    {path: Hrefs.kgs, label: "CSKG"},
-    {path: Hrefs.benchmarks, label: "Benchmarks"},
-  ];
+  const topLevelPaths: TopLevelPath[] = [{path: Hrefs.kgs, label: "CSKG"}];
 
   function normalizePath(path: string) {
     return path.toLowerCase().replace(/\/$/, "");

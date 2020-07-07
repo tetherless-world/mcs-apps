@@ -1,20 +1,20 @@
 import * as React from "react";
 import {useParams} from "react-router-dom";
-import * as BenchmarkAnswerPageQueryDocument from "api/queries/benchmark/BenchmarkAnswerPageQuery.graphql";
+import * as BenchmarkAnswerPageQueryDocument from "benchmark/api/queries/BenchmarkAnswerPageQuery.graphql";
 import {
   BenchmarkAnswerPageQuery,
   BenchmarkAnswerPageQueryVariables,
   BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_choices as QuestionAnswerChoice,
-} from "api/queries/benchmark/types/BenchmarkAnswerPageQuery";
+} from "benchmark/api/queries/types/BenchmarkAnswerPageQuery";
 import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent, Divider} from "@material-ui/core";
-import {NotFound} from "components/error/NotFound";
-import {Frame} from "kg/components/frame/Frame";
-import {BenchmarkFrame} from "components/benchmark/BenchmarkFrame";
+import {NotFound} from "shared/components/error/NotFound";
+import {Frame} from "benchmark/components/frame/Frame";
+import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {BenchmarkAnswerChoiceAnalysisGraph} from "components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
+import {BenchmarkAnswerChoiceAnalysisGraph} from "benchmark/components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
 import {BenchmarkQuestionText} from "./BenchmarkQuestionText";
 
 // http://localhost:9001/benchmark/benchmark0/dataset/benchmark0-test/submission/benchmark0-submission/question/benchmark0-test-0
