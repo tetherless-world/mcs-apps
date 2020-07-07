@@ -14,17 +14,15 @@ module.exports = function (env, argv) {
   return merge(configBase(env, argv), configDevServer(distPath), {
     context: path.join(__dirname, "src"),
     entry: {
-      "mcs-portal-gui": "./ts/main.tsx",
+      "kg-gui": "./kg/main.tsx",
     },
     output: {
-      path: distPath,
+      path: path.join(distPath, "[name]"),
       filename: "js/[name].js",
       publicPath: "",
     },
     plugins: [
-      new CopyWebpackPlugin([
-        "robots.txt",
-      ]),
+      new CopyWebpackPlugin(["robots.txt"]),
       new HtmlWebpackPlugin({
         hash: true,
         template: "index.html",
