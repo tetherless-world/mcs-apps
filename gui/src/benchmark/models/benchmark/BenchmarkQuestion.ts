@@ -1,7 +1,13 @@
-import {
-  BenchmarkQuestionPromptType,
-  BenchmarkQuestionType,
-} from "api/graphqlGlobalTypes";
+enum BenchmarkQuestionPromptType {
+  Goal = "Goal",
+  Observation = "Observation",
+  Question = "Question",
+}
+
+enum BenchmarkQuestionType {
+  MultipleChoice = "MultipleChoice",
+  TrueFalse = "TrueFalse",
+}
 
 export interface BenchmarkQuestion {
   answers?: {

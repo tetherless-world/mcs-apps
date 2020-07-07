@@ -1,4 +1,4 @@
-import {ForceGraphNodeDatum} from "models/data/forceGraph/ForceGraphNodeDatum";
+import {ForceGraphNodeDatum} from "shared/models/data/forceGraph/ForceGraphNodeDatum";
 
 export interface BenchmarkAnswerChoiceAnalysisGraphNodeDatum
   extends ForceGraphNodeDatum {
