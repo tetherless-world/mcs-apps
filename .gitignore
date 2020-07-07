@@ -13,6 +13,6 @@ logs/
 /project/metals.sbt
 .python-version
 target/
-**/test/integration/cypress/plugins/
-**/test/integration/cypress/videos/
-**/test/integration/cypress/screenshots/
+**/integration/cypress/plugins/
+**/integration/cypress/videos/
+**/integration/cypress/screenshots/
