@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {useLocation} from "react-router";
+import {useLocation} from "react-router-dom";
 
 import {Frame} from "kg/components/frame/Frame";
 
