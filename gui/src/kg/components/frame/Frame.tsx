@@ -2,7 +2,7 @@ import * as React from "react";
 import {Navbar} from "kg/components/navbar/Navbar";
 
 import {makeStyles, createStyles, Grid} from "@material-ui/core";
-import {Footer} from "kg/components/footer/Footer";
+import {Footer} from "shared/components/footer/Footer";
 
 import * as ReactLoader from "react-loader";
 import {ApolloErrorHandler} from "shared/components/error/ApolloErrorHandler";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {makeStyles} from "@material-ui/core";
-import {Hrefs} from "benchmark/Hrefs";
+import {Hrefs} from "shared/Hrefs";
 
 const useStyles = makeStyles((theme) => ({
   footerParagraph: {
