@@ -1,16 +1,16 @@
 import * as React from "react";
 
 import {
-  Typography,
   AppBar,
-  Toolbar,
-  makeStyles,
-  createStyles,
   Button,
+  createStyles,
+  makeStyles,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
 
 import {Hrefs} from "kg/Hrefs";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -30,55 +30,15 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-type TopLevelPath = {
-  readonly path: string;
-  readonly label: string;
-};
-
 export const Navbar: React.FunctionComponent<{}> = () => {
   const classes = useStyles();
-
-  const location = useLocation();
-
-  const topLevelPaths: TopLevelPath[] = [{path: Hrefs.kgs, label: "CSKG"}];
-
-  function normalizePath(path: string) {
-    return path.toLowerCase().replace(/\/$/, "");
-  }
-
-  let closestPathMatch: string = "";
-  for (const tlp of topLevelPaths) {
-    const currentPathNormed = normalizePath(location.pathname);
-    const tlpNormed = normalizePath(tlp.path);
-    const pathMatches: boolean =
-      currentPathNormed === tlpNormed ||
-      currentPathNormed.startsWith(tlpNormed + "/");
-    if (pathMatches && tlp.path.length > closestPathMatch.length) {
-      closestPathMatch = tlp.path;
-    }
-  }
 
   return (
     <AppBar className={classes.navbar} position="static" data-cy="naVbar">
       <Toolbar>
         <Button component={Link} to={Hrefs.home} className={classes.brand}>
-          <Typography variant="h5">MCS Portal</Typography>
+          <Typography variant="h5">CSKG</Typography>
         </Button>
-        {topLevelPaths.map((tlp) => (
-          <Button
-            key={tlp.path}
-            component={Link}
-            to={tlp.path}
-            className={
-              classes.navButton +
-              (tlp.path === closestPathMatch
-                ? " " + classes.activeNavButton
-                : "")
-            }
-          >
-            {tlp.label}
-          </Button>
-        ))}
       </Toolbar>
     </AppBar>
   );

@@ -3,9 +3,7 @@ import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResul
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {NoRoute} from "benchmark/components/error/NoRoute";
-import {KgHomePage} from "kg/components/kg/KgHomePage";
 import {Hrefs} from "benchmark/Hrefs";
-import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
 import {kgId} from "shared/api/kgId";
 import {BenchmarksPage} from "benchmark/components/benchmark/BenchmarksPage";
 import {BenchmarkPage} from "benchmark/components/benchmark/BenchmarkPage";
@@ -22,7 +20,7 @@ export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path={Hrefs.home}>
-        <Redirect to={Hrefs.kgs} />
+        <Redirect to={Hrefs.benchmarks} />
       </Route>
 
       {/* Benchmark routes */}
@@ -70,12 +68,6 @@ export const Routes: React.FunctionComponent = () => (
         path={Hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
         component={KgNodePage}
       />
-      <Route
-        exact
-        path={Hrefs.kg({id: kgId}).randomNode}
-        component={RandomKgNodePage}
-      />
-      <Route exact path={Hrefs.kgs} component={KgHomePage} />
 
       <Route component={NoRoute} />
     </Switch>

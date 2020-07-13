@@ -5,10 +5,9 @@ export class Hrefs {
   static readonly contact = "mailto:gordom6@rpi.edu";
   static readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
   static readonly home = "/";
-  static readonly kgs = "/kg/";
   static kg(kwds: {id: string; idEncoded?: boolean}) {
     const kgId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
-    const kgPrefix = `${Hrefs.kgs}${kgId}/`;
+    const kgPrefix = `/kg/${kgId}/`;
     return {
       get home() {
         return kgPrefix;

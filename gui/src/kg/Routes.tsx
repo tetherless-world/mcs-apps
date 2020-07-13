@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
@@ -11,9 +11,7 @@ import {kgId} from "shared/api/kgId";
 export const Routes: React.FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path={Hrefs.home}>
-        <Redirect to={Hrefs.kgs} />
-      </Route>
+      <Route exact path={Hrefs.home} component={KgHomePage} />
 
       <Route
         exact
@@ -29,7 +27,6 @@ export const Routes: React.FunctionComponent = () => (
         path={Hrefs.kg({id: kgId}).randomNode}
         component={RandomKgNodePage}
       />
-      <Route exact path={Hrefs.kgs} component={KgHomePage} />
 
       <Route component={NoRoute} />
     </Switch>
