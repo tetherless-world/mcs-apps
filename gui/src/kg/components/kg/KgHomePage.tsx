@@ -70,11 +70,11 @@ export const KgHomePage: React.FunctionComponent = () => {
   return (
     <Frame {...query}>
       {({data}) => (
-        <Container maxWidth="md" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Grid container direction="column" spacing={3}>
             <Grid item>
               <Typography variant="h2" className={classes.title}>
-                MCS Portal
+                Common Sense Knowledge Graph
               </Typography>
             </Grid>
             <Grid item>
