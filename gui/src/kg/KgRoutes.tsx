@@ -4,27 +4,27 @@ import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {NoRoute} from "benchmark/components/error/NoRoute";
 import {KgHomePage} from "kg/components/kg/KgHomePage";
-import {Hrefs} from "kg/Hrefs";
+import {KgHrefs} from "kg/KgHrefs";
 import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
 import {kgId} from "shared/api/kgId";
 
-export const Routes: React.FunctionComponent = () => (
+export const KgRoutes: React.FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path={Hrefs.home} component={KgHomePage} />
+      <Route exact path={KgHrefs.home} component={KgHomePage} />
 
       <Route
         exact
-        path={Hrefs.kg({id: kgId}).nodeSearch()}
+        path={KgHrefs.kg({id: kgId}).nodeSearch()}
         component={KgNodeSearchResultsPage}
       />
       <Route
-        path={Hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
+        path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
         component={KgNodePage}
       />
       <Route
         exact
-        path={Hrefs.kg({id: kgId}).randomNode}
+        path={KgHrefs.kg({id: kgId}).randomNode}
         component={RandomKgNodePage}
       />
 

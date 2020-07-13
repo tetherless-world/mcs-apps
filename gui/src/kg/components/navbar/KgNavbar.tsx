@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import {Hrefs} from "kg/Hrefs";
+import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>
@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export const Navbar: React.FunctionComponent<{}> = () => {
+export const KgNavbar: React.FunctionComponent<{}> = () => {
   const classes = useStyles();
 
   return (
     <AppBar className={classes.navbar} position="static" data-cy="naVbar">
       <Toolbar>
-        <Button component={Link} to={Hrefs.home} className={classes.brand}>
+        <Button component={Link} to={KgHrefs.home} className={classes.brand}>
           <Typography variant="h5">CSKG</Typography>
         </Button>
       </Toolbar>

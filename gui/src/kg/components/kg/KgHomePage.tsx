@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {KgNodeSearchBox} from "kg/components/kg/search/KgNodeSearchBox";
-import {Frame} from "kg/components/frame/Frame";
+import {KgFrame} from "kg/components/frame/KgFrame";
 
 import {
   Grid,
@@ -14,7 +14,7 @@ import {
 
 import {useHistory, Link} from "react-router-dom";
 
-import {Hrefs} from "kg/Hrefs";
+import {KgHrefs} from "kg/KgHrefs";
 import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
 import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
@@ -56,10 +56,10 @@ export const KgHomePage: React.FunctionComponent = () => {
 
     switch (search.__typename) {
       case "KgNode":
-        history.push(Hrefs.kg({id: kgId}).node({id: search.id}));
+        history.push(KgHrefs.kg({id: kgId}).node({id: search.id}));
         break;
       case "KgNodeSearchVariables":
-        history.push(Hrefs.kg({id: kgId}).nodeSearch(search));
+        history.push(KgHrefs.kg({id: kgId}).nodeSearch(search));
         break;
       default:
         const _exhaustiveCheck: never = search;
@@ -68,7 +68,7 @@ export const KgHomePage: React.FunctionComponent = () => {
   };
 
   return (
-    <Frame {...query}>
+    <KgFrame {...query}>
       {({data}) => (
         <Container maxWidth="lg" className={classes.container}>
           <Grid container direction="column" spacing={3}>
@@ -98,7 +98,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                   <Button
                     color="primary"
                     component={Link}
-                    to={Hrefs.kg({id: kgId}).randomNode}
+                    to={KgHrefs.kg({id: kgId}).randomNode}
                   >
                     Show me something interesting
                   </Button>
@@ -108,6 +108,6 @@ export const KgHomePage: React.FunctionComponent = () => {
           </Grid>
         </Container>
       )}
-    </Frame>
+    </KgFrame>
   );
 };
