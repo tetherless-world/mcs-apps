@@ -10,8 +10,8 @@ import {useQuery} from "@apollo/react-hooks";
 import * as _ from "lodash";
 import {Grid, Typography, Card, CardContent, Divider} from "@material-ui/core";
 import {NotFound} from "shared/components/error/NotFound";
-import {Frame} from "benchmark/components/frame/Frame";
-import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
+import {BenchmarkFrame} from "benchmark/components/frame/BenchmarkFrame";
+import {BenchmarkBreadcrumbsFrame} from "benchmark/components/frame/BenchmarkBreadcrumbsFrame";
 import {faStar, faTimes, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {BenchmarkAnswerChoiceAnalysisGraph} from "benchmark/components/benchmark/BenchmarkAnswerChoiceAnalysisGraph";
@@ -98,7 +98,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
   });
 
   return (
-    <Frame {...query}>
+    <BenchmarkFrame {...query}>
       {({data}) => {
         const benchmark = data.benchmarkById;
         const dataset = benchmark?.datasetById;
@@ -128,7 +128,7 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
         const choiceAnalyses = explanation?.choiceAnalyses;
 
         return (
-          <BenchmarkFrame
+          <BenchmarkBreadcrumbsFrame
             {...{
               benchmark: {id: benchmarkId, name: benchmark.name},
               dataset: {id: datasetId, name: dataset.name},
@@ -236,9 +236,9 @@ export const BenchmarkAnswerPage: React.FunctionComponent = () => {
                 </>
               )}
             </Grid>
-          </BenchmarkFrame>
+          </BenchmarkBreadcrumbsFrame>
         );
       }}
-    </Frame>
+    </BenchmarkFrame>
   );
 };

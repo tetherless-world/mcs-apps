@@ -18,11 +18,11 @@ import {
   TableRow,
 } from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "benchmark/components/benchmark/BenchmarkSubmissionsTable";
-import {Frame} from "benchmark/components/frame/Frame";
+import {BenchmarkFrame} from "benchmark/components/frame/BenchmarkFrame";
 import {NotFound} from "shared/components/error/NotFound";
-import {BenchmarkFrame} from "./BenchmarkFrame";
 import {BenchmarkDatasetLink} from "benchmark/components/benchmark/BenchmarkDatasetLink";
 import * as _ from "lodash";
+import {BenchmarkBreadcrumbsFrame} from "benchmark/components/frame/BenchmarkBreadcrumbsFrame";
 
 const BenchmarkDatasetsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -69,7 +69,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
   });
 
   return (
-    <Frame {...query}>
+    <BenchmarkFrame {...query}>
       {({data}) => {
         const benchmark = data.benchmarkById;
         if (!benchmark) {
@@ -77,7 +77,7 @@ export const BenchmarkPage: React.FunctionComponent = () => {
         }
 
         return (
-          <BenchmarkFrame
+          <BenchmarkBreadcrumbsFrame
             title={benchmark.name}
             {...{
               benchmark: {id: benchmarkId, name: benchmark.name},
@@ -118,9 +118,9 @@ export const BenchmarkPage: React.FunctionComponent = () => {
                 </Grid>
               ) : null}
             </Grid>
-          </BenchmarkFrame>
+          </BenchmarkBreadcrumbsFrame>
         );
       }}
-    </Frame>
+    </BenchmarkFrame>
   );
 };

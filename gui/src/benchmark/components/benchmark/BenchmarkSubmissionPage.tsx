@@ -3,9 +3,9 @@ import {useParams} from "react-router-dom";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import * as BenchmarkSubmissionPageQueryDocument from "benchmark/api/queries/BenchmarkSubmissionPageQuery.graphql";
 import {BenchmarkSubmissionPageQuery} from "benchmark/api/queries/types/BenchmarkSubmissionPageQuery";
-import {Frame} from "benchmark/components/frame/Frame";
+import {BenchmarkFrame} from "benchmark/components/frame/BenchmarkFrame";
 import {NotFound} from "shared/components/error/NotFound";
-import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
+import {BenchmarkBreadcrumbsFrame} from "benchmark/components/frame/BenchmarkBreadcrumbsFrame";
 import * as _ from "lodash";
 import {BenchmarkQuestionsTable} from "benchmark/components/benchmark/BenchmarkQuestionsTable";
 import {
@@ -48,7 +48,7 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
   >(null);
 
   return (
-    <Frame {...initialQuery}>
+    <BenchmarkFrame {...initialQuery}>
       {({data: initialData}) => {
         const benchmark = initialData.benchmarkById;
         if (!benchmark) {
@@ -71,7 +71,7 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
         // https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js
 
         return (
-          <BenchmarkFrame
+          <BenchmarkBreadcrumbsFrame
             title={submission.name}
             {...{
               benchmark: {id: benchmarkId, name: benchmark.name},
@@ -124,9 +124,9 @@ export const BenchmarkSubmissionPage: React.FunctionComponent = () => {
               ]}
               submissionId={submissionId}
             />
-          </BenchmarkFrame>
+          </BenchmarkBreadcrumbsFrame>
         );
       }}
-    </Frame>
+    </BenchmarkFrame>
   );
 };

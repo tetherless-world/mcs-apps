@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Frame} from "benchmark/components/frame/Frame";
+import {BenchmarkFrame} from "benchmark/components/frame/BenchmarkFrame";
 import * as BenchmarksPageQueryDocument from "benchmark/api/queries/BenchmarksPageQuery.graphql";
 import {BenchmarksQuery} from "benchmark/api/queries/types/BenchmarksQuery";
 import {useQuery} from "@apollo/react-hooks";
@@ -11,16 +11,16 @@ import {
   Grid,
   CardHeader,
 } from "@material-ui/core";
-import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
+import {BenchmarkBreadcrumbsFrame} from "benchmark/components/frame/BenchmarkBreadcrumbsFrame";
 import {BenchmarkLink} from "benchmark/components/benchmark/BenchmarkLink";
 
 export const BenchmarksPage: React.FunctionComponent = () => {
   const query = useQuery<BenchmarksQuery>(BenchmarksPageQueryDocument);
 
   return (
-    <Frame {...query}>
+    <BenchmarkFrame {...query}>
       {({data}) => (
-        <BenchmarkFrame>
+        <BenchmarkBreadcrumbsFrame>
           <Grid container>
             <Grid item xs={6}>
               <Card>
@@ -40,8 +40,8 @@ export const BenchmarksPage: React.FunctionComponent = () => {
               </Card>
             </Grid>
           </Grid>
-        </BenchmarkFrame>
+        </BenchmarkBreadcrumbsFrame>
       )}
-    </Frame>
+    </BenchmarkFrame>
   );
 };

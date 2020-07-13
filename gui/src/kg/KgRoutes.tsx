@@ -2,7 +2,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
-import {NoRoute} from "benchmark/components/error/NoRoute";
+import {KgNoRoute} from "kg/components/error/KgNoRoute";
 import {KgHomePage} from "kg/components/kg/KgHomePage";
 import {KgHrefs} from "kg/KgHrefs";
 import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
@@ -28,7 +28,7 @@ export const KgRoutes: React.FunctionComponent = () => (
         component={RandomKgNodePage}
       />
 
-      <Route component={NoRoute} />
+      <Route component={KgNoRoute} />
     </Switch>
   </BrowserRouter>
 );

@@ -1,14 +1,16 @@
 import * as React from "react";
-import {BenchmarkBreadcrumbsProps} from "benchmark/components/benchmark/BenchmarkBreadcrumbsProps";
+import {BenchmarkBreadcrumbsProps} from "benchmark/components/frame/BenchmarkBreadcrumbsProps";
 import {Grid, Typography} from "@material-ui/core";
-import {BenchmarkBreadcrumbs} from "benchmark/components/benchmark/BenchmarkBreadcrumbs";
+import {BenchmarkBreadcrumbs} from "benchmark/components/frame/BenchmarkBreadcrumbs";
 
 interface Props extends BenchmarkBreadcrumbsProps {
   children: React.ReactNode;
   title?: string;
 }
 
-export const BenchmarkFrame: React.FunctionComponent<Props> = (props) => {
+export const BenchmarkBreadcrumbsFrame: React.FunctionComponent<Props> = (
+  props
+) => {
   const {children, title, ...breadcrumbProps} = props;
   return (
     <Grid container direction="column" spacing={6}>

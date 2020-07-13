@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Navbar} from "benchmark/components/navbar/Navbar";
+import {BenchmarkNavbar} from "benchmark/components/navbar/BenchmarkNavbar";
 
 import {makeStyles, createStyles, Grid} from "@material-ui/core";
 import {Footer} from "shared/components/footer/Footer";
@@ -28,18 +28,14 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-interface FrameChildrenProps<TData> {
-  data: TData;
-}
-
 interface FrameProps<TData> {
-  children: (props: FrameChildrenProps<TData>) => React.ReactNode;
+  children: (props: {data: TData}) => React.ReactNode;
   data?: TData;
   error?: ApolloError;
   loading: boolean;
 }
 
-export const Frame = <TData,>({
+export const BenchmarkFrame = <TData,>({
   children,
   data,
   error,
@@ -65,7 +61,7 @@ export const Frame = <TData,>({
         spacing={0} // Adds margins to sides of pages so set to 0
       >
         <Grid item>
-          <Navbar />
+          <BenchmarkNavbar />
         </Grid>
         <Grid className={classes.rootContainer} item>
           <div className={classes.root} data-cy="frame-content">

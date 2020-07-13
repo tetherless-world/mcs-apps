@@ -2,8 +2,8 @@ import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
-import {NoRoute} from "benchmark/components/error/NoRoute";
-import {Hrefs} from "benchmark/Hrefs";
+import {BenchmarkNoRoute} from "benchmark/components/error/BenchmarkNoRoute";
+import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {kgId} from "shared/api/kgId";
 import {BenchmarksPage} from "benchmark/components/benchmark/BenchmarksPage";
 import {BenchmarkPage} from "benchmark/components/benchmark/BenchmarkPage";
@@ -16,23 +16,30 @@ const benchmarkIdParam = {id: ":benchmarkId", idEncoded: true};
 const datasetIdParam = {id: ":datasetId", idEncoded: true};
 const submissionIdParam = {id: ":submissionId", idEncoded: true};
 
-export const Routes: React.FunctionComponent = () => (
+export const BenchmarkRoutes: React.FunctionComponent = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path={Hrefs.home}>
-        <Redirect to={Hrefs.benchmarks} />
+      <Route exact path={BenchmarkHrefs.home}>
+        <Redirect to={BenchmarkHrefs.benchmarks} />
       </Route>
 
       {/* Benchmark routes */}
-      <Route exact path={Hrefs.benchmarks} component={BenchmarksPage} />
       <Route
         exact
-        path={Hrefs.benchmark(benchmarkIdParam).home}
+        path={BenchmarkHrefs.benchmarks}
+        component={BenchmarksPage}
+      />
+      <Route
+        exact
+        path={BenchmarkHrefs.benchmark(benchmarkIdParam).home}
         component={BenchmarkPage}
       />
       <Route
         exact
-        path={Hrefs.benchmark(benchmarkIdParam).dataset(datasetIdParam).home}
+        path={
+          BenchmarkHrefs.benchmark(benchmarkIdParam).dataset(datasetIdParam)
+            .home
+        }
         not
         rea
         component={BenchmarkDatasetPage}
@@ -40,7 +47,7 @@ export const Routes: React.FunctionComponent = () => (
       <Route
         exact
         path={
-          Hrefs.benchmark(benchmarkIdParam)
+          BenchmarkHrefs.benchmark(benchmarkIdParam)
             .dataset(datasetIdParam)
             .submission(submissionIdParam).home
         }
@@ -48,7 +55,7 @@ export const Routes: React.FunctionComponent = () => (
       />
       <Route
         exact
-        path={Hrefs.benchmark({
+        path={BenchmarkHrefs.benchmark({
           id: ":benchmarkId",
           idEncoded: true,
         })
@@ -61,15 +68,18 @@ export const Routes: React.FunctionComponent = () => (
       {/* KG Routes */}
       <Route
         exact
-        path={Hrefs.kg({id: kgId}).nodeSearch()}
+        path={BenchmarkHrefs.kg({id: kgId}).nodeSearch()}
         component={KgNodeSearchResultsPage}
       />
       <Route
-        path={Hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
+        path={BenchmarkHrefs.kg({id: kgId}).node({
+          id: ":nodeId",
+          idEncoded: true,
+        })}
         component={KgNodePage}
       />
 
-      <Route component={NoRoute} />
+      <Route component={BenchmarkNoRoute} />
     </Switch>
   </BrowserRouter>
 );
