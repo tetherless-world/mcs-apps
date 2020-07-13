@@ -1,7 +1,7 @@
 import * as React from "react";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
 import {Link} from "react-router-dom";
-import {Hrefs} from "benchmark/Hrefs";
+import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {BenchmarkQuestionText} from "benchmark/components/benchmark/BenchmarkQuestionText";
 import {List, Typography, ListItemText} from "@material-ui/core";
 import {BenchmarkQuestion} from "benchmark/models/benchmark/BenchmarkQuestion";
@@ -46,7 +46,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
             {submissionId ? (
               <Link
                 data-cy="question-text"
-                to={Hrefs.benchmark({id: benchmarkId})
+                to={BenchmarkHrefs.benchmark({id: benchmarkId})
                   .dataset({id: datasetId})
                   .submission({id: submissionId})
                   .question({
@@ -141,7 +141,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
             const correct = answer.choiceId === question.correctChoiceId;
             return (
               <Link
-                to={Hrefs.benchmark({id: benchmarkId})
+                to={BenchmarkHrefs.benchmark({id: benchmarkId})
                   .dataset({id: datasetId})
                   .submission({id: answer.submissionId})
                   .question({

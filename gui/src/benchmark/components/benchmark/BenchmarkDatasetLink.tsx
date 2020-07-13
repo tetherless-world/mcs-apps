@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {Hrefs} from "benchmark/Hrefs";
+import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import * as React from "react";
 import {CSSProperties} from "@material-ui/core/styles/withStyles";
 import {BenchmarkDataset} from "benchmark/models/benchmark/BenchmarkDataset";
@@ -12,7 +12,7 @@ export const BenchmarkDatasetLink: React.FunctionComponent<{
   <Link
     style={{fontSize: "larger"}}
     to={
-      Hrefs.benchmark({id: benchmarkId}).dataset({
+      BenchmarkHrefs.benchmark({id: benchmarkId}).dataset({
         id: benchmarkDataset.id,
       }).home
     }

@@ -6,13 +6,13 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import {Hrefs} from "benchmark/Hrefs";
+import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import HomeIcon from "@material-ui/icons/Home";
 import ExtensionIcon from "@material-ui/icons/Extension";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import DoneIcon from "@material-ui/icons/Done";
 import ShutterSpeedIcon from "@material-ui/icons/ShutterSpeed";
-import {BenchmarkBreadcrumbsProps} from "benchmark/components/benchmark/BenchmarkBreadcrumbsProps";
+import {BenchmarkBreadcrumbsProps} from "benchmark/components/frame/BenchmarkBreadcrumbsProps";
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -41,7 +41,7 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
       <StyledBreadcrumb
         component="a"
         data-cy="benchmarks"
-        href={Hrefs.benchmarks}
+        href={BenchmarkHrefs.benchmarks}
         icon={<HomeIcon />}
         key="benchmarks"
         label="Benchmarks"
@@ -52,7 +52,7 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
       return breadcrumbs;
     }
 
-    const benchmarkHrefs = Hrefs.benchmark({id: benchmark.id});
+    const benchmarkHrefs = BenchmarkHrefs.benchmark({id: benchmark.id});
     breadcrumbs.push(
       <StyledBreadcrumb
         component="a"

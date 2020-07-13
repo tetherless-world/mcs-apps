@@ -2,17 +2,17 @@ import * as React from "react";
 
 import {useLocation} from "react-router-dom";
 
-import {Frame} from "kg/components/frame/Frame";
+import {KgFrame} from "kg/components/frame/KgFrame";
 
-export const NoRoute: React.FunctionComponent = () => {
+export const KgNoRoute: React.FunctionComponent = () => {
   const location = useLocation();
   return (
-    <Frame data={true} loading={false}>
+    <KgFrame data={true} loading={false}>
       {({data}) => (
         <h3>
           <code>{location.pathname}</code>
         </h3>
       )}
-    </Frame>
+    </KgFrame>
   );
 };

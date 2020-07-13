@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-import {Hrefs} from "kg/Hrefs";
+import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {Link, useLocation} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>
@@ -35,12 +35,14 @@ type TopLevelPath = {
   readonly label: string;
 };
 
-export const Navbar: React.FunctionComponent<{}> = () => {
+export const BenchmarkNavbar: React.FunctionComponent<{}> = () => {
   const classes = useStyles();
 
   const location = useLocation();
 
-  const topLevelPaths: TopLevelPath[] = [{path: Hrefs.kgs, label: "CSKG"}];
+  const topLevelPaths: TopLevelPath[] = [
+    {path: BenchmarkHrefs.benchmarks, label: "Benchmarks"},
+  ];
 
   function normalizePath(path: string) {
     return path.toLowerCase().replace(/\/$/, "");
@@ -61,7 +63,11 @@ export const Navbar: React.FunctionComponent<{}> = () => {
   return (
     <AppBar className={classes.navbar} position="static" data-cy="naVbar">
       <Toolbar>
-        <Button component={Link} to={Hrefs.home} className={classes.brand}>
+        <Button
+          component={Link}
+          to={BenchmarkHrefs.home}
+          className={classes.brand}
+        >
           <Typography variant="h5">MCS Portal</Typography>
         </Button>
         {topLevelPaths.map((tlp) => (

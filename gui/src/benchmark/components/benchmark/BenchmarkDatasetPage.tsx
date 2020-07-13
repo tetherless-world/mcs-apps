@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Frame} from "benchmark/components/frame/Frame";
+import {BenchmarkFrame} from "benchmark/components/frame/BenchmarkFrame";
 import {useParams} from "react-router-dom";
 import * as BenchmarkDatasetPageQueryDocument from "benchmark/api/queries/BenchmarkDatasetPageQuery.graphql";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
@@ -7,7 +7,7 @@ import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
 import {BenchmarkSubmissionsTable} from "benchmark/components/benchmark/BenchmarkSubmissionsTable";
 import {BenchmarkDatasetPageQuery} from "benchmark/api/queries/types/BenchmarkDatasetPageQuery";
 import {NotFound} from "shared/components/error/NotFound";
-import {BenchmarkFrame} from "benchmark/components/benchmark/BenchmarkFrame";
+import {BenchmarkBreadcrumbsFrame} from "benchmark/components/frame/BenchmarkBreadcrumbsFrame";
 import * as _ from "lodash";
 import {BenchmarkQuestionsTable} from "benchmark/components/benchmark/BenchmarkQuestionsTable";
 import {
@@ -48,7 +48,7 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
   >(null);
 
   return (
-    <Frame {...query}>
+    <BenchmarkFrame {...query}>
       {({data: initialData}) => {
         const benchmark = initialData.benchmarkById;
         if (!benchmark) {
@@ -64,7 +64,7 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
         }
 
         return (
-          <BenchmarkFrame
+          <BenchmarkBreadcrumbsFrame
             title={dataset.name}
             {...{
               benchmark: {id: benchmarkId, name: benchmark.name},
@@ -133,9 +133,9 @@ export const BenchmarkDatasetPage: React.FunctionComponent = () => {
                 />
               </Grid>
             </Grid>
-          </BenchmarkFrame>
+          </BenchmarkBreadcrumbsFrame>
         );
       }}
-    </Frame>
+    </BenchmarkFrame>
   );
 };

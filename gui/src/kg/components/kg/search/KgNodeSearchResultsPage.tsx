@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Grid} from "@material-ui/core";
-import {Frame} from "kg/components/frame/Frame";
+import {KgFrame} from "kg/components/frame/KgFrame";
 import * as ReactDOM from "react-dom";
 import {useQuery, useApolloClient} from "@apollo/react-hooks";
 import {
@@ -159,7 +159,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
   };
 
   return (
-    <Frame data={data} error={error} loading={loading}>
+    <KgFrame data={data} error={error} loading={loading}>
       {({
         data: {
           kgById: {matchingNodes: initialNodes, matchingNodesCount: count},
@@ -196,6 +196,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
           </Grid>
         </Grid>
       )}
-    </Frame>
+    </KgFrame>
   );
 };
