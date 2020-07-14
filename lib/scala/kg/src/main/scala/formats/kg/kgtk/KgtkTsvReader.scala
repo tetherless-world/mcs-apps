@@ -54,10 +54,11 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge,
 }
 
 object KgtkTsvReader {
-  def open(filePath: Path) = new KgtkTsvReader(CsvReader.openCsvReader(filePath, new TSVFormat {}))
+  private val csvFormat = new TSVFormat {}
+  def open(filePath: Path) = new KgtkTsvReader(CsvReader.openCsvReader(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream != null) {
-      new KgtkTsvReader(CsvReader.openCsvReader(inputStream, new TSVFormat {}))
+      new KgtkTsvReader(CsvReader.openCsvReader(inputStream, csvFormat))
     } else {
       throw new NullPointerException
     }
