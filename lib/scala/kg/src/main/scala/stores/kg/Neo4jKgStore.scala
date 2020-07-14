@@ -89,7 +89,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
       KgEdge(
         datasource = recordMap("edge.datasource").asInstanceOf[String],
-        datasources = recordMap("edge.datasources").asInstanceOf[String].split(" ").toList,
+        datasources = recordMap("edge.datasources").asInstanceOf[String].split("|").toList,
         id = recordMap("edge.id").asInstanceOf[String],
         `object` = recordMap("object.id").asInstanceOf[String],
         other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
@@ -104,7 +104,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       KgNode(
         aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
         datasource = recordMap("node.datasource"),
-        datasources = recordMap("node.datasources").split(" ").toList,
+        datasources = recordMap("node.datasources").split("|").toList,
         id = recordMap("node.id"),
         label = recordMap("node.label"),
         other = Option(recordMap("node.other")),
@@ -381,7 +381,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
           |""".stripMargin,
         toTransactionRunParameters(Map(
           "datasource" -> edge.datasource,
-          "datasources" -> edge.datasources.mkString(" "),
+          "datasources" -> edge.datasources.mkString("|"),
           "id" -> edge.id,
           "object" -> edge.`object`,
           "other" -> edge.other.getOrElse(null),
@@ -401,7 +401,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         toTransactionRunParameters(Map(
           "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
           "datasource" -> node.datasource,
-          "datasources" -> node.datasources.mkString(" "),
+          "datasources" -> node.datasources.mkString("|"),
           "id" -> node.id,
           "label" -> node.label,
           "pos" -> node.pos.getOrElse(null),
