@@ -13,6 +13,7 @@ final class CskgNodesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgNod
       kg.KgNode(
         aliases = row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList),
         datasource = row("datasource"),
+        datasources = List(row("datasource")),
         id = row("id"),
         label = row("label"),
         other = row.getNonBlank("other"),

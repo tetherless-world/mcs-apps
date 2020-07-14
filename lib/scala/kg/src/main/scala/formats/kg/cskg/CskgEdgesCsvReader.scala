@@ -14,6 +14,8 @@ final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdg
     csvReader.iteratorWithHeaders.map(row =>
       KgEdge(
         datasource = row("datasource"),
+        datasources = List(row("datasource")),
+        id = row("subject") + "-" + row("predicate") + "-" + row("object"),
         `object` = row("object"),
         other = row.getNonBlank("other"),
         predicate = row("predicate"),
