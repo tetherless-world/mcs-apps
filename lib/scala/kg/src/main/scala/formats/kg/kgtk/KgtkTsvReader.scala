@@ -17,7 +17,7 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge,
     csvReader.iteratorWithHeaders.map(row => {
       val node1Labels = row.getList("node1;label", ListDelim)
       val node2Labels = row.getList("node2;label", ListDelim)
-      Tuple3(
+      (
         KgEdge(
           datasource = row("source"),
           datasources = row.getList("source", "|"),
