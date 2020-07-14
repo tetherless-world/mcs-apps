@@ -1,0 +1,1000 @@
+node1	relation	node2	node1;label	node2;label	relation;label	relation;dimension	weight	source	origin	sentence	question	id
+'hood.n.01	/r/IsA	vicinity.n.01	'hood	vicinity|locality|neighborhood|neighbourhood|neck of the woods	is a			WN		'hood is a vicinity	What is 'hood?	'hood.n.01-/r/IsA-0000
+/c/en/0	/r/DefinedAs	/c/en/empty_set	0	empty set	defined as		1.0	CN	/d/conceptnet/4/en	[[0]] is the [[empty set]].	How can 0 be defined?	/c/en/0-/r/DefinedAs-0000
+/c/en/0	/r/DefinedAs	/c/en/first_limit_ordinal	0	first limit ordinal	defined as		1.0	CN	/d/conceptnet/4/en	[[0]] is the [[first limit ordinal]].	How can 0 be defined?	/c/en/0-/r/DefinedAs-0001
+/c/en/0	/r/DefinedAs	/c/en/number_zero	0	number zero	defined as		1.0	CN	/d/conceptnet/4/en	[[0]] is the [[number zero]].	How can 0 be defined?	/c/en/0-/r/DefinedAs-0002
+/c/en/0	/r/HasContext	/c/en/internet_slang	0	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 0?	/c/en/0-/r/HasContext-0000
+/c/en/0	/r/HasProperty	/c/en/pronounced_zero	0	pronounced zero	has property		1.0	CN	/d/conceptnet/4/en	[["0"]] is [[pronounced zero]]	What is a property of 0?	/c/en/0-/r/HasProperty-0000
+/c/en/0	/r/IsA	/c/en/set_containing_one_element	0	set containing one element	is a		1.0	CN	/d/conceptnet/4/en	[[{0}]] is a type of [[set containing one element]].	What is a 0?	/c/en/0-/r/IsA-0000
+/c/en/0	/r/RelatedTo	/c/en/1	0	1	related to		1.0	CN	/d/wiktionary/en		What is 0 related to?	/c/en/0-/r/RelatedTo-0000
+/c/en/0	/r/RelatedTo	/c/en/2	0	2	related to		1.0	CN	/d/wiktionary/en		What is 0 related to?	/c/en/0-/r/RelatedTo-0001
+/c/en/0.22_inch_calibre	/r/IsA	/c/en/5.6_millimetres	0.22 inch calibre	5.6 millimetres	is a		1.0	CN	/d/conceptnet/4/en	[[0.22 inch calibre]] is [[5.6 millimetres]]	What is a 0.22 inch calibre?	/c/en/0.22_inch_calibre-/r/IsA-0000
+/c/en/0/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	0	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[0]] is similar to [[cardinal]]	What is 0 similar to?	/c/en/0/a/wn-/r/SimilarTo-0000
+/c/en/0/n	/r/Antonym	/c/en/1	0	1	antonym		1.0	CN	/d/wiktionary/fr		What is the opposite from 0?	/c/en/0/n-/r/Antonym-0000
+/c/en/0/n	/r/HasContext	/c/en/electrical_engineering	0	electrical engineering	has context		1.0	CN	/d/wiktionary/en		What is a context of 0?	/c/en/0/n-/r/HasContext-0000
+/c/en/0/n	/r/RelatedTo	/c/en/low	0	low	related to		1.0	CN	/d/wiktionary/en		What is 0 related to?	/c/en/0/n-/r/RelatedTo-0000
+/c/en/0/n/wn/quantity	/r/Synonym	/c/en/zero/n/wn/quantity	0	zero	synonym		2.0	CN	/d/wordnet/3.1	[[0]] is a synonym of [[zero]]	What is a synonym of 0?	/c/en/0/n/wn/quantity-/r/Synonym-0000
+/c/en/0/n/wp/number	/r/Synonym	/c/en/0/n/wp/number	0	0	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 0?	/c/en/0/n/wp/number-/r/Synonym-0000
+/c/en/000	/r/RelatedTo	/c/en/112	000	112	related to		1.0	CN	/d/wiktionary/en		What is 000 related to?	/c/en/000-/r/RelatedTo-0000
+/c/en/000	/r/RelatedTo	/c/en/911	000	911	related to		1.0	CN	/d/wiktionary/en		What is 000 related to?	/c/en/000-/r/RelatedTo-0001
+/c/en/000	/r/RelatedTo	/c/en/999	000	999	related to		1.0	CN	/d/wiktionary/en		What is 000 related to?	/c/en/000-/r/RelatedTo-0002
+/c/en/000	/r/RelatedTo	/c/en/triple_o	000	triple o	related to		1.0	CN	/d/wiktionary/en		What is 000 related to?	/c/en/000-/r/RelatedTo-0003
+/c/en/000/n	/r/RelatedTo	/c/en/emergency_service	000	emergency service	related to		1.0	CN	/d/wiktionary/en		What is 000 related to?	/c/en/000/n-/r/RelatedTo-0000
+/c/en/007/n	/r/RelatedTo	/c/en/james_bond	007	james bond	related to		1.0	CN	/d/wiktionary/en		What is 007 related to?	/c/en/007/n-/r/RelatedTo-0000
+/c/en/007/n	/r/RelatedTo	/c/en/mi6	007	mi6	related to		1.0	CN	/d/wiktionary/en		What is 007 related to?	/c/en/007/n-/r/RelatedTo-0001
+/c/en/007/n	/r/RelatedTo	/c/en/special_agent	007	special agent	related to		1.0	CN	/d/wiktionary/en		What is 007 related to?	/c/en/007/n-/r/RelatedTo-0002
+/c/en/007/n	/r/Synonym	/c/en/james_bond	007	james bond	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 007?	/c/en/007/n-/r/Synonym-0000
+/c/en/007s/n	/r/FormOf	/c/en/007	007s	007	form of		1.0	CN	/d/wiktionary/en		What is 007s a form of?	/c/en/007s/n-/r/FormOf-0000
+/c/en/00_s/n	/r/FormOf	/c/en/00s	00 s	00s	form of		1.0	CN	/d/wiktionary/en		What is 00 s a form of?	/c/en/00_s/n-/r/FormOf-0000
+/c/en/00s/n	/r/RelatedTo	/c/en/1900s	00s	1900s	related to		2.0	CN	/d/wiktionary/en		What is 00s related to?	/c/en/00s/n-/r/RelatedTo-0000
+/c/en/00s/n	/r/RelatedTo	/c/en/2000s	00s	2000s	related to		2.0	CN	/d/wiktionary/en		What is 00s related to?	/c/en/00s/n-/r/RelatedTo-0001
+/c/en/00s/n	/r/RelatedTo	/c/en/decade	00s	decade	related to		1.0	CN	/d/wiktionary/en		What is 00s related to?	/c/en/00s/n-/r/RelatedTo-0002
+/c/en/00t_shirts	/r/AtLocation	/c/en/drawer	00t shirts	drawer	at location		1.0	CN	/d/conceptnet/4/en	*Something you find in [[a drawer]] is [[00t-shirts]]	At what location is 00t shirts?	/c/en/00t_shirts-/r/AtLocation-0000
+/c/en/0800_number/n	/r/HasContext	/c/en/nz	0800 number	nz	has context		1.0	CN	/d/wiktionary/en		What is a context of 0800 number?	/c/en/0800_number/n-/r/HasContext-0000
+/c/en/0800_number/n	/r/HasContext	/c/en/uk	0800 number	uk	has context		1.0	CN	/d/wiktionary/en		What is a context of 0800 number?	/c/en/0800_number/n-/r/HasContext-0001
+/c/en/0800_number/n	/r/RelatedTo	/c/en/free	0800 number	free	related to		1.0	CN	/d/wiktionary/en		What is 0800 number related to?	/c/en/0800_number/n-/r/RelatedTo-0000
+/c/en/0800_number/n	/r/RelatedTo	/c/en/telephone_number	0800 number	telephone number	related to		1.0	CN	/d/wiktionary/en		What is 0800 number related to?	/c/en/0800_number/n-/r/RelatedTo-0001
+/c/en/0800_numbers/n	/r/FormOf	/c/en/0800_number	0800 numbers	0800 number	form of		1.0	CN	/d/wiktionary/en		What is 0800 numbers a form of?	/c/en/0800_numbers/n-/r/FormOf-0000
+/c/en/0_0/a	/r/HasContext	/c/en/aviation	0 0	aviation	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 0?	/c/en/0_0/a-/r/HasContext-0000
+/c/en/0_100	/r/DerivedFrom	/c/en/0	0 100	0	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 100 derived?	/c/en/0_100-/r/DerivedFrom-0000
+/c/en/0_100	/r/DerivedFrom	/c/en/100	0 100	100	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 100 derived?	/c/en/0_100-/r/DerivedFrom-0001
+/c/en/0_100/n	/r/HasContext	/c/en/australia	0 100	australia	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 100?	/c/en/0_100/n-/r/HasContext-0000
+/c/en/0_100/n	/r/HasContext	/c/en/automotive	0 100	automotive	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 100?	/c/en/0_100/n-/r/HasContext-0001
+/c/en/0_100/n	/r/HasContext	/c/en/us	0 100	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 100?	/c/en/0_100/n-/r/HasContext-0002
+/c/en/0_100/n	/r/RelatedTo	/c/en/km_h	0 100	km h	related to		1.0	CN	/d/wiktionary/en		What is 0 100 related to?	/c/en/0_100/n-/r/RelatedTo-0000
+/c/en/0_100/n	/r/RelatedTo	/c/en/mph	0 100	mph	related to		1.0	CN	/d/wiktionary/en		What is 0 100 related to?	/c/en/0_100/n-/r/RelatedTo-0001
+/c/en/0_100/n	/r/RelatedTo	/c/en/standing_start	0 100	standing start	related to		1.0	CN	/d/wiktionary/en		What is 0 100 related to?	/c/en/0_100/n-/r/RelatedTo-0002
+/c/en/0_100/n	/r/Synonym	/c/en/0_60	0 100	0 60	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 0 100?	/c/en/0_100/n-/r/Synonym-0000
+/c/en/0_10_0/n	/r/IsA	/c/en/decapod	0 10 0	decapod	is a		1.0	CN	/d/wiktionary/en		What is a 0 10 0?	/c/en/0_10_0/n-/r/IsA-0000
+/c/en/0_10_0/n	/r/RelatedTo	/c/en/driving_wheel	0 10 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 0 related to?	/c/en/0_10_0/n-/r/RelatedTo-0000
+/c/en/0_10_0/n	/r/RelatedTo	/c/en/leading_wheel	0 10 0	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 0 related to?	/c/en/0_10_0/n-/r/RelatedTo-0001
+/c/en/0_10_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 10 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 10 0 related to?	/c/en/0_10_0/n-/r/RelatedTo-0002
+/c/en/0_10_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 10 0	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 0 related to?	/c/en/0_10_0/n-/r/RelatedTo-0003
+/c/en/0_10_0s/n	/r/FormOf	/c/en/0_10_0	0 10 0s	0 10 0	form of		1.0	CN	/d/wiktionary/en		What is 0 10 0s a form of?	/c/en/0_10_0s/n-/r/FormOf-0000
+/c/en/0_10_0s/n	/r/RelatedTo	/c/en/0_10_0	0 10 0s	0 10 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 10 0s related to?	/c/en/0_10_0s/n-/r/RelatedTo-0000
+/c/en/0_10_2/n	/r/RelatedTo	/c/en/driving_wheel	0 10 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 2 related to?	/c/en/0_10_2/n-/r/RelatedTo-0000
+/c/en/0_10_2/n	/r/RelatedTo	/c/en/leading_wheel	0 10 2	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 2 related to?	/c/en/0_10_2/n-/r/RelatedTo-0001
+/c/en/0_10_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 10 2	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 10 2 related to?	/c/en/0_10_2/n-/r/RelatedTo-0002
+/c/en/0_10_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 10 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 10 2 related to?	/c/en/0_10_2/n-/r/RelatedTo-0003
+/c/en/0_10_2/n	/r/Synonym	/c/en/union	0 10 2	union	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 0 10 2?	/c/en/0_10_2/n-/r/Synonym-0000
+/c/en/0_10_2s/n	/r/FormOf	/c/en/0_10_2	0 10 2s	0 10 2	form of		1.0	CN	/d/wiktionary/en		What is 0 10 2s a form of?	/c/en/0_10_2s/n-/r/FormOf-0000
+/c/en/0_10_2s/n	/r/RelatedTo	/c/en/0_10_2	0 10 2s	0 10 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 10 2s related to?	/c/en/0_10_2s/n-/r/RelatedTo-0000
+/c/en/0_12_0/n	/r/RelatedTo	/c/en/driving_wheel	0 12 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 12 0 related to?	/c/en/0_12_0/n-/r/RelatedTo-0000
+/c/en/0_12_0/n	/r/RelatedTo	/c/en/leading_wheel	0 12 0	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 12 0 related to?	/c/en/0_12_0/n-/r/RelatedTo-0001
+/c/en/0_12_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 12 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 12 0 related to?	/c/en/0_12_0/n-/r/RelatedTo-0002
+/c/en/0_12_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 12 0	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 12 0 related to?	/c/en/0_12_0/n-/r/RelatedTo-0003
+/c/en/0_12_0s/n	/r/FormOf	/c/en/0_12_0	0 12 0s	0 12 0	form of		1.0	CN	/d/wiktionary/en		What is 0 12 0s a form of?	/c/en/0_12_0s/n-/r/FormOf-0000
+/c/en/0_12_0s/n	/r/RelatedTo	/c/en/0_12_0	0 12 0s	0 12 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 12 0s related to?	/c/en/0_12_0s/n-/r/RelatedTo-0000
+/c/en/0_2_2/n	/r/RelatedTo	/c/en/driving_wheel	0 2 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 2 2 related to?	/c/en/0_2_2/n-/r/RelatedTo-0000
+/c/en/0_2_2/n	/r/RelatedTo	/c/en/leading_wheel	0 2 2	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 2 2 related to?	/c/en/0_2_2/n-/r/RelatedTo-0001
+/c/en/0_2_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 2 2	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 2 2 related to?	/c/en/0_2_2/n-/r/RelatedTo-0002
+/c/en/0_2_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 2 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 2 2 related to?	/c/en/0_2_2/n-/r/RelatedTo-0003
+/c/en/0_2_2/n	/r/Synonym	/c/en/a1	0 2 2	a1	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 0 2 2?	/c/en/0_2_2/n-/r/Synonym-0000
+/c/en/0_2_2s/n	/r/FormOf	/c/en/0_2_2	0 2 2s	0 2 2	form of		1.0	CN	/d/wiktionary/en		What is 0 2 2s a form of?	/c/en/0_2_2s/n-/r/FormOf-0000
+/c/en/0_2_2s/n	/r/RelatedTo	/c/en/0_2_2	0 2 2s	0 2 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 2 2s related to?	/c/en/0_2_2s/n-/r/RelatedTo-0000
+/c/en/0_4_0/n	/r/RelatedTo	/c/en/driving_wheel	0 4 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 related to?	/c/en/0_4_0/n-/r/RelatedTo-0000
+/c/en/0_4_0/n	/r/RelatedTo	/c/en/leading_wheel	0 4 0	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 related to?	/c/en/0_4_0/n-/r/RelatedTo-0001
+/c/en/0_4_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 related to?	/c/en/0_4_0/n-/r/RelatedTo-0002
+/c/en/0_4_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 0	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 related to?	/c/en/0_4_0/n-/r/RelatedTo-0003
+/c/en/0_4_0_0_4_0	/r/IsA	/c/en/garratt/n	0 4 0 0 4 0	garratt	is a		1.0	CN	/d/wiktionary/en		What is a 0 4 0 0 4 0?	/c/en/0_4_0_0_4_0-/r/IsA-0000
+/c/en/0_4_0_0_4_0/n	/r/IsA	/c/en/garratt	0 4 0 0 4 0	garratt	is a		1.0	CN	/d/wiktionary/en		What is a 0 4 0 0 4 0?	/c/en/0_4_0_0_4_0/n-/r/IsA-0000
+/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/0_4_0	0 4 0 0 4 0	0 4 0	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 0 4 0 related to?	/c/en/0_4_0_0_4_0/n-/r/RelatedTo-0000
+/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/boiler	0 4 0 0 4 0	boiler	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 0 4 0 related to?	/c/en/0_4_0_0_4_0/n-/r/RelatedTo-0001
+/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 0 0 4 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 0 0 4 0 related to?	/c/en/0_4_0_0_4_0/n-/r/RelatedTo-0002
+/c/en/0_4_0_0_4_0s/n	/r/FormOf	/c/en/0_4_0_0_4_0	0 4 0 0 4 0s	0 4 0 0 4 0	form of		1.0	CN	/d/wiktionary/en		What is 0 4 0 0 4 0s a form of?	/c/en/0_4_0_0_4_0s/n-/r/FormOf-0000
+/c/en/0_4_0s/n	/r/FormOf	/c/en/0_4_0	0 4 0s	0 4 0	form of		1.0	CN	/d/wiktionary/en		What is 0 4 0s a form of?	/c/en/0_4_0s/n-/r/FormOf-0000
+/c/en/0_4_0s/n	/r/RelatedTo	/c/en/0_4_0	0 4 0s	0 4 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 4 0s related to?	/c/en/0_4_0s/n-/r/RelatedTo-0000
+/c/en/0_4_2/n	/r/RelatedTo	/c/en/driving_wheel	0 4 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 2 related to?	/c/en/0_4_2/n-/r/RelatedTo-0000
+/c/en/0_4_2/n	/r/RelatedTo	/c/en/leading_wheel	0 4 2	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 2 related to?	/c/en/0_4_2/n-/r/RelatedTo-0001
+/c/en/0_4_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 2	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 2 related to?	/c/en/0_4_2/n-/r/RelatedTo-0002
+/c/en/0_4_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 2 related to?	/c/en/0_4_2/n-/r/RelatedTo-0003
+/c/en/0_4_2s/n	/r/FormOf	/c/en/0_4_2	0 4 2s	0 4 2	form of		1.0	CN	/d/wiktionary/en		What is 0 4 2s a form of?	/c/en/0_4_2s/n-/r/FormOf-0000
+/c/en/0_4_2s/n	/r/RelatedTo	/c/en/0_4_2	0 4 2s	0 4 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 4 2s related to?	/c/en/0_4_2s/n-/r/RelatedTo-0000
+/c/en/0_4_4/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 related to?	/c/en/0_4_4/n-/r/RelatedTo-0000
+/c/en/0_4_4/n	/r/RelatedTo	/c/en/leading_wheel	0 4 4	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 related to?	/c/en/0_4_4/n-/r/RelatedTo-0001
+/c/en/0_4_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 4	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 related to?	/c/en/0_4_4/n-/r/RelatedTo-0002
+/c/en/0_4_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 4	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 related to?	/c/en/0_4_4/n-/r/RelatedTo-0003
+/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 0 related to?	/c/en/0_4_4_0/n-/r/RelatedTo-0000
+/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/leading_truck	0 4 4 0	leading truck	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 0 related to?	/c/en/0_4_4_0/n-/r/RelatedTo-0001
+/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/locomotive	0 4 4 0	locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 0 related to?	/c/en/0_4_4_0/n-/r/RelatedTo-0002
+/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/mallet	0 4 4 0	mallet	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 0 related to?	/c/en/0_4_4_0/n-/r/RelatedTo-0003
+/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/trailing_truck	0 4 4 0	trailing truck	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 0 related to?	/c/en/0_4_4_0/n-/r/RelatedTo-0004
+/c/en/0_4_4_0s/n	/r/FormOf	/c/en/0_4_4_0	0 4 4 0s	0 4 4 0	form of		1.0	CN	/d/wiktionary/en		What is 0 4 4 0s a form of?	/c/en/0_4_4_0s/n-/r/FormOf-0000
+/c/en/0_4_4_0s/n	/r/RelatedTo	/c/en/0_4_4_0	0 4 4 0s	0 4 4 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 4 4 0s related to?	/c/en/0_4_4_0s/n-/r/RelatedTo-0000
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0000
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/leading_truck	0 4 4 2	leading truck	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0001
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/locomotive	0 4 4 2	locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0002
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/mallet	0 4 4 2	mallet	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0003
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/trailing_truck	0 4 4 2	trailing truck	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0004
+/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 4 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 4 4 2 related to?	/c/en/0_4_4_2/n-/r/RelatedTo-0005
+/c/en/0_4_4_2s/n	/r/FormOf	/c/en/0_4_4_2	0 4 4 2s	0 4 4 2	form of		1.0	CN	/d/wiktionary/en		What is 0 4 4 2s a form of?	/c/en/0_4_4_2s/n-/r/FormOf-0000
+/c/en/0_4_4_2s/n	/r/RelatedTo	/c/en/0_4_4_2	0 4 4 2s	0 4 4 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 4 4 2s related to?	/c/en/0_4_4_2s/n-/r/RelatedTo-0000
+/c/en/0_4_4s/n	/r/FormOf	/c/en/0_4_4	0 4 4s	0 4 4	form of		1.0	CN	/d/wiktionary/en		What is 0 4 4s a form of?	/c/en/0_4_4s/n-/r/FormOf-0000
+/c/en/0_4_4s/n	/r/RelatedTo	/c/en/0_4_4	0 4 4s	0 4 4	related to		1.0	CN	/d/wiktionary/fr		What is 0 4 4s related to?	/c/en/0_4_4s/n-/r/RelatedTo-0000
+/c/en/0_60	/r/DerivedFrom	/c/en/0	0 60	0	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 60 derived?	/c/en/0_60-/r/DerivedFrom-0000
+/c/en/0_60	/r/DerivedFrom	/c/en/60	0 60	60	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 60 derived?	/c/en/0_60-/r/DerivedFrom-0001
+/c/en/0_60/n	/r/HasContext	/c/en/automotive	0 60	automotive	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 60?	/c/en/0_60/n-/r/HasContext-0000
+/c/en/0_60/n	/r/RelatedTo	/c/en/km_h	0 60	km h	related to		1.0	CN	/d/wiktionary/en		What is 0 60 related to?	/c/en/0_60/n-/r/RelatedTo-0000
+/c/en/0_60/n	/r/RelatedTo	/c/en/standing_start	0 60	standing start	related to		1.0	CN	/d/wiktionary/en		What is 0 60 related to?	/c/en/0_60/n-/r/RelatedTo-0001
+/c/en/0_60/n	/r/SimilarTo	/c/en/0_60_0	0 60	0 60 0	similar to		1.0	CN	/d/wiktionary/en		What is 0 60 similar to?	/c/en/0_60/n-/r/SimilarTo-0000
+/c/en/0_60/n	/r/SimilarTo	/c/en/60_0	0 60	60 0	similar to		1.0	CN	/d/wiktionary/en		What is 0 60 similar to?	/c/en/0_60/n-/r/SimilarTo-0001
+/c/en/0_60_0	/r/DerivedFrom	/c/en/0_60	0 60 0	0 60	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 60 0 derived?	/c/en/0_60_0-/r/DerivedFrom-0000
+/c/en/0_60_0	/r/DerivedFrom	/c/en/60_0	0 60 0	60 0	derived from		1.0	CN	/d/wiktionary/en		From which word is 0 60 0 derived?	/c/en/0_60_0-/r/DerivedFrom-0001
+/c/en/0_60_0/n	/r/HasContext	/c/en/automotive	0 60 0	automotive	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 60 0?	/c/en/0_60_0/n-/r/HasContext-0000
+/c/en/0_60_0/n	/r/RelatedTo	/c/en/km_h	0 60 0	km h	related to		1.0	CN	/d/wiktionary/en		What is 0 60 0 related to?	/c/en/0_60_0/n-/r/RelatedTo-0000
+/c/en/0_60_0/n	/r/RelatedTo	/c/en/mph	0 60 0	mph	related to		1.0	CN	/d/wiktionary/en		What is 0 60 0 related to?	/c/en/0_60_0/n-/r/RelatedTo-0001
+/c/en/0_60_0/n	/r/RelatedTo	/c/en/standing_start	0 60 0	standing start	related to		1.0	CN	/d/wiktionary/en		What is 0 60 0 related to?	/c/en/0_60_0/n-/r/RelatedTo-0002
+/c/en/0_60_0/n	/r/SimilarTo	/c/en/0_60	0 60 0	0 60	similar to		1.0	CN	/d/wiktionary/en		What is 0 60 0 similar to?	/c/en/0_60_0/n-/r/SimilarTo-0000
+/c/en/0_60_0/n	/r/SimilarTo	/c/en/60_0	0 60 0	60 0	similar to		1.0	CN	/d/wiktionary/en		What is 0 60 0 similar to?	/c/en/0_60_0/n-/r/SimilarTo-0001
+/c/en/0_6_0/n	/r/RelatedTo	/c/en/driving_wheel	0 6 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 0 related to?	/c/en/0_6_0/n-/r/RelatedTo-0000
+/c/en/0_6_0/n	/r/RelatedTo	/c/en/leading_wheel	0 6 0	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 0 related to?	/c/en/0_6_0/n-/r/RelatedTo-0001
+/c/en/0_6_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 6 0 related to?	/c/en/0_6_0/n-/r/RelatedTo-0002
+/c/en/0_6_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 0	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 0 related to?	/c/en/0_6_0/n-/r/RelatedTo-0003
+/c/en/0_6_0s/n	/r/FormOf	/c/en/0_6_0	0 6 0s	0 6 0	form of		1.0	CN	/d/wiktionary/en		What is 0 6 0s a form of?	/c/en/0_6_0s/n-/r/FormOf-0000
+/c/en/0_6_0s/n	/r/RelatedTo	/c/en/0_6_0	0 6 0s	0 6 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 6 0s related to?	/c/en/0_6_0s/n-/r/RelatedTo-0000
+/c/en/0_6_2/n	/r/RelatedTo	/c/en/driving_wheel	0 6 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 2 related to?	/c/en/0_6_2/n-/r/RelatedTo-0000
+/c/en/0_6_2/n	/r/RelatedTo	/c/en/leading_wheel	0 6 2	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 2 related to?	/c/en/0_6_2/n-/r/RelatedTo-0001
+/c/en/0_6_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 2	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 6 2 related to?	/c/en/0_6_2/n-/r/RelatedTo-0002
+/c/en/0_6_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 2 related to?	/c/en/0_6_2/n-/r/RelatedTo-0003
+/c/en/0_6_2s/n	/r/FormOf	/c/en/0_6_2	0 6 2s	0 6 2	form of		1.0	CN	/d/wiktionary/en		What is 0 6 2s a form of?	/c/en/0_6_2s/n-/r/FormOf-0000
+/c/en/0_6_2s/n	/r/RelatedTo	/c/en/0_6_2	0 6 2s	0 6 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 6 2s related to?	/c/en/0_6_2s/n-/r/RelatedTo-0000
+/c/en/0_6_4/n	/r/RelatedTo	/c/en/driving_wheel	0 6 4	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 4 related to?	/c/en/0_6_4/n-/r/RelatedTo-0000
+/c/en/0_6_4/n	/r/RelatedTo	/c/en/leading_wheel	0 6 4	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 4 related to?	/c/en/0_6_4/n-/r/RelatedTo-0001
+/c/en/0_6_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 4	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 6 4 related to?	/c/en/0_6_4/n-/r/RelatedTo-0002
+/c/en/0_6_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 4	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 4 related to?	/c/en/0_6_4/n-/r/RelatedTo-0003
+/c/en/0_6_4s/n	/r/FormOf	/c/en/0_6_4	0 6 4s	0 6 4	form of		1.0	CN	/d/wiktionary/en		What is 0 6 4s a form of?	/c/en/0_6_4s/n-/r/FormOf-0000
+/c/en/0_6_4s/n	/r/RelatedTo	/c/en/0_6_4	0 6 4s	0 6 4	related to		1.0	CN	/d/wiktionary/fr		What is 0 6 4s related to?	/c/en/0_6_4s/n-/r/RelatedTo-0000
+/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/driving_wheel	0 6 6 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 6 6 0 related to?	/c/en/0_6_6_0/n-/r/RelatedTo-0000
+/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/leading_truck	0 6 6 0	leading truck	related to		1.0	CN	/d/wiktionary/en		What is 0 6 6 0 related to?	/c/en/0_6_6_0/n-/r/RelatedTo-0001
+/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/locomotive	0 6 6 0	locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 6 6 0 related to?	/c/en/0_6_6_0/n-/r/RelatedTo-0002
+/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/mallet	0 6 6 0	mallet	related to		1.0	CN	/d/wiktionary/en		What is 0 6 6 0 related to?	/c/en/0_6_6_0/n-/r/RelatedTo-0003
+/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/trailing_truck	0 6 6 0	trailing truck	related to		1.0	CN	/d/wiktionary/en		What is 0 6 6 0 related to?	/c/en/0_6_6_0/n-/r/RelatedTo-0004
+/c/en/0_6_6_0s/n	/r/FormOf	/c/en/0_6_6_0	0 6 6 0s	0 6 6 0	form of		1.0	CN	/d/wiktionary/en		What is 0 6 6 0s a form of?	/c/en/0_6_6_0s/n-/r/FormOf-0000
+/c/en/0_6_6_0s/n	/r/RelatedTo	/c/en/0_6_6_0	0 6 6 0s	0 6 6 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 6 6 0s related to?	/c/en/0_6_6_0s/n-/r/RelatedTo-0000
+/c/en/0_80_screws	/r/HasProperty	/c/en/very_small	0 80 screws	very small	has property		1.0	CN	/d/conceptnet/4/en	[[0-80 screws]] are [[very small]]	What is a property of 0 80 screws?	/c/en/0_80_screws-/r/HasProperty-0000
+/c/en/0_8_0/n	/r/RelatedTo	/c/en/driving_wheel	0 8 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 0 related to?	/c/en/0_8_0/n-/r/RelatedTo-0000
+/c/en/0_8_0/n	/r/RelatedTo	/c/en/leading_wheel	0 8 0	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 0 related to?	/c/en/0_8_0/n-/r/RelatedTo-0001
+/c/en/0_8_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 0	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 8 0 related to?	/c/en/0_8_0/n-/r/RelatedTo-0002
+/c/en/0_8_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 0	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 0 related to?	/c/en/0_8_0/n-/r/RelatedTo-0003
+/c/en/0_8_0s/n	/r/FormOf	/c/en/0_8_0	0 8 0s	0 8 0	form of		1.0	CN	/d/wiktionary/en		What is 0 8 0s a form of?	/c/en/0_8_0s/n-/r/FormOf-0000
+/c/en/0_8_0s/n	/r/RelatedTo	/c/en/0_8_0	0 8 0s	0 8 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 8 0s related to?	/c/en/0_8_0s/n-/r/RelatedTo-0000
+/c/en/0_8_2/n	/r/RelatedTo	/c/en/driving_wheel	0 8 2	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 2 related to?	/c/en/0_8_2/n-/r/RelatedTo-0000
+/c/en/0_8_2/n	/r/RelatedTo	/c/en/leading_wheel	0 8 2	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 2 related to?	/c/en/0_8_2/n-/r/RelatedTo-0001
+/c/en/0_8_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 2	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 8 2 related to?	/c/en/0_8_2/n-/r/RelatedTo-0002
+/c/en/0_8_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 2	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 2 related to?	/c/en/0_8_2/n-/r/RelatedTo-0003
+/c/en/0_8_2s/n	/r/FormOf	/c/en/0_8_2	0 8 2s	0 8 2	form of		1.0	CN	/d/wiktionary/en		What is 0 8 2s a form of?	/c/en/0_8_2s/n-/r/FormOf-0000
+/c/en/0_8_2s/n	/r/RelatedTo	/c/en/0_8_2	0 8 2s	0 8 2	related to		1.0	CN	/d/wiktionary/fr		What is 0 8 2s related to?	/c/en/0_8_2s/n-/r/RelatedTo-0000
+/c/en/0_8_4/n	/r/RelatedTo	/c/en/driving_wheel	0 8 4	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 4 related to?	/c/en/0_8_4/n-/r/RelatedTo-0000
+/c/en/0_8_4/n	/r/RelatedTo	/c/en/leading_wheel	0 8 4	leading wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 4 related to?	/c/en/0_8_4/n-/r/RelatedTo-0001
+/c/en/0_8_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 4	steam locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 8 4 related to?	/c/en/0_8_4/n-/r/RelatedTo-0002
+/c/en/0_8_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 4	trailing wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 4 related to?	/c/en/0_8_4/n-/r/RelatedTo-0003
+/c/en/0_8_4s/n	/r/FormOf	/c/en/0_8_4	0 8 4s	0 8 4	form of		1.0	CN	/d/wiktionary/en		What is 0 8 4s a form of?	/c/en/0_8_4s/n-/r/FormOf-0000
+/c/en/0_8_4s/n	/r/RelatedTo	/c/en/0_8_4	0 8 4s	0 8 4	related to		1.0	CN	/d/wiktionary/fr		What is 0 8 4s related to?	/c/en/0_8_4s/n-/r/RelatedTo-0000
+/c/en/0_8_8_0	/r/RelatedTo	/c/en/angus	0 8 8 0	angus	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0-/r/RelatedTo-0000
+/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/driving_wheel	0 8 8 0	driving wheel	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0/n-/r/RelatedTo-0000
+/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/leading_truck	0 8 8 0	leading truck	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0/n-/r/RelatedTo-0001
+/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/locomotive	0 8 8 0	locomotive	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0/n-/r/RelatedTo-0002
+/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/mallet	0 8 8 0	mallet	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0/n-/r/RelatedTo-0003
+/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/trailing_truck	0 8 8 0	trailing truck	related to		1.0	CN	/d/wiktionary/en		What is 0 8 8 0 related to?	/c/en/0_8_8_0/n-/r/RelatedTo-0004
+/c/en/0_8_8_0s/n	/r/FormOf	/c/en/0_8_8_0	0 8 8 0s	0 8 8 0	form of		1.0	CN	/d/wiktionary/en		What is 0 8 8 0s a form of?	/c/en/0_8_8_0s/n-/r/FormOf-0000
+/c/en/0_8_8_0s/n	/r/RelatedTo	/c/en/0_8_8_0	0 8 8 0s	0 8 8 0	related to		1.0	CN	/d/wiktionary/fr		What is 0 8 8 0s related to?	/c/en/0_8_8_0s/n-/r/RelatedTo-0000
+/c/en/0_dark_hundred	/r/RelatedTo	/c/en/beer_o'clock	0 dark hundred	beer o'clock	related to		1.0	CN	/d/wiktionary/en		What is 0 dark hundred related to?	/c/en/0_dark_hundred-/r/RelatedTo-0000
+/c/en/0_dark_hundred/n	/r/HasContext	/c/en/military_slang	0 dark hundred	military slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 dark hundred?	/c/en/0_dark_hundred/n-/r/HasContext-0000
+/c/en/0_dark_hundred/n	/r/HasContext	/c/en/us	0 dark hundred	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 dark hundred?	/c/en/0_dark_hundred/n-/r/HasContext-0001
+/c/en/0_dark_hundred/n	/r/RelatedTo	/c/en/0_dark_thirty	0 dark hundred	0 dark thirty	related to		1.0	CN	/d/wiktionary/en		What is 0 dark hundred related to?	/c/en/0_dark_hundred/n-/r/RelatedTo-0000
+/c/en/0_dark_thirty	/r/RelatedTo	/c/en/beer_o'clock	0 dark thirty	beer o'clock	related to		1.0	CN	/d/wiktionary/en		What is 0 dark thirty related to?	/c/en/0_dark_thirty-/r/RelatedTo-0000
+/c/en/0_dark_thirty/n	/r/HasContext	/c/en/military_slang	0 dark thirty	military slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 dark thirty?	/c/en/0_dark_thirty/n-/r/HasContext-0000
+/c/en/0_dark_thirty/n	/r/HasContext	/c/en/us	0 dark thirty	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 dark thirty?	/c/en/0_dark_thirty/n-/r/HasContext-0001
+/c/en/0_dark_thirty/n	/r/RelatedTo	/c/en/0_dark_hundred	0 dark thirty	0 dark hundred	related to		1.0	CN	/d/wiktionary/en		What is 0 dark thirty related to?	/c/en/0_dark_thirty/n-/r/RelatedTo-0000
+/c/en/0_day/a	/r/FormOf	/c/en/zero_day	0 day	zero day	form of		1.0	CN	/d/wiktionary/en		What is 0 day a form of?	/c/en/0_day/a-/r/FormOf-0000
+/c/en/0_day/a	/r/HasContext	/c/en/computing	0 day	computing	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 day?	/c/en/0_day/a-/r/HasContext-0000
+/c/en/0_day/n	/r/FormOf	/c/en/zero_day	0 day	zero day	form of		1.0	CN	/d/wiktionary/en		What is 0 day a form of?	/c/en/0_day/n-/r/FormOf-0000
+/c/en/0_day/n	/r/HasContext	/c/en/computing	0 day	computing	has context		1.0	CN	/d/wiktionary/en		What is a context of 0 day?	/c/en/0_day/n-/r/HasContext-0000
+/c/en/0_days/n	/r/FormOf	/c/en/0_day	0 days	0 day	form of		1.0	CN	/d/wiktionary/en		What is 0 days a form of?	/c/en/0_days/n-/r/FormOf-0000
+/c/en/0_deg_lat/n	/r/RelatedTo	/c/en/equator	0 deg lat	equator	related to		1.0	CN	/d/wiktionary/en		What is 0 deg lat related to?	/c/en/0_deg_lat/n-/r/RelatedTo-0000
+/c/en/0_degrees_celcius	/r/DefinedAs	/c/en/point_at_which_water_freezes	0 degrees celcius	point at which water freezes	defined as		1.0	CN	/d/conceptnet/4/en	[[0 degrees celcius]] is the [[point at which water freezes]]	How can 0 degrees celcius be defined?	/c/en/0_degrees_celcius-/r/DefinedAs-0000
+/c/en/0_degrees_celcius	/r/DefinedAs	/c/en/temperature_at_which_water_freezes	0 degrees celcius	temperature at which water freezes	defined as		1.0	CN	/d/conceptnet/4/en	[[0 degrees Celcius]] is the [[temperature at which water freezes]]	How can 0 degrees celcius be defined?	/c/en/0_degrees_celcius-/r/DefinedAs-0001
+/c/en/0_degress_farenheit	/r/HasProperty	/c/en/very_cold	0 degress farenheit	very cold	has property		1.0	CN	/d/conceptnet/4/en	[[0 degress farenheit]] is [[very cold]]	What is a property of 0 degress farenheit?	/c/en/0_degress_farenheit-/r/HasProperty-0000
+/c/en/0r	/r/EtymologicallyRelatedTo	/c/en/er	0r	er	etymologically related to		0.25	CN	/d/wiktionary/en		What is 0r etymologically related to?	/c/en/0r-/r/EtymologicallyRelatedTo-0000
+/c/en/0r	/r/EtymologicallyRelatedTo	/c/en/or	0r	or	etymologically related to		0.25	CN	/d/wiktionary/en		What is 0r etymologically related to?	/c/en/0r-/r/EtymologicallyRelatedTo-0001
+/c/en/0r	/r/HasContext	/c/en/internet_slang	0r	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 0r?	/c/en/0r-/r/HasContext-0000
+/c/en/0r	/r/HasContext	/c/en/leet	0r	leet	has context		1.0	CN	/d/wiktionary/en		What is a context of 0r?	/c/en/0r-/r/HasContext-0001
+/c/en/0r	/r/HasContext	/c/en/nonstandard	0r	nonstandard	has context		1.0	CN	/d/wiktionary/en		What is a context of 0r?	/c/en/0r-/r/HasContext-0002
+/c/en/0s/n	/r/FormOf	/c/en/0	0s	0	form of		1.0	CN	/d/wiktionary/en		What is 0s a form of?	/c/en/0s/n-/r/FormOf-0000
+/c/en/0s/n	/r/RelatedTo	/c/en/0	0s	0	related to		1.0	CN	/d/wiktionary/fr		What is 0s related to?	/c/en/0s/n-/r/RelatedTo-0000
+/c/en/0th	/r/DerivedFrom	/c/en/0/n	0th	0	derived from		1.0	CN	/d/wiktionary/en		From which word is 0th derived?	/c/en/0th-/r/DerivedFrom-0000
+/c/en/0tlps/n	/r/FormOf	/c/en/0tlp	0tlps	0tlp	form of		1.0	CN	/d/wiktionary/en		What is 0tlps a form of?	/c/en/0tlps/n-/r/FormOf-0000
+/c/en/1	/r/CapableOf	/c/en/equal_1	1	equal 1	capable of		1.0	CN	/d/conceptnet/4/en	[[1]] can [[equal 1]]	What is 1 capable of?	/c/en/1-/r/CapableOf-0000
+/c/en/1	/r/HasContext	/c/en/internet	1	internet	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1-/r/HasContext-0000
+/c/en/1	/r/HasContext	/c/en/internet_slang	1	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1-/r/HasContext-0001
+/c/en/1	/r/HasContext	/c/en/leet	1	leet	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1-/r/HasContext-0002
+/c/en/1	/r/HasContext	/c/en/sarcastic	1	sarcastic	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1-/r/HasContext-0003
+/c/en/1	/r/HasContext	/c/en/slang	1	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1-/r/HasContext-0004
+/c/en/1	/r/HasProperty	/c/en/one	1	one	has property		1.0	CN	/d/conceptnet/4/en	[[1]] is [[one]]	What is a property of 1?	/c/en/1-/r/HasProperty-0000
+/c/en/1	/r/HasProperty	/c/en/pronounced_one	1	pronounced one	has property		1.0	CN	/d/conceptnet/4/en	[["1"]] is [[pronounced one]]	What is a property of 1?	/c/en/1-/r/HasProperty-0001
+/c/en/1	/r/IsA	/c/en/abstaction	1	abstaction	is a		2.0	CN	/d/conceptnet/4/en	[[1]] is a kind of [[Abstaction]].	What is a 1?	/c/en/1-/r/IsA-0000
+/c/en/1	/r/IsA	/c/en/higher_number_than_0	1	higher number than 0	is a		1.0	CN	/d/conceptnet/4/en	[[1]] is [[a higher number than 0]]	What is a 1?	/c/en/1-/r/IsA-0001
+/c/en/1	/r/IsA	/c/en/number	1	number	is a		4.472	CN	/d/conceptnet/4/en	[[1]] is [[a number]]	What is a 1?	/c/en/1-/r/IsA-0002
+/c/en/1	/r/IsA	/c/en/set_containing_one_element	1	set containing one element	is a		1.0	CN	/d/conceptnet/4/en	[[{1}]] is a type of [[set containing one element]].	What is a 1?	/c/en/1-/r/IsA-0003
+/c/en/1	/r/RelatedTo	/c/en/draft	1	draft	related to		1.0	CN	/d/wiktionary/en		What is 1 related to?	/c/en/1-/r/RelatedTo-0000
+/c/en/1	/r/RelatedTo	/c/en/like	1	like	related to		1.0	CN	/d/wiktionary/en		What is 1 related to?	/c/en/1-/r/RelatedTo-0001
+/c/en/1	/r/RelatedTo	/c/en/number	1	number	related to		1.0	CN	/d/wiktionary/en		What is 1 related to?	/c/en/1-/r/RelatedTo-0002
+/c/en/1	/r/RelatedTo	/c/en/one	1	one	related to		1.0	CN	/d/wiktionary/en		What is 1 related to?	/c/en/1-/r/RelatedTo-0003
+/c/en/1	/r/Synonym	/c/en/one	1	one	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 1?	/c/en/1-/r/Synonym-0000
+/c/en/1,000_megawatt_plutonium_reactor/n	/r/IsA	/c/en/tangible_thing/n	1,000 megawatt plutonium reactor	tangible thing	is a		1.0	CN	/d/opencyc		What is a 1,000 megawatt plutonium reactor?	/c/en/1,000_megawatt_plutonium_reactor/n-/r/IsA-0000
+/c/en/1,000_meter/a	/r/FormOf	/c/en/1000_metre	1,000 meter	1000 metre	form of		1.0	CN	/d/wiktionary/en		What is 1,000 meter a form of?	/c/en/1,000_meter/a-/r/FormOf-0000
+/c/en/1,000_metre/a	/r/FormOf	/c/en/1000_metre	1,000 metre	1000 metre	form of		1.0	CN	/d/wiktionary/en		What is 1,000 metre a form of?	/c/en/1,000_metre/a-/r/FormOf-0000
+/c/en/1,1,1_trichloro_2,2_bis_4_chlorophenyl_ethane/n	/r/RelatedTo	/c/en/dichlorodiphenyltrichloroethane	1,1,1 trichloro 2,2 bis 4 chlorophenyl ethane	dichlorodiphenyltrichloroethane	related to		1.0	CN	/d/wiktionary/fr		What is 1,1,1 trichloro 2,2 bis 4 chlorophenyl ethane related to?	/c/en/1,1,1_trichloro_2,2_bis_4_chlorophenyl_ethane/n-/r/RelatedTo-0000
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	/r/IsA	/c/en/chemical_compound/n	1,1,2 trichloro 1,2,2 trifluoroethane	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,1,2 trichloro 1,2,2 trifluoroethane?	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane-/r/IsA-0000
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	/r/Synonym	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	1,1,2 trichloro 1,2,2 trifluoroethane	1,1,2 trichloro 1,2,2 trifluoroethane	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,1,2 trichloro 1,2,2 trifluoroethane?	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane-/r/Synonym-0000
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane/n	/r/IsA	/c/en/cfc/n	1,1,2 trichloro 1,2,2 trifluoroethane	cfc	is a		1.0	CN	/d/opencyc		What is a 1,1,2 trichloro 1,2,2 trifluoroethane?	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane/n-/r/IsA-0000
+/c/en/1,1_dimethylhydrazine	/r/IsA	/c/en/dimethylhydrazine/n	1,1 dimethylhydrazine	dimethylhydrazine	is a		1.0	CN	/d/wiktionary/en		What is a 1,1 dimethylhydrazine?	/c/en/1,1_dimethylhydrazine-/r/IsA-0000
+/c/en/1,1_dimethylhydrazine/n	/r/RelatedTo	/c/en/unsymmetrical_dimethylhydrazine	1,1 dimethylhydrazine	unsymmetrical dimethylhydrazine	related to		1.0	CN	/d/wiktionary/fr		What is 1,1 dimethylhydrazine related to?	/c/en/1,1_dimethylhydrazine/n-/r/RelatedTo-0000
+/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/2,3_bis_nitrooxy_propyl_nitrate	1,2,3 trinitrooxypropane	2,3 bis nitrooxy propyl nitrate	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1,2,3 trinitrooxypropane?	/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-0000
+/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/glyceryl_trinitrate	1,2,3 trinitrooxypropane	glyceryl trinitrate	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1,2,3 trinitrooxypropane?	/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-0001
+/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/nitro	1,2,3 trinitrooxypropane	nitro	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1,2,3 trinitrooxypropane?	/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-0002
+/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/nitroglycerin	1,2,3 trinitrooxypropane	nitroglycerin	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1,2,3 trinitrooxypropane?	/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-0003
+/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/trinitroglycerin	1,2,3 trinitrooxypropane	trinitroglycerin	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1,2,3 trinitrooxypropane?	/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-0004
+/c/en/1,2,4_trioxane/n	/r/IsA	/c/en/ether/n	1,2,4 trioxane	ether	is a		1.0	CN	/d/opencyc		What is a 1,2,4 trioxane?	/c/en/1,2,4_trioxane/n-/r/IsA-0000
+/c/en/1,2_diazole	/r/DerivedFrom	/c/en/diazole/n	1,2 diazole	diazole	derived from		1.0	CN	/d/wiktionary/en		From which word is 1,2 diazole derived?	/c/en/1,2_diazole-/r/DerivedFrom-0000
+/c/en/1,2_dibromoethane	/r/IsA	/c/en/chemical_compound/n	1,2 dibromoethane	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,2 dibromoethane?	/c/en/1,2_dibromoethane-/r/IsA-0000
+/c/en/1,2_dibromoethane	/r/Synonym	/c/en/1,2_dibromoethane	1,2 dibromoethane	1,2 dibromoethane	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,2 dibromoethane?	/c/en/1,2_dibromoethane-/r/Synonym-0000
+/c/en/1,2_dibromoethane/n	/r/IsA	/c/en/tangible_thing/n	1,2 dibromoethane	tangible thing	is a		1.0	CN	/d/opencyc		What is a 1,2 dibromoethane?	/c/en/1,2_dibromoethane/n-/r/IsA-0000
+/c/en/1,2_dichlorotetrafluoroethane	/r/IsA	/c/en/chemical_compound/n	1,2 dichlorotetrafluoroethane	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,2 dichlorotetrafluoroethane?	/c/en/1,2_dichlorotetrafluoroethane-/r/IsA-0000
+/c/en/1,2_dichlorotetrafluoroethane	/r/Synonym	/c/en/1,2_dichlorotetrafluoroethane	1,2 dichlorotetrafluoroethane	1,2 dichlorotetrafluoroethane	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,2 dichlorotetrafluoroethane?	/c/en/1,2_dichlorotetrafluoroethane-/r/Synonym-0000
+/c/en/1,2_dichlorotetrafluoroethane/n	/r/IsA	/c/en/cfc/n	1,2 dichlorotetrafluoroethane	cfc	is a		1.0	CN	/d/opencyc		What is a 1,2 dichlorotetrafluoroethane?	/c/en/1,2_dichlorotetrafluoroethane/n-/r/IsA-0000
+/c/en/1,2_dimethoxybenzene	/r/IsA	/c/en/chemical_compound/n	1,2 dimethoxybenzene	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,2 dimethoxybenzene?	/c/en/1,2_dimethoxybenzene-/r/IsA-0000
+/c/en/1,2_dimethoxybenzene	/r/Synonym	/c/en/1,2_dimethoxybenzene	1,2 dimethoxybenzene	1,2 dimethoxybenzene	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,2 dimethoxybenzene?	/c/en/1,2_dimethoxybenzene-/r/Synonym-0000
+/c/en/1,2_dimethoxybenzene/n	/r/IsA	/c/en/ether/n	1,2 dimethoxybenzene	ether	is a		1.0	CN	/d/opencyc		What is a 1,2 dimethoxybenzene?	/c/en/1,2_dimethoxybenzene/n-/r/IsA-0000
+/c/en/1,2_dimethylhydrazine	/r/IsA	/c/en/chemical_compound/n	1,2 dimethylhydrazine	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,2 dimethylhydrazine?	/c/en/1,2_dimethylhydrazine-/r/IsA-0000
+/c/en/1,2_dimethylhydrazine	/r/IsA	/c/en/dimethylhydrazine/n	1,2 dimethylhydrazine	dimethylhydrazine	is a		1.0	CN	/d/wiktionary/en		What is a 1,2 dimethylhydrazine?	/c/en/1,2_dimethylhydrazine-/r/IsA-0001
+/c/en/1,2_dimethylhydrazine	/r/Synonym	/c/en/1,2_dimethylhydrazine	1,2 dimethylhydrazine	1,2 dimethylhydrazine	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,2 dimethylhydrazine?	/c/en/1,2_dimethylhydrazine-/r/Synonym-0000
+/c/en/1,2_dimethylhydrazine/n	/r/IsA	/c/en/tangible_thing/n	1,2 dimethylhydrazine	tangible thing	is a		1.0	CN	/d/opencyc		What is a 1,2 dimethylhydrazine?	/c/en/1,2_dimethylhydrazine/n-/r/IsA-0000
+/c/en/1,2_naphthoquinone	/r/DerivedFrom	/c/en/naphthoquinone/n	1,2 naphthoquinone	naphthoquinone	derived from		1.0	CN	/d/wiktionary/en		From which word is 1,2 naphthoquinone derived?	/c/en/1,2_naphthoquinone-/r/DerivedFrom-0000
+/c/en/1,2_naphthoquinone	/r/IsA	/c/en/chemical_compound/n	1,2 naphthoquinone	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,2 naphthoquinone?	/c/en/1,2_naphthoquinone-/r/IsA-0000
+/c/en/1,2_naphthoquinone	/r/Synonym	/c/en/1,2_naphthoquinone	1,2 naphthoquinone	1,2 naphthoquinone	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,2 naphthoquinone?	/c/en/1,2_naphthoquinone-/r/Synonym-0000
+/c/en/1,2_naphthoquinone/n	/r/HasContext	/c/en/organic_compound	1,2 naphthoquinone	organic compound	has context		1.0	CN	/d/wiktionary/en		What is a context of 1,2 naphthoquinone?	/c/en/1,2_naphthoquinone/n-/r/HasContext-0000
+/c/en/1,2_naphthoquinone/n	/r/RelatedTo	/c/en/naphthoquinone	1,2 naphthoquinone	naphthoquinone	related to		1.0	CN	/d/wiktionary/en		What is 1,2 naphthoquinone related to?	/c/en/1,2_naphthoquinone/n-/r/RelatedTo-0000
+/c/en/1,3,5_cyclohexatriene	/r/FormOf	/c/en/cyclohexa_1,3,5_triene/n	1,3,5 cyclohexatriene	cyclohexa 1,3,5 triene	form of		1.0	CN	/d/wiktionary/fr		What is 1,3,5 cyclohexatriene a form of?	/c/en/1,3,5_cyclohexatriene-/r/FormOf-0000
+/c/en/1,3_diazole	/r/DerivedFrom	/c/en/diazole/n	1,3 diazole	diazole	derived from		1.0	CN	/d/wiktionary/en		From which word is 1,3 diazole derived?	/c/en/1,3_diazole-/r/DerivedFrom-0000
+/c/en/1,3_dimethylpentylamine/n	/r/IsA	/c/en/amine/n	1,3 dimethylpentylamine	amine	is a		1.0	CN	/d/opencyc		What is a 1,3 dimethylpentylamine?	/c/en/1,3_dimethylpentylamine/n-/r/IsA-0000
+/c/en/1,3bpg/n	/r/IsA	/c/en/chemical_object/n	1,3bpg	chemical object	is a		1.0	CN	/d/opencyc		What is a 1,3bpg?	/c/en/1,3bpg/n-/r/IsA-0000
+/c/en/1,3bpg/n	/r/IsA	/c/en/organic_molecule/n	1,3bpg	organic molecule	is a		1.0	CN	/d/opencyc		What is a 1,3bpg?	/c/en/1,3bpg/n-/r/IsA-0001
+/c/en/1,4_dimethoxybenzene/n	/r/IsA	/c/en/ether/n	1,4 dimethoxybenzene	ether	is a		1.0	CN	/d/opencyc		What is a 1,4 dimethoxybenzene?	/c/en/1,4_dimethoxybenzene/n-/r/IsA-0000
+/c/en/1,4_dioxane	/r/IsA	/c/en/chemical_compound/n	1,4 dioxane	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,4 dioxane?	/c/en/1,4_dioxane-/r/IsA-0000
+/c/en/1,4_dioxane	/r/Synonym	/c/en/1,4_dioxane	1,4 dioxane	1,4 dioxane	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,4 dioxane?	/c/en/1,4_dioxane-/r/Synonym-0000
+/c/en/1,4_dioxane/n	/r/IsA	/c/en/ether/n	1,4 dioxane	ether	is a		1.0	CN	/d/opencyc		What is a 1,4 dioxane?	/c/en/1,4_dioxane/n-/r/IsA-0000
+/c/en/1,4_naphthoquinone	/r/DerivedFrom	/c/en/naphthoquinone/n	1,4 naphthoquinone	naphthoquinone	derived from		1.0	CN	/d/wiktionary/en		From which word is 1,4 naphthoquinone derived?	/c/en/1,4_naphthoquinone-/r/DerivedFrom-0000
+/c/en/1,4_naphthoquinone	/r/IsA	/c/en/chemical_compound/n	1,4 naphthoquinone	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 1,4 naphthoquinone?	/c/en/1,4_naphthoquinone-/r/IsA-0000
+/c/en/1,4_naphthoquinone	/r/Synonym	/c/en/1,4_naphthoquinone	1,4 naphthoquinone	1,4 naphthoquinone	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1,4 naphthoquinone?	/c/en/1,4_naphthoquinone-/r/Synonym-0000
+/c/en/1,4_naphthoquinone/n	/r/HasContext	/c/en/organic_compound	1,4 naphthoquinone	organic compound	has context		1.0	CN	/d/wiktionary/en		What is a context of 1,4 naphthoquinone?	/c/en/1,4_naphthoquinone/n-/r/HasContext-0000
+/c/en/1,4_naphthoquinone/n	/r/RelatedTo	/c/en/naphthoquinone	1,4 naphthoquinone	naphthoquinone	related to		1.0	CN	/d/wiktionary/en		What is 1,4 naphthoquinone related to?	/c/en/1,4_naphthoquinone/n-/r/RelatedTo-0000
+/c/en/1/a	/r/FormOf	/c/en/a1	1	a1	form of		2.0	CN	/d/wiktionary/en		What is 1 a form of?	/c/en/1/a-/r/FormOf-0000
+/c/en/1/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	1	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[1]] is similar to [[cardinal]]	What is 1 similar to?	/c/en/1/a/wn-/r/SimilarTo-0000
+/c/en/1/n	/r/HasContext	/c/en/historical	1	historical	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1/n-/r/HasContext-0000
+/c/en/1/n	/r/HasContext	/c/en/military	1	military	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1/n-/r/HasContext-0001
+/c/en/1/n	/r/HasContext	/c/en/us	1	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 1?	/c/en/1/n-/r/HasContext-0002
+/c/en/1/n	/r/RelatedTo	/c/en/angstrom	1	angstrom	related to		1.0	CN	/d/wiktionary/en		What is 1 related to?	/c/en/1/n-/r/RelatedTo-0000
+/c/en/1/n/wikt/en_2	/r/FormOf	/c/en/plus_one	1	plus one	form of		1.0	CN	/d/wiktionary/en		What is 1 a form of?	/c/en/1/n/wikt/en_2-/r/FormOf-0000
+/c/en/1/n/wn/quantity	/r/Synonym	/c/en/one/n/wn/quantity	1	one	synonym		2.0	CN	/d/wordnet/3.1	[[1]] is a synonym of [[one]]	What is a synonym of 1?	/c/en/1/n/wn/quantity-/r/Synonym-0000
+/c/en/1/n/wp/ep	/r/IsA	/c/en/album/n	1	album	is a		0.5	CN	/d/dbpedia/en		What is a 1?	/c/en/1/n/wp/ep-/r/IsA-0000
+/c/en/1/n/wp/ep	/r/Synonym	/c/en/1/n/wp/ep	1	1	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1?	/c/en/1/n/wp/ep-/r/Synonym-0000
+/c/en/1/n/wp/number	/r/Synonym	/c/en/1/n/wp/number	1	1	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1?	/c/en/1/n/wp/number-/r/Synonym-0000
+/c/en/10	/r/HasProperty	/c/en/9_plus_1	10	9 plus 1	has property		1.0	CN	/d/conceptnet/4/en	[[10]] is [[9 plus 1]]	What is a property of 10?	/c/en/10-/r/HasProperty-0000
+/c/en/10	/r/HasProperty	/c/en/ten	10	ten	has property		1.0	CN	/d/conceptnet/4/en	[[10]] is [[ten]]	What is a property of 10?	/c/en/10-/r/HasProperty-0001
+/c/en/10	/r/IsA	/c/en/higher_number_than_9	10	higher number than 9	is a		1.0	CN	/d/conceptnet/4/en	[[10]] is [[a higher number than 9]]	What is a 10?	/c/en/10-/r/IsA-0000
+/c/en/10,000_metres	/r/RelatedTo	/c/en/10	10,000 metres	10	related to		0.5	CN	/d/dbpedia/en		What is 10,000 metres related to?	/c/en/10,000_metres-/r/RelatedTo-0000
+/c/en/10,000_metres	/r/Synonym	/c/en/10,000_metres	10,000 metres	10,000 metres	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 10,000 metres?	/c/en/10,000_metres-/r/Synonym-0000
+/c/en/10,000_metres/n	/r/Synonym	/c/en/10,000_meters	10,000 metres	10,000 meters	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 10,000 metres?	/c/en/10,000_metres/n-/r/Synonym-0000
+/c/en/10.0/n	/r/RelatedTo	/c/en/perfect	10.0	perfect	related to		1.0	CN	/d/wiktionary/en		What is 10.0 related to?	/c/en/10.0/n-/r/RelatedTo-0000
+/c/en/10.0/n	/r/RelatedTo	/c/en/perfection	10.0	perfection	related to		1.0	CN	/d/wiktionary/en		What is 10.0 related to?	/c/en/10.0/n-/r/RelatedTo-0001
+/c/en/10.0s/n	/r/FormOf	/c/en/10.0	10.0s	10.0	form of		1.0	CN	/d/wiktionary/en		What is 10.0s a form of?	/c/en/10.0s/n-/r/FormOf-0000
+/c/en/10/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	10	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[10]] is similar to [[cardinal]]	What is 10 similar to?	/c/en/10/a/wn-/r/SimilarTo-0000
+/c/en/10/n	/r/RelatedTo	/c/en/intense	10	intense	related to		1.0	CN	/d/wiktionary/en		What is 10 related to?	/c/en/10/n-/r/RelatedTo-0000
+/c/en/10/n	/r/RelatedTo	/c/en/perfect	10	perfect	related to		1.0	CN	/d/wiktionary/en		What is 10 related to?	/c/en/10/n-/r/RelatedTo-0001
+/c/en/10/n/wn/quantity	/r/Synonym	/c/en/ten/n/wn/quantity	10	ten	synonym		2.0	CN	/d/wordnet/3.1	[[10]] is a synonym of [[ten]]	What is a synonym of 10?	/c/en/10/n/wn/quantity-/r/Synonym-0000
+/c/en/100	/r/HasProperty	/c/en/one_hundred	100	one hundred	has property		1.0	CN	/d/conceptnet/4/en	[[100]] is [[one hundred]]	What is a property of 100?	/c/en/100-/r/HasProperty-0000
+/c/en/100/a	/r/FormOf	/c/en/one_hundred_percent	100	one hundred percent	form of		1.0	CN	/d/wiktionary/en		What is 100 a form of?	/c/en/100/a-/r/FormOf-0000
+/c/en/100/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	100	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[100]] is similar to [[cardinal]]	What is 100 similar to?	/c/en/100/a/wn-/r/SimilarTo-0000
+/c/en/100/n	/r/HasContext	/c/en/video_games	100	video games	has context		1.0	CN	/d/wiktionary/en		What is a context of 100?	/c/en/100/n-/r/HasContext-0000
+/c/en/100/n	/r/RelatedTo	/c/en/any	100	any	related to		1.0	CN	/d/wiktionary/en		What is 100 related to?	/c/en/100/n-/r/RelatedTo-0000
+/c/en/100/n	/r/RelatedTo	/c/en/low	100	low	related to		1.0	CN	/d/wiktionary/en		What is 100 related to?	/c/en/100/n-/r/RelatedTo-0001
+/c/en/100/n	/r/RelatedTo	/c/en/speedrunning	100	speedrunning	related to		1.0	CN	/d/wiktionary/en		What is 100 related to?	/c/en/100/n-/r/RelatedTo-0002
+/c/en/100/n	/r/RelatedTo	/c/en/unlock	100	unlock	related to		1.0	CN	/d/wiktionary/en		What is 100 related to?	/c/en/100/n-/r/RelatedTo-0003
+/c/en/100/n/wn/quantity	/r/Synonym	/c/en/hundred/n/wn/quantity	100	hundred	synonym		2.0	CN	/d/wordnet/3.1	[[100]] is a synonym of [[hundred]]	What is a synonym of 100?	/c/en/100/n/wn/quantity-/r/Synonym-0000
+/c/en/100/r	/r/FormOf	/c/en/one_hundred_percent	100	one hundred percent	form of		1.0	CN	/d/wiktionary/en		What is 100 a form of?	/c/en/100/r-/r/FormOf-0000
+/c/en/1000	/r/HasProperty	/c/en/one_thousand	1000	one thousand	has property		1.0	CN	/d/conceptnet/4/en	[[1000]] is [[one thousand]]	What is a property of 1000?	/c/en/1000-/r/HasProperty-0000
+/c/en/1000/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	1000	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[1000]] is similar to [[cardinal]]	What is 1000 similar to?	/c/en/1000/a/wn-/r/SimilarTo-0000
+/c/en/1000/n/wn/quantity	/r/Synonym	/c/en/thousand/n/wn/quantity	1000	thousand	synonym		2.0	CN	/d/wordnet/3.1	[[1000]] is a synonym of [[thousand]]	What is a synonym of 1000?	/c/en/1000/n/wn/quantity-/r/Synonym-0000
+/c/en/10000/n/wn/quantity	/r/Synonym	/c/en/ten_thousand/n/wn/quantity	10000	ten thousand	synonym		2.0	CN	/d/wordnet/3.1	[[10000]] is a synonym of [[ten thousand]]	What is a synonym of 10000?	/c/en/10000/n/wn/quantity-/r/Synonym-0000
+/c/en/10000/n/wp/number	/r/Synonym	/c/en/10000/n/wp/number	10000	10000	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 10000?	/c/en/10000/n/wp/number-/r/Synonym-0000
+/c/en/100000/n/wn/quantity	/r/Synonym	/c/en/hundred_thousand/n/wn/quantity	100000	hundred thousand	synonym		2.0	CN	/d/wordnet/3.1	[[100000]] is a synonym of [[hundred thousand]]	What is a synonym of 100000?	/c/en/100000/n/wn/quantity-/r/Synonym-0000
+/c/en/1000000/n/wn/quantity	/r/Synonym	/c/en/million/n/wn/quantity	1000000	million	synonym		2.0	CN	/d/wordnet/3.1	[[1000000]] is a synonym of [[million]]	What is a synonym of 1000000?	/c/en/1000000/n/wn/quantity-/r/Synonym-0000
+/c/en/1000000000/n/wn/quantity	/r/Synonym	/c/en/billion/n/wn/quantity	1000000000	billion	synonym		2.0	CN	/d/wordnet/3.1	[[1000000000]] is a synonym of [[billion]]	What is a synonym of 1000000000?	/c/en/1000000000/n/wn/quantity-/r/Synonym-0000
+/c/en/1000000000000/n/wn/quantity	/r/Synonym	/c/en/billion/n/wn/quantity	1000000000000	billion	synonym		2.0	CN	/d/wordnet/3.1	[[1000000000000]] is a synonym of [[billion]]	What is a synonym of 1000000000000?	/c/en/1000000000000/n/wn/quantity-/r/Synonym-0000
+/c/en/1000000000000/n/wn/quantity	/r/Synonym	/c/en/trillion/n/wn/quantity	1000000000000	trillion	synonym		2.0	CN	/d/wordnet/3.1	[[1000000000000]] is a synonym of [[trillion]]	What is a synonym of 1000000000000?	/c/en/1000000000000/n/wn/quantity-/r/Synonym-0001
+/c/en/10000_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	10000 mbit s	generic artifact	is a		1.0	CN	/d/opencyc		What is a 10000 mbit s?	/c/en/10000_mbit_s/n-/r/IsA-0000
+/c/en/10000_metres/n	/r/HasContext	/c/en/athletics	10000 metres	athletics	has context		1.0	CN	/d/wiktionary/en		What is a context of 10000 metres?	/c/en/10000_metres/n-/r/HasContext-0000
+/c/en/10000_metres/n	/r/RelatedTo	/c/en/10,000_metres	10000 metres	10,000 metres	related to		1.0	CN	/d/wiktionary/fr		What is 10000 metres related to?	/c/en/10000_metres/n-/r/RelatedTo-0000
+/c/en/10000_metres/n	/r/RelatedTo	/c/en/long_distance	10000 metres	long distance	related to		1.0	CN	/d/wiktionary/en		What is 10000 metres related to?	/c/en/10000_metres/n-/r/RelatedTo-0001
+/c/en/10000_metres/n	/r/RelatedTo	/c/en/metres	10000 metres	metres	related to		1.0	CN	/d/wiktionary/en		What is 10000 metres related to?	/c/en/10000_metres/n-/r/RelatedTo-0002
+/c/en/1000_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	1000 mbit s	generic artifact	is a		2.0	CN	/d/opencyc		What is a 1000 mbit s?	/c/en/1000_mbit_s/n-/r/IsA-0000
+/c/en/1000_meter/a	/r/FormOf	/c/en/1000_metre	1000 meter	1000 metre	form of		2.0	CN	/d/wiktionary/en		What is 1000 meter a form of?	/c/en/1000_meter/a-/r/FormOf-0000
+/c/en/1000_metre/a	/r/RelatedTo	/c/en/distance	1000 metre	distance	related to		1.0	CN	/d/wiktionary/en		What is 1000 metre related to?	/c/en/1000_metre/a-/r/RelatedTo-0000
+/c/en/1000_metre/a	/r/RelatedTo	/c/en/height	1000 metre	height	related to		1.0	CN	/d/wiktionary/en		What is 1000 metre related to?	/c/en/1000_metre/a-/r/RelatedTo-0001
+/c/en/1000_metres/n	/r/HasContext	/c/en/athletics	1000 metres	athletics	has context		1.0	CN	/d/wiktionary/en		What is a context of 1000 metres?	/c/en/1000_metres/n-/r/HasContext-0000
+/c/en/1000_metres/n	/r/RelatedTo	/c/en/metre	1000 metres	metre	related to		1.0	CN	/d/wiktionary/en		What is 1000 metres related to?	/c/en/1000_metres/n-/r/RelatedTo-0000
+/c/en/1000_metres/n	/r/RelatedTo	/c/en/middle_distance	1000 metres	middle distance	related to		1.0	CN	/d/wiktionary/en		What is 1000 metres related to?	/c/en/1000_metres/n-/r/RelatedTo-0001
+/c/en/1000th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	1000th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[1000th]] is similar to [[ordinal]]	What is 1000th similar to?	/c/en/1000th/a/wn-/r/SimilarTo-0000
+/c/en/100_hamburger/n	/r/HasContext	/c/en/aviation	100 hamburger	aviation	has context		1.0	CN	/d/wiktionary/en		What is a context of 100 hamburger?	/c/en/100_hamburger/n-/r/HasContext-0000
+/c/en/100_hamburger/n	/r/HasContext	/c/en/slang	100 hamburger	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 100 hamburger?	/c/en/100_hamburger/n-/r/HasContext-0001
+/c/en/100_hamburger/n	/r/RelatedTo	/c/en/general_aviation	100 hamburger	general aviation	related to		1.0	CN	/d/wiktionary/en		What is 100 hamburger related to?	/c/en/100_hamburger/n-/r/RelatedTo-0000
+/c/en/100_hamburgers/n	/r/FormOf	/c/en/100_hamburger	100 hamburgers	100 hamburger	form of		1.0	CN	/d/wiktionary/en		What is 100 hamburgers a form of?	/c/en/100_hamburgers/n-/r/FormOf-0000
+/c/en/100_kilometres_altitude	/r/DefinedAs	/c/en/official_edge_of_space	100 kilometres altitude	official edge of space	defined as		1.0	CN	/d/conceptnet/4/en	[[100 kilometres altitude]] is the [[official edge of space]]	How can 100 kilometres altitude be defined?	/c/en/100_kilometres_altitude-/r/DefinedAs-0000
+/c/en/100_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	100 mbit s	generic artifact	is a		2.0	CN	/d/opencyc		What is a 100 mbit s?	/c/en/100_mbit_s/n-/r/IsA-0000
+/c/en/100_men	/r/CapableOf	/c/en/row_galley	100 men	row galley	capable of		1.0	CN	/d/conceptnet/4/en	[[100 men]] can [[row a galley]]	What is 100 men capable of?	/c/en/100_men-/r/CapableOf-0000
+/c/en/100_meter_breaststroke/n	/r/IsA	/c/en/quick_burst_sport/n	100 meter breaststroke	quick burst sport	is a		1.0	CN	/d/opencyc		What is a 100 meter breaststroke?	/c/en/100_meter_breaststroke/n-/r/IsA-0000
+/c/en/100_meter_breaststroke/n	/r/IsA	/c/en/swimming_race/n	100 meter breaststroke	swimming race	is a		1.0	CN	/d/opencyc		What is a 100 meter breaststroke?	/c/en/100_meter_breaststroke/n-/r/IsA-0001
+/c/en/100_meter_fres_style	/r/IsA	/c/en/olympic_swimming_event	100 meter fres style	olympic swimming event	is a		1.0	CN	/d/conceptnet/4/en	[[The 100 meter fres style]] is [[an Olympic swimming event]]	What is a 100 meter fres style?	/c/en/100_meter_fres_style-/r/IsA-0000
+/c/en/100_meter_run/n	/r/IsA	/c/en/sprinting_competition/n	100 meter run	sprinting competition	is a		1.0	CN	/d/opencyc		What is a 100 meter run?	/c/en/100_meter_run/n-/r/IsA-0000
+/c/en/100_metres	/r/Synonym	/c/en/100_metres	100 metres	100 metres	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 100 metres?	/c/en/100_metres-/r/Synonym-0000
+/c/en/100_metres/n	/r/HasContext	/c/en/athletics	100 metres	athletics	has context		1.0	CN	/d/wiktionary/en		What is a context of 100 metres?	/c/en/100_metres/n-/r/HasContext-0000
+/c/en/100_metres/n	/r/RelatedTo	/c/en/metres	100 metres	metres	related to		1.0	CN	/d/wiktionary/en		What is 100 metres related to?	/c/en/100_metres/n-/r/RelatedTo-0000
+/c/en/100_metres/n	/r/RelatedTo	/c/en/sprint	100 metres	sprint	related to		1.0	CN	/d/wiktionary/en		What is 100 metres related to?	/c/en/100_metres/n-/r/RelatedTo-0001
+/c/en/100_metres/n	/r/Synonym	/c/en/100_meters	100 metres	100 meters	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 100 metres?	/c/en/100_metres/n-/r/Synonym-0000
+/c/en/100_metres/n	/r/Synonym	/c/en/100_metre_dash	100 metres	100 metre dash	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 100 metres?	/c/en/100_metres/n-/r/Synonym-0001
+/c/en/100_pennies	/r/CapableOf	/c/en/equal_one_dollar	100 pennies	equal one dollar	capable of		1.0	CN	/d/conceptnet/4/en	[[100 pennies]] can [[equal one dollar]]	What is 100 pennies capable of?	/c/en/100_pennies-/r/CapableOf-0000
+/c/en/100_percent	/r/HasContext	/c/en/slang	100 percent	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 100 percent?	/c/en/100_percent-/r/HasContext-0000
+/c/en/100_percent	/r/HasContext	/c/en/south_africa	100 percent	south africa	has context		1.0	CN	/d/wiktionary/en		What is a context of 100 percent?	/c/en/100_percent-/r/HasContext-0001
+/c/en/100_percent	/r/RelatedTo	/c/en/excellent	100 percent	excellent	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent-/r/RelatedTo-0000
+/c/en/100_percent	/r/RelatedTo	/c/en/magnificent	100 percent	magnificent	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent-/r/RelatedTo-0001
+/c/en/100_percent	/r/RelatedTo	/c/en/wonderful	100 percent	wonderful	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent-/r/RelatedTo-0002
+/c/en/100_percent/a	/r/RelatedTo	/c/en/complete	100 percent	complete	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0000
+/c/en/100_percent/a	/r/RelatedTo	/c/en/confident	100 percent	confident	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0001
+/c/en/100_percent/a	/r/RelatedTo	/c/en/entire	100 percent	entire	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0002
+/c/en/100_percent/a	/r/RelatedTo	/c/en/knowledge	100 percent	knowledge	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0003
+/c/en/100_percent/a	/r/RelatedTo	/c/en/sure	100 percent	sure	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0004
+/c/en/100_percent/a	/r/RelatedTo	/c/en/whole	100 percent	whole	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/a-/r/RelatedTo-0005
+/c/en/100_percent/r	/r/RelatedTo	/c/en/completely	100 percent	completely	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/r-/r/RelatedTo-0000
+/c/en/100_percent/r	/r/RelatedTo	/c/en/entirely	100 percent	entirely	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/r-/r/RelatedTo-0001
+/c/en/100_percent/r	/r/RelatedTo	/c/en/wholly	100 percent	wholly	related to		1.0	CN	/d/wiktionary/en		What is 100 percent related to?	/c/en/100_percent/r-/r/RelatedTo-0002
+/c/en/100_s/n	/r/FormOf	/c/en/100s	100 s	100s	form of		1.0	CN	/d/wiktionary/en		What is 100 s a form of?	/c/en/100_s/n-/r/FormOf-0000
+/c/en/100_troop_strength/n	/r/IsA	/c/en/deployable_military_unit/n	100 troop strength	deployable military unit	is a		1.0	CN	/d/opencyc		What is a 100 troop strength?	/c/en/100_troop_strength/n-/r/IsA-0000
+/c/en/100_year_flood/n	/r/RelatedTo	/c/en/probability	100 year flood	probability	related to		1.0	CN	/d/wiktionary/en		What is 100 year flood related to?	/c/en/100_year_flood/n-/r/RelatedTo-0000
+/c/en/100_year_floods/n	/r/FormOf	/c/en/100_year_flood	100 year floods	100 year flood	form of		1.0	CN	/d/wiktionary/en		What is 100 year floods a form of?	/c/en/100_year_floods/n-/r/FormOf-0000
+/c/en/100ll	/r/IsA	/c/en/avgas/n	100ll	avgas	is a		1.0	CN	/d/wiktionary/en		What is a 100ll?	/c/en/100ll-/r/IsA-0000
+/c/en/100s/n	/r/RelatedTo	/c/en/fahrenheit	100s	fahrenheit	related to		1.0	CN	/d/wiktionary/en		What is 100s related to?	/c/en/100s/n-/r/RelatedTo-0000
+/c/en/100s/n	/r/RelatedTo	/c/en/hundreds	100s	hundreds	related to		1.0	CN	/d/wiktionary/en		What is 100s related to?	/c/en/100s/n-/r/RelatedTo-0001
+/c/en/100th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	100th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[100th]] is similar to [[ordinal]]	What is 100th similar to?	/c/en/100th/a/wn-/r/SimilarTo-0000
+/c/en/101/a	/r/HasContext	/c/en/us	101	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 101?	/c/en/101/a-/r/HasContext-0000
+/c/en/101/a	/r/RelatedTo	/c/en/basic	101	basic	related to		1.0	CN	/d/wiktionary/en		What is 101 related to?	/c/en/101/a-/r/RelatedTo-0000
+/c/en/101/a	/r/RelatedTo	/c/en/beginner	101	beginner	related to		1.0	CN	/d/wiktionary/en		What is 101 related to?	/c/en/101/a-/r/RelatedTo-0001
+/c/en/101/a	/r/RelatedTo	/c/en/from_scratch	101	from scratch	related to		1.0	CN	/d/wiktionary/en		What is 101 related to?	/c/en/101/a-/r/RelatedTo-0002
+/c/en/101/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	101	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[101]] is similar to [[cardinal]]	What is 101 similar to?	/c/en/101/a/wn-/r/SimilarTo-0000
+/c/en/101_dalmatians	/r/IsA	/c/en/famous_movie	101 dalmatians	famous movie	is a		1.0	CN	/d/conceptnet/4/en	[["101 dalmatians"]] is [[a famous movie]]	What is a 101 dalmatians?	/c/en/101_dalmatians-/r/IsA-0000
+/c/en/101st/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	101st	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[101st]] is similar to [[ordinal]]	What is 101st similar to?	/c/en/101st/a/wn-/r/SimilarTo-0000
+/c/en/1040/n	/r/HasContext	/c/en/taxation	1040	taxation	has context		1.0	CN	/d/wiktionary/en		What is a context of 1040?	/c/en/1040/n-/r/HasContext-0000
+/c/en/1040/n	/r/HasContext	/c/en/us	1040	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 1040?	/c/en/1040/n-/r/HasContext-0001
+/c/en/1040/n	/r/RelatedTo	/c/en/income_tax	1040	income tax	related to		1.0	CN	/d/wiktionary/en		What is 1040 related to?	/c/en/1040/n-/r/RelatedTo-0000
+/c/en/1040_form/n	/r/IsA	/c/en/conceptual_work_series_periodic/n	1040 form	conceptual work series periodic	is a		1.0	CN	/d/opencyc		What is a 1040 form?	/c/en/1040_form/n-/r/IsA-0000
+/c/en/1040_form/n	/r/IsA	/c/en/series_of_conceptual_work/n	1040 form	series of conceptual work	is a		1.0	CN	/d/opencyc		What is a 1040 form?	/c/en/1040_form/n-/r/IsA-0001
+/c/en/1040_form/n	/r/IsA	/c/en/tax_form/n	1040 form	tax form	is a		1.0	CN	/d/opencyc		What is a 1040 form?	/c/en/1040_form/n-/r/IsA-0002
+/c/en/1040ez/n	/r/IsA	/c/en/tax_form/n	1040ez	tax form	is a		1.0	CN	/d/opencyc		What is a 1040ez?	/c/en/1040ez/n-/r/IsA-0000
+/c/en/1040s/n	/r/FormOf	/c/en/1040	1040s	1040	form of		1.0	CN	/d/wiktionary/en		What is 1040s a form of?	/c/en/1040s/n-/r/FormOf-0000
+/c/en/1040x_tax_form/n	/r/IsA	/c/en/tax_form/n	1040x tax form	tax form	is a		1.0	CN	/d/opencyc		What is a 1040x tax form?	/c/en/1040x_tax_form/n-/r/IsA-0000
+/c/en/105/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	105	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[105]] is similar to [[cardinal]]	What is 105 similar to?	/c/en/105/a/wn-/r/SimilarTo-0000
+/c/en/105mm_howitzer/n	/r/IsA	/c/en/howitzer/n	105mm howitzer	howitzer	is a		1.0	CN	/d/opencyc		What is a 105mm howitzer?	/c/en/105mm_howitzer/n-/r/IsA-0000
+/c/en/105mm_self_propelled_howitzer/n	/r/IsA	/c/en/105mm_howitzer/n	105mm self propelled howitzer	105mm howitzer	is a		1.0	CN	/d/opencyc		What is a 105mm self propelled howitzer?	/c/en/105mm_self_propelled_howitzer/n-/r/IsA-0000
+/c/en/105mm_self_propelled_howitzer/n	/r/IsA	/c/en/self_propelled_howitzer/n	105mm self propelled howitzer	self propelled howitzer	is a		1.0	CN	/d/opencyc		What is a 105mm self propelled howitzer?	/c/en/105mm_self_propelled_howitzer/n-/r/IsA-0001
+/c/en/105mm_towed_howitzer/n	/r/IsA	/c/en/105mm_howitzer/n	105mm towed howitzer	105mm howitzer	is a		1.0	CN	/d/opencyc		What is a 105mm towed howitzer?	/c/en/105mm_towed_howitzer/n-/r/IsA-0000
+/c/en/105mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	105mm towed howitzer	towed howitzer	is a		1.0	CN	/d/opencyc		What is a 105mm towed howitzer?	/c/en/105mm_towed_howitzer/n-/r/IsA-0001
+/c/en/105th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	105th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[105th]] is similar to [[ordinal]]	What is 105th similar to?	/c/en/105th/a/wn-/r/SimilarTo-0000
+/c/en/106/n	/r/HasContext	/c/en/aviation	106	aviation	has context		1.0	CN	/d/wiktionary/en		What is a context of 106?	/c/en/106/n-/r/HasContext-0000
+/c/en/106s/n	/r/FormOf	/c/en/106	106s	106	form of		1.0	CN	/d/wiktionary/en		What is 106s a form of?	/c/en/106s/n-/r/FormOf-0000
+/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/skateboarding	1080	skateboarding	related to		1.0	CN	/d/wiktionary/en		What is 1080 related to?	/c/en/1080/n/wikt/en_1-/r/RelatedTo-0000
+/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/snowboarding	1080	snowboarding	related to		1.0	CN	/d/wiktionary/en		What is 1080 related to?	/c/en/1080/n/wikt/en_1-/r/RelatedTo-0001
+/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/trick	1080	trick	related to		1.0	CN	/d/wiktionary/en		What is 1080 related to?	/c/en/1080/n/wikt/en_1-/r/RelatedTo-0002
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1260	1080	1260	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0000
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1440	1080	1440	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0001
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1620	1080	1620	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0002
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/180	1080	180	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0003
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1800	1080	1800	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0004
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/360	1080	360	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0005
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/540	1080	540	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0006
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/720	1080	720	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0007
+/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/900	1080	900	similar to		1.0	CN	/d/wiktionary/en		What is 1080 similar to?	/c/en/1080/n/wikt/en_1-/r/SimilarTo-0008
+/c/en/109/n	/r/HasContext	/c/en/aviation	109	aviation	has context		1.0	CN	/d/wiktionary/en		What is a context of 109?	/c/en/109/n-/r/HasContext-0000
+/c/en/109/n	/r/HasContext	/c/en/military	109	military	has context		1.0	CN	/d/wiktionary/en		What is a context of 109?	/c/en/109/n-/r/HasContext-0001
+/c/en/109/n	/r/HasContext	/c/en/world_war_ii	109	world war ii	has context		1.0	CN	/d/wiktionary/en		What is a context of 109?	/c/en/109/n-/r/HasContext-0002
+/c/en/109/n	/r/RelatedTo	/c/en/aircraft	109	aircraft	related to		1.0	CN	/d/wiktionary/en		What is 109 related to?	/c/en/109/n-/r/RelatedTo-0000
+/c/en/109/n	/r/RelatedTo	/c/en/fighter	109	fighter	related to		1.0	CN	/d/wiktionary/en		What is 109 related to?	/c/en/109/n-/r/RelatedTo-0001
+/c/en/109/n	/r/RelatedTo	/c/en/messerschmitt	109	messerschmitt	related to		1.0	CN	/d/wiktionary/en		What is 109 related to?	/c/en/109/n-/r/RelatedTo-0002
+/c/en/1095/n	/r/HasContext	/c/en/metallurgy	1095	metallurgy	has context		1.0	CN	/d/wiktionary/en		What is a context of 1095?	/c/en/1095/n-/r/HasContext-0000
+/c/en/1095/n	/r/IsA	/c/en/carbon_steel	1095	carbon steel	is a		1.0	CN	/d/wiktionary/en		What is a 1095?	/c/en/1095/n-/r/IsA-0000
+/c/en/1095/n	/r/IsA	/c/en/high_carbon_steel	1095	high carbon steel	is a		1.0	CN	/d/wiktionary/en		What is a 1095?	/c/en/1095/n-/r/IsA-0001
+/c/en/1095/n	/r/IsA	/c/en/iron_compound	1095	iron compound	is a		1.0	CN	/d/wiktionary/en		What is a 1095?	/c/en/1095/n-/r/IsA-0002
+/c/en/1095/n	/r/IsA	/c/en/steel	1095	steel	is a		1.0	CN	/d/wiktionary/en		What is a 1095?	/c/en/1095/n-/r/IsA-0003
+/c/en/1095/n	/r/Synonym	/c/en/1095_steel	1095	1095 steel	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 1095?	/c/en/1095/n-/r/Synonym-0000
+/c/en/1095/n	/r/Synonym	/c/en/aisi_1095	1095	aisi 1095	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 1095?	/c/en/1095/n-/r/Synonym-0001
+/c/en/1095/n	/r/Synonym	/c/en/sae_1095	1095	sae 1095	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 1095?	/c/en/1095/n-/r/Synonym-0002
+/c/en/1099/n	/r/HasContext	/c/en/taxation	1099	taxation	has context		1.0	CN	/d/wiktionary/en		What is a context of 1099?	/c/en/1099/n-/r/HasContext-0000
+/c/en/1099/n	/r/HasContext	/c/en/us	1099	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 1099?	/c/en/1099/n-/r/HasContext-0001
+/c/en/1099/n	/r/RelatedTo	/c/en/non_employment	1099	non employment	related to		1.0	CN	/d/wiktionary/en		What is 1099 related to?	/c/en/1099/n-/r/RelatedTo-0000
+/c/en/1099s/n	/r/FormOf	/c/en/1099	1099s	1099	form of		1.0	CN	/d/wiktionary/en		What is 1099s a form of?	/c/en/1099s/n-/r/FormOf-0000
+/c/en/109s/n	/r/FormOf	/c/en/109	109s	109	form of		2.0	CN	/d/wiktionary/en		What is 109s a form of?	/c/en/109s/n-/r/FormOf-0000
+/c/en/10_20	/r/RelatedTo	/c/en/10_4	10 20	10 4	related to		1.0	CN	/d/wiktionary/en		What is 10 20 related to?	/c/en/10_20-/r/RelatedTo-0000
+/c/en/10_20/n	/r/HasContext	/c/en/cb	10 20	cb	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 20?	/c/en/10_20/n-/r/HasContext-0000
+/c/en/10_20/n	/r/HasContext	/c/en/slang	10 20	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 20?	/c/en/10_20/n-/r/HasContext-0001
+/c/en/10_20s/n	/r/FormOf	/c/en/10_20	10 20s	10 20	form of		1.0	CN	/d/wiktionary/en		What is 10 20s a form of?	/c/en/10_20s/n-/r/FormOf-0000
+/c/en/10_4	/r/HasContext	/c/en/cb	10 4	cb	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 4?	/c/en/10_4-/r/HasContext-0000
+/c/en/10_4	/r/HasContext	/c/en/slang	10 4	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 4?	/c/en/10_4-/r/HasContext-0001
+/c/en/10_4	/r/RelatedTo	/c/en/10_20	10 4	10 20	related to		1.0	CN	/d/wiktionary/en		What is 10 4 related to?	/c/en/10_4-/r/RelatedTo-0000
+/c/en/10_4	/r/RelatedTo	/c/en/acknowledged	10 4	acknowledged	related to		1.0	CN	/d/wiktionary/en		What is 10 4 related to?	/c/en/10_4-/r/RelatedTo-0001
+/c/en/10_4	/r/RelatedTo	/c/en/affirmative	10 4	affirmative	related to		1.0	CN	/d/wiktionary/en		What is 10 4 related to?	/c/en/10_4-/r/RelatedTo-0002
+/c/en/10_4	/r/RelatedTo	/c/en/cb_radio	10 4	cb radio	related to		1.0	CN	/d/wiktionary/en		What is 10 4 related to?	/c/en/10_4-/r/RelatedTo-0003
+/c/en/10_4	/r/RelatedTo	/c/en/understood	10 4	understood	related to		1.0	CN	/d/wiktionary/en		What is 10 4 related to?	/c/en/10_4-/r/RelatedTo-0004
+/c/en/10_4	/r/SimilarTo	/c/en/affirmative	10 4	affirmative	similar to		1.0	CN	/d/wiktionary/fr		What is 10 4 similar to?	/c/en/10_4-/r/SimilarTo-0000
+/c/en/10_40_window/n	/r/RelatedTo	/c/en/geographic	10 40 window	geographic	related to		1.0	CN	/d/wiktionary/en		What is 10 40 window related to?	/c/en/10_40_window/n-/r/RelatedTo-0000
+/c/en/10_40_window/n	/r/RelatedTo	/c/en/latitude	10 40 window	latitude	related to		1.0	CN	/d/wiktionary/en		What is 10 40 window related to?	/c/en/10_40_window/n-/r/RelatedTo-0001
+/c/en/10_a.m/n	/r/IsA	/c/en/calendar_hour/n	10 a.m	calendar hour	is a		1.0	CN	/d/opencyc		What is a 10 a.m?	/c/en/10_a.m/n-/r/IsA-0000
+/c/en/10_day_measles/n	/r/RelatedTo	/c/en/7_day_measles	10 day measles	7 day measles	related to		1.0	CN	/d/wiktionary/en		What is 10 day measles related to?	/c/en/10_day_measles/n-/r/RelatedTo-0000
+/c/en/10_day_measles/n	/r/RelatedTo	/c/en/measles	10 day measles	measles	related to		1.0	CN	/d/wiktionary/en		What is 10 day measles related to?	/c/en/10_day_measles/n-/r/RelatedTo-0001
+/c/en/10_day_measles/n	/r/RelatedTo	/c/en/rubeola	10 day measles	rubeola	related to		1.0	CN	/d/wiktionary/en		What is 10 day measles related to?	/c/en/10_day_measles/n-/r/RelatedTo-0002
+/c/en/10_downing_street	/r/AtLocation	/c/en/city_of_westminster	10 downing street	city of westminster	at location		0.5	CN	/d/dbpedia/en		At what location is 10 downing street?	/c/en/10_downing_street-/r/AtLocation-0000
+/c/en/10_downing_street	/r/IsA	/c/en/building/n	10 downing street	building	is a		0.5	CN	/d/dbpedia/en		What is a 10 downing street?	/c/en/10_downing_street-/r/IsA-0000
+/c/en/10_downing_street	/r/RelatedTo	/c/en/1600_pennsylvania_avenue	10 downing street	1600 pennsylvania avenue	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street-/r/RelatedTo-0000
+/c/en/10_downing_street	/r/RelatedTo	/c/en/24_sussex_drive	10 downing street	24 sussex drive	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street-/r/RelatedTo-0001
+/c/en/10_downing_street	/r/Synonym	/c/en/10_downing_street	10 downing street	10 downing street	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 10 downing street?	/c/en/10_downing_street-/r/Synonym-0000
+/c/en/10_downing_street/n	/r/HasContext	/c/en/metonym	10 downing street	metonym	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 downing street?	/c/en/10_downing_street/n-/r/HasContext-0000
+/c/en/10_downing_street/n	/r/HasContext	/c/en/uk	10 downing street	uk	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 downing street?	/c/en/10_downing_street/n-/r/HasContext-0001
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/11_downing_street	10 downing street	11 downing street	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0000
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/government	10 downing street	government	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0001
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/london	10 downing street	london	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0002
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/prime_minister	10 downing street	prime minister	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0003
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/residence	10 downing street	residence	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0004
+/c/en/10_downing_street/n	/r/RelatedTo	/c/en/united_kingdom	10 downing street	united kingdom	related to		1.0	CN	/d/wiktionary/en		What is 10 downing street related to?	/c/en/10_downing_street/n-/r/RelatedTo-0005
+/c/en/10_downing_street/n	/r/Synonym	/c/en/no_10	10 downing street	no 10	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 10 downing street?	/c/en/10_downing_street/n-/r/Synonym-0000
+/c/en/10_downing_street/n	/r/Synonym	/c/en/number_10	10 downing street	number 10	synonym		2.0	CN	/d/wiktionary/en		What is a synonym of 10 downing street?	/c/en/10_downing_street/n-/r/Synonym-0001
+/c/en/10_downing_street/n	/r/Synonym	/c/en/number_ten	10 downing street	number ten	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 10 downing street?	/c/en/10_downing_street/n-/r/Synonym-0002
+/c/en/10_foot_user_interface/n	/r/HasContext	/c/en/gui	10 foot user interface	gui	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 foot user interface?	/c/en/10_foot_user_interface/n-/r/HasContext-0000
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/computer	10 foot user interface	computer	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0000
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/element	10 foot user interface	element	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0001
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/graphical_user_interface	10 foot user interface	graphical user interface	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0002
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/remote_control	10 foot user interface	remote control	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0003
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/smartphone	10 foot user interface	smartphone	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0004
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/television	10 foot user interface	television	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0005
+/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/visual	10 foot user interface	visual	related to		1.0	CN	/d/wiktionary/en		What is 10 foot user interface related to?	/c/en/10_foot_user_interface/n-/r/RelatedTo-0006
+/c/en/10_foot_user_interfaces/n	/r/FormOf	/c/en/10_foot_user_interface	10 foot user interfaces	10 foot user interface	form of		1.0	CN	/d/wiktionary/en		What is 10 foot user interfaces a form of?	/c/en/10_foot_user_interfaces/n-/r/FormOf-0000
+/c/en/10_k/n	/r/IsA	/c/en/annual_report/n	10 k	annual report	is a		1.0	CN	/d/opencyc		What is a 10 k?	/c/en/10_k/n-/r/IsA-0000
+/c/en/10_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	10 mbit s	generic artifact	is a		2.0	CN	/d/opencyc		What is a 10 mbit s?	/c/en/10_mbit_s/n-/r/IsA-0000
+/c/en/10_membered/a/wn	/r/SimilarTo	/c/en/membered/a/wn/chemistry	10 membered	membered	similar to		2.0	CN	/d/wordnet/3.1	[[10-membered]] is similar to [[membered]]	What is 10 membered similar to?	/c/en/10_membered/a/wn-/r/SimilarTo-0000
+/c/en/10_methyloctadecanoic_acid/n	/r/RelatedTo	/c/en/tuberculostearic_acid	10 methyloctadecanoic acid	tuberculostearic acid	related to		1.0	CN	/d/wiktionary/fr		What is 10 methyloctadecanoic acid related to?	/c/en/10_methyloctadecanoic_acid/n-/r/RelatedTo-0000
+/c/en/10_methylstearic_acid/n	/r/RelatedTo	/c/en/tuberculostearic_acid	10 methylstearic acid	tuberculostearic acid	related to		1.0	CN	/d/wiktionary/fr		What is 10 methylstearic acid related to?	/c/en/10_methylstearic_acid/n-/r/RelatedTo-0000
+/c/en/10_of_population	/r/IsA	/c/en/colour_blind	10 of population	colour blind	is a		1.0	CN	/d/conceptnet/4/en	[[Some 10% of the population]] is [[colour blind]]	What is a 10 of population?	/c/en/10_of_population-/r/IsA-0000
+/c/en/10_p.m/n	/r/IsA	/c/en/calendar_hour/n	10 p.m	calendar hour	is a		1.0	CN	/d/opencyc		What is a 10 p.m?	/c/en/10_p.m/n-/r/IsA-0000
+/c/en/10_points_to_gryffindor	/r/FormOf	/c/en/ten_points_to_gryffindor	10 points to gryffindor	ten points to gryffindor	form of		1.0	CN	/d/wiktionary/en		What is 10 points to gryffindor a form of?	/c/en/10_points_to_gryffindor-/r/FormOf-0000
+/c/en/10_q/n	/r/IsA	/c/en/quarterly_financial_statement/n	10 q	quarterly financial statement	is a		1.0	CN	/d/opencyc		What is a 10 q?	/c/en/10_q/n-/r/IsA-0000
+/c/en/10_s/n	/r/FormOf	/c/en/10	10 s	10	form of		1.0	CN	/d/wiktionary/en		What is 10 s a form of?	/c/en/10_s/n-/r/FormOf-0000
+/c/en/10_second_car/n	/r/HasContext	/c/en/sports_cars	10 second car	sports cars	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 second car?	/c/en/10_second_car/n-/r/HasContext-0000
+/c/en/10_speed_bicycle/n	/r/IsA	/c/en/bicycle_multi_gear/n	10 speed bicycle	bicycle multi gear	is a		1.0	CN	/d/opencyc		What is a 10 speed bicycle?	/c/en/10_speed_bicycle/n-/r/IsA-0000
+/c/en/10_undecenoic_acid/n	/r/HasContext	/c/en/fatty_acid	10 undecenoic acid	fatty acid	has context		1.0	CN	/d/wiktionary/en		What is a context of 10 undecenoic acid?	/c/en/10_undecenoic_acid/n-/r/HasContext-0000
+/c/en/10_undecenoic_acid/n	/r/RelatedTo	/c/en/undecylenic_acid	10 undecenoic acid	undecylenic acid	related to		1.0	CN	/d/wiktionary/en		What is 10 undecenoic acid related to?	/c/en/10_undecenoic_acid/n-/r/RelatedTo-0000
+/c/en/10am	/r/HasProperty	/c/en/late_to_wake_up	10am	late to wake up	has property		1.0	CN	/d/conceptnet/4/en	[[10am]] is [[late to wake up]]	What is a property of 10am?	/c/en/10am-/r/HasProperty-0000
+/c/en/10base2/n	/r/HasContext	/c/en/computing	10base2	computing	has context		1.0	CN	/d/wiktionary/en		What is a context of 10base2?	/c/en/10base2/n-/r/HasContext-0000
+/c/en/10base2/n	/r/RelatedTo	/c/en/10base5	10base2	10base5	related to		1.0	CN	/d/wiktionary/en		What is 10base2 related to?	/c/en/10base2/n-/r/RelatedTo-0000
+/c/en/10base2/n	/r/RelatedTo	/c/en/cable	10base2	cable	related to		1.0	CN	/d/wiktionary/en		What is 10base2 related to?	/c/en/10base2/n-/r/RelatedTo-0001
+/c/en/10base2/n	/r/RelatedTo	/c/en/ethernet	10base2	ethernet	related to		1.0	CN	/d/wiktionary/en		What is 10base2 related to?	/c/en/10base2/n-/r/RelatedTo-0002
+/c/en/10base2/n	/r/Synonym	/c/en/thinnet	10base2	thinnet	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 10base2?	/c/en/10base2/n-/r/Synonym-0000
+/c/en/10base5/n	/r/HasContext	/c/en/computing	10base5	computing	has context		1.0	CN	/d/wiktionary/en		What is a context of 10base5?	/c/en/10base5/n-/r/HasContext-0000
+/c/en/10base5/n	/r/RelatedTo	/c/en/10base2	10base5	10base2	related to		1.0	CN	/d/wiktionary/en		What is 10base5 related to?	/c/en/10base5/n-/r/RelatedTo-0000
+/c/en/10base5/n	/r/RelatedTo	/c/en/cable	10base5	cable	related to		1.0	CN	/d/wiktionary/en		What is 10base5 related to?	/c/en/10base5/n-/r/RelatedTo-0001
+/c/en/10base5/n	/r/RelatedTo	/c/en/ethernet	10base5	ethernet	related to		1.0	CN	/d/wiktionary/en		What is 10base5 related to?	/c/en/10base5/n-/r/RelatedTo-0002
+/c/en/10base5/n	/r/Synonym	/c/en/thicknet	10base5	thicknet	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 10base5?	/c/en/10base5/n-/r/Synonym-0000
+/c/en/10base5s/n	/r/RelatedTo	/c/en/10base5	10base5s	10base5	related to		1.0	CN	/d/wiktionary/fr		What is 10base5s related to?	/c/en/10base5s/n-/r/RelatedTo-0000
+/c/en/10f_catheter/n	/r/IsA	/c/en/catheter/n	10f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 10f catheter?	/c/en/10f_catheter/n-/r/IsA-0000
+/c/en/10mm	/r/IsA	/c/en/1cm	10mm	1cm	is a		1.0	CN	/d/conceptnet/4/en	[[10mm]] is [[1cm]]	What is a 10mm?	/c/en/10mm-/r/IsA-0000
+/c/en/10s/n	/r/RelatedTo	/c/en/1910s	10s	1910s	related to		1.0	CN	/d/wiktionary/en		What is 10s related to?	/c/en/10s/n-/r/RelatedTo-0000
+/c/en/10s/n	/r/RelatedTo	/c/en/2010s	10s	2010s	related to		1.0	CN	/d/wiktionary/en		What is 10s related to?	/c/en/10s/n-/r/RelatedTo-0001
+/c/en/10s/n	/r/RelatedTo	/c/en/tens	10s	tens	related to		1.0	CN	/d/wiktionary/en		What is 10s related to?	/c/en/10s/n-/r/RelatedTo-0002
+/c/en/10s/n	/r/Synonym	/c/en/1910s	10s	1910s	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 10s?	/c/en/10s/n-/r/Synonym-0000
+/c/en/10th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	10th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[10th]] is similar to [[ordinal]]	What is 10th similar to?	/c/en/10th/a/wn-/r/SimilarTo-0000
+/c/en/10th_cir/n	/r/HasContext	/c/en/legal	10th cir	legal	has context		1.0	CN	/d/wiktionary/en		What is a context of 10th cir?	/c/en/10th_cir/n-/r/HasContext-0000
+/c/en/10th_grade/n	/r/FormOf	/c/en/tenth_grade	10th grade	tenth grade	form of		1.0	CN	/d/wiktionary/en		What is 10th grade a form of?	/c/en/10th_grade/n-/r/FormOf-0000
+/c/en/10x	/r/EtymologicallyRelatedTo	/c/en/thanks	10x	thanks	etymologically related to		0.25	CN	/d/wiktionary/en		What is 10x etymologically related to?	/c/en/10x-/r/EtymologicallyRelatedTo-0000
+/c/en/10x	/r/FormOf	/c/en/thanks	10x	thanks	form of		1.0	CN	/d/wiktionary/en		What is 10x a form of?	/c/en/10x-/r/FormOf-0000
+/c/en/10x	/r/HasContext	/c/en/internet_slang	10x	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 10x?	/c/en/10x-/r/HasContext-0000
+/c/en/10x	/r/HasContext	/c/en/sensational_spelling	10x	sensational spelling	has context		1.0	CN	/d/wiktionary/en		What is a context of 10x?	/c/en/10x-/r/HasContext-0001
+/c/en/10x	/r/RelatedTo	/c/en/thanx	10x	thanx	related to		1.0	CN	/d/wiktionary/en		What is 10x related to?	/c/en/10x-/r/RelatedTo-0000
+/c/en/10x	/r/RelatedTo	/c/en/thx	10x	thx	related to		1.0	CN	/d/wiktionary/en		What is 10x related to?	/c/en/10x-/r/RelatedTo-0001
+/c/en/10x_sugar	/r/DerivedFrom	/c/en/sugar/n	10x sugar	sugar	derived from		1.0	CN	/d/wiktionary/en		From which word is 10x sugar derived?	/c/en/10x_sugar-/r/DerivedFrom-0000
+/c/en/11	/r/HasProperty	/c/en/eleven	11	eleven	has property		1.0	CN	/d/conceptnet/4/en	[[11]] is [[eleven]]	What is a property of 11?	/c/en/11-/r/HasProperty-0000
+/c/en/11	/r/IsA	/c/en/film/n	11	film	is a		0.5	CN	/d/dbpedia/en		What is a 11?	/c/en/11-/r/IsA-0000
+/c/en/11	/r/Synonym	/c/en/11	11	11	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 11?	/c/en/11-/r/Synonym-0000
+/c/en/11/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	11	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[11]] is similar to [[cardinal]]	What is 11 similar to?	/c/en/11/a/wn-/r/SimilarTo-0000
+/c/en/11/n	/r/HasContext	/c/en/cricket	11	cricket	has context		1.0	CN	/d/wiktionary/en		What is a context of 11?	/c/en/11/n-/r/HasContext-0000
+/c/en/11/n	/r/HasContext	/c/en/football	11	football	has context		1.0	CN	/d/wiktionary/en		What is a context of 11?	/c/en/11/n-/r/HasContext-0001
+/c/en/11/n	/r/HasContext	/c/en/slang	11	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 11?	/c/en/11/n-/r/HasContext-0002
+/c/en/11/n	/r/HasContext	/c/en/us	11	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 11?	/c/en/11/n-/r/HasContext-0003
+/c/en/11/n	/r/RelatedTo	/c/en/attractive	11	attractive	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0000
+/c/en/11/n	/r/RelatedTo	/c/en/cricket	11	cricket	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0001
+/c/en/11/n	/r/RelatedTo	/c/en/exceptional	11	exceptional	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0002
+/c/en/11/n	/r/RelatedTo	/c/en/football	11	football	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0003
+/c/en/11/n	/r/RelatedTo	/c/en/intensity	11	intensity	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0004
+/c/en/11/n	/r/RelatedTo	/c/en/off_charts	11	off charts	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0005
+/c/en/11/n	/r/RelatedTo	/c/en/person	11	person	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0006
+/c/en/11/n	/r/RelatedTo	/c/en/physically	11	physically	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0007
+/c/en/11/n	/r/RelatedTo	/c/en/player	11	player	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0008
+/c/en/11/n	/r/RelatedTo	/c/en/specimen	11	specimen	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0009
+/c/en/11/n	/r/RelatedTo	/c/en/team	11	team	related to		1.0	CN	/d/wiktionary/en		What is 11 related to?	/c/en/11/n-/r/RelatedTo-0010
+/c/en/11/n/wn/quantity	/r/Synonym	/c/en/eleven/n/wn/quantity	11	eleven	synonym		2.0	CN	/d/wordnet/3.1	[[11]] is a synonym of [[eleven]]	What is a synonym of 11?	/c/en/11/n/wn/quantity-/r/Synonym-0000
+/c/en/11/n/wp/number	/r/Synonym	/c/en/11/n/wp/number	11	11	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 11?	/c/en/11/n/wp/number-/r/Synonym-0000
+/c/en/110/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	110	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[110]] is similar to [[cardinal]]	What is 110 similar to?	/c/en/110/a/wn-/r/SimilarTo-0000
+/c/en/110/n	/r/FormOf	/c/en/hundred_and_ten_percent	110	hundred and ten percent	form of		1.0	CN	/d/wiktionary/en		What is 110 a form of?	/c/en/110/n-/r/FormOf-0000
+/c/en/1100	/r/HasProperty	/c/en/eleven_hundred	1100	eleven hundred	has property		1.0	CN	/d/conceptnet/4/en	[[1100]] is [[eleven hundred]]	What is a property of 1100?	/c/en/1100-/r/HasProperty-0000
+/c/en/1100	/r/HasProperty	/c/en/one_thousand_one_hundred	1100	one thousand one hundred	has property		1.0	CN	/d/conceptnet/4/en	[[1100]] is [[one thousand one hundred]]	What is a property of 1100?	/c/en/1100-/r/HasProperty-0001
+/c/en/110_proof	/r/EtymologicallyRelatedTo	/c/en/proof	110 proof	proof	etymologically related to		0.25	CN	/d/wiktionary/en		What is 110 proof etymologically related to?	/c/en/110_proof-/r/EtymologicallyRelatedTo-0000
+/c/en/110_proof	/r/RelatedTo	/c/en/bootleg	110 proof	bootleg	related to		1.0	CN	/d/wiktionary/en		What is 110 proof related to?	/c/en/110_proof-/r/RelatedTo-0000
+/c/en/110_proof	/r/RelatedTo	/c/en/moonshine	110 proof	moonshine	related to		1.0	CN	/d/wiktionary/en		What is 110 proof related to?	/c/en/110_proof-/r/RelatedTo-0001
+/c/en/110_proof/a	/r/HasContext	/c/en/us	110 proof	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 110 proof?	/c/en/110_proof/a-/r/HasContext-0000
+/c/en/110_proof/a	/r/RelatedTo	/c/en/strong	110 proof	strong	related to		1.0	CN	/d/wiktionary/en		What is 110 proof related to?	/c/en/110_proof/a-/r/RelatedTo-0000
+/c/en/110_proof/r	/r/RelatedTo	/c/en/intensely	110 proof	intensely	related to		1.0	CN	/d/wiktionary/en		What is 110 proof related to?	/c/en/110_proof/r-/r/RelatedTo-0000
+/c/en/110_proof/r	/r/RelatedTo	/c/en/strongly	110 proof	strongly	related to		1.0	CN	/d/wiktionary/en		What is 110 proof related to?	/c/en/110_proof/r-/r/RelatedTo-0001
+/c/en/110s/n	/r/FormOf	/c/en/110	110s	110	form of		1.0	CN	/d/wiktionary/en		What is 110s a form of?	/c/en/110s/n-/r/FormOf-0000
+/c/en/110s/n	/r/RelatedTo	/c/en/decade	110s	decade	related to		1.0	CN	/d/wiktionary/en		What is 110s related to?	/c/en/110s/n-/r/RelatedTo-0000
+/c/en/110th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	110th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[110th]] is similar to [[ordinal]]	What is 110th similar to?	/c/en/110th/a/wn-/r/SimilarTo-0000
+/c/en/111111111_squared	/r/IsA	/c/en/12345678987654321	111111111 squared	12345678987654321	is a		1.0	CN	/d/conceptnet/4/en	[[111111111 squared]] is [[12345678987654321]]	What is a 111111111 squared?	/c/en/111111111_squared-/r/IsA-0000
+/c/en/112	/r/RelatedTo	/c/en/000	112	000	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112-/r/RelatedTo-0000
+/c/en/112	/r/RelatedTo	/c/en/911	112	911	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112-/r/RelatedTo-0001
+/c/en/112	/r/RelatedTo	/c/en/999	112	999	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112-/r/RelatedTo-0002
+/c/en/112	/r/RelatedTo	/c/en/triple_o	112	triple o	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112-/r/RelatedTo-0003
+/c/en/112/n	/r/RelatedTo	/c/en/emergency_service	112	emergency service	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112/n-/r/RelatedTo-0000
+/c/en/112/n	/r/RelatedTo	/c/en/pan_european	112	pan european	related to		1.0	CN	/d/wiktionary/en		What is 112 related to?	/c/en/112/n-/r/RelatedTo-0001
+/c/en/115/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	115	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[115]] is similar to [[cardinal]]	What is 115 similar to?	/c/en/115/a/wn-/r/SimilarTo-0000
+/c/en/115th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	115th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[115th]] is similar to [[ordinal]]	What is 115th similar to?	/c/en/115th/a/wn-/r/SimilarTo-0000
+/c/en/11_a.m/n	/r/IsA	/c/en/calendar_hour/n	11 a.m	calendar hour	is a		1.0	CN	/d/opencyc		What is a 11 a.m?	/c/en/11_a.m/n-/r/IsA-0000
+/c/en/11_bang_bang/n	/r/HasContext	/c/en/derogatory	11 bang bang	derogatory	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 bang bang?	/c/en/11_bang_bang/n-/r/HasContext-0000
+/c/en/11_bang_bang/n	/r/HasContext	/c/en/military	11 bang bang	military	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 bang bang?	/c/en/11_bang_bang/n-/r/HasContext-0001
+/c/en/11_bang_bang/n	/r/HasContext	/c/en/slang	11 bang bang	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 bang bang?	/c/en/11_bang_bang/n-/r/HasContext-0002
+/c/en/11_bang_bang/n	/r/HasContext	/c/en/us	11 bang bang	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 bang bang?	/c/en/11_bang_bang/n-/r/HasContext-0003
+/c/en/11_bang_bang/n	/r/RelatedTo	/c/en/infantryman	11 bang bang	infantryman	related to		1.0	CN	/d/wiktionary/en		What is 11 bang bang related to?	/c/en/11_bang_bang/n-/r/RelatedTo-0000
+/c/en/11_bang_bang/n	/r/Synonym	/c/en/11_bulletstopper	11 bang bang	11 bulletstopper	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 bang bang?	/c/en/11_bang_bang/n-/r/Synonym-0000
+/c/en/11_bang_bang/n	/r/Synonym	/c/en/11_bush	11 bang bang	11 bush	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 bang bang?	/c/en/11_bang_bang/n-/r/Synonym-0001
+/c/en/11_bang_bangs/n	/r/FormOf	/c/en/11_bang_bang	11 bang bangs	11 bang bang	form of		1.0	CN	/d/wiktionary/en		What is 11 bang bangs a form of?	/c/en/11_bang_bangs/n-/r/FormOf-0000
+/c/en/11_deoxycorticosterone	/r/IsA	/c/en/drug/n	11 deoxycorticosterone	drug	is a		0.5	CN	/d/dbpedia/en		What is a 11 deoxycorticosterone?	/c/en/11_deoxycorticosterone-/r/IsA-0000
+/c/en/11_deoxycorticosterone	/r/Synonym	/c/en/11_deoxycorticosterone	11 deoxycorticosterone	11 deoxycorticosterone	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 11 deoxycorticosterone?	/c/en/11_deoxycorticosterone-/r/Synonym-0000
+/c/en/11_deoxycorticosterone/n	/r/HasContext	/c/en/steroid_hormone	11 deoxycorticosterone	steroid hormone	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 deoxycorticosterone?	/c/en/11_deoxycorticosterone/n-/r/HasContext-0000
+/c/en/11_deoxycorticosterone/n	/r/RelatedTo	/c/en/desoxycorticosterone	11 deoxycorticosterone	desoxycorticosterone	related to		1.0	CN	/d/wiktionary/en		What is 11 deoxycorticosterone related to?	/c/en/11_deoxycorticosterone/n-/r/RelatedTo-0000
+/c/en/11_deoxycorticosterone/n	/r/RelatedTo	/c/en/mineralocorticoid	11 deoxycorticosterone	mineralocorticoid	related to		1.0	CN	/d/wiktionary/en		What is 11 deoxycorticosterone related to?	/c/en/11_deoxycorticosterone/n-/r/RelatedTo-0001
+/c/en/11_deoxycortisol/n	/r/IsA	/c/en/steroid/n	11 deoxycortisol	steroid	is a		1.0	CN	/d/opencyc		What is a 11 deoxycortisol?	/c/en/11_deoxycortisol/n-/r/IsA-0000
+/c/en/11_downing_street/n	/r/HasContext	/c/en/uk	11 downing street	uk	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 downing street?	/c/en/11_downing_street/n-/r/HasContext-0000
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/10_downing_street	11 downing street	10 downing street	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0000
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/chancellor	11 downing street	chancellor	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0001
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/chancellor_of_exchequer	11 downing street	chancellor of exchequer	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0002
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/exchequer	11 downing street	exchequer	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0003
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/london	11 downing street	london	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0004
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/residence	11 downing street	residence	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0005
+/c/en/11_downing_street/n	/r/RelatedTo	/c/en/united_kingdom	11 downing street	united kingdom	related to		1.0	CN	/d/wiktionary/en		What is 11 downing street related to?	/c/en/11_downing_street/n-/r/RelatedTo-0006
+/c/en/11_downing_street/n	/r/Synonym	/c/en/no_11	11 downing street	no 11	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 downing street?	/c/en/11_downing_street/n-/r/Synonym-0000
+/c/en/11_downing_street/n	/r/Synonym	/c/en/number_11	11 downing street	number 11	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 downing street?	/c/en/11_downing_street/n-/r/Synonym-0001
+/c/en/11_downing_street/n	/r/Synonym	/c/en/number_eleven	11 downing street	number eleven	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 downing street?	/c/en/11_downing_street/n-/r/Synonym-0002
+/c/en/11_eicosenoic_acid	/r/IsA	/c/en/chemical_compound/n	11 eicosenoic acid	chemical compound	is a		0.5	CN	/d/dbpedia/en		What is a 11 eicosenoic acid?	/c/en/11_eicosenoic_acid-/r/IsA-0000
+/c/en/11_eicosenoic_acid	/r/Synonym	/c/en/11_eicosenoic_acid	11 eicosenoic acid	11 eicosenoic acid	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid-/r/Synonym-0000
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/11z_eicosenoic_acid	11 eicosenoic acid	11z eicosenoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0000
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/11z_icosenoic_acid	11 eicosenoic acid	11z icosenoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0001
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_11_eicosenoic_acid	11 eicosenoic acid	cis 11 eicosenoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0002
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_11_icosenoic_acid	11 eicosenoic acid	cis 11 icosenoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0003
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_gondoic_acid	11 eicosenoic acid	cis gondoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0004
+/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/gondoic_acid	11 eicosenoic acid	gondoic acid	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 11 eicosenoic acid?	/c/en/11_eicosenoic_acid/n-/r/Synonym-0005
+/c/en/11_november	/r/IsA	/c/en/remembrance_day	11 november	remembrance day	is a		1.0	CN	/d/conceptnet/4/en	[[11 November]] is [[Remembrance Day]]	What is a 11 november?	/c/en/11_november-/r/IsA-0000
+/c/en/11_november/n/wn/time	/r/Synonym	/c/en/martinmas/n/wn/time	11 november	martinmas	synonym		2.0	CN	/d/wordnet/3.1	[[11 November]] is a synonym of [[Martinmas]]	What is a synonym of 11 november?	/c/en/11_november/n/wn/time-/r/Synonym-0000
+/c/en/11_p.m/n	/r/IsA	/c/en/calendar_hour/n	11 p.m	calendar hour	is a		1.0	CN	/d/opencyc		What is a 11 p.m?	/c/en/11_p.m/n-/r/IsA-0000
+/c/en/11_plus/n/wn/act	/r/Synonym	/c/en/eleven_plus/n/wn/act	11 plus	eleven plus	synonym		2.0	CN	/d/wordnet/3.1	[[11-plus]] is a synonym of [[eleven-plus]]	What is a synonym of 11 plus?	/c/en/11_plus/n/wn/act-/r/Synonym-0000
+/c/en/11_plus_22	/r/HasProperty	/c/en/33	11 plus 22	33	has property		1.0	CN	/d/conceptnet/4/en	[[11 plus 22]] is [[33]]	What is a property of 11 plus 22?	/c/en/11_plus_22-/r/HasProperty-0000
+/c/en/11_plus_examination/n	/r/HasContext	/c/en/british	11 plus examination	british	has context		1.0	CN	/d/wiktionary/en		What is a context of 11 plus examination?	/c/en/11_plus_examination/n-/r/HasContext-0000
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/comprehensive_school	11 plus examination	comprehensive school	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0000
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/education	11 plus examination	education	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0001
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/examination	11 plus examination	examination	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0002
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/grammar_school	11 plus examination	grammar school	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0003
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/secondary	11 plus examination	secondary	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0004
+/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/secondary_modern_school	11 plus examination	secondary modern school	related to		1.0	CN	/d/wiktionary/en		What is 11 plus examination related to?	/c/en/11_plus_examination/n-/r/RelatedTo-0005
+/c/en/11_plus_examination/n	/r/Synonym	/c/en/11_plus	11 plus examination	11 plus	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 11 plus examination?	/c/en/11_plus_examination/n-/r/Synonym-0000
+/c/en/11_plus_examinations/n	/r/FormOf	/c/en/11_plus_examination	11 plus examinations	11 plus examination	form of		1.0	CN	/d/wiktionary/en		What is 11 plus examinations a form of?	/c/en/11_plus_examinations/n-/r/FormOf-0000
+/c/en/11e_octadecenoic_acid/n	/r/RelatedTo	/c/en/vaccenic_acid	11e octadecenoic acid	vaccenic acid	related to		1.0	CN	/d/wiktionary/fr		What is 11e octadecenoic acid related to?	/c/en/11e_octadecenoic_acid/n-/r/RelatedTo-0000
+/c/en/11f_catheter/n	/r/IsA	/c/en/catheter/n	11f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 11f catheter?	/c/en/11f_catheter/n-/r/IsA-0000
+/c/en/11th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	11th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[11th]] is similar to [[ordinal]]	What is 11th similar to?	/c/en/11th/a/wn-/r/SimilarTo-0000
+/c/en/11th_cir/n	/r/HasContext	/c/en/legal	11th cir	legal	has context		1.0	CN	/d/wiktionary/en		What is a context of 11th cir?	/c/en/11th_cir/n-/r/HasContext-0000
+/c/en/11th_commandment	/r/DerivedFrom	/c/en/ten_commandments/n	11th commandment	ten commandments	derived from		1.0	CN	/d/wiktionary/en		From which word is 11th commandment derived?	/c/en/11th_commandment-/r/DerivedFrom-0000
+/c/en/11th_commandments/n	/r/FormOf	/c/en/11th_commandment	11th commandments	11th commandment	form of		2.0	CN	/d/wiktionary/en		What is 11th commandments a form of?	/c/en/11th_commandments/n-/r/FormOf-0000
+/c/en/11th_grade/n	/r/FormOf	/c/en/eleventh_grade	11th grade	eleventh grade	form of		1.0	CN	/d/wiktionary/en		What is 11th grade a form of?	/c/en/11th_grade/n-/r/FormOf-0000
+/c/en/11th_hour/n	/r/FormOf	/c/en/eleventh_hour	11th hour	eleventh hour	form of		1.0	CN	/d/wiktionary/en		What is 11th hour a form of?	/c/en/11th_hour/n-/r/FormOf-0000
+/c/en/11th_hours/n	/r/FormOf	/c/en/11th_hour	11th hours	11th hour	form of		1.0	CN	/d/wiktionary/en		What is 11th hours a form of?	/c/en/11th_hours/n-/r/FormOf-0000
+/c/en/11z_eicosenoic_acid/n	/r/RelatedTo	/c/en/11_eicosenoic_acid	11z eicosenoic acid	11 eicosenoic acid	related to		1.0	CN	/d/wiktionary/fr		What is 11z eicosenoic acid related to?	/c/en/11z_eicosenoic_acid/n-/r/RelatedTo-0000
+/c/en/11z_icosenoic_acid/n	/r/RelatedTo	/c/en/11_eicosenoic_acid	11z icosenoic acid	11 eicosenoic acid	related to		1.0	CN	/d/wiktionary/fr		What is 11z icosenoic acid related to?	/c/en/11z_icosenoic_acid/n-/r/RelatedTo-0000
+/c/en/12	/r/HasProperty	/c/en/twelve	12	twelve	has property		1.0	CN	/d/conceptnet/4/en	[[12]] is [[twelve]]	What is a property of 12?	/c/en/12-/r/HasProperty-0000
+/c/en/12	/r/IsA	/c/en/dozen	12	dozen	is a		1.0	CN	/d/conceptnet/4/en	[[12]] is [[a dozen]]	What is a 12?	/c/en/12-/r/IsA-0000
+/c/en/12	/r/IsA	/c/en/train/n	12	train	is a		0.5	CN	/d/dbpedia/en		What is a 12?	/c/en/12-/r/IsA-0001
+/c/en/12	/r/Synonym	/c/en/12	12	12	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 12?	/c/en/12-/r/Synonym-0000
+/c/en/12.7_mm_machine_gun/n	/r/IsA	/c/en/heavy_machine_gun/n	12.7 mm machine gun	heavy machine gun	is a		1.0	CN	/d/opencyc		What is a 12.7 mm machine gun?	/c/en/12.7_mm_machine_gun/n-/r/IsA-0000
+/c/en/12/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	12	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[12]] is similar to [[cardinal]]	What is 12 similar to?	/c/en/12/a/wn-/r/SimilarTo-0000
+/c/en/12/n/wn/quantity	/r/Synonym	/c/en/twelve/n/wn/quantity	12	twelve	synonym		2.0	CN	/d/wordnet/3.1	[[12]] is a synonym of [[twelve]]	What is a synonym of 12?	/c/en/12/n/wn/quantity-/r/Synonym-0000
+/c/en/120/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	120	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[120]] is similar to [[cardinal]]	What is 120 similar to?	/c/en/120/a/wn-/r/SimilarTo-0000
+/c/en/120/n/wn/quantity	/r/Synonym	/c/en/long_hundred/n/wn/quantity	120	long hundred	synonym		2.0	CN	/d/wordnet/3.1	[[120]] is a synonym of [[long hundred]]	What is a synonym of 120?	/c/en/120/n/wn/quantity-/r/Synonym-0000
+/c/en/1200	/r/HasProperty	/c/en/twelve_hundred	1200	twelve hundred	has property		1.0	CN	/d/conceptnet/4/en	[[1200]] is [[twelve hundred]]	What is a property of 1200?	/c/en/1200-/r/HasProperty-0000
+/c/en/120_cell/n	/r/HasContext	/c/en/geometry	120 cell	geometry	has context		1.0	CN	/d/wiktionary/en		What is a context of 120 cell?	/c/en/120_cell/n-/r/HasContext-0000
+/c/en/120_cell/n	/r/RelatedTo	/c/en/dodecahedron	120 cell	dodecahedron	related to		1.0	CN	/d/wiktionary/en		What is 120 cell related to?	/c/en/120_cell/n-/r/RelatedTo-0000
+/c/en/120_cell/n	/r/RelatedTo	/c/en/facet	120 cell	facet	related to		1.0	CN	/d/wiktionary/en		What is 120 cell related to?	/c/en/120_cell/n-/r/RelatedTo-0001
+/c/en/120_cell/n	/r/RelatedTo	/c/en/four_dimensional	120 cell	four dimensional	related to		1.0	CN	/d/wiktionary/en		What is 120 cell related to?	/c/en/120_cell/n-/r/RelatedTo-0002
+/c/en/120_cell/n	/r/RelatedTo	/c/en/polytope	120 cell	polytope	related to		1.0	CN	/d/wiktionary/en		What is 120 cell related to?	/c/en/120_cell/n-/r/RelatedTo-0003
+/c/en/120_cell/n	/r/Synonym	/c/en/dodecacontachoron	120 cell	dodecacontachoron	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 120 cell?	/c/en/120_cell/n-/r/Synonym-0000
+/c/en/120_cells/n	/r/FormOf	/c/en/120_cell	120 cells	120 cell	form of		1.0	CN	/d/wiktionary/en		What is 120 cells a form of?	/c/en/120_cells/n-/r/FormOf-0000
+/c/en/120_reset	/r/RelatedTo	/c/en/reboot	120 reset	reboot	related to		1.0	CN	/d/wiktionary/en		What is 120 reset related to?	/c/en/120_reset-/r/RelatedTo-0000
+/c/en/120_reset/v	/r/HasContext	/c/en/computing	120 reset	computing	has context		1.0	CN	/d/wiktionary/en		What is a context of 120 reset?	/c/en/120_reset/v-/r/HasContext-0000
+/c/en/120_reset/v	/r/HasContext	/c/en/us	120 reset	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 120 reset?	/c/en/120_reset/v-/r/HasContext-0001
+/c/en/120_reset/v	/r/RelatedTo	/c/en/personal_computer	120 reset	personal computer	related to		1.0	CN	/d/wiktionary/en		What is 120 reset related to?	/c/en/120_reset/v-/r/RelatedTo-0000
+/c/en/120_reset/v	/r/RelatedTo	/c/en/power_off	120 reset	power off	related to		1.0	CN	/d/wiktionary/en		What is 120 reset related to?	/c/en/120_reset/v-/r/RelatedTo-0001
+/c/en/120_reset/v	/r/RelatedTo	/c/en/power_on	120 reset	power on	related to		1.0	CN	/d/wiktionary/en		What is 120 reset related to?	/c/en/120_reset/v-/r/RelatedTo-0002
+/c/en/120_resets/v	/r/FormOf	/c/en/120_reset	120 resets	120 reset	form of		1.0	CN	/d/wiktionary/en		What is 120 resets a form of?	/c/en/120_resets/v-/r/FormOf-0000
+/c/en/120_resetting/v	/r/FormOf	/c/en/120_reset	120 resetting	120 reset	form of		1.0	CN	/d/wiktionary/en		What is 120 resetting a form of?	/c/en/120_resetting/v-/r/FormOf-0000
+/c/en/120_volt_device/n	/r/IsA	/c/en/electrical_device/n	120 volt device	electrical device	is a		1.0	CN	/d/opencyc		What is a 120 volt device?	/c/en/120_volt_device/n-/r/IsA-0000
+/c/en/120_volt_device/n	/r/IsA	/c/en/tangible_thing/n	120 volt device	tangible thing	is a		1.0	CN	/d/opencyc		What is a 120 volt device?	/c/en/120_volt_device/n-/r/IsA-0001
+/c/en/120mm_mortar/n	/r/IsA	/c/en/heavy_mortar/n	120mm mortar	heavy mortar	is a		1.0	CN	/d/opencyc		What is a 120mm mortar?	/c/en/120mm_mortar/n-/r/IsA-0000
+/c/en/120s/n	/r/FormOf	/c/en/120	120s	120	form of		1.0	CN	/d/wiktionary/en		What is 120s a form of?	/c/en/120s/n-/r/FormOf-0000
+/c/en/120s/n	/r/RelatedTo	/c/en/decade	120s	decade	related to		1.0	CN	/d/wiktionary/en		What is 120s related to?	/c/en/120s/n-/r/RelatedTo-0000
+/c/en/120th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	120th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[120th]] is similar to [[ordinal]]	What is 120th similar to?	/c/en/120th/a/wn-/r/SimilarTo-0000
+/c/en/121	/r/IsA	/c/en/train/n	121	train	is a		0.5	CN	/d/dbpedia/en		What is a 121?	/c/en/121-/r/IsA-0000
+/c/en/121	/r/Synonym	/c/en/121	121	121	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 121?	/c/en/121-/r/Synonym-0000
+/c/en/121/a	/r/RelatedTo	/c/en/one_to_one	121	one to one	related to		1.0	CN	/d/wiktionary/en		What is 121 related to?	/c/en/121/a-/r/RelatedTo-0000
+/c/en/122_mm_rocket_launcher/n	/r/IsA	/c/en/tangible_thing/n	122 mm rocket launcher	tangible thing	is a		1.0	CN	/d/opencyc		What is a 122 mm rocket launcher?	/c/en/122_mm_rocket_launcher/n-/r/IsA-0000
+/c/en/122mm_howitzer/n	/r/IsA	/c/en/howitzer/n	122mm howitzer	howitzer	is a		1.0	CN	/d/opencyc		What is a 122mm howitzer?	/c/en/122mm_howitzer/n-/r/IsA-0000
+/c/en/122mm_self_propelled_howitzer/n	/r/IsA	/c/en/122mm_howitzer/n	122mm self propelled howitzer	122mm howitzer	is a		1.0	CN	/d/opencyc		What is a 122mm self propelled howitzer?	/c/en/122mm_self_propelled_howitzer/n-/r/IsA-0000
+/c/en/122mm_self_propelled_howitzer/n	/r/IsA	/c/en/self_propelled_artillery/n	122mm self propelled howitzer	self propelled artillery	is a		1.0	CN	/d/opencyc		What is a 122mm self propelled howitzer?	/c/en/122mm_self_propelled_howitzer/n-/r/IsA-0001
+/c/en/123	/r/MadeOf	/c/en/troll	123	troll	made of		1.0	CN	/d/conceptnet/4/en	[[123]] is made of [[troll]].	What is 123 made of?	/c/en/123-/r/MadeOf-0000
+/c/en/124141234	/r/IsA	/c/en/number	124141234	number	is a		2.0	CN	/d/conceptnet/4/en	[[124141234]] is [[a number]]	What is a 124141234?	/c/en/124141234-/r/IsA-0000
+/c/en/124_spider/n	/r/IsA	/c/en/fiat/n	124 spider	fiat	is a		1.0	CN	/d/opencyc		What is a 124 spider?	/c/en/124_spider/n-/r/IsA-0000
+/c/en/125/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	125	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[125]] is similar to [[cardinal]]	What is 125 similar to?	/c/en/125/a/wn-/r/SimilarTo-0000
+/c/en/125/n	/r/HasContext	/c/en/rail	125	rail	has context		1.0	CN	/d/wiktionary/en		What is a context of 125?	/c/en/125/n-/r/HasContext-0000
+/c/en/125/n	/r/HasContext	/c/en/uk	125	uk	has context		1.0	CN	/d/wiktionary/en		What is a context of 125?	/c/en/125/n-/r/HasContext-0001
+/c/en/125/n	/r/RelatedTo	/c/en/hst	125	hst	related to		1.0	CN	/d/wiktionary/en		What is 125 related to?	/c/en/125/n-/r/RelatedTo-0000
+/c/en/125s/n	/r/FormOf	/c/en/125	125s	125	form of		1.0	CN	/d/wiktionary/en		What is 125s a form of?	/c/en/125s/n-/r/FormOf-0000
+/c/en/125th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	125th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[125th]] is similar to [[ordinal]]	What is 125th similar to?	/c/en/125th/a/wn-/r/SimilarTo-0000
+/c/en/1260/n	/r/HasContext	/c/en/skiing	1260	skiing	has context		1.0	CN	/d/wiktionary/en		What is a context of 1260?	/c/en/1260/n-/r/HasContext-0000
+/c/en/1260/n	/r/HasContext	/c/en/snowboarding	1260	snowboarding	has context		1.0	CN	/d/wiktionary/en		What is a context of 1260?	/c/en/1260/n-/r/HasContext-0001
+/c/en/1260/n	/r/SimilarTo	/c/en/1080	1260	1080	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0000
+/c/en/1260/n	/r/SimilarTo	/c/en/1440	1260	1440	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0001
+/c/en/1260/n	/r/SimilarTo	/c/en/1620	1260	1620	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0002
+/c/en/1260/n	/r/SimilarTo	/c/en/180	1260	180	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0003
+/c/en/1260/n	/r/SimilarTo	/c/en/1800	1260	1800	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0004
+/c/en/1260/n	/r/SimilarTo	/c/en/360	1260	360	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0005
+/c/en/1260/n	/r/SimilarTo	/c/en/540	1260	540	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0006
+/c/en/1260/n	/r/SimilarTo	/c/en/720	1260	720	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0007
+/c/en/1260/n	/r/SimilarTo	/c/en/900	1260	900	similar to		1.0	CN	/d/wiktionary/en		What is 1260 similar to?	/c/en/1260/n-/r/SimilarTo-0008
+/c/en/128_bit	/r/DerivedFrom	/c/en/bit/n/wikt/en_3	128 bit	bit	derived from		1.0	CN	/d/wiktionary/en		From which word is 128 bit derived?	/c/en/128_bit-/r/DerivedFrom-0000
+/c/en/12_angry_men	/r/IsA	/c/en/famous_film	12 angry men	famous film	is a		1.0	CN	/d/conceptnet/4/en	[[12 Angry Men]] is [[a famous film]]	What is a 12 angry men?	/c/en/12_angry_men-/r/IsA-0000
+/c/en/12_crown_4/n	/r/HasContext	/c/en/organic_compound	12 crown 4	organic compound	has context		1.0	CN	/d/wiktionary/en		What is a context of 12 crown 4?	/c/en/12_crown_4/n-/r/HasContext-0000
+/c/en/12_crown_4/n	/r/RelatedTo	/c/en/crown_ether	12 crown 4	crown ether	related to		1.0	CN	/d/wiktionary/en		What is 12 crown 4 related to?	/c/en/12_crown_4/n-/r/RelatedTo-0000
+/c/en/12_foot/n	/r/HasContext	/c/en/curling	12 foot	curling	has context		1.0	CN	/d/wiktionary/en		What is a context of 12 foot?	/c/en/12_foot/n-/r/HasContext-0000
+/c/en/12_foot/n	/r/RelatedTo	/c/en/4_foot	12 foot	4 foot	related to		1.0	CN	/d/wiktionary/en		What is 12 foot related to?	/c/en/12_foot/n-/r/RelatedTo-0000
+/c/en/12_foot/n	/r/RelatedTo	/c/en/house	12 foot	house	related to		1.0	CN	/d/wiktionary/en		What is 12 foot related to?	/c/en/12_foot/n-/r/RelatedTo-0001
+/c/en/12_foot/n	/r/Synonym	/c/en/front_ring	12 foot	front ring	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 12 foot?	/c/en/12_foot/n-/r/Synonym-0000
+/c/en/12_hour_clock/n	/r/Antonym	/c/en/24_hour_clock	12 hour clock	24 hour clock	antonym		1.0	CN	/d/wiktionary/en		What is the opposite from 12 hour clock?	/c/en/12_hour_clock/n-/r/Antonym-0000
+/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/ante_meridiem	12 hour clock	ante meridiem	related to		1.0	CN	/d/wiktionary/en		What is 12 hour clock related to?	/c/en/12_hour_clock/n-/r/RelatedTo-0000
+/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/day	12 hour clock	day	related to		1.0	CN	/d/wiktionary/en		What is 12 hour clock related to?	/c/en/12_hour_clock/n-/r/RelatedTo-0001
+/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/hour	12 hour clock	hour	related to		1.0	CN	/d/wiktionary/en		What is 12 hour clock related to?	/c/en/12_hour_clock/n-/r/RelatedTo-0002
+/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/post_meridiem	12 hour clock	post meridiem	related to		1.0	CN	/d/wiktionary/en		What is 12 hour clock related to?	/c/en/12_hour_clock/n-/r/RelatedTo-0003
+/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/timekeeping	12 hour clock	timekeeping	related to		1.0	CN	/d/wiktionary/en		What is 12 hour clock related to?	/c/en/12_hour_clock/n-/r/RelatedTo-0004
+/c/en/12_inch_television_set/n	/r/IsA	/c/en/television_set/n	12 inch television set	television set	is a		1.0	CN	/d/opencyc		What is a 12 inch television set?	/c/en/12_inch_television_set/n-/r/IsA-0000
+/c/en/12_ounce_curls/n	/r/RelatedTo	/c/en/beer	12 ounce curls	beer	related to		1.0	CN	/d/wiktionary/en		What is 12 ounce curls related to?	/c/en/12_ounce_curls/n-/r/RelatedTo-0000
+/c/en/12_ounce_curls/n	/r/RelatedTo	/c/en/drink	12 ounce curls	drink	related to		1.0	CN	/d/wiktionary/en		What is 12 ounce curls related to?	/c/en/12_ounce_curls/n-/r/RelatedTo-0001
+/c/en/12_speed_bicycle/n	/r/IsA	/c/en/bicycle_multi_gear/n	12 speed bicycle	bicycle multi gear	is a		1.0	CN	/d/opencyc		What is a 12 speed bicycle?	/c/en/12_speed_bicycle/n-/r/IsA-0000
+/c/en/12_string_guitar/n	/r/IsA	/c/en/acoustic_guitar/n	12 string guitar	acoustic guitar	is a		1.0	CN	/d/opencyc		What is a 12 string guitar?	/c/en/12_string_guitar/n-/r/IsA-0000
+/c/en/12_tone_music/n/wn/communication	/r/Synonym	/c/en/twelve_tone_music/n/wn/communication	12 tone music	twelve tone music	synonym		2.0	CN	/d/wordnet/3.1	[[12-tone music]] is a synonym of [[twelve-tone music]]	What is a synonym of 12 tone music?	/c/en/12_tone_music/n/wn/communication-/r/Synonym-0000
+/c/en/12_tone_system/n/wn/communication	/r/Synonym	/c/en/twelve_tone_music/n/wn/communication	12 tone system	twelve tone music	synonym		2.0	CN	/d/wordnet/3.1	[[12-tone system]] is a synonym of [[twelve-tone music]]	What is a synonym of 12 tone system?	/c/en/12_tone_system/n/wn/communication-/r/Synonym-0000
+/c/en/12f_catheter/n	/r/IsA	/c/en/catheter/n	12f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 12f catheter?	/c/en/12f_catheter/n-/r/IsA-0000
+/c/en/12mo/n	/r/HasContext	/c/en/paper	12mo	paper	has context		1.0	CN	/d/wiktionary/en		What is a context of 12mo?	/c/en/12mo/n-/r/HasContext-0000
+/c/en/12mo/n	/r/HasContext	/c/en/printing	12mo	printing	has context		1.0	CN	/d/wiktionary/en		What is a context of 12mo?	/c/en/12mo/n-/r/HasContext-0001
+/c/en/12mo/n	/r/RelatedTo	/c/en/page	12mo	page	related to		1.0	CN	/d/wiktionary/en		What is 12mo related to?	/c/en/12mo/n-/r/RelatedTo-0000
+/c/en/12mo/n	/r/RelatedTo	/c/en/size	12mo	size	related to		1.0	CN	/d/wiktionary/en		What is 12mo related to?	/c/en/12mo/n-/r/RelatedTo-0001
+/c/en/12mo/n	/r/Synonym	/c/en/12º	12mo	12º	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 12mo?	/c/en/12mo/n-/r/Synonym-0000
+/c/en/12mo/n	/r/Synonym	/c/en/d	12mo	d	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 12mo?	/c/en/12mo/n-/r/Synonym-0001
+/c/en/12mos/n	/r/FormOf	/c/en/12mo	12mos	12mo	form of		1.0	CN	/d/wiktionary/en		What is 12mos a form of?	/c/en/12mos/n-/r/FormOf-0000
+/c/en/12mos/n	/r/RelatedTo	/c/en/12mo	12mos	12mo	related to		1.0	CN	/d/wiktionary/fr		What is 12mos related to?	/c/en/12mos/n-/r/RelatedTo-0000
+/c/en/12th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	12th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[12th]] is similar to [[ordinal]]	What is 12th similar to?	/c/en/12th/a/wn-/r/SimilarTo-0000
+/c/en/12th_grade/n	/r/FormOf	/c/en/twelfth_grade	12th grade	twelfth grade	form of		1.0	CN	/d/wiktionary/en		What is 12th grade a form of?	/c/en/12th_grade/n-/r/FormOf-0000
+/c/en/12ºs/n	/r/RelatedTo	/c/en/12º	12ºs	12º	related to		1.0	CN	/d/wiktionary/fr		What is 12ºs related to?	/c/en/12ºs/n-/r/RelatedTo-0000
+/c/en/13	/r/HasProperty	/c/en/thirteen	13	thirteen	has property		1.0	CN	/d/conceptnet/4/en	[[13]] is [[thirteen]]	What is a property of 13?	/c/en/13-/r/HasProperty-0000
+/c/en/13/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	13	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[13]] is similar to [[cardinal]]	What is 13 similar to?	/c/en/13/a/wn-/r/SimilarTo-0000
+/c/en/13/n/wn/quantity	/r/Synonym	/c/en/thirteen/n/wn/quantity	13	thirteen	synonym		2.0	CN	/d/wordnet/3.1	[[13]] is a synonym of [[thirteen]]	What is a synonym of 13?	/c/en/13/n/wn/quantity-/r/Synonym-0000
+/c/en/13/n/wp/number	/r/Synonym	/c/en/13/n/wp/number	13	13	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 13?	/c/en/13/n/wp/number-/r/Synonym-0000
+/c/en/130/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	130	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[130]] is similar to [[cardinal]]	What is 130 similar to?	/c/en/130/a/wn-/r/SimilarTo-0000
+/c/en/1309512	/r/IsA	/c/en/higher_than_19844	1309512	higher than 19844	is a		1.0	CN	/d/conceptnet/4/en	[[1309512]] is [[higher than 19844]]	What is a 1309512?	/c/en/1309512-/r/IsA-0000
+/c/en/130mm_howitzer/n	/r/IsA	/c/en/howitzer/n	130mm howitzer	howitzer	is a		1.0	CN	/d/opencyc		What is a 130mm howitzer?	/c/en/130mm_howitzer/n-/r/IsA-0000
+/c/en/130mm_towed_howitzer/n	/r/IsA	/c/en/130mm_howitzer/n	130mm towed howitzer	130mm howitzer	is a		1.0	CN	/d/opencyc		What is a 130mm towed howitzer?	/c/en/130mm_towed_howitzer/n-/r/IsA-0000
+/c/en/130mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	130mm towed howitzer	towed howitzer	is a		1.0	CN	/d/opencyc		What is a 130mm towed howitzer?	/c/en/130mm_towed_howitzer/n-/r/IsA-0001
+/c/en/130th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	130th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[130th]] is similar to [[ordinal]]	What is 130th similar to?	/c/en/130th/a/wn-/r/SimilarTo-0000
+/c/en/1337/a	/r/FormOf	/c/en/elite	1337	elite	form of		1.0	CN	/d/wiktionary/en		What is 1337 a form of?	/c/en/1337/a-/r/FormOf-0000
+/c/en/1337/a	/r/FormOf	/c/en/leet	1337	leet	form of		1.0	CN	/d/wiktionary/en		What is 1337 a form of?	/c/en/1337/a-/r/FormOf-0001
+/c/en/1337/a	/r/HasContext	/c/en/internet_slang	1337	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 1337?	/c/en/1337/a-/r/HasContext-0000
+/c/en/1337/a	/r/HasContext	/c/en/leet	1337	leet	has context		1.0	CN	/d/wiktionary/en		What is a context of 1337?	/c/en/1337/a-/r/HasContext-0001
+/c/en/1337/a	/r/IsA	/c/en/leet	1337	leet	is a		1.0	CN	/d/wiktionary/de		What is a 1337?	/c/en/1337/a-/r/IsA-0000
+/c/en/1337/a	/r/IsA	/c/en/leetspeak	1337	leetspeak	is a		1.0	CN	/d/wiktionary/de		What is a 1337?	/c/en/1337/a-/r/IsA-0001
+/c/en/1337/n	/r/FormOf	/c/en/leet	1337	leet	form of		1.0	CN	/d/wiktionary/en		What is 1337 a form of?	/c/en/1337/n-/r/FormOf-0000
+/c/en/1337/n	/r/HasContext	/c/en/internet_slang	1337	internet slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 1337?	/c/en/1337/n-/r/HasContext-0000
+/c/en/1337/n	/r/HasContext	/c/en/leet	1337	leet	has context		1.0	CN	/d/wiktionary/en		What is a context of 1337?	/c/en/1337/n-/r/HasContext-0001
+/c/en/134340_pluto/n	/r/FormOf	/c/en/pluto	134340 pluto	pluto	form of		2.0	CN	/d/wiktionary/en		What is 134340 pluto a form of?	/c/en/134340_pluto/n-/r/FormOf-0000
+/c/en/135/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	135	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[135]] is similar to [[cardinal]]	What is 135 similar to?	/c/en/135/a/wn-/r/SimilarTo-0000
+/c/en/135th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	135th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[135th]] is similar to [[ordinal]]	What is 135th similar to?	/c/en/135th/a/wn-/r/SimilarTo-0000
+/c/en/13_inch_television_set/n	/r/IsA	/c/en/television_set/n	13 inch television set	television set	is a		1.0	CN	/d/opencyc		What is a 13 inch television set?	/c/en/13_inch_television_set/n-/r/IsA-0000
+/c/en/13f_catheter/n	/r/IsA	/c/en/catheter/n	13f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 13f catheter?	/c/en/13f_catheter/n-/r/IsA-0000
+/c/en/13th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	13th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[13th]] is similar to [[ordinal]]	What is 13th similar to?	/c/en/13th/a/wn-/r/SimilarTo-0000
+/c/en/13th_month/n	/r/HasContext	/c/en/generally_attributive	13th month	generally attributive	has context		1.0	CN	/d/wiktionary/en		What is a context of 13th month?	/c/en/13th_month/n-/r/HasContext-0000
+/c/en/13th_month/n	/r/HasContext	/c/en/singapore	13th month	singapore	has context		1.0	CN	/d/wiktionary/en		What is a context of 13th month?	/c/en/13th_month/n-/r/HasContext-0001
+/c/en/13th_months/n	/r/FormOf	/c/en/13th_month	13th months	13th month	form of		1.0	CN	/d/wiktionary/en		What is 13th months a form of?	/c/en/13th_months/n-/r/FormOf-0000
+/c/en/13z_docosenoic_acid/n	/r/RelatedTo	/c/en/erucic_acid	13z docosenoic acid	erucic acid	related to		1.0	CN	/d/wiktionary/fr		What is 13z docosenoic acid related to?	/c/en/13z_docosenoic_acid/n-/r/RelatedTo-0000
+/c/en/13z_eicosanoic_acid/n	/r/RelatedTo	/c/en/paullinic_acid	13z eicosanoic acid	paullinic acid	related to		1.0	CN	/d/wiktionary/fr		What is 13z eicosanoic acid related to?	/c/en/13z_eicosanoic_acid/n-/r/RelatedTo-0000
+/c/en/14	/r/HasProperty	/c/en/fourteen	14	fourteen	has property		1.0	CN	/d/conceptnet/4/en	[[14]] is [[fourteen]]	What is a property of 14?	/c/en/14-/r/HasProperty-0000
+/c/en/14/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	14	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[14]] is similar to [[cardinal]]	What is 14 similar to?	/c/en/14/a/wn-/r/SimilarTo-0000
+/c/en/14/n/wn/quantity	/r/Synonym	/c/en/fourteen/n/wn/quantity	14	fourteen	synonym		2.0	CN	/d/wordnet/3.1	[[14]] is a synonym of [[fourteen]]	What is a synonym of 14?	/c/en/14/n/wn/quantity-/r/Synonym-0000
+/c/en/140/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	140	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[140]] is similar to [[cardinal]]	What is 140 similar to?	/c/en/140/a/wn-/r/SimilarTo-0000
+/c/en/140_species_of_snakes	/r/ReceivesAction	/c/en/found_in_australia	140 species of snakes	found in australia	receives action		1.0	CN	/d/conceptnet/4/en	[[140 species of snakes]] are [[found in Australia]]	What can be done to 140 species of snakes?	/c/en/140_species_of_snakes-/r/ReceivesAction-0000
+/c/en/140_townhouse_development_in_north_watson	/r/HasA	/c/en/been_knocked_back	140 townhouse development in north watson	been knocked back	has a		1.0	CN	/d/conceptnet/4/en	[[A 140-townhouse development in north Watson]] has [[been knocked back]]	What belongs to 140 townhouse development in north watson?	/c/en/140_townhouse_development_in_north_watson-/r/HasA-0000
+/c/en/140th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	140th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[140th]] is similar to [[ordinal]]	What is 140th similar to?	/c/en/140th/a/wn-/r/SimilarTo-0000
+/c/en/1411	/r/DefinedAs	/c/en/phone_number_for_information	1411	phone number for information	defined as		1.0	CN	/d/conceptnet/4/en	[[1411]] is the [[phone number for information]]	How can 1411 be defined?	/c/en/1411-/r/DefinedAs-0000
+/c/en/144/n/wn/quantity	/r/Synonym	/c/en/gross/n/wn/quantity	144	gross	synonym		2.0	CN	/d/wordnet/3.1	[[144]] is a synonym of [[gross]]	What is a synonym of 144?	/c/en/144/n/wn/quantity-/r/Synonym-0000
+/c/en/1440/n	/r/HasContext	/c/en/skiing	1440	skiing	has context		1.0	CN	/d/wiktionary/en		What is a context of 1440?	/c/en/1440/n-/r/HasContext-0000
+/c/en/1440/n	/r/HasContext	/c/en/snowboarding	1440	snowboarding	has context		1.0	CN	/d/wiktionary/en		What is a context of 1440?	/c/en/1440/n-/r/HasContext-0001
+/c/en/1440/n	/r/SimilarTo	/c/en/1080	1440	1080	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0000
+/c/en/1440/n	/r/SimilarTo	/c/en/1260	1440	1260	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0001
+/c/en/1440/n	/r/SimilarTo	/c/en/1620	1440	1620	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0002
+/c/en/1440/n	/r/SimilarTo	/c/en/180	1440	180	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0003
+/c/en/1440/n	/r/SimilarTo	/c/en/1800	1440	1800	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0004
+/c/en/1440/n	/r/SimilarTo	/c/en/360	1440	360	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0005
+/c/en/1440/n	/r/SimilarTo	/c/en/540	1440	540	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0006
+/c/en/1440/n	/r/SimilarTo	/c/en/720	1440	720	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0007
+/c/en/1440/n	/r/SimilarTo	/c/en/900	1440	900	similar to		1.0	CN	/d/wiktionary/en		What is 1440 similar to?	/c/en/1440/n-/r/SimilarTo-0008
+/c/en/145/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	145	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[145]] is similar to [[cardinal]]	What is 145 similar to?	/c/en/145/a/wn-/r/SimilarTo-0000
+/c/en/145th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	145th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[145th]] is similar to [[ordinal]]	What is 145th similar to?	/c/en/145th/a/wn-/r/SimilarTo-0000
+/c/en/147/n	/r/HasContext	/c/en/snooker	147	snooker	has context		1.0	CN	/d/wiktionary/en		What is a context of 147?	/c/en/147/n-/r/HasContext-0000
+/c/en/147/n	/r/RelatedTo	/c/en/maximum_break	147	maximum break	related to		1.0	CN	/d/wiktionary/en		What is 147 related to?	/c/en/147/n-/r/RelatedTo-0000
+/c/en/147/n	/r/RelatedTo	/c/en/snooker	147	snooker	related to		1.0	CN	/d/wiktionary/en		What is 147 related to?	/c/en/147/n-/r/RelatedTo-0001
+/c/en/147s/n	/r/FormOf	/c/en/147	147s	147	form of		1.0	CN	/d/wiktionary/en		What is 147s a form of?	/c/en/147s/n-/r/FormOf-0000
+/c/en/147s/n	/r/RelatedTo	/c/en/147	147s	147	related to		1.0	CN	/d/wiktionary/fr		What is 147s related to?	/c/en/147s/n-/r/RelatedTo-0000
+/c/en/14_18/n	/r/RelatedTo	/c/en/world_war_i	14 18	world war i	related to		2.0	CN	/d/wiktionary/en		What is 14 18 related to?	/c/en/14_18/n-/r/RelatedTo-0000
+/c/en/14_18_war	/r/RelatedTo	/c/en/14_18	14 18 war	14 18	related to		1.0	CN	/d/wiktionary/en		What is 14 18 war related to?	/c/en/14_18_war-/r/RelatedTo-0000
+/c/en/14_18_war/n	/r/RelatedTo	/c/en/world_war_i	14 18 war	world war i	related to		1.0	CN	/d/wiktionary/en		What is 14 18 war related to?	/c/en/14_18_war/n-/r/RelatedTo-0000
+/c/en/14_july/n/wn/time	/r/Synonym	/c/en/bastille_day/n/wn/time	14 july	bastille day	synonym		2.0	CN	/d/wordnet/3.1	[[14 July]] is a synonym of [[Bastille Day]]	What is a synonym of 14 july?	/c/en/14_july/n/wn/time-/r/Synonym-0000
+/c/en/14er/n	/r/FormOf	/c/en/fourteener	14er	fourteener	form of		1.0	CN	/d/wiktionary/en		What is 14er a form of?	/c/en/14er/n-/r/FormOf-0000
+/c/en/14ers/n	/r/FormOf	/c/en/14er	14ers	14er	form of		1.0	CN	/d/wiktionary/en		What is 14ers a form of?	/c/en/14ers/n-/r/FormOf-0000
+/c/en/14f_catheter/n	/r/IsA	/c/en/catheter/n	14f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 14f catheter?	/c/en/14f_catheter/n-/r/IsA-0000
+/c/en/14k/n	/r/RelatedTo	/c/en/hong_kong	14k	hong kong	related to		1.0	CN	/d/wiktionary/en		What is 14k related to?	/c/en/14k/n-/r/RelatedTo-0000
+/c/en/14k/n	/r/RelatedTo	/c/en/triad	14k	triad	related to		1.0	CN	/d/wiktionary/en		What is 14k related to?	/c/en/14k/n-/r/RelatedTo-0001
+/c/en/14th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	14th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[14th]] is similar to [[ordinal]]	What is 14th similar to?	/c/en/14th/a/wn-/r/SimilarTo-0000
+/c/en/15	/r/HasProperty	/c/en/fifteen	15	fifteen	has property		1.0	CN	/d/conceptnet/4/en	[[15]] is [[fifteen]]	What is a property of 15?	/c/en/15-/r/HasProperty-0000
+/c/en/15	/r/IsA	/c/en/automobile/n	15	automobile	is a		0.5	CN	/d/dbpedia/en		What is a 15?	/c/en/15-/r/IsA-0000
+/c/en/15	/r/IsA	/c/en/band/n	15	band	is a		0.5	CN	/d/dbpedia/en		What is a 15?	/c/en/15-/r/IsA-0001
+/c/en/15	/r/Synonym	/c/en/15	15	15	synonym		1.0	CN	/d/dbpedia/en		What is a synonym of 15?	/c/en/15-/r/Synonym-0000
+/c/en/15/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	15	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[15]] is similar to [[cardinal]]	What is 15 similar to?	/c/en/15/a/wn-/r/SimilarTo-0000
+/c/en/15/n/wn/quantity	/r/Synonym	/c/en/fifteen/n/wn/quantity	15	fifteen	synonym		2.0	CN	/d/wordnet/3.1	[[15]] is a synonym of [[fifteen]]	What is a synonym of 15?	/c/en/15/n/wn/quantity-/r/Synonym-0000
+/c/en/150/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	150	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[150]] is similar to [[cardinal]]	What is 150 similar to?	/c/en/150/a/wn-/r/SimilarTo-0000
+/c/en/1500_meter_run/n	/r/IsA	/c/en/endurance_event/n	1500 meter run	endurance event	is a		1.0	CN	/d/opencyc		What is a 1500 meter run?	/c/en/1500_meter_run/n-/r/IsA-0000
+/c/en/1500_meter_run/n	/r/IsA	/c/en/running_event/n	1500 meter run	running event	is a		1.0	CN	/d/opencyc		What is a 1500 meter run?	/c/en/1500_meter_run/n-/r/IsA-0001
+/c/en/1500_metres	/r/Synonym	/c/en/1500_metres	1500 metres	1500 metres	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1500 metres?	/c/en/1500_metres-/r/Synonym-0000
+/c/en/1500_metres/n	/r/HasContext	/c/en/athletics	1500 metres	athletics	has context		1.0	CN	/d/wiktionary/en		What is a context of 1500 metres?	/c/en/1500_metres/n-/r/HasContext-0000
+/c/en/1500_metres/n	/r/RelatedTo	/c/en/metres	1500 metres	metres	related to		1.0	CN	/d/wiktionary/en		What is 1500 metres related to?	/c/en/1500_metres/n-/r/RelatedTo-0000
+/c/en/1500_metres/n	/r/RelatedTo	/c/en/middle_distance	1500 metres	middle distance	related to		1.0	CN	/d/wiktionary/en		What is 1500 metres related to?	/c/en/1500_metres/n-/r/RelatedTo-0001
+/c/en/1500_metres/n	/r/Synonym	/c/en/1500_meters	1500 metres	1500 meters	synonym		1.0	CN	/d/wiktionary/fr		What is a synonym of 1500 metres?	/c/en/1500_metres/n-/r/Synonym-0000
+/c/en/150th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	150th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[150th]] is similar to [[ordinal]]	What is 150th similar to?	/c/en/150th/a/wn-/r/SimilarTo-0000
+/c/en/152mm_howitzer/n	/r/IsA	/c/en/howitzer/n	152mm howitzer	howitzer	is a		1.0	CN	/d/opencyc		What is a 152mm howitzer?	/c/en/152mm_howitzer/n-/r/IsA-0000
+/c/en/152mm_towed_howitzer/n	/r/IsA	/c/en/152mm_howitzer/n	152mm towed howitzer	152mm howitzer	is a		1.0	CN	/d/opencyc		What is a 152mm towed howitzer?	/c/en/152mm_towed_howitzer/n-/r/IsA-0000
+/c/en/152mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	152mm towed howitzer	towed howitzer	is a		1.0	CN	/d/opencyc		What is a 152mm towed howitzer?	/c/en/152mm_towed_howitzer/n-/r/IsA-0001
+/c/en/1530s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1530s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1530s]] is a type of [[decade]]	What is a 1530s?	/c/en/1530s/n/wn/time-/r/IsA-0000
+/c/en/155/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	155	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[155]] is similar to [[cardinal]]	What is 155 similar to?	/c/en/155/a/wn-/r/SimilarTo-0000
+/c/en/155_sp_howitzer/n	/r/IsA	/c/en/155mm_howitzer/n	155 sp howitzer	155mm howitzer	is a		1.0	CN	/d/opencyc		What is a 155 sp howitzer?	/c/en/155_sp_howitzer/n-/r/IsA-0000
+/c/en/155_sp_howitzer/n	/r/IsA	/c/en/self_propelled_howitzer/n	155 sp howitzer	self propelled howitzer	is a		1.0	CN	/d/opencyc		What is a 155 sp howitzer?	/c/en/155_sp_howitzer/n-/r/IsA-0001
+/c/en/155mm_howitzer/n	/r/IsA	/c/en/howitzer/n	155mm howitzer	howitzer	is a		1.0	CN	/d/opencyc		What is a 155mm howitzer?	/c/en/155mm_howitzer/n-/r/IsA-0000
+/c/en/155th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	155th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[155th]] is similar to [[ordinal]]	What is 155th similar to?	/c/en/155th/a/wn-/r/SimilarTo-0000
+/c/en/15_august_1945/n/wn/time	/r/Synonym	/c/en/v_j_day/n/wn/time	15 august 1945	v j day	synonym		2.0	CN	/d/wordnet/3.1	[[15 August 1945]] is a synonym of [[V-J Day]]	What is a synonym of 15 august 1945?	/c/en/15_august_1945/n/wn/time-/r/Synonym-0000
+/c/en/15_crown_5/n	/r/HasContext	/c/en/organic_compound	15 crown 5	organic compound	has context		1.0	CN	/d/wiktionary/en		What is a context of 15 crown 5?	/c/en/15_crown_5/n-/r/HasContext-0000
+/c/en/15_crown_5/n	/r/RelatedTo	/c/en/crown_ether	15 crown 5	crown ether	related to		1.0	CN	/d/wiktionary/en		What is 15 crown 5 related to?	/c/en/15_crown_5/n-/r/RelatedTo-0000
+/c/en/15_may_organization/n/wn/terrorism	/r/HasContext	/c/en/israel/n/wn/location	15 may organization	israel	has context		2.0	CN	/d/wordnet/3.1	[[15 May Organization]] is used in the region of [[Israel]]	What is a context of 15 may organization?	/c/en/15_may_organization/n/wn/terrorism-/r/HasContext-0000
+/c/en/15_may_organization/n/wn/terrorism	/r/HasContext	/c/en/terrorism/n/wn/act	15 may organization	terrorism	has context		2.0	CN	/d/wordnet/3.1	[[15 May Organization]] is used in the context of [[terrorism]]	What is a context of 15 may organization?	/c/en/15_may_organization/n/wn/terrorism-/r/HasContext-0001
+/c/en/15_megabytes_of_fame	/r/DerivedFrom	/c/en/15_minutes_of_fame/n	15 megabytes of fame	15 minutes of fame	derived from		1.0	CN	/d/wiktionary/en		From which word is 15 megabytes of fame derived?	/c/en/15_megabytes_of_fame-/r/DerivedFrom-0000
+/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/computing	15 megabytes of fame	computing	related to		1.0	CN	/d/wiktionary/en		What is 15 megabytes of fame related to?	/c/en/15_megabytes_of_fame/n-/r/RelatedTo-0000
+/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/internet	15 megabytes of fame	internet	related to		1.0	CN	/d/wiktionary/en		What is 15 megabytes of fame related to?	/c/en/15_megabytes_of_fame/n-/r/RelatedTo-0001
+/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/modest	15 megabytes of fame	modest	related to		1.0	CN	/d/wiktionary/en		What is 15 megabytes of fame related to?	/c/en/15_megabytes_of_fame/n-/r/RelatedTo-0002
+/c/en/15_minutes	/r/DerivedFrom	/c/en/fifteen	15 minutes	fifteen	derived from		1.0	CN	/d/wiktionary/en		From which word is 15 minutes derived?	/c/en/15_minutes-/r/DerivedFrom-0000
+/c/en/15_minutes	/r/EtymologicallyRelatedTo	/c/en/15_minutes_of_fame	15 minutes	15 minutes of fame	etymologically related to		0.25	CN	/d/wiktionary/en		What is 15 minutes etymologically related to?	/c/en/15_minutes-/r/EtymologicallyRelatedTo-0000
+/c/en/15_minutes	/r/IsA	/c/en/film/n	15 minutes	film	is a		0.5	CN	/d/dbpedia/en		What is a 15 minutes?	/c/en/15_minutes-/r/IsA-0000
+/c/en/15_minutes	/r/Synonym	/c/en/15_minutes	15 minutes	15 minutes	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 15 minutes?	/c/en/15_minutes-/r/Synonym-0000
+/c/en/15_minutes/n/wn/time	/r/Synonym	/c/en/quarter_hour/n/wn/time	15 minutes	quarter hour	synonym		2.0	CN	/d/wordnet/3.1	[[15 minutes]] is a synonym of [[quarter-hour]]	What is a synonym of 15 minutes?	/c/en/15_minutes/n/wn/time-/r/Synonym-0000
+/c/en/15_minutes_of_fame	/r/RelatedTo	/c/en/legend_in_one's_own_lunchtime	15 minutes of fame	legend in one's own lunchtime	related to		1.0	CN	/d/wiktionary/en		What is 15 minutes of fame related to?	/c/en/15_minutes_of_fame-/r/RelatedTo-0000
+/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/famous_for_fifteen_minutes	15 minutes of fame	famous for fifteen minutes	related to		1.0	CN	/d/wiktionary/en		What is 15 minutes of fame related to?	/c/en/15_minutes_of_fame/n-/r/RelatedTo-0000
+/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/flurry	15 minutes of fame	flurry	related to		1.0	CN	/d/wiktionary/en		What is 15 minutes of fame related to?	/c/en/15_minutes_of_fame/n-/r/RelatedTo-0001
+/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/spotlight	15 minutes of fame	spotlight	related to		1.0	CN	/d/wiktionary/en		What is 15 minutes of fame related to?	/c/en/15_minutes_of_fame/n-/r/RelatedTo-0002
+/c/en/15_minutes_of_fame/n	/r/Synonym	/c/en/15_minutes	15 minutes of fame	15 minutes	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 15 minutes of fame?	/c/en/15_minutes_of_fame/n-/r/Synonym-0000
+/c/en/15_minutes_of_fame/n	/r/Synonym	/c/en/moment_in_sun	15 minutes of fame	moment in sun	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 15 minutes of fame?	/c/en/15_minutes_of_fame/n-/r/Synonym-0001
+/c/en/15_minutes_of_shame	/r/DerivedFrom	/c/en/15_minutes_of_fame/n	15 minutes of shame	15 minutes of fame	derived from		1.0	CN	/d/wiktionary/en		From which word is 15 minutes of shame derived?	/c/en/15_minutes_of_shame-/r/DerivedFrom-0000
+/c/en/15_of_argentina's_population	/r/HasProperty	/c/en/native_indian	15 of argentina's population	native indian	has property		1.0	CN	/d/conceptnet/4/en	[[15% of Argentina's population]] is [[native indian]]	What is a property of 15 of argentina's population?	/c/en/15_of_argentina's_population-/r/HasProperty-0000
+/c/en/15_year_old_alex	/r/DefinedAs	/c/en/main_character_in_clockwork_orange	15 year old alex	main character in clockwork orange	defined as		1.0	CN	/d/conceptnet/4/en	[[15-year-old Alex]] is the [[main character in'A Clockwork Orange']]	How can 15 year old alex be defined?	/c/en/15_year_old_alex-/r/DefinedAs-0000
+/c/en/15_°_c_calorie	/r/IsA	/c/en/calorie/n	15 ° c calorie	calorie	is a		1.0	CN	/d/wiktionary/fr		What is a 15 ° c calorie?	/c/en/15_°_c_calorie-/r/IsA-0000
+/c/en/15_°_calorie	/r/DerivedFrom	/c/en/calorie/n	15 ° calorie	calorie	derived from		1.0	CN	/d/wiktionary/en		From which word is 15 ° calorie derived?	/c/en/15_°_calorie-/r/DerivedFrom-0000
+/c/en/15f_catheter/n	/r/IsA	/c/en/catheter/n	15f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 15f catheter?	/c/en/15f_catheter/n-/r/IsA-0000
+/c/en/15th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	15th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[15th]] is similar to [[ordinal]]	What is 15th similar to?	/c/en/15th/a/wn-/r/SimilarTo-0000
+/c/en/15z_tetracosenoic_acid/n	/r/RelatedTo	/c/en/nervonic_acid	15z tetracosenoic acid	nervonic acid	related to		1.0	CN	/d/wiktionary/fr		What is 15z tetracosenoic acid related to?	/c/en/15z_tetracosenoic_acid/n-/r/RelatedTo-0000
+/c/en/16	/r/HasProperty	/c/en/sixteen	16	sixteen	has property		1.0	CN	/d/conceptnet/4/en	[[16]] is [[sixteen]]	What is a property of 16?	/c/en/16-/r/HasProperty-0000
+/c/en/16	/r/IsA	/c/en/locomotive/n	16	locomotive	is a		0.5	CN	/d/dbpedia/en		What is a 16?	/c/en/16-/r/IsA-0000
+/c/en/16	/r/IsA	/c/en/train/n	16	train	is a		0.5	CN	/d/dbpedia/en		What is a 16?	/c/en/16-/r/IsA-0001
+/c/en/16	/r/IsA	/c/en/weapon/n	16	weapon	is a		0.5	CN	/d/dbpedia/en		What is a 16?	/c/en/16-/r/IsA-0002
+/c/en/16	/r/Synonym	/c/en/16	16	16	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 16?	/c/en/16-/r/Synonym-0000
+/c/en/16/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	16	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[16]] is similar to [[cardinal]]	What is 16 similar to?	/c/en/16/a/wn-/r/SimilarTo-0000
+/c/en/16/n/wn/quantity	/r/Synonym	/c/en/sixteen/n/wn/quantity	16	sixteen	synonym		2.0	CN	/d/wordnet/3.1	[[16]] is a synonym of [[sixteen]]	What is a synonym of 16?	/c/en/16/n/wn/quantity-/r/Synonym-0000
+/c/en/160/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	160	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[160]] is similar to [[cardinal]]	What is 160 similar to?	/c/en/160/a/wn-/r/SimilarTo-0000
+/c/en/1600_pennsylvania_avenue/n	/r/RelatedTo	/c/en/10_downing_street	1600 pennsylvania avenue	10 downing street	related to		1.0	CN	/d/wiktionary/en		What is 1600 pennsylvania avenue related to?	/c/en/1600_pennsylvania_avenue/n-/r/RelatedTo-0000
+/c/en/1600_pennsylvania_avenue/n	/r/RelatedTo	/c/en/24_sussex_drive	1600 pennsylvania avenue	24 sussex drive	related to		1.0	CN	/d/wiktionary/en		What is 1600 pennsylvania avenue related to?	/c/en/1600_pennsylvania_avenue/n-/r/RelatedTo-0001
+/c/en/160th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	160th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[160th]] is similar to [[ordinal]]	What is 160th similar to?	/c/en/160th/a/wn-/r/SimilarTo-0000
+/c/en/1620/n	/r/HasContext	/c/en/skiing	1620	skiing	has context		1.0	CN	/d/wiktionary/en		What is a context of 1620?	/c/en/1620/n-/r/HasContext-0000
+/c/en/1620/n	/r/HasContext	/c/en/snowboarding	1620	snowboarding	has context		1.0	CN	/d/wiktionary/en		What is a context of 1620?	/c/en/1620/n-/r/HasContext-0001
+/c/en/1620/n	/r/SimilarTo	/c/en/1080	1620	1080	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0000
+/c/en/1620/n	/r/SimilarTo	/c/en/1260	1620	1260	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0001
+/c/en/1620/n	/r/SimilarTo	/c/en/1440	1620	1440	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0002
+/c/en/1620/n	/r/SimilarTo	/c/en/180	1620	180	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0003
+/c/en/1620/n	/r/SimilarTo	/c/en/1800	1620	1800	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0004
+/c/en/1620/n	/r/SimilarTo	/c/en/360	1620	360	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0005
+/c/en/1620/n	/r/SimilarTo	/c/en/540	1620	540	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0006
+/c/en/1620/n	/r/SimilarTo	/c/en/720	1620	720	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0007
+/c/en/1620/n	/r/SimilarTo	/c/en/900	1620	900	similar to		1.0	CN	/d/wiktionary/en		What is 1620 similar to?	/c/en/1620/n-/r/SimilarTo-0008
+/c/en/163rd_game/n	/r/HasContext	/c/en/baseball	163rd game	baseball	has context		1.0	CN	/d/wiktionary/en		What is a context of 163rd game?	/c/en/163rd_game/n-/r/HasContext-0000
+/c/en/164/n	/r/IsA	/c/en/alfa_romeo_automobile/n	164	alfa romeo automobile	is a		1.0	CN	/d/opencyc		What is a 164?	/c/en/164/n-/r/IsA-0000
+/c/en/165/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	165	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[165]] is similar to [[cardinal]]	What is 165 similar to?	/c/en/165/a/wn-/r/SimilarTo-0000
+/c/en/165th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	165th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[165th]] is similar to [[ordinal]]	What is 165th similar to?	/c/en/165th/a/wn-/r/SimilarTo-0000
+/c/en/16_bit	/r/DerivedFrom	/c/en/bit/n/wikt/en_3	16 bit	bit	derived from		1.0	CN	/d/wiktionary/en		From which word is 16 bit derived?	/c/en/16_bit-/r/DerivedFrom-0000
+/c/en/16_cell	/r/DerivedFrom	/c/en/16	16 cell	16	derived from		1.0	CN	/d/wiktionary/en		From which word is 16 cell derived?	/c/en/16_cell-/r/DerivedFrom-0000
+/c/en/16_cell	/r/DerivedFrom	/c/en/cell	16 cell	cell	derived from		1.0	CN	/d/wiktionary/en		From which word is 16 cell derived?	/c/en/16_cell-/r/DerivedFrom-0001
+/c/en/16_cell	/r/IsA	/c/en/orthoplex/n	16 cell	orthoplex	is a		1.0	CN	/d/wiktionary/en		What is a 16 cell?	/c/en/16_cell-/r/IsA-0000
+/c/en/16_cell/n	/r/HasContext	/c/en/geometry	16 cell	geometry	has context		1.0	CN	/d/wiktionary/en		What is a context of 16 cell?	/c/en/16_cell/n-/r/HasContext-0000
+/c/en/16_cell/n	/r/RelatedTo	/c/en/facet	16 cell	facet	related to		1.0	CN	/d/wiktionary/en		What is 16 cell related to?	/c/en/16_cell/n-/r/RelatedTo-0000
+/c/en/16_cell/n	/r/RelatedTo	/c/en/four_dimensional	16 cell	four dimensional	related to		1.0	CN	/d/wiktionary/en		What is 16 cell related to?	/c/en/16_cell/n-/r/RelatedTo-0001
+/c/en/16_cell/n	/r/RelatedTo	/c/en/octahedron	16 cell	octahedron	related to		1.0	CN	/d/wiktionary/en		What is 16 cell related to?	/c/en/16_cell/n-/r/RelatedTo-0002
+/c/en/16_cell/n	/r/RelatedTo	/c/en/polytope	16 cell	polytope	related to		1.0	CN	/d/wiktionary/en		What is 16 cell related to?	/c/en/16_cell/n-/r/RelatedTo-0003
+/c/en/16_cell/n	/r/RelatedTo	/c/en/tetrahedron	16 cell	tetrahedron	related to		1.0	CN	/d/wiktionary/en		What is 16 cell related to?	/c/en/16_cell/n-/r/RelatedTo-0004
+/c/en/16_cell/n	/r/Synonym	/c/en/4_orthoplex	16 cell	4 orthoplex	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 16 cell?	/c/en/16_cell/n-/r/Synonym-0000
+/c/en/16_cells/n	/r/FormOf	/c/en/16_cell	16 cells	16 cell	form of		1.0	CN	/d/wiktionary/en		What is 16 cells a form of?	/c/en/16_cells/n-/r/FormOf-0000
+/c/en/16_pf/n/wn/communication	/r/Synonym	/c/en/sixteen_personality_factor_questionnaire/n/wn/communication	16 pf	sixteen personality factor questionnaire	synonym		2.0	CN	/d/wordnet/3.1	[[16 PF]] is a synonym of [[Sixteen Personality Factor Questionnaire]]	What is a synonym of 16 pf?	/c/en/16_pf/n/wn/communication-/r/Synonym-0000
+/c/en/16f_catheter/n	/r/IsA	/c/en/catheter/n	16f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 16f catheter?	/c/en/16f_catheter/n-/r/IsA-0000
+/c/en/16mo/n	/r/HasContext	/c/en/paper	16mo	paper	has context		1.0	CN	/d/wiktionary/en		What is a context of 16mo?	/c/en/16mo/n-/r/HasContext-0000
+/c/en/16mo/n	/r/HasContext	/c/en/printing	16mo	printing	has context		1.0	CN	/d/wiktionary/en		What is a context of 16mo?	/c/en/16mo/n-/r/HasContext-0001
+/c/en/16mo/n	/r/RelatedTo	/c/en/sextodecimo	16mo	sextodecimo	related to		1.0	CN	/d/wiktionary/en		What is 16mo related to?	/c/en/16mo/n-/r/RelatedTo-0000
+/c/en/16mos/n	/r/FormOf	/c/en/16mo	16mos	16mo	form of		1.0	CN	/d/wiktionary/en		What is 16mos a form of?	/c/en/16mos/n-/r/FormOf-0000
+/c/en/16s_rrnas/n	/r/FormOf	/c/en/16s_rrna	16s rrnas	16s rrna	form of		1.0	CN	/d/wiktionary/en		What is 16s rrnas a form of?	/c/en/16s_rrnas/n-/r/FormOf-0000
+/c/en/16th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	16th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[16th]] is similar to [[ordinal]]	What is 16th similar to?	/c/en/16th/a/wn-/r/SimilarTo-0000
+/c/en/16th_note	/r/FormOf	/c/en/sixteenth_note/n	16th note	sixteenth note	form of		1.0	CN	/d/wiktionary/fr		What is 16th note a form of?	/c/en/16th_note-/r/FormOf-0000
+/c/en/16th_rest	/r/FormOf	/c/en/sixteenth_rest/n	16th rest	sixteenth rest	form of		1.0	CN	/d/wiktionary/fr		What is 16th rest a form of?	/c/en/16th_rest-/r/FormOf-0000
+/c/en/17	/r/HasProperty	/c/en/seventeen	17	seventeen	has property		1.0	CN	/d/conceptnet/4/en	[[17]] is [[seventeen]]	What is a property of 17?	/c/en/17-/r/HasProperty-0000
+/c/en/17/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	17	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[17]] is similar to [[cardinal]]	What is 17 similar to?	/c/en/17/a/wn-/r/SimilarTo-0000
+/c/en/17/n/wn/quantity	/r/Synonym	/c/en/seventeen/n/wn/quantity	17	seventeen	synonym		2.0	CN	/d/wordnet/3.1	[[17]] is a synonym of [[seventeen]]	What is a synonym of 17?	/c/en/17/n/wn/quantity-/r/Synonym-0000
+/c/en/170/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	170	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[170]] is similar to [[cardinal]]	What is 170 similar to?	/c/en/170/a/wn-/r/SimilarTo-0000
+/c/en/170th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	170th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[170th]] is similar to [[ordinal]]	What is 170th similar to?	/c/en/170th/a/wn-/r/SimilarTo-0000
+/c/en/1710s/n	/r/RelatedTo	/c/en/decade	1710s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1710s related to?	/c/en/1710s/n-/r/RelatedTo-0000
+/c/en/1720s/n	/r/RelatedTo	/c/en/decade	1720s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1720s related to?	/c/en/1720s/n-/r/RelatedTo-0000
+/c/en/1728/n/wn/quantity	/r/Synonym	/c/en/great_gross/n/wn/quantity	1728	great gross	synonym		2.0	CN	/d/wordnet/3.1	[[1728]] is a synonym of [[great gross]]	What is a synonym of 1728?	/c/en/1728/n/wn/quantity-/r/Synonym-0000
+/c/en/1730s/n	/r/RelatedTo	/c/en/decade	1730s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1730s related to?	/c/en/1730s/n-/r/RelatedTo-0000
+/c/en/1740s/n	/r/RelatedTo	/c/en/decade	1740s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1740s related to?	/c/en/1740s/n-/r/RelatedTo-0000
+/c/en/175/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	175	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[175]] is similar to [[cardinal]]	What is 175 similar to?	/c/en/175/a/wn-/r/SimilarTo-0000
+/c/en/1750s/n	/r/RelatedTo	/c/en/decade	1750s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1750s related to?	/c/en/1750s/n-/r/RelatedTo-0000
+/c/en/1750s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1750s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1750s]] is a type of [[decade]]	What is a 1750s?	/c/en/1750s/n/wn/time-/r/IsA-0000
+/c/en/175er/n	/r/HasContext	/c/en/historical	175er	historical	has context		1.0	CN	/d/wiktionary/en		What is a context of 175er?	/c/en/175er/n-/r/HasContext-0000
+/c/en/175er/n	/r/RelatedTo	/c/en/nazi	175er	nazi	related to		1.0	CN	/d/wiktionary/en		What is 175er related to?	/c/en/175er/n-/r/RelatedTo-0000
+/c/en/175ers/n	/r/FormOf	/c/en/175er	175ers	175er	form of		1.0	CN	/d/wiktionary/en		What is 175ers a form of?	/c/en/175ers/n-/r/FormOf-0000
+/c/en/175th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	175th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[175th]] is similar to [[ordinal]]	What is 175th similar to?	/c/en/175th/a/wn-/r/SimilarTo-0000
+/c/en/1760s/n	/r/RelatedTo	/c/en/decade	1760s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1760s related to?	/c/en/1760s/n-/r/RelatedTo-0000
+/c/en/1760s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1760s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1760s]] is a type of [[decade]]	What is a 1760s?	/c/en/1760s/n/wn/time-/r/IsA-0000
+/c/en/1770s/n	/r/RelatedTo	/c/en/decade	1770s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1770s related to?	/c/en/1770s/n-/r/RelatedTo-0000
+/c/en/1770s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1770s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1770s]] is a type of [[decade]]	What is a 1770s?	/c/en/1770s/n/wn/time-/r/IsA-0000
+/c/en/1780s/n	/r/RelatedTo	/c/en/decade	1780s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1780s related to?	/c/en/1780s/n-/r/RelatedTo-0000
+/c/en/1780s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1780s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1780s]] is a type of [[decade]]	What is a 1780s?	/c/en/1780s/n/wn/time-/r/IsA-0000
+/c/en/1790s/n	/r/RelatedTo	/c/en/decade	1790s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1790s related to?	/c/en/1790s/n-/r/RelatedTo-0000
+/c/en/1790s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1790s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1790s]] is a type of [[decade]]	What is a 1790s?	/c/en/1790s/n/wn/time-/r/IsA-0000
+/c/en/17_hydroxypregnenolone/n	/r/IsA	/c/en/steroid/n	17 hydroxypregnenolone	steroid	is a		1.0	CN	/d/opencyc		What is a 17 hydroxypregnenolone?	/c/en/17_hydroxypregnenolone/n-/r/IsA-0000
+/c/en/17_ketosteroid/n	/r/IsA	/c/en/steroid/n	17 ketosteroid	steroid	is a		1.0	CN	/d/opencyc		What is a 17 ketosteroid?	/c/en/17_ketosteroid/n-/r/IsA-0000
+/c/en/17_november/n/wn/terrorism	/r/Synonym	/c/en/revolutionary_organization_17_november/n/wn/terrorism	17 november	revolutionary organization 17 november	synonym		2.0	CN	/d/wordnet/3.1	[[17 November]] is a synonym of [[Revolutionary Organization 17 November]]	What is a synonym of 17 november?	/c/en/17_november/n/wn/terrorism-/r/Synonym-0000
+/c/en/17f_catheter/n	/r/IsA	/c/en/catheter/n	17f catheter	catheter	is a		1.0	CN	/d/opencyc		What is a 17f catheter?	/c/en/17f_catheter/n-/r/IsA-0000
+/c/en/17th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	17th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[17th]] is similar to [[ordinal]]	What is 17th similar to?	/c/en/17th/a/wn-/r/SimilarTo-0000
+/c/en/18	/r/HasProperty	/c/en/eighteen	18	eighteen	has property		1.0	CN	/d/conceptnet/4/en	[[18]] is [[eighteen]]	What is a property of 18?	/c/en/18-/r/HasProperty-0000
+/c/en/18/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	18	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[18]] is similar to [[cardinal]]	What is 18 similar to?	/c/en/18/a/wn-/r/SimilarTo-0000
+/c/en/18/n/wn/quantity	/r/Synonym	/c/en/eighteen/n/wn/quantity	18	eighteen	synonym		2.0	CN	/d/wordnet/3.1	[[18]] is a synonym of [[eighteen]]	What is a synonym of 18?	/c/en/18/n/wn/quantity-/r/Synonym-0000
+/c/en/18/n/wp/number	/r/Synonym	/c/en/18/n/wp/number	18	18	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 18?	/c/en/18/n/wp/number-/r/Synonym-0000
+/c/en/180/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	180	cardinal	similar to		2.0	CN	/d/wordnet/3.1	[[180]] is similar to [[cardinal]]	What is 180 similar to?	/c/en/180/a/wn-/r/SimilarTo-0000
+/c/en/180/n	/r/HasContext	/c/en/sports	180	sports	has context		1.0	CN	/d/wiktionary/en		What is a context of 180?	/c/en/180/n-/r/HasContext-0000
+/c/en/180/n	/r/RelatedTo	/c/en/change	180	change	related to		1.0	CN	/d/wiktionary/en		What is 180 related to?	/c/en/180/n-/r/RelatedTo-0000
+/c/en/180/n	/r/RelatedTo	/c/en/complete	180	complete	related to		1.0	CN	/d/wiktionary/en		What is 180 related to?	/c/en/180/n-/r/RelatedTo-0001
+/c/en/180/n	/r/RelatedTo	/c/en/degree	180	degree	related to		1.0	CN	/d/wiktionary/en		What is 180 related to?	/c/en/180/n-/r/RelatedTo-0002
+/c/en/180/n	/r/RelatedTo	/c/en/opposite	180	opposite	related to		1.0	CN	/d/wiktionary/en		What is 180 related to?	/c/en/180/n-/r/RelatedTo-0003
+/c/en/180/n	/r/RelatedTo	/c/en/spin	180	spin	related to		1.0	CN	/d/wiktionary/en		What is 180 related to?	/c/en/180/n-/r/RelatedTo-0004
+/c/en/180/n	/r/SimilarTo	/c/en/1080	180	1080	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0000
+/c/en/180/n	/r/SimilarTo	/c/en/1260	180	1260	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0001
+/c/en/180/n	/r/SimilarTo	/c/en/1440	180	1440	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0002
+/c/en/180/n	/r/SimilarTo	/c/en/1620	180	1620	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0003
+/c/en/180/n	/r/SimilarTo	/c/en/1800	180	1800	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0004
+/c/en/180/n	/r/SimilarTo	/c/en/360	180	360	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0005
+/c/en/180/n	/r/SimilarTo	/c/en/540	180	540	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0006
+/c/en/180/n	/r/SimilarTo	/c/en/720	180	720	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0007
+/c/en/180/n	/r/SimilarTo	/c/en/900	180	900	similar to		1.0	CN	/d/wiktionary/en		What is 180 similar to?	/c/en/180/n-/r/SimilarTo-0008
+/c/en/180/n	/r/Synonym	/c/en/about_face	180	about face	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 180?	/c/en/180/n-/r/Synonym-0000
+/c/en/180/n	/r/Synonym	/c/en/about_turn	180	about turn	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 180?	/c/en/180/n-/r/Synonym-0001
+/c/en/180/n	/r/Synonym	/c/en/u_turn	180	u turn	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 180?	/c/en/180/n-/r/Synonym-0002
+/c/en/180/n/wp/video_game	/r/IsA	/c/en/video_game/n	180	video game	is a		0.5	CN	/d/dbpedia/en		What is a 180?	/c/en/180/n/wp/video_game-/r/IsA-0000
+/c/en/180/n/wp/video_game	/r/Synonym	/c/en/180/n/wp/video_game	180	180	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 180?	/c/en/180/n/wp/video_game-/r/Synonym-0000
+/c/en/1800/n	/r/HasContext	/c/en/skiing	1800	skiing	has context		1.0	CN	/d/wiktionary/en		What is a context of 1800?	/c/en/1800/n-/r/HasContext-0000
+/c/en/1800/n	/r/HasContext	/c/en/snowboarding	1800	snowboarding	has context		1.0	CN	/d/wiktionary/en		What is a context of 1800?	/c/en/1800/n-/r/HasContext-0001
+/c/en/1800/n	/r/SimilarTo	/c/en/1080	1800	1080	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0000
+/c/en/1800/n	/r/SimilarTo	/c/en/1260	1800	1260	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0001
+/c/en/1800/n	/r/SimilarTo	/c/en/1440	1800	1440	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0002
+/c/en/1800/n	/r/SimilarTo	/c/en/1620	1800	1620	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0003
+/c/en/1800/n	/r/SimilarTo	/c/en/180	1800	180	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0004
+/c/en/1800/n	/r/SimilarTo	/c/en/360	1800	360	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0005
+/c/en/1800/n	/r/SimilarTo	/c/en/540	1800	540	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0006
+/c/en/1800/n	/r/SimilarTo	/c/en/720	1800	720	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0007
+/c/en/1800/n	/r/SimilarTo	/c/en/900	1800	900	similar to		1.0	CN	/d/wiktionary/en		What is 1800 similar to?	/c/en/1800/n-/r/SimilarTo-0008
+/c/en/1800s/n	/r/FormOf	/c/en/1800	1800s	1800	form of		1.0	CN	/d/wiktionary/en		What is 1800s a form of?	/c/en/1800s/n-/r/FormOf-0000
+/c/en/1800s/n	/r/HasContext	/c/en/snowboarding	1800s	snowboarding	has context		1.0	CN	/d/wiktionary/en		What is a context of 1800s?	/c/en/1800s/n-/r/HasContext-0000
+/c/en/1800s/n	/r/RelatedTo	/c/en/century	1800s	century	related to		1.0	CN	/d/wiktionary/en		What is 1800s related to?	/c/en/1800s/n-/r/RelatedTo-0000
+/c/en/1800s/n	/r/RelatedTo	/c/en/decade	1800s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1800s related to?	/c/en/1800s/n-/r/RelatedTo-0001
+/c/en/1800s/n/wp/decade	/r/Synonym	/c/en/1800s/n/wp/decade	1800s	1800s	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1800s?	/c/en/1800s/n/wp/decade-/r/Synonym-0000
+/c/en/180_degrees	/r/AtLocation	/c/en/corner	180 degrees	corner	at location		1.0	CN	/d/conceptnet/4/en	*Something you find in [[the corner]] is [[180 degrees]]	At what location is 180 degrees?	/c/en/180_degrees-/r/AtLocation-0000
+/c/en/180s/n	/r/FormOf	/c/en/180	180s	180	form of		1.0	CN	/d/wiktionary/en		What is 180s a form of?	/c/en/180s/n-/r/FormOf-0000
+/c/en/180s/n	/r/RelatedTo	/c/en/180	180s	180	related to		1.0	CN	/d/wiktionary/fr		What is 180s related to?	/c/en/180s/n-/r/RelatedTo-0000
+/c/en/180th/a/wn	/r/SimilarTo	/c/en/ordinal/a/wn	180th	ordinal	similar to		2.0	CN	/d/wordnet/3.1	[[180th]] is similar to [[ordinal]]	What is 180th similar to?	/c/en/180th/a/wn-/r/SimilarTo-0000
+/c/en/1810s/n	/r/RelatedTo	/c/en/decade	1810s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1810s related to?	/c/en/1810s/n-/r/RelatedTo-0000
+/c/en/1820s/n	/r/RelatedTo	/c/en/decade	1820s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1820s related to?	/c/en/1820s/n-/r/RelatedTo-0000
+/c/en/1820s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1820s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1820s]] is a type of [[decade]]	What is a 1820s?	/c/en/1820s/n/wn/time-/r/IsA-0000
+/c/en/1830s	/r/Synonym	/c/en/1830s	1830s	1830s	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1830s?	/c/en/1830s-/r/Synonym-0000
+/c/en/1830s/n	/r/RelatedTo	/c/en/decade	1830s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1830s related to?	/c/en/1830s/n-/r/RelatedTo-0000
+/c/en/1830s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1830s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1830s]] is a type of [[decade]]	What is a 1830s?	/c/en/1830s/n/wn/time-/r/IsA-0000
+/c/en/1840s/n	/r/RelatedTo	/c/en/decade	1840s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1840s related to?	/c/en/1840s/n-/r/RelatedTo-0000
+/c/en/1840s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1840s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1840s]] is a type of [[decade]]	What is a 1840s?	/c/en/1840s/n/wn/time-/r/IsA-0000
+/c/en/1850s/n	/r/RelatedTo	/c/en/decade	1850s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1850s related to?	/c/en/1850s/n-/r/RelatedTo-0000
+/c/en/1850s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1850s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1850s]] is a type of [[decade]]	What is a 1850s?	/c/en/1850s/n/wn/time-/r/IsA-0000
+/c/en/1860s/n	/r/RelatedTo	/c/en/decade	1860s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1860s related to?	/c/en/1860s/n-/r/RelatedTo-0000
+/c/en/1860s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1860s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1860s]] is a type of [[decade]]	What is a 1860s?	/c/en/1860s/n/wn/time-/r/IsA-0000
+/c/en/18650/n	/r/RelatedTo	/c/en/21700	18650	21700	related to		1.0	CN	/d/wiktionary/en		What is 18650 related to?	/c/en/18650/n-/r/RelatedTo-0000
+/c/en/18650s/n	/r/FormOf	/c/en/18650	18650s	18650	form of		1.0	CN	/d/wiktionary/en		What is 18650s a form of?	/c/en/18650s/n-/r/FormOf-0000
+/c/en/187/n	/r/HasContext	/c/en/us	187	us	has context		1.0	CN	/d/wiktionary/en		What is a context of 187?	/c/en/187/n-/r/HasContext-0000
+/c/en/187/n	/r/RelatedTo	/c/en/california	187	california	related to		1.0	CN	/d/wiktionary/en		What is 187 related to?	/c/en/187/n-/r/RelatedTo-0000
+/c/en/187/n	/r/RelatedTo	/c/en/code	187	code	related to		1.0	CN	/d/wiktionary/en		What is 187 related to?	/c/en/187/n-/r/RelatedTo-0001
+/c/en/187/n	/r/RelatedTo	/c/en/murder	187	murder	related to		1.0	CN	/d/wiktionary/en		What is 187 related to?	/c/en/187/n-/r/RelatedTo-0002
+/c/en/187/n	/r/RelatedTo	/c/en/police	187	police	related to		1.0	CN	/d/wiktionary/en		What is 187 related to?	/c/en/187/n-/r/RelatedTo-0003
+/c/en/1870s/n	/r/RelatedTo	/c/en/decade	1870s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1870s related to?	/c/en/1870s/n-/r/RelatedTo-0000
+/c/en/1870s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1870s	decade	is a		2.0	CN	/d/wordnet/3.1	[[1870s]] is a type of [[decade]]	What is a 1870s?	/c/en/1870s/n/wn/time-/r/IsA-0000
+/c/en/1880s	/r/RelatedTo	/c/en/1880s	1880s	1880s	related to		0.5	CN	/d/dbpedia/en		What is 1880s related to?	/c/en/1880s-/r/RelatedTo-0000
+/c/en/1880s	/r/RelatedTo	/c/en/fashion	1880s	fashion	related to		0.5	CN	/d/dbpedia/en		What is 1880s related to?	/c/en/1880s-/r/RelatedTo-0001
+/c/en/1880s	/r/Synonym	/c/en/1880s	1880s	1880s	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1880s?	/c/en/1880s-/r/Synonym-0000
+/c/en/1880s/n	/r/RelatedTo	/c/en/decade	1880s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1880s related to?	/c/en/1880s/n-/r/RelatedTo-0000
+/c/en/1880s/n/wn/time	/r/Synonym	/c/en/eighties/n/wn/time	1880s	eighties	synonym		2.0	CN	/d/wordnet/3.1	[[1880s]] is a synonym of [[eighties]]	What is a synonym of 1880s?	/c/en/1880s/n/wn/time-/r/Synonym-0000
+/c/en/1890s	/r/IsA	/c/en/90s/n	1890s	90s	is a		1.0	CN	/d/wiktionary/en		What is a 1890s?	/c/en/1890s-/r/IsA-0000
+/c/en/1890s	/r/RelatedTo	/c/en/1890s	1890s	1890s	related to		0.5	CN	/d/dbpedia/en		What is 1890s related to?	/c/en/1890s-/r/RelatedTo-0000
+/c/en/1890s	/r/RelatedTo	/c/en/fashion	1890s	fashion	related to		0.5	CN	/d/dbpedia/en		What is 1890s related to?	/c/en/1890s-/r/RelatedTo-0001
+/c/en/1890s	/r/Synonym	/c/en/1890s	1890s	1890s	synonym		0.5	CN	/d/dbpedia/en		What is a synonym of 1890s?	/c/en/1890s-/r/Synonym-0000
+/c/en/1890s/n	/r/RelatedTo	/c/en/decade	1890s	decade	related to		1.0	CN	/d/wiktionary/en		What is 1890s related to?	/c/en/1890s/n-/r/RelatedTo-0000
+/c/en/1890s/n	/r/Synonym	/c/en/90s	1890s	90s	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 1890s?	/c/en/1890s/n-/r/Synonym-0000
+/c/en/1890s/n/wn/time	/r/Synonym	/c/en/nineties/n/wn/time	1890s	nineties	synonym		2.0	CN	/d/wordnet/3.1	[[1890s]] is a synonym of [[nineties]]	What is a synonym of 1890s?	/c/en/1890s/n/wn/time-/r/Synonym-0000
+/c/en/18_crown_6/n	/r/HasContext	/c/en/organic_compound	18 crown 6	organic compound	has context		1.0	CN	/d/wiktionary/en		What is a context of 18 crown 6?	/c/en/18_crown_6/n-/r/HasContext-0000
+/c/en/18_crown_6/n	/r/RelatedTo	/c/en/crown_ether	18 crown 6	crown ether	related to		1.0	CN	/d/wiktionary/en		What is 18 crown 6 related to?	/c/en/18_crown_6/n-/r/RelatedTo-0000
+/c/en/18_foot_potato	/r/UsedFor	/c/en/intimidate_angry_leprechauns	18 foot potato	intimidate angry leprechauns	used for		1.0	CN	/d/conceptnet/4/en	You can use [[an 18-foot potato]] to [[intimidate angry leprechauns]]	What is 18 foot potato used for?	/c/en/18_foot_potato-/r/UsedFor-0000
+/c/en/18_holes/n	/r/HasContext	/c/en/slang	18 holes	slang	has context		1.0	CN	/d/wiktionary/en		What is a context of 18 holes?	/c/en/18_holes/n-/r/HasContext-0000
+/c/en/18_holes/n	/r/HasContext	/c/en/sports	18 holes	sports	has context		1.0	CN	/d/wiktionary/en		What is a context of 18 holes?	/c/en/18_holes/n-/r/HasContext-0001
+/c/en/18_holes/n	/r/RelatedTo	/c/en/golf	18 holes	golf	related to		1.0	CN	/d/wiktionary/en		What is 18 holes related to?	/c/en/18_holes/n-/r/RelatedTo-0000
+/c/en/18_holes/n	/r/RelatedTo	/c/en/round	18 holes	round	related to		1.0	CN	/d/wiktionary/en		What is 18 holes related to?	/c/en/18_holes/n-/r/RelatedTo-0001
+/c/en/18_karat_gold/n/wn/substance	/r/IsA	/c/en/alloy/n/wn/substance	18 karat gold	alloy	is a		2.0	CN	/d/wordnet/3.1	[[18-karat gold]] is a type of [[alloy]]	What is a 18 karat gold?	/c/en/18_karat_gold/n/wn/substance-/r/IsA-0000
+/c/en/18_wheeler	/r/DerivedFrom	/c/en/wheeler	18 wheeler	wheeler	derived from		1.0	CN	/d/wiktionary/en		From which word is 18 wheeler derived?	/c/en/18_wheeler-/r/DerivedFrom-0000
+/c/en/18_wheeler/n	/r/RelatedTo	/c/en/big_rig	18 wheeler	big rig	related to		1.0	CN	/d/wiktionary/en		What is 18 wheeler related to?	/c/en/18_wheeler/n-/r/RelatedTo-0000
+/c/en/18_wheeler/n	/r/RelatedTo	/c/en/semi_trailer	18 wheeler	semi trailer	related to		1.0	CN	/d/wiktionary/en		What is 18 wheeler related to?	/c/en/18_wheeler/n-/r/RelatedTo-0001
+/c/en/18_wheeler/n	/r/RelatedTo	/c/en/tractor	18 wheeler	tractor	related to		1.0	CN	/d/wiktionary/en		What is 18 wheeler related to?	/c/en/18_wheeler/n-/r/RelatedTo-0002
+/c/en/18_wheeler/n	/r/RelatedTo	/c/en/truck	18 wheeler	truck	related to		1.0	CN	/d/wiktionary/en		What is 18 wheeler related to?	/c/en/18_wheeler/n-/r/RelatedTo-0003
+/c/en/18_wheeler/n	/r/Synonym	/c/en/artic	18 wheeler	artic	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0000
+/c/en/18_wheeler/n	/r/Synonym	/c/en/articulated_lorry	18 wheeler	articulated lorry	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0001
+/c/en/18_wheeler/n	/r/Synonym	/c/en/big_rig	18 wheeler	big rig	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0002
+/c/en/18_wheeler/n	/r/Synonym	/c/en/juggernaut	18 wheeler	juggernaut	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0003
+/c/en/18_wheeler/n	/r/Synonym	/c/en/semi	18 wheeler	semi	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0004
+/c/en/18_wheeler/n	/r/Synonym	/c/en/semi_trailer_truck	18 wheeler	semi trailer truck	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0005
+/c/en/18_wheeler/n	/r/Synonym	/c/en/tractor_trailer	18 wheeler	tractor trailer	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0006
+/c/en/18_wheeler/n	/r/Synonym	/c/en/truck_and_trailer	18 wheeler	truck and trailer	synonym		1.0	CN	/d/wiktionary/en		What is a synonym of 18 wheeler?	/c/en/18_wheeler/n-/r/Synonym-0007
+/c/en/18_wheelers/n	/r/FormOf	/c/en/18_wheeler	18 wheelers	18 wheeler	form of		1.0	CN	/d/wiktionary/en		What is 18 wheelers a form of?	/c/en/18_wheelers/n-/r/FormOf-0000
