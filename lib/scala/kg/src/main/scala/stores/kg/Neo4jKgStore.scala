@@ -62,6 +62,8 @@ final case class PathRecord(
   def toEdge: KgEdge =
     KgEdge(
       datasource = datasource,
+      datasources = List(datasource),
+      id = pathId + "-" + pathEdgeIndex,
       `object` = objectNodeId,
       other = None,
       predicate = pathEdgePredicate,
@@ -74,10 +76,10 @@ final case class PathRecord(
 final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) extends KgStore with WithResource {
   private var bootstrapped: Boolean = false
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
-  private val edgePropertyNameList = List("datasource", "other", "weight")
+  private val edgePropertyNameList = List("datasource", "datasources", "id", "other", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
   private val logger = LoggerFactory.getLogger(getClass)
-  private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
+  private val nodePropertyNameList = List("aliases", "datasource", "datasources", "id", "label", "other", "pos")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
@@ -87,6 +89,8 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
       KgEdge(
         datasource = recordMap("edge.datasource").asInstanceOf[String],
+        datasources = recordMap("edge.datasources").asInstanceOf[String].split(" ").toList,
+        id = recordMap("edge.id").asInstanceOf[String],
         `object` = recordMap("object.id").asInstanceOf[String],
         other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
         predicate = recordMap("type(edge)").asInstanceOf[String],
@@ -100,6 +104,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       KgNode(
         aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
         datasource = recordMap("node.datasource"),
+        datasources = recordMap("node.datasources").split(" ").toList,
         id = recordMap("node.id"),
         label = recordMap("node.label"),
         other = Option(recordMap("node.other")),
@@ -371,11 +376,13 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
         """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-          |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
+          |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, datasources: $datasources, id: $id, weight: toFloat($weight), other: $other}, object) YIELD rel
           |REMOVE rel.noOp
           |""".stripMargin,
         toTransactionRunParameters(Map(
           "datasource" -> edge.datasource,
+          "datasources" -> edge.datasources.mkString(" "),
+          "id" -> edge.id,
           "object" -> edge.`object`,
           "other" -> edge.other.getOrElse(null),
           "predicate" -> edge.predicate,
@@ -390,10 +397,11 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     putModels(nodes) { (transaction, node) =>
       //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
-        "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
+        "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, datasources: $datasourcecs, other: $other });",
         toTransactionRunParameters(Map(
           "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
           "datasource" -> node.datasource,
+          "datasources" -> node.datasources.mkString(" "),
           "id" -> node.id,
           "label" -> node.label,
           "pos" -> node.pos.getOrElse(null),
