@@ -18,7 +18,7 @@ abstract class CsvReader[T](protected val csvReader: CSVReader) extends AutoClos
 
   protected implicit class RowWrapper(row: Map[String, String]) {
     def getNonBlank(key: String) =
-      row.get(key).flatMap(value => if (!StringUtils.isBlank(value)) Some(value) else None)
+      row.get(key).filter(!StringUtils.isBlank(_))
 
     def getList(key: String, delim: String) =
       getNonBlank(key).flatMap(value => Option(value.split(delim).toList)) getOrElse List[String]()
