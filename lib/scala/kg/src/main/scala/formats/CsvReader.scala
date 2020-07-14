@@ -30,9 +30,8 @@ abstract class CsvReader[T](protected val csvReader: CSVReader) extends AutoClos
 object CsvReader {
   def openCsvReader(filePath: Path, csvFormat: CSVFormat): CSVReader = {
     // Need to buffer the file input stream so that the compressor factory can check it
-    val inputStream = new BufferedInputStream(new FileInputStream(filePath.toFile))
     // CSVReader will close the input stream
-    openCsvReader(inputStream, csvFormat)
+    openCsvReader(new BufferedInputStream(new FileInputStream(filePath.toFile)), csvFormat)
   }
 
   def openCsvReader(inputStream: InputStream, csvFormat: CSVFormat): CSVReader = {
