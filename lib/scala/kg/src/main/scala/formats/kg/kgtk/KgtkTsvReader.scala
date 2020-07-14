@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.io.InputStream
 
+import scala.util.Try
+
 final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge, KgNode, KgNode]](csvReader) {
   private final val ListDelim = "|";
 
@@ -26,16 +28,7 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge,
           other = None,
           predicate = row("relation"),
           subject = row("node1"),
-          weight = row.getNonBlank("weight").flatMap(weight => {
-            try {
-              Some(weight.toFloat)
-            } catch {
-              case e: NumberFormatException => {
-                logger.warn("invalid edge weight: {}", weight)
-                None
-              }
-            }
-          })
+          weight = Try(row.getNonBlank("weight").get.toDouble).toOption
         ),
         KgNode(
           aliases = Some(node1Labels.slice(1, node1Labels.size)),
