@@ -6,7 +6,7 @@ import models.kg.KgEdge
 import models.kg.KgNode
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
-import java.io.InputStream
+import java.io.{FileNotFoundException, InputStream}
 
 import scala.util.Try
 
@@ -57,9 +57,5 @@ object KgtkTsvReader {
   private val csvFormat = new TSVFormat {}
   def open(filePath: Path) = new KgtkTsvReader(CsvReader.openCsvReader(filePath, csvFormat))
   def open(inputStream: InputStream) =
-    if (inputStream != null) {
-      new KgtkTsvReader(CsvReader.openCsvReader(inputStream, csvFormat))
-    } else {
-      throw new NullPointerException
-    }
+    Option(inputStream) getOrElse (throw new FileNotFoundException("KgtkTsvReader missing resource"))
 }
