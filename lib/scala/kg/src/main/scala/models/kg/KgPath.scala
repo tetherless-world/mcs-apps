@@ -7,7 +7,7 @@ package models.kg
 final case class KgPath(datasource: String, id: String, path: List[String]) {
   def edges: List[KgEdge] = {
     (0 until (path.length - 1) by 2).map(pathI =>
-      KgEdge(datasource = datasource, `object` = path(pathI + 2), other = None, predicate = path(pathI + 1), subject = path(pathI), weight = None)
+      KgEdge(datasource = datasource, datasources = List(datasource), id = id + "-" + pathI, `object` = path(pathI + 2), other = None, predicate = path(pathI + 1), subject = path(pathI), weight = None)
     ).toList
   }
 }
