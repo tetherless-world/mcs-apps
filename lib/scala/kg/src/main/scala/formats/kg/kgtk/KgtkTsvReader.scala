@@ -9,14 +9,14 @@ import java.nio.file.Path
 import java.io.InputStream
 
 final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge, KgNode, KgNode]](csvReader) {
-  private final val LIST_DELIM = "|";
+  private final val ListDelim = "|";
 
   private val logger = LoggerFactory.getLogger(getClass)
 
   def iterator: Iterator[Tuple3[KgEdge, KgNode, KgNode]] =
     csvReader.iteratorWithHeaders.map(row => {
-      val node1Labels = row.getList("node1;label", LIST_DELIM)
-      val node2Labels = row.getList("node2;label", LIST_DELIM)
+      val node1Labels = row.getList("node1;label", ListDelim)
+      val node2Labels = row.getList("node2;label", ListDelim)
       Tuple3(
         KgEdge(
           datasource = row("source"),
@@ -40,7 +40,7 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge,
         KgNode(
           aliases = Some(node1Labels.slice(1, node1Labels.size)),
           datasource = row("source"),
-          datasources = row.getList("source", LIST_DELIM),
+          datasources = row.getList("source", ListDelim),
           id = row("node1"),
           label = node1Labels(0),
           other = None,
@@ -49,7 +49,7 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge,
         KgNode(
           aliases = Some(node2Labels.slice(1, node2Labels.size)),
           datasource = row("source"),
-          datasources = row.getList("source", LIST_DELIM),
+          datasources = row.getList("source", ListDelim),
           id = row("node2"),
           label = node2Labels(0),
           other = None,
