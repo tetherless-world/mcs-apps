@@ -1,10 +1,42 @@
 package stores.kg
 
 import data.kg.TestKgData
+import models.kg.KgEdge
+import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, WordSpec}
 import stores.StringFilter
 
 trait KgStoreBehaviors extends Matchers { this: WordSpec =>
+//  private def assertAlmostEquals(leftEdge: KgEdge, rightEdge: KgEdge): Unit = {
+//    // Need a custom equals because of floating point comparisons on weight
+//    val epsilon = 1e-4f
+//
+//    implicit val doubleEq = TolerantNumerics.tolerantDoubleEquality(epsilon)
+//
+//    leftEdge.id should equal(rightEdge.id)
+//    leftEdge.labels should equal(rightEdge.labels)
+//    leftEdge.`object` should equal(rightEdge.`object`)
+//    leftEdge.origins should equal(rightEdge.origins)
+//    leftEdge.predicate should equal(rightEdge.predicate)
+//    leftEdge.questions should equal(rightEdge.questions)
+//    leftEdge.sentences should equal(rightEdge.sentences)
+//    leftEdge.sources should equal(rightEdge.sources)
+//    leftEdge.subject should equal(rightEdge.subject)
+//    if (leftEdge.weight.isDefined) {
+//      rightEdge.weight should not equal(None)
+//      assert(leftEdge.weight.get === rightEdge.weight.get)
+//    } else {
+//      rightEdge.weight should equal(None)
+//    }
+//  }
+//
+//  private def assertAlmostEquals(leftEdges: List[KgEdge], rightEdges: List[KgEdge]): Unit = {
+//    leftEdges.size should equal(rightEdges.size)
+//    leftEdges.zipWithIndex.foreach { leftEdgeWithIndex =>
+//      assertAlmostEquals(leftEdgeWithIndex._1, rightEdges(leftEdgeWithIndex._2))
+//    }
+//  }
+
   def store(sut: KgStore) {
     "get edges by object" in {
       for (node <- TestKgData.nodes) {
@@ -38,7 +70,6 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       val actual = (0 until expected.size).flatMap(offset => sut.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
       actual should equal(expected)
     }
-
 
     "get matching nodes by label" in {
       val expected = TestKgData.nodes(0)

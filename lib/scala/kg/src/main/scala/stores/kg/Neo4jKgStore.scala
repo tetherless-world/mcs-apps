@@ -89,17 +89,25 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
 
   private implicit class RecordWrapper(record: Record) {
+    private def toList(value: String): List[String] = {
+      if (value.isEmpty) {
+        List()
+      } else {
+        value.split(ListDelimChar).toList
+      }
+    }
+
     def toEdge: KgEdge = {
       val recordMap = record.asMap().asScala.toMap
       KgEdge(
         id = recordMap("edge.id").asInstanceOf[String],
-        labels = recordMap("edge.labels").asInstanceOf[String].split(ListDelimChar).toList,
+        labels = toList(recordMap("edge.labels").asInstanceOf[String]),
         `object` = recordMap("object.id").asInstanceOf[String],
-        origins = recordMap("edge.origins").asInstanceOf[String].split(ListDelimChar).toList,
-        questions = recordMap("edge.questions").asInstanceOf[String].split(ListDelimChar).toList,
-        sentences = recordMap("edge.sentences").asInstanceOf[String].split(ListDelimChar).toList,
+        origins = toList(recordMap("edge.origins").asInstanceOf[String]),
+        questions = toList(recordMap("edge.questions").asInstanceOf[String]),
+        sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
         predicate = recordMap("type(edge)").asInstanceOf[String],
-        sources = recordMap("edge.sources").asInstanceOf[String].split(ListDelimChar).toList,
+        sources = toList(recordMap("edge.sources").asInstanceOf[String]),
         subject = recordMap("subject.id").asInstanceOf[String],
         weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].doubleValue())
       )
@@ -109,9 +117,9 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
       KgNode(
         id = recordMap("node.id"),
-        labels = recordMap("node.labels").split(ListDelimChar).toList,
+        labels = toList(recordMap("node.labels")),
         pos = Option(recordMap("node.pos")),
-        sources = recordMap("node.sources").split(ListDelimChar).toList
+        sources = toList(recordMap("node.sources"))
       )
     }
 
