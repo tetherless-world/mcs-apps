@@ -1,13 +1,14 @@
 package data.kg
 
-import models.kg.{KgEdge, KgNode}
+import models.kg.{KgEdge, KgEdgeWithNodes, KgNode}
+
 import scala.collection.mutable.HashMap
 
 class KgtkData(edges: List[KgEdge], nodes: List[KgNode])
   extends KgData(edges, nodes, List()) {
 
-  def this(data: Tuple3[List[KgEdge], List[KgNode], List[KgNode]]) =
-    this(edges = data._1, nodes = KgtkData.reduceNodes(data._2, data._3))
+  def this(data: List[KgEdgeWithNodes]) =
+    this(edges = data.map(_.edge), nodes = KgtkData.reduceNodes(data.map(_.node1), data.map(_.node2)))
 
   def this(resource: KgtkDataResource) =
     this(data = resource.read())
