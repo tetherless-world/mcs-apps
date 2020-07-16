@@ -86,8 +86,8 @@ const makeTitle = (
   }
 
   if (filters) {
-    if (filters.datasource) {
-      const {include} = filters.datasource;
+    if (filters.sources) {
+      const {include} = filters.sources;
 
       if (include) {
         title.push("in");
