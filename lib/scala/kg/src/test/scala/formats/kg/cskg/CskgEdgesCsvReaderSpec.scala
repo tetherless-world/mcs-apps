@@ -11,9 +11,11 @@ class CskgEdgesCsvReaderSpec extends WordSpec with Matchers with WithResource {
         val edges = reader.iterator.toList
         edges.size should be > 0
         for (edge <- edges) {
-          edge.subject should not be empty
+          edge.id should not be empty
           edge.`object` should not be empty
-          edge.datasource should not be empty
+          edge.sources.size should be > 0
+          edge.subject should not be empty
+          edge.predicate should not be empty
         }
       }
     }

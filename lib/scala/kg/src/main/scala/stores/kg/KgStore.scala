@@ -13,9 +13,9 @@ trait KgStore {
   def clear()
 
   /**
-   * Get all datasources
+   * Get all sources
    */
-  def getDatasources: List[String]
+  def getSources: List[String]
 
   /**
    * Get edges that have the given node ID as an object.

@@ -7,7 +7,7 @@
 //==============================================================
 
 export interface KgNodeFilters {
-  datasource?: StringFilter | null;
+  sources?: StringFilter | null;
 }
 
 export interface StringFilter {

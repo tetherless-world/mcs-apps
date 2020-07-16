@@ -1,10 +1,42 @@
 package stores.kg
 
 import data.kg.TestKgData
+import models.kg.KgEdge
+import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, WordSpec}
 import stores.StringFilter
 
 trait KgStoreBehaviors extends Matchers { this: WordSpec =>
+//  private def assertAlmostEquals(leftEdge: KgEdge, rightEdge: KgEdge): Unit = {
+//    // Need a custom equals because of floating point comparisons on weight
+//    val epsilon = 1e-4f
+//
+//    implicit val doubleEq = TolerantNumerics.tolerantDoubleEquality(epsilon)
+//
+//    leftEdge.id should equal(rightEdge.id)
+//    leftEdge.labels should equal(rightEdge.labels)
+//    leftEdge.`object` should equal(rightEdge.`object`)
+//    leftEdge.origins should equal(rightEdge.origins)
+//    leftEdge.predicate should equal(rightEdge.predicate)
+//    leftEdge.questions should equal(rightEdge.questions)
+//    leftEdge.sentences should equal(rightEdge.sentences)
+//    leftEdge.sources should equal(rightEdge.sources)
+//    leftEdge.subject should equal(rightEdge.subject)
+//    if (leftEdge.weight.isDefined) {
+//      rightEdge.weight should not equal(None)
+//      assert(leftEdge.weight.get === rightEdge.weight.get)
+//    } else {
+//      rightEdge.weight should equal(None)
+//    }
+//  }
+//
+//  private def assertAlmostEquals(leftEdges: List[KgEdge], rightEdges: List[KgEdge]): Unit = {
+//    leftEdges.size should equal(rightEdges.size)
+//    leftEdges.zipWithIndex.foreach { leftEdgeWithIndex =>
+//      assertAlmostEquals(leftEdgeWithIndex._1, rightEdges(leftEdgeWithIndex._2))
+//    }
+//  }
+
   def store(sut: KgStore) {
     "get edges by object" in {
       for (node <- TestKgData.nodes) {
@@ -39,29 +71,28 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       actual should equal(expected)
     }
 
-
     "get matching nodes by label" in {
       val expected = TestKgData.nodes(0)
-      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(expected.label))
+      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(expected.labels(0)))
       actual should not be empty
       actual(0) should equal(expected)
     }
 
     "get count of matching nodes by label" in {
       val expected = TestKgData.nodes(0)
-      val actual = sut.getMatchingNodesCount(filters = None, text = Some(expected.label))
+      val actual = sut.getMatchingNodesCount(filters = None, text = Some(expected.labels(0)))
       actual should be >= 1
     }
 
-    "get matching nodes by datasource" in {
+    "get matching nodes by source" in {
       val expected = TestKgData.nodes(0)
-      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"datasource:${expected.datasource}"))
+      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"sources:${expected.sources}"))
       actual should not be empty
-      actual(0).datasource should equal(expected.datasource)
+      actual(0).sources should equal(expected.sources)
     }
 
-    "not return matching nodes for a non-extant datasource" in {
-      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"datasource:nonextant"))
+    "not return matching nodes for a non-extant source" in {
+      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"sources:nonextant"))
       actual.size should be(0)
     }
 
@@ -70,13 +101,13 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
     }
 
     "get matching nodes count with no text search but with filters" in {
-      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).datasource)))))), text = None) should equal(TestKgData.nodes.size)
-      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).datasource)))))), text = None) should equal(0)
+      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sources(0))))))), text = None) should equal(TestKgData.nodes.size)
+      sut.getMatchingNodesCount(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))))))), text = None) should equal(0)
     }
 
-    "get matching nodes by datasource and label" in {
+    "get matching nodes by source and label" in {
       val expected = TestKgData.nodes(0)
-      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""datasource:${expected.datasource} label:"${expected.label}""""))
+      val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""sources:${expected.sources(0)} labels:"${expected.labels(0)}""""))
       actual should not be empty
       actual(0) should equal(expected)
     }
@@ -111,9 +142,9 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       actual should equal(expected)
     }
 
-    "get datasources" in {
-      val expected = TestKgData.nodes.flatMap(_.datasource.split(",")).toSet
-      val actual = sut.getDatasources.toSet
+    "get sources" in {
+      val expected = TestKgData.nodes.flatMap(_.sources).toSet
+      val actual = sut.getSources.toSet
       // Convert list to set to compare content
       actual should equal(expected)
     }
@@ -123,7 +154,7 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       val countBeforeFilters = sut.getMatchingNodesCount(filters = None, text = Some(text))
       countBeforeFilters should be > 0
       val actualCount = sut.getMatchingNodesCount(
-        filters = Some(KgNodeFilters(datasource = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).datasource)), include = None)))),
+        filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
         text = Some("Test")
       )
       actualCount should equal(0)

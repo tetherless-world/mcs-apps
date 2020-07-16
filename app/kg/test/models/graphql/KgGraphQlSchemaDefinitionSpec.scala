@@ -33,7 +33,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
 
       executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)) must be(Json.parse(
         s"""
-           |{"data":{"kgById":{"nodeById":{"label":"${node.label}"}}}}
+           |{"data":{"kgById":{"nodeById":{"label":"${node.labels(0)}"}}}}
            |""".stripMargin))
     }
 
@@ -113,7 +113,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
          }
        """
 
-      executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""label:"${node.label}"""")) must be(Json.parse(
+      executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""labels:"${node.labels(0)}"""")) must be(Json.parse(
         s"""
            |{"data":{"kgById":{"matchingNodes":[{"id":"${node.id}"}],"matchingNodesCount":1}}}
            |""".stripMargin))
@@ -183,8 +183,8 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         presentEdge must not be(None)
         val subjectNode = TestKgData.nodesById(pathEdge.subject)
         val objectNode = TestKgData.nodesById(pathEdge.`object`)
-        result must include(subjectNode.label)
-        result must include(objectNode.label)
+        result must include(subjectNode.labels(0))
+        result must include(objectNode.labels(0))
         result must include(pathEdge.predicate)
       }
     }

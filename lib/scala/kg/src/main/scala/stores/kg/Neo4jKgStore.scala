@@ -33,8 +33,8 @@ object CypherFilters {
     }
 
   def apply(nodeFilters: KgNodeFilters): CypherFilters =
-    if (nodeFilters.datasource.isDefined) {
-      CypherFilters(toCypherFilters(bindingVariableNamePrefix = "nodeDatasource", property = "node.datasource", stringFilter = nodeFilters.datasource.get))
+    if (nodeFilters.sources.isDefined) {
+      CypherFilters(toCypherFilters(bindingVariableNamePrefix = "nodeSource", property = "node.sources", stringFilter = nodeFilters.sources.get))
     } else {
       CypherFilters(List())
     }
@@ -52,19 +52,23 @@ object CypherFilters {
 }
 
 final case class PathRecord(
-                            datasource: String,
-                            objectNodeId: String,
-                            pathEdgeIndex: Int,
-                            pathEdgePredicate: String,
-                            pathId: String,
-                            subjectNodeId: String
+                             sources: List[String],
+                             objectNodeId: String,
+                             pathEdgeIndex: Int,
+                             pathEdgePredicate: String,
+                             pathId: String,
+                             subjectNodeId: String
                            ) {
   def toEdge: KgEdge =
     KgEdge(
-      datasource = datasource,
+      id = s"${pathId}-${pathEdgeIndex}",
+      labels = List(),
       `object` = objectNodeId,
-      other = None,
+      origins = List(),
+      questions = List(),
       predicate = pathEdgePredicate,
+      sentences = List(),
+      sources = sources,
       subject = subjectNodeId,
       weight = None
     )
@@ -74,46 +78,58 @@ final case class PathRecord(
 final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) extends KgStore with WithResource {
   private var bootstrapped: Boolean = false
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
-  private val edgePropertyNameList = List("datasource", "other", "weight")
+  private val edgePropertyNameList = List("id", "labels", "object", "origins", "questions", "sentences", "sources", "subject", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
+  protected final val ListDelimChar = '|'
+  protected final val ListDelimString = ListDelimChar.toString
   private val logger = LoggerFactory.getLogger(getClass)
-  private val nodePropertyNameList = List("aliases", "datasource", "id", "label", "other", "pos")
+  private val nodePropertyNameList = List("id", "labels", "pos", "sources")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
-  private val pathPropertyNameList = List("datasource", "id", "pathEdgeIndex", "pathEdgePredicate")
+  private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
 
   private implicit class RecordWrapper(record: Record) {
+    private def toList(value: String): List[String] = {
+      if (value.isEmpty) {
+        List()
+      } else {
+        value.split(ListDelimChar).toList
+      }
+    }
+
     def toEdge: KgEdge = {
-      val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, Object]]
+      val recordMap = record.asMap().asScala.toMap
       KgEdge(
-        datasource = recordMap("edge.datasource").asInstanceOf[String],
+        id = recordMap("edge.id").asInstanceOf[String],
+        labels = toList(recordMap("edge.labels").asInstanceOf[String]),
         `object` = recordMap("object.id").asInstanceOf[String],
-        other = Option(recordMap("edge.other")).map(other => other.asInstanceOf[String]),
+        origins = toList(recordMap("edge.origins").asInstanceOf[String]),
+        questions = toList(recordMap("edge.questions").asInstanceOf[String]),
+        sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
         predicate = recordMap("type(edge)").asInstanceOf[String],
+        sources = toList(recordMap("edge.sources").asInstanceOf[String]),
         subject = recordMap("subject.id").asInstanceOf[String],
-        weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].floatValue())
+        weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].doubleValue())
       )
     }
 
     def toNode: KgNode = {
       val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
       KgNode(
-        aliases = Option(recordMap("node.aliases")).map(aliases => aliases.split(' ').toList),
-        datasource = recordMap("node.datasource"),
         id = recordMap("node.id"),
-        label = recordMap("node.label"),
-        other = Option(recordMap("node.other")),
-        pos = Option(recordMap("node.pos"))
+        labels = toList(recordMap("node.labels")),
+        pos = Option(recordMap("node.pos")),
+        sources = toList(recordMap("node.sources"))
       )
     }
 
     def toPathRecord: PathRecord = {
       PathRecord(
-        datasource = record.get("path.datasource").asString(),
         objectNodeId = record.get("objectNode.id").asString(),
         pathId = record.get("path.id").asString(),
         pathEdgeIndex = record.get("path.pathEdgeIndex").asInt(),
         pathEdgePredicate = record.get("path.pathEdgePredicate").asString(),
+        sources = record.get("path.sources").asString().split(ListDelimChar).toList,
         subjectNodeId = record.get("subjectNode.id").asString()
       )
     }
@@ -131,9 +147,9 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         pathRecordsEntry match {
           case (pathId, pathRecords) =>
             KgPath(
-              datasource = pathRecords(0).datasource,
               edges = pathRecords.sortBy(pathRecord => pathRecord.pathEdgeIndex).map(pathRecord => pathRecord.toEdge),
-              id = pathId
+              id = pathId,
+              sources = pathRecords(0).sources,
             )
         }
       ).toList
@@ -165,7 +181,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         logger.info("bootstrapping neo4j indices")
 
         val bootstrapCypherStatements = List(
-          """CALL db.index.fulltext.createNodeIndex("node",["Node"],["datasource", "id", "label"]);""",
+          """CALL db.index.fulltext.createNodeIndex("node",["Node"],["id", "labels", "sources"]);""",
           """CREATE CONSTRAINT node_id_constraint ON (n:Node) ASSERT n.id IS UNIQUE;"""
         )
 
@@ -201,15 +217,15 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     }
   }
 
-  final override def getDatasources: List[String] =
+  final override def getSources: List[String] =
     withSession { session =>
       session.readTransaction { transaction =>
         val result =
-          transaction.run("MATCH (node:Node) RETURN DISTINCT node.datasource AS datasources")
-        val datasourceValues = result.asScala.toList.map(_.get("datasources").asString)
-        // Returns list of datasource values which can contain multiple datasources
-        // so need to extract unique datasources
-        datasourceValues.flatMap(_.split(",")).distinct
+          transaction.run("MATCH (node:Node) RETURN DISTINCT node.sources AS sources")
+        val sourceValues = result.asScala.toList.map(_.get("sources").asString)
+        // Returns list of source values which can contain multiple sources
+        // so need to extract unique sources
+        sourceValues.flatMap(_.split(ListDelimChar)).distinct
       }
     }
 
@@ -368,17 +384,20 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
     putModels(edges) { (transaction, edge) => {
-      //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
         """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-          |CALL apoc.create.relationship(subject, $predicate, {datasource: $datasource, weight: toFloat($weight), other: $other}, object) YIELD rel
+          |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
           |REMOVE rel.noOp
           |""".stripMargin,
         toTransactionRunParameters(Map(
-          "datasource" -> edge.datasource,
+          "id" -> edge.id,
+          "labels" -> edge.labels.mkString(ListDelimString),
           "object" -> edge.`object`,
-          "other" -> edge.other.getOrElse(null),
+          "origins" -> edge.origins.mkString(ListDelimString),
+          "questions" -> edge.questions.mkString(ListDelimString),
           "predicate" -> edge.predicate,
+          "sentences" -> edge.sentences.mkString(ListDelimString),
+          "sources" -> edge.sources.mkString(ListDelimString),
           "subject" -> edge.subject,
           "weight" -> edge.weight.getOrElse(null)
         ))
@@ -388,16 +407,13 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
     putModels(nodes) { (transaction, node) =>
-      //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
-        "CREATE (:Node { id: $id, label: $label, aliases: $aliases, pos: $pos, datasource: $datasource, other: $other });",
+        "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
         toTransactionRunParameters(Map(
-          "aliases" -> node.aliases.map(aliases => aliases.mkString(" ")).getOrElse(null),
-          "datasource" -> node.datasource,
           "id" -> node.id,
-          "label" -> node.label,
+          "labels" -> node.labels.mkString(ListDelimString),
           "pos" -> node.pos.getOrElse(null),
-          "other" -> node.other.getOrElse(null)
+          "sources" -> node.sources.mkString(ListDelimString),
         ))
       )
     }
@@ -410,14 +426,14 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
           """
             |MATCH (subject:Node), (object: Node)
             |WHERE subject.id = $subject AND object.id = $object
-            |CREATE (subject)-[path:PATH {datasource: $pathDatasource, id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate}]->(object)
+            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
             |""".stripMargin,
           toTransactionRunParameters(Map(
             "object" -> pathEdge.`object`,
-            "pathDatasource" -> path.datasource,
             "pathEdgeIndex" -> pathEdgeIndex,
-            "pathId" -> path.id,
             "pathEdgePredicate" -> pathEdge.predicate,
+            "pathId" -> path.id,
+            "sources" -> path.sources.mkString(ListDelimString),
             "subject" -> pathEdge.subject
           ))
         )

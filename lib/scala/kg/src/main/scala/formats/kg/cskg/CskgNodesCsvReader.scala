@@ -3,25 +3,27 @@ package formats.kg.cskg
 import java.io.InputStream
 import java.nio.file.Path
 
-import com.github.tototoshi.csv.CSVReader
+import com.github.tototoshi.csv.{CSVReader, TSVFormat}
+import formats.CsvReader
 import models.kg
 import models.kg.KgNode
 
-final class CskgNodesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgNode](csvReader) {
+final class CskgNodesCsvReader(csvReader: CSVReader) extends CsvReader[KgNode](csvReader) {
   def iterator: Iterator[KgNode] =
     csvReader.iteratorWithHeaders.map(row =>
       kg.KgNode(
-        aliases = row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList),
-        datasource = row("datasource"),
+        sources = List(row("datasource")),
         id = row("id"),
-        label = row("label"),
-        other = row.getNonBlank("other"),
+        labels = List(row("label")) ::: row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList).getOrElse(List()),
         pos = row.getNonBlank("pos")
       )
     )
 }
 
 object CskgNodesCsvReader {
-  def open(filePath: Path) = new CskgNodesCsvReader(CskgCsvReader.openCsvReader(filePath))
-  def open(inputStream: InputStream) = new CskgNodesCsvReader(CskgCsvReader.openCsvReader(inputStream))
+  private val csvFormat = new TSVFormat {
+    override val escapeChar: Char = 0
+  }
+  def open(filePath: Path) = new CskgNodesCsvReader(CsvReader.open(filePath, csvFormat))
+  def open(inputStream: InputStream) = new CskgNodesCsvReader(CsvReader.open(inputStream, csvFormat))
 }
