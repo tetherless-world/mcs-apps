@@ -11,7 +11,7 @@ import { KgNodeFilters } from "./../../graphqlGlobalTypes";
 export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   __typename: "KgNode";
   aliases: string[] | null;
-  datasource: string;
+  sources: string[];
   id: string;
   label: string | null;
   other: string | null;

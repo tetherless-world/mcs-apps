@@ -1,5 +1,5 @@
 query KgHomePageQuery($kgId: String!) {
   kgById(id: $kgId) {
-    datasources
+    sources
   }
 }

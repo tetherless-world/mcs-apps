@@ -18,13 +18,13 @@ import {
 } from "@material-ui/core";
 import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
-import {KgDatasourceLink} from "shared/components/kg/search/KgDatasourceLink";
+import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
 import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
 
 export const KgNodeViews: React.FunctionComponent<{
   node: {
     aliases: string[] | null;
-    datasource: string;
+    sources: string[];
     id: string;
     label: string | null;
     pos: string | null;
@@ -98,13 +98,13 @@ export const KgNodeViews: React.FunctionComponent<{
             <Route exact path={tabRoutes.grid.path}>
               <KgNodePredicateGrid
                 predicateSubjects={predicateSubjects}
-                datasource={node.datasource}
+                sources={node.sources}
               />
             </Route>
             <Route path={tabRoutes.list.path}>
               <KgNodePredicateList
                 predicateSubjects={predicateSubjects}
-                datasource={node.datasource}
+                sources={node.sources}
               />
             </Route>
           </Switch>
@@ -113,11 +113,11 @@ export const KgNodeViews: React.FunctionComponent<{
           <Grid container direction="column" spacing={6}>
             <Grid item>
               <Card>
-                <CardHeader title="Datasource(s)"></CardHeader>
+                <CardHeader title="Source(s)"></CardHeader>
                 <CardContent>
                   <List>
                     <ListItemText data-cy="node-datasource">
-                      <KgDatasourceLink datasource={node.datasource} />
+                      <KgSourceLink source={node.sources} />
                     </ListItemText>
                   </List>
                 </CardContent>

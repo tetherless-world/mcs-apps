@@ -13,8 +13,8 @@ import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
 const EdgeList: React.FunctionComponent<{
   edges: KgNodeSubjectOfEdge[];
   predicate: string;
-  datasource: string;
-}> = ({edges, predicate, datasource}) => {
+  sources: string[];
+}> = ({edges, predicate, sources}) => {
   return (
     <Card>
       <CardHeader
@@ -26,7 +26,7 @@ const EdgeList: React.FunctionComponent<{
         <List>
           {edges.map((edge) => (
             <ListItem data-cy="edge" key={edge.object}>
-              <KgNodeLink node={edge.objectNode!} datasource={datasource} />
+              <KgNodeLink node={edge.objectNode!} sources={sources} />
             </ListItem>
           ))}
         </List>
@@ -39,8 +39,8 @@ export const KgNodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: KgNodeSubjectOfEdge[];
   };
-  datasource: string;
-}> = ({predicateSubjects, datasource}) => {
+  sources: string[];
+}> = ({predicateSubjects, sources}) => {
   return (
     <Grid container spacing={4}>
       {Object.keys(predicateSubjects).map((predicate) => (
@@ -48,7 +48,7 @@ export const KgNodePredicateGrid: React.FunctionComponent<{
           <EdgeList
             edges={predicateSubjects[predicate]!}
             predicate={predicate}
-            datasource={datasource}
+            sources={sources}
           />
         </Grid>
       ))}

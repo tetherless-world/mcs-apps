@@ -82,7 +82,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                 <React.Fragment>
                   <KgNodeSearchBox
                     autoFocus
-                    datasources={data.kgById.datasources}
+                    sources={data.kgById.sources}
                     placeholder="Search a word or try a query"
                     showIcon={true}
                     onChange={onSearchChange}

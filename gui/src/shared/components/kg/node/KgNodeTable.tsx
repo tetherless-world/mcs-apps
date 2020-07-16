@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {KgNode} from "shared/models/kg/KgNode";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
-import {KgDatasourceLink} from "shared/components/kg/search/KgDatasourceLink";
+import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
@@ -65,14 +65,14 @@ const columns: MUIDataTableColumn[] = [
     },
   },
   {
-    name: "datasource",
-    label: "Datasources",
+    name: "sources",
+    label: "Sources",
     options: {
-      customBodyRender(datasources) {
-        return datasources
-          ? (datasources as string).split(",").map((datasource) => (
-              <React.Fragment key={datasource}>
-                <KgDatasourceLink datasource={datasource} />
+      customBodyRender(sources) {
+        return sources
+          ? (sources as string[]).map((source) => (
+              <React.Fragment key={source}>
+                <KgSourceLink source={source} />
                 <br />
               </React.Fragment>
             ))

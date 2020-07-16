@@ -39,8 +39,8 @@ const useStyles = makeStyles(() =>
 const PredicateEdgeList: React.FunctionComponent<{
   edges: KgNodeSubjectOfEdge[];
   predicate: string;
-  datasource: string;
-}> = ({edges, predicate, datasource}) => {
+  sources: string[];
+}> = ({edges, predicate, sources}) => {
   const classes = useStyles();
   return (
     <Card className={classes.edgeListRoot} data-cy={`list-${predicate}-edges`}>
@@ -51,7 +51,7 @@ const PredicateEdgeList: React.FunctionComponent<{
         <List>
           {edges.map((edge) => (
             <ListItem data-cy="edge" key={edge.object}>
-              <KgNodeLink node={edge.objectNode!} datasource={datasource} />
+              <KgNodeLink node={edge.objectNode!} sources={sources} />
             </ListItem>
           ))}
         </List>
@@ -64,8 +64,8 @@ export const KgNodePredicateList: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: KgNodeSubjectOfEdge[];
   };
-  datasource: string;
-}> = ({predicateSubjects, datasource}) => {
+  sources: string[];
+}> = ({predicateSubjects, sources}) => {
   return (
     <React.Fragment>
       {Object.keys(predicateSubjects).map((predicate) => (
@@ -73,7 +73,7 @@ export const KgNodePredicateList: React.FunctionComponent<{
           edges={predicateSubjects[predicate]!}
           predicate={predicate}
           key={predicate}
-          datasource={datasource}
+          sources={sources}
         />
       ))}
     </React.Fragment>
