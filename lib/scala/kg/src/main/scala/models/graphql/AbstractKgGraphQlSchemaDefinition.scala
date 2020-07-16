@@ -32,10 +32,10 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("weight", OptionType(FloatType), resolve = _.value.weight)
   ))
   lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
-    Field("aliases", OptionType(ListType(StringType)), resolve = _.value.labels),
+    Field("aliases", OptionType(ListType(StringType)), resolve = ctx => if (ctx.value.labels.size > 1) Some(ctx.value.labels.slice(1, ctx.value.labels.size)) else None),
     Field("datasource", StringType, resolve = _.value.sources.mkString(",")),
     Field("id", StringType, resolve = _.value.id),
-    Field("label", OptionType(StringType), resolve = _.value.labels(0)),
+    Field("label", OptionType(StringType), resolve = ctx => if (ctx.value.labels.nonEmpty) Some(ctx.value.labels(0)) else None),
     Field("objectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
     Field("other", OptionType(StringType), resolve = _ => None),
     Field("pos", OptionType(StringType), resolve = _.value.pos),
