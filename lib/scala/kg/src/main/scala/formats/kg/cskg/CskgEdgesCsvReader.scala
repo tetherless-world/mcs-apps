@@ -33,10 +33,10 @@ object CskgEdgesCsvReader {
   private val csvFormat = new TSVFormat {
     override val escapeChar: Char = 0
   }
-  def open(filePath: Path) = new CskgEdgesCsvReader(CsvReader.openCsvReader(filePath, csvFormat))
+  def open(filePath: Path) = new CskgEdgesCsvReader(CsvReader.open(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream != null) {
-      new CskgEdgesCsvReader(CsvReader.openCsvReader(inputStream, csvFormat))
+      new CskgEdgesCsvReader(CsvReader.open(inputStream, csvFormat))
     } else {
       throw new NullPointerException
     }

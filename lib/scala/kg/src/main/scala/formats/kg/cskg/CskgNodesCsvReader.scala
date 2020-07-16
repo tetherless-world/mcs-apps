@@ -24,6 +24,6 @@ object CskgNodesCsvReader {
   private val csvFormat = new TSVFormat {
     override val escapeChar: Char = 0
   }
-  def open(filePath: Path) = new CskgNodesCsvReader(CsvReader.openCsvReader(filePath, csvFormat))
-  def open(inputStream: InputStream) = new CskgNodesCsvReader(CsvReader.openCsvReader(inputStream, csvFormat))
+  def open(filePath: Path) = new CskgNodesCsvReader(CsvReader.open(filePath, csvFormat))
+  def open(inputStream: InputStream) = new CskgNodesCsvReader(CsvReader.open(inputStream, csvFormat))
 }

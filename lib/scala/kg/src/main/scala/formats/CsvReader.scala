@@ -28,14 +28,14 @@ abstract class CsvReader[T](protected val csvReader: CSVReader) extends AutoClos
 }
 
 object CsvReader {
-  def openCsvReader(filePath: Path, csvFormat: CSVFormat): CSVReader = {
+  def open(filePath: Path, csvFormat: CSVFormat): CSVReader = {
     // Need to buffer the file input stream so that the compressor factory can check it
     // CSVReader will close the input stream
-    openCsvReader(new BufferedInputStream(new FileInputStream(filePath.toFile)), csvFormat)
+    open(new BufferedInputStream(new FileInputStream(filePath.toFile)), csvFormat)
   }
 
-  def openCsvReader(inputStream: InputStream, csvFormat: CSVFormat): CSVReader = {
-     openCsvReader(new InputStreamReader(
+  def open(inputStream: InputStream, csvFormat: CSVFormat): CSVReader = {
+     open(new InputStreamReader(
       try {
         new CompressorStreamFactory().createCompressorInputStream(inputStream)
       } catch {
@@ -45,6 +45,6 @@ object CsvReader {
     )
   }
 
-  def openCsvReader(reader: Reader, csvFormat: CSVFormat): CSVReader =
+  def open(reader: Reader, csvFormat: CSVFormat): CSVReader =
     CSVReader.open(reader)(csvFormat)
 }

@@ -51,10 +51,10 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNo
 
 object KgtkTsvReader {
   private val csvFormat = new TSVFormat {}
-  def open(filePath: Path) = new KgtkTsvReader(CsvReader.openCsvReader(filePath, csvFormat))
+  def open(filePath: Path) = new KgtkTsvReader(CsvReader.open(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream == null)
       throw new FileNotFoundException("KgtkTsvReader missing resource")
     else
-      new KgtkTsvReader (CsvReader.openCsvReader(inputStream, csvFormat))
+      new KgtkTsvReader (CsvReader.open(inputStream, csvFormat))
 }
