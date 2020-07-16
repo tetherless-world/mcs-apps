@@ -5,8 +5,6 @@ import models.kg.{KgEdge, KgNode, KgPath}
 
 @ImplementedBy(classOf[Neo4jKgStore])
 trait KgStore {
-  protected final val ListDelim = "|"
-
   /**
    * Clear the store.
    *

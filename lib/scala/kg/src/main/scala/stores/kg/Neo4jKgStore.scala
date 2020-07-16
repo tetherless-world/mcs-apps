@@ -80,6 +80,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
   private val edgePropertyNameList = List("id", "labels", "object", "origins", "questions", "sentences", "sources", "subject", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
+  protected final val ListDelim = "|"
   private val logger = LoggerFactory.getLogger(getClass)
   private val nodePropertyNameList = List("id", "labels", "pos", "sources")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")

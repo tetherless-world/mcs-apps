@@ -1,6 +1,7 @@
 package stores.kg
 
 import com.outr.lucene4s._
+import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.field.Field
 import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import models.kg.{KgEdge, KgNode, KgPath}
@@ -11,7 +12,7 @@ import scala.util.Random
 class MemKgStore extends KgStore {
   private var edges: List[KgEdge] = List()
   private val lucene = new DirectLucene(List("sources", "id", "labels"), autoCommit = false)
-  private val luceneNodeSourcesField = lucene.create.field[String]("sources", fullTextSearchable = true)
+  private val luceneNodeSourceField = lucene.create.facet("source", multiValued = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
   private val luceneNodeLabelsField = lucene.create.field[String]("labels", fullTextSearchable = true)
   private var nodes: List[KgNode] = List()
@@ -100,7 +101,7 @@ class MemKgStore extends KgStore {
     this.sources = this.nodes.flatMap(_.sources).distinct
     lucene.deleteAll()
     this.nodes.foreach(node => {
-      lucene.doc().fields(luceneNodeSourcesField(node.sources.mkString(ListDelim)), luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(ListDelim))).index()
+      lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
     })
     lucene.commit()
   }
@@ -125,11 +126,11 @@ class MemKgStore extends KgStore {
   }
 
   private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sources.map(source => toSearchTerms(luceneNodeSourcesField, source)).getOrElse(List())
+    nodeFilters.sources.map(source => toSearchTerms(luceneNodeSourceField, source)).getOrElse(List())
   }
 
-  private def toSearchTerms(field: Field[String], stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
-    stringFilter.exclude.getOrElse(List()).map(exclude => term(field(exclude)) -> Condition.MustNot) ++
-    stringFilter.include.getOrElse(List()).map(include => term(field(include)) -> Condition.Must)
+  private def toSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
+    stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
+    stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
   }
 }

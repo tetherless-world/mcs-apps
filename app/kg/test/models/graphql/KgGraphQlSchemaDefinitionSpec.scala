@@ -113,7 +113,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
          }
        """
 
-      executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""label:"${node.labels(0)}"""")) must be(Json.parse(
+      executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""labels:"${node.labels(0)}"""")) must be(Json.parse(
         s"""
            |{"data":{"kgById":{"matchingNodes":[{"id":"${node.id}"}],"matchingNodesCount":1}}}
            |""".stripMargin))
