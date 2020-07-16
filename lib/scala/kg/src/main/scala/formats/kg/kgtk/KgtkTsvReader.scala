@@ -2,22 +2,24 @@ package formats.kg.kgtk
 
 import formats.CsvReader
 import com.github.tototoshi.csv.{CSVReader, TSVFormat}
-import models.kg.{KgEdge, KgEdgeWithNodes, KgNode}
+import models.kg.{KgEdge, KgNode}
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.io.{FileNotFoundException, InputStream}
 
+import formats.kg.kgtk
+
 import scala.util.Try
 
-final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgEdgeWithNodes](csvReader) {
+final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNodes](csvReader) {
   private final val KgtkListDelim = "|";
 
   private val logger = LoggerFactory.getLogger(getClass)
 
-  def iterator: Iterator[KgEdgeWithNodes] =
+  def iterator: Iterator[KgtkEdgeWithNodes] =
     csvReader.iteratorWithHeaders.map(row => {
       val sources = row.getList("source", "|")
-      KgEdgeWithNodes(
+      kgtk.KgtkEdgeWithNodes(
         edge = KgEdge(
           id = row("id"),
           labels = row.getList("relation;label", KgtkListDelim),
