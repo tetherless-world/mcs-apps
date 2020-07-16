@@ -203,7 +203,7 @@ class BenchmarkGraphQlSchemaDefinitionSpec extends PlaySpec {
 
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)))
       for (edge <- TestKgData.edges.filter(edge => edge.subject == node.id)) {
-        result must include(s"""{"predicate":"${edge.relation}","object":"${edge.`object`}"""")
+        result must include(s"""{"predicate":"${edge.predicate}","object":"${edge.`object`}"""")
       }
     }
 
@@ -324,13 +324,13 @@ class BenchmarkGraphQlSchemaDefinitionSpec extends PlaySpec {
       val path = TestKgData.paths(0)
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "pathId" -> path.id)))
       for (pathEdge <- path.edges) {
-        val presentEdge = TestKgData.edges.find(edge => edge.subject == pathEdge.subject && edge.relation == pathEdge.relation && edge.`object` == pathEdge.`object`)
+        val presentEdge = TestKgData.edges.find(edge => edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`)
         presentEdge must not be(None)
         val subjectNode = TestKgData.nodesById(pathEdge.subject)
         val objectNode = TestKgData.nodesById(pathEdge.`object`)
         result must include(subjectNode.labels(0))
         result must include(objectNode.labels(0))
-        result must include(pathEdge.relation)
+        result must include(pathEdge.predicate)
       }
     }
   }

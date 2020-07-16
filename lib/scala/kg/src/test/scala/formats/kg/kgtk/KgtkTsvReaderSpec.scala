@@ -15,7 +15,7 @@ class KgtkTsvReaderSpec extends WordSpec with Matchers with WithResource {
           edge.id should not be empty
           edge.`object` should not be empty
           edge.subject should not be empty
-          edge.relation should not be empty
+          edge.predicate should not be empty
           edge.sources.size should be > 0
           for (node <- List(edgeWithNodes.node1, edgeWithNodes.node2)) {
             node.id should not be empty

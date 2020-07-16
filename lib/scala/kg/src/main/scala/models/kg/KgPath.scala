@@ -13,7 +13,7 @@ final case class KgPath(id: String, path: List[String], sources: List[String]) {
         `object` = path(pathI + 2),
         origins = List(),
         questions = List(),
-        relation = path(pathI + 1),
+        predicate = path(pathI + 1),
         sentences = List(),
         sources = sources,
         subject = path(pathI),
@@ -27,7 +27,7 @@ object KgPath {
   def apply(edges: List[KgEdge], id: String, sources: List[String]): KgPath =
     KgPath(
       id = id,
-      path = List(edges(0).subject) ++ edges.flatMap(edge => List(edge.relation, edge.`object`)),
+      path = List(edges(0).subject) ++ edges.flatMap(edge => List(edge.predicate, edge.`object`)),
       sources = sources
     )
 }

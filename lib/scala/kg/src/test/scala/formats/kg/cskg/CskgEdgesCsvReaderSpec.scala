@@ -15,7 +15,7 @@ class CskgEdgesCsvReaderSpec extends WordSpec with Matchers with WithResource {
           edge.`object` should not be empty
           edge.sources.size should be > 0
           edge.subject should not be empty
-          edge.relation should not be empty
+          edge.predicate should not be empty
         }
       }
     }

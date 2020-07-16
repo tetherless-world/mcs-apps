@@ -19,7 +19,7 @@ class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnso
 
   private def checkDuplicateEdges(edges: List[KgEdge]): List[KgEdge] = {
     // Default toMap duplicate handling = use later key
-    val deduplicatedEdges = edges.map(edge => ((edge.subject, edge.relation, edge.`object`) -> edge)).toMap.values.toList
+    val deduplicatedEdges = edges.map(edge => ((edge.subject, edge.predicate, edge.`object`) -> edge)).toMap.values.toList
     if (deduplicatedEdges.size != edges.size) {
       throw new IllegalArgumentException(s"${edges.size - deduplicatedEdges.size} duplicate edges")
     }
@@ -41,7 +41,7 @@ class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnso
     nodes.sortBy(node => node.id)
 
   private def sortEdges(edges: List[KgEdge]) =
-    edges.sortBy(edge => (edge.subject, edge.relation, edge.`object`))
+    edges.sortBy(edge => (edge.subject, edge.predicate, edge.`object`))
 
   private def validatePaths(edges: List[KgEdge], nodesById: Map[String, KgNode], paths: List[KgPath]): List[KgPath] = {
     paths.map(path => {
@@ -53,7 +53,7 @@ class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnso
         if (!nodesById.contains(pathEdge.`object`)) {
           throw new IllegalArgumentException("path edge subject is not one of the graph nodes")
         }
-        if (!edges.exists(edge => (edge.subject == pathEdge.subject && edge.relation == pathEdge.relation && edge.`object` == pathEdge.`object`))) {
+        if (!edges.exists(edge => (edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`))) {
           throw new IllegalArgumentException("path edge is not one of the graph edges")
         }
       }

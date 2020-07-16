@@ -21,7 +21,7 @@ final class CskgEdgesCsvReader(csvReader: CSVReader) extends CsvReader[KgEdge](c
         `object` = row("object"),
         origins = List(),
         questions = List(),
-        relation = row("predicate"),
+        predicate = row("predicate"),
         sentences = List(),
         sources = List(row("datasource")),
         subject = row("subject"),

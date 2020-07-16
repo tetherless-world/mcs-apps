@@ -52,12 +52,12 @@ object CypherFilters {
 }
 
 final case class PathRecord(
-                            sources: List[String],
-                            objectNodeId: String,
-                            pathEdgeIndex: Int,
-                            pathEdgeRelation: String,
-                            pathId: String,
-                            subjectNodeId: String
+                             sources: List[String],
+                             objectNodeId: String,
+                             pathEdgeIndex: Int,
+                             pathEdgePredicate: String,
+                             pathId: String,
+                             subjectNodeId: String
                            ) {
   def toEdge: KgEdge =
     KgEdge(
@@ -66,7 +66,7 @@ final case class PathRecord(
       `object` = objectNodeId,
       origins = List(),
       questions = List(),
-      relation = pathEdgeRelation,
+      predicate = pathEdgePredicate,
       sentences = List(),
       sources = sources,
       subject = subjectNodeId,
@@ -83,7 +83,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   private val logger = LoggerFactory.getLogger(getClass)
   private val nodePropertyNameList = List("id", "labels", "pos", "sources")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
-  private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgeRelation", "sources", "subjectNode")
+  private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
 
   private implicit class RecordWrapper(record: Record) {
@@ -96,7 +96,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         origins = recordMap("origins").asInstanceOf[String].split(ListDelim).toList,
         questions = recordMap("questions").asInstanceOf[String].split(ListDelim).toList,
         sentences = recordMap("sentences").asInstanceOf[String].split(ListDelim).toList,
-        relation = recordMap("type(edge)").asInstanceOf[String],
+        predicate = recordMap("type(edge)").asInstanceOf[String],
         sources = recordMap("sources").asInstanceOf[String].split(ListDelim).toList,
         subject = recordMap("subject.id").asInstanceOf[String],
         weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].floatValue())
@@ -118,7 +118,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         objectNodeId = record.get("objectNode.id").asString(),
         pathId = record.get("path.id").asString(),
         pathEdgeIndex = record.get("path.pathEdgeIndex").asInt(),
-        pathEdgeRelation = record.get("path.pathEdgeRelation").asString(),
+        pathEdgePredicate = record.get("path.pathEdgePredicate").asString(),
         sources = record.get("path.sources").asString().split(ListDelim).toList,
         subjectNodeId = record.get("subjectNode.id").asString()
       )
@@ -377,7 +377,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       //          CREATE (:Node { id: node.id, label: node.label, aliases: node.aliases, pos: node.pos, datasource: node.datasource, other: node.other });
       transaction.run(
         """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-          |CALL apoc.create.relationship(subject, relation, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
+          |CALL apoc.create.relationship(subject, predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
           |REMOVE rel.noOp
           |""".stripMargin,
         toTransactionRunParameters(Map(
@@ -386,7 +386,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
           "object" -> edge.`object`,
           "origins" -> edge.origins.mkString(ListDelim),
           "questions" -> edge.questions.mkString(ListDelim),
-          "relation" -> edge.relation,
+          "predicate" -> edge.predicate,
           "sentences" -> edge.sentences.mkString(ListDelim),
           "sources" -> edge.sources.mkString(ListDelim),
           "subject" -> edge.subject,
@@ -418,12 +418,12 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
           """
             |MATCH (subject:Node), (object: Node)
             |WHERE subject.id = $subject AND object.id = $object
-            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgeRelation: $pathEdgeRelation, sources: $sources}]->(object)
+            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
             |""".stripMargin,
           toTransactionRunParameters(Map(
             "object" -> pathEdge.`object`,
             "pathEdgeIndex" -> pathEdgeIndex,
-            "pathEdgeRelation" -> pathEdge.relation,
+            "pathEdgePredicate" -> pathEdge.predicate,
             "pathId" -> path.id,
             "sources" -> path.sources.mkString(ListDelim),
             "subject" -> pathEdge.subject

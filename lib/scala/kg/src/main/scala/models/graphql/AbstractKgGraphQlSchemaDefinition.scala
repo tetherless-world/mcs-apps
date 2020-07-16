@@ -25,7 +25,6 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     // Assume the edge is not dangling
     Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.value.`object`)),
     Field("other", OptionType(StringType), resolve = _ => None),
-    Field("predicate", StringType, resolve = _.value.relation),
     Field("subject", StringType, resolve = _.value.subject),
     // Assume the edge is not dangling
     Field("subjectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.value.subject)),

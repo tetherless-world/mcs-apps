@@ -17,9 +17,9 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
 
     "page edges by object" in {
       val node = TestKgData.nodes(0)
-      val expected = TestKgData.edges.filter(edge => edge.`object` == node.id).sortBy(edge => (edge.subject, edge.relation))
+      val expected = TestKgData.edges.filter(edge => edge.`object` == node.id).sortBy(edge => (edge.subject, edge.predicate))
       expected.size should be > 10
-      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesByObject(limit = 1, offset = offset, objectNodeId = node.id)).sortBy(edge => (edge.subject, edge.relation)).toList
+      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesByObject(limit = 1, offset = offset, objectNodeId = node.id)).sortBy(edge => (edge.subject, edge.predicate)).toList
       actual should equal(expected)
     }
 
@@ -33,9 +33,9 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
 
     "page edges by subject" in {
       val node = TestKgData.nodes(0)
-      val expected = TestKgData.edges.filter(edge => edge.subject == node.id).sortBy(edge => (edge.relation, edge.`object`))
+      val expected = TestKgData.edges.filter(edge => edge.subject == node.id).sortBy(edge => (edge.predicate, edge.`object`))
       expected.size should be >= 4
-      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.relation, edge.`object`)).toList
+      val actual = (0 until expected.size).flatMap(offset => sut.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
       actual should equal(expected)
     }
 

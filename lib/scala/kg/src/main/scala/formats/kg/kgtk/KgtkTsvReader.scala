@@ -26,7 +26,7 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNo
           `object` = row("node2"),
           origins = row.getList("origin", KgtkListDelim),
           questions = row.getList("question", KgtkListDelim),
-          relation = row("relation"),
+          predicate = row("relation"),
           sentences = row.getList("sentence", KgtkListDelim),
           sources = row.getList("source", KgtkListDelim),
           subject = row("node1"),
