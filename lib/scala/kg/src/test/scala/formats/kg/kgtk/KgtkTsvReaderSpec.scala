@@ -10,17 +10,17 @@ class KgtkTsvReaderSpec extends WordSpec with Matchers with WithResource {
       withResource(KgtkTsvReader.open(TestKgtkDataResource.getTsvResourceAsStream())) { reader =>
         val data = reader.iterator.toList
         data.size should be > 0
-        for (values <- data) {
-          val edge = values._1
+        for (edgeWithNodes <- data) {
+          val edge = edgeWithNodes.edge
           edge.id should not be empty
           edge.`object` should not be empty
           edge.subject should not be empty
-          edge.predicate should not be empty
-          edge.datasources.size should be > 0
-          for (node <- List(values._2, values._3)) {
+          edge.relation should not be empty
+          edge.sources.size should be > 0
+          for (node <- List(edgeWithNodes.node1, edgeWithNodes.node2)) {
             node.id should not be empty
-            node.label should not be empty
-            node.datasources.size should be > 0
+            node.labels.size should be > 0
+            node.sources.size should be > 0
           }
         }
       }

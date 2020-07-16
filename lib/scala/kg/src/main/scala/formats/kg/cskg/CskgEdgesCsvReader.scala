@@ -3,41 +3,40 @@ package formats.kg.cskg
 import java.io.InputStream
 import java.nio.file.Path
 
-import com.github.tototoshi.csv.CSVReader
+import com.github.tototoshi.csv.{CSVReader, TSVFormat}
+import formats.CsvReader
 import models.kg.KgEdge
 import org.slf4j.LoggerFactory
 
-final class CskgEdgesCsvReader(csvReader: CSVReader) extends CskgCsvReader[KgEdge](csvReader) {
+import scala.util.Try
+
+final class CskgEdgesCsvReader(csvReader: CSVReader) extends CsvReader[KgEdge](csvReader) {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def iterator: Iterator[KgEdge] =
     csvReader.iteratorWithHeaders.map(row =>
       KgEdge(
-        datasource = row("datasource"),
-        datasources = List(row("datasource")),
         id = s"${row("subject")}-${row("predicate")}-${row("object")}",
+        labels = List(),
         `object` = row("object"),
-        other = row.getNonBlank("other"),
-        predicate = row("predicate"),
+        origins = List(),
+        questions = List(),
+        relation = row("predicate"),
+        sentences = List(),
+        sources = List(row("datasource")),
         subject = row("subject"),
-        weight = row.getNonBlank("weight").flatMap(weight => {
-          try {
-            Some(weight.toFloat)
-          } catch {
-            case e: NumberFormatException => {
-              logger.warn("invalid edge weight: {}", weight)
-              None
-            }
-          }
-        })
+        weight = Try(row.getNonBlank("weight").get.toDouble).toOption
     ))
 }
 
 object CskgEdgesCsvReader {
-  def open(filePath: Path) = new CskgEdgesCsvReader(CskgCsvReader.openCsvReader(filePath))
+  private val csvFormat = new TSVFormat {
+    override val escapeChar: Char = 0
+  }
+  def open(filePath: Path) = new CskgEdgesCsvReader(CsvReader.openCsvReader(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream != null) {
-      new CskgEdgesCsvReader(CskgCsvReader.openCsvReader(inputStream))
+      new CskgEdgesCsvReader(CsvReader.openCsvReader(inputStream, csvFormat))
     } else {
       throw new NullPointerException
     }

@@ -28,12 +28,9 @@ object KgtkData {
 
   def mergeNodes(node1: KgNode, node2: KgNode) =
     KgNode(
-      aliases = Some((node1.aliases getOrElse List()) ::: (node2.aliases getOrElse List()) distinct),
-      datasource = node1.datasource,
-      datasources = node1.datasources ::: node2.datasources distinct,
       id = node1.id, // should be equal
-      label = node1.label,
-      other = None,
+      labels = node1.labels ::: node2.labels distinct,
       pos = None,
+      sources = node1.sources ::: node2.sources distinct
     )
 }

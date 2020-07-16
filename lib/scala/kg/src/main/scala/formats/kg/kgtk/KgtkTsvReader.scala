@@ -2,51 +2,45 @@ package formats.kg.kgtk
 
 import formats.CsvReader
 import com.github.tototoshi.csv.{CSVReader, TSVFormat}
-import models.kg.KgEdge
-import models.kg.KgNode
+import models.kg.{KgEdge, KgEdgeWithNodes, KgNode}
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.io.{FileNotFoundException, InputStream}
 
 import scala.util.Try
 
-final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[Tuple3[KgEdge, KgNode, KgNode]](csvReader) {
-  private final val ListDelim = "|";
+final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgEdgeWithNodes](csvReader) {
+  private final val KgtkListDelim = "|";
 
   private val logger = LoggerFactory.getLogger(getClass)
 
-  def iterator: Iterator[Tuple3[KgEdge, KgNode, KgNode]] =
+  def iterator: Iterator[KgEdgeWithNodes] =
     csvReader.iteratorWithHeaders.map(row => {
-      val node1Labels = row.getList("node1;label", ListDelim)
-      val node2Labels = row.getList("node2;label", ListDelim)
-      (
-        KgEdge(
-          datasource = row("source"),
-          datasources = row.getList("source", "|"),
+      val sources = row.getList("source", "|")
+      KgEdgeWithNodes(
+        edge = KgEdge(
           id = row("id"),
+          labels = row.getList("relation;label", KgtkListDelim),
           `object` = row("node2"),
-          other = None,
-          predicate = row("relation"),
+          origins = row.getList("origin", KgtkListDelim),
+          questions = row.getList("question", KgtkListDelim),
+          relation = row("relation"),
+          sentences = row.getList("sentence", KgtkListDelim),
+          sources = row.getList("source", KgtkListDelim),
           subject = row("node1"),
           weight = Try(row.getNonBlank("weight").get.toDouble).toOption
         ),
-        KgNode(
-          aliases = Some(node1Labels.slice(1, node1Labels.size)),
-          datasource = row("source"),
-          datasources = row.getList("source", ListDelim),
+        node1 = KgNode(
           id = row("node1"),
-          label = node1Labels(0),
-          other = None,
-          pos = None
+          labels = row.getList("node1;label", KgtkListDelim),
+          pos = None,
+          sources = sources
         ),
-        KgNode(
-          aliases = Some(node2Labels.slice(1, node2Labels.size)),
-          datasource = row("source"),
-          datasources = row.getList("source", ListDelim),
+        node2 = KgNode(
           id = row("node2"),
-          label = node2Labels(0),
-          other = None,
-          pos = None
+          labels = row.getList("node2;label", KgtkListDelim),
+          pos = None,
+          sources = sources
         )
       )
     }
@@ -57,5 +51,8 @@ object KgtkTsvReader {
   private val csvFormat = new TSVFormat {}
   def open(filePath: Path) = new KgtkTsvReader(CsvReader.openCsvReader(filePath, csvFormat))
   def open(inputStream: InputStream) =
-    Option(inputStream) getOrElse (throw new FileNotFoundException("KgtkTsvReader missing resource"))
+    if (inputStream == null)
+      throw new FileNotFoundException("KgtkTsvReader missing resource")
+    else
+      new KgtkTsvReader (CsvReader.openCsvReader(inputStream, csvFormat))
 }

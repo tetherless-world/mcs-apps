@@ -10,19 +10,19 @@ import scala.util.Random
 
 class MemKgStore extends KgStore {
   private var edges: List[KgEdge] = List()
-  private val lucene = new DirectLucene(List("datasource", "id", "label"), autoCommit = false)
-  private val luceneNodeDatasourceField = lucene.create.field[String]("datasource", fullTextSearchable = true)
+  private val lucene = new DirectLucene(List("sources", "id", "labels"), autoCommit = false)
+  private val luceneNodeSourcesField = lucene.create.field[String]("sources", fullTextSearchable = true)
   private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
-  private val luceneNodeLabelField = lucene.create.field[String]("label", fullTextSearchable = true)
+  private val luceneNodeLabelsField = lucene.create.field[String]("labels", fullTextSearchable = true)
   private var nodes: List[KgNode] = List()
   private var nodesById: Map[String, KgNode] = Map()
   private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
-  private var datasources: List[String] = List()
+  private var sources: List[String] = List()
 
   final override def clear(): Unit = {
-    datasources = List()
+    sources = List()
     edges = List()
     lucene.deleteAll()
     nodes = List()
@@ -53,8 +53,8 @@ class MemKgStore extends KgStore {
 //      !excluded && (!filters.include.isDefined || included)
 //    })
 
-  final override def getDatasources: List[String] =
-    this.datasources
+  final override def getSources: List[String] =
+    this.sources
 
   final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
     edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
@@ -97,10 +97,10 @@ class MemKgStore extends KgStore {
   final override def putNodes(nodes: Iterator[KgNode]): Unit = {
     this.nodes = nodes.toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
-    this.datasources = this.nodes.flatMap(_.datasource.split(",")).distinct
+    this.sources = this.nodes.flatMap(_.sources).distinct
     lucene.deleteAll()
     this.nodes.foreach(node => {
-      lucene.doc().fields(luceneNodeDatasourceField(node.datasource), luceneNodeIdField(node.id), luceneNodeLabelField(node.label)).index()
+      lucene.doc().fields(luceneNodeSourcesField(node.sources.mkString(ListDelim)), luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(ListDelim))).index()
     })
     lucene.commit()
   }
@@ -125,7 +125,7 @@ class MemKgStore extends KgStore {
   }
 
   private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.datasource.map(datasource => toSearchTerms(luceneNodeDatasourceField, datasource)).getOrElse(List())
+    nodeFilters.sources.map(source => toSearchTerms(luceneNodeSourcesField, source)).getOrElse(List())
   }
 
   private def toSearchTerms(field: Field[String], stringFilter: StringFilter): List[(SearchTerm, Condition)] = {

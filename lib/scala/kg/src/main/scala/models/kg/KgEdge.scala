@@ -1,12 +1,14 @@
 package models.kg
 
 final case class KgEdge(
-                      datasource: String,
-                      datasources: List[String],
                       id: String,
+                      labels: List[String],
                       `object`: String,
-                      other: Option[String], // No default values so the compiler can check missing fields on construction
-                      predicate: String,
+                      origins: List[String],
+                      questions: List[String],
+                      relation: String,
+                      sentences: List[String],
+                      sources: List[String],
                       subject: String,
                       weight: Option[Double]
                      )

@@ -12,7 +12,7 @@ class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
         paths.size should be > 0
         for (path <- paths) {
           path.id should not be empty
-          path.datasource should not be empty
+          path.sources.size should be > 0
           path.path should not be empty
           path.path.size % 2 should be (1)
           val pathEdges = path.edges

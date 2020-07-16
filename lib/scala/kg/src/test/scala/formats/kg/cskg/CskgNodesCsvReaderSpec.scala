@@ -12,8 +12,8 @@ class CskgNodesCsvReaderSpec extends WordSpec with Matchers with WithResource {
         nodes.size should be > 0
         for (node <- nodes) {
           node.id should not be empty
-          node.label should not be empty
-          node.datasource should not be empty
+          node.labels.size should be > 0
+          node.sources.size should be > 0
         }
       }
     }

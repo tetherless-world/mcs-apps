@@ -5,6 +5,8 @@ import models.kg.{KgEdge, KgNode, KgPath}
 
 @ImplementedBy(classOf[Neo4jKgStore])
 trait KgStore {
+  protected final val ListDelim = "|"
+
   /**
    * Clear the store.
    *
@@ -13,9 +15,9 @@ trait KgStore {
   def clear()
 
   /**
-   * Get all datasources
+   * Get all sources
    */
-  def getDatasources: List[String]
+  def getSources: List[String]
 
   /**
    * Get edges that have the given node ID as an object.
