@@ -408,12 +408,21 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       putEdge(edge, transaction)
     }}
 
-  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
+  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+    // Neo4j doesn't tolerate duplicate nodes
+    val putNodeIds = new mutable.HashSet[String]
     putModels(edgesWithNodes) { (transaction, edgeWithNodes) => {
-      putNode(edgeWithNodes.node1, transaction)
-      putNode(edgeWithNodes.node2, transaction)
+      if (putNodeIds.add(edgeWithNodes.node1.id)) {
+        putNode(edgeWithNodes.node1, transaction)
+      }
+      if (putNodeIds.add(edgeWithNodes.node2.id)) {
+        putNode(edgeWithNodes.node2, transaction)
+      }
       putEdge(edgeWithNodes.edge, transaction)
-    }}
+    }
+    }
+  }
+
 
   private def putNode(node: KgNode, transaction: Transaction): Unit = {
     transaction.run(

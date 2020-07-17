@@ -1,4 +1,4 @@
 #!/bin/bash
-docker stop neo4j
-docker rm neo4j
+docker stop mcs-neo4j
+docker rm mcs-neo4j
 docker volume rm mcs-apps_neo4j-data

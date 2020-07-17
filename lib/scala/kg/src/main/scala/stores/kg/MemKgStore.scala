@@ -97,9 +97,11 @@ class MemKgStore extends KgStore {
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
-    val edgesWithNodesList = edgesWithNodes.toList // Buffer in memory
-    putEdges(edgesWithNodesList.map(_.edge))
-    putNodes(edgesWithNodesList.flatMap(edgeWithNodes => List(edgeWithNodes.node1, edgeWithNodes.node2)))
+    val edgesWithNodesList = edgesWithNodes.toList
+    val uniqueEdges = edgesWithNodesList.map(edgeWithNodes => (edgeWithNodes.edge.id, edgeWithNodes.edge)).toMap.values.toList
+    val uniqueNodes = edgesWithNodesList.flatMap(edgeWithNodes => List((edgeWithNodes.node1.id, edgeWithNodes.node1), (edgeWithNodes.node2.id, edgeWithNodes.node2))).toMap.values.toList
+    putNodes(uniqueNodes)
+    putEdges(uniqueEdges)
   }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit = {
