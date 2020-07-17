@@ -26,17 +26,27 @@ The Docker setup uses Neo4j Community Edition. The only way to quickly and relia
 
 ## Loading the database
 
-After starting the application, copy a CSKG `nodes.csv` and `edges.csv` into `app/kg/data/import/kg/`.
+### KGTK TSV
+
+After starting the application, copy a KGTK CSKG `edges.tsv` into `app/kg/data/import/kg/`.
+
+Then run:
+
+    script/import-kgtk-edges-tsv
+
+### Legacy CSV format
+
+After starting the application, copy a legacy CSKG `nodes.csv` and `edges.csv` into `app/kg/data/import/kg/`.
  
 Then run:
 
-    script/import-cskg-nodes
+    script/import-legacy-nodes-csv
 
 The middleware will log its progress to the console.
 
 When the nodes are done importing, run:
 
-    script/import-cskg-edges
+    script/import-legacy-edges-csv
         
 ## Viewing the application
 
