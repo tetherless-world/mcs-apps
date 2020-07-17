@@ -27,7 +27,10 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
 
   override protected def beforeEach(): Unit = {
     importDirectoryPath = Files.createTempDirectory(null)
-    Files.createDirectory(importDirectoryPath.resolve("kg"))
+    val kgImportDirectory = importDirectoryPath.resolve("kg")
+    Files.createDirectory(kgImportDirectory)
+    Files.createDirectory(kgImportDirectory.resolve("kgtk"))
+    Files.createDirectory(kgImportDirectory.resolve("legacy"))
     store = new MemKgStore
     sut = new KgImportController(importDirectoryPath, store)
     sut.setControllerComponents(Helpers.stubControllerComponents())
