@@ -32,7 +32,7 @@ class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore
 //  }
 
   def putKgtkEdgesTsv(edgesTsvFileName: String) = Action {
-    withResource(KgtkEdgesTsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesTsvFileName))) { reader =>
+    withResource(KgtkEdgesTsvReader.open(importDirectoryPath.resolve("kg").resolve("kgtk").resolve(edgesTsvFileName))) { reader =>
       withIteratorProgress(reader.iterator, "putKgtkTsv") { edgesWithNodes =>
         store.putKgtkEdgesWithNodes(edgesWithNodes)
         Ok("")
@@ -41,7 +41,7 @@ class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore
   }
 
   def putLegacyEdgesCsv(edgesCsvFileName: String) = Action {
-    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
+    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(edgesCsvFileName))) { reader =>
       withIteratorProgress(reader.iterator, "putLegacyEdgesCsv") { edges =>
         store.putEdges(edges)
         Ok("")
@@ -50,7 +50,7 @@ class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore
   }
 
   def putLegacyNodesCsv(nodesCsvFileName: String) = Action {
-    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve(nodesCsvFileName))) { reader =>
+    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(nodesCsvFileName))) { reader =>
       withIteratorProgress(reader.iterator, "putLegacyNodesCsv") { nodes =>
         store.putNodes(nodes)
         Ok("")

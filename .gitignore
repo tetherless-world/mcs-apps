@@ -1,5 +1,6 @@
 *.bloop
-/app/kg/data/import/kg/*.csv
+/app/kg/data/import/kg/kgtk/*.tsv
+/app/kg/data/import/kg/legacy/*.csv
 node_modules/
 /gui/dist/
 /gui/package-lock.json
