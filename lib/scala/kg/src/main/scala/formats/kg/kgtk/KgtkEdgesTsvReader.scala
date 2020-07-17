@@ -50,7 +50,9 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
 }
 
 object KgtkEdgesTsvReader {
-  private val csvFormat = new TSVFormat {}
+  private val csvFormat = new TSVFormat {
+    override val escapeChar: Char = 0
+  }
   def open(filePath: Path) = new KgtkEdgesTsvReader(CsvReader.open(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream == null)
