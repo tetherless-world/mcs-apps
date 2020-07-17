@@ -1,6 +1,7 @@
 package stores.kg
 
 import com.google.inject.ImplementedBy
+import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath}
 
 @ImplementedBy(classOf[Neo4jKgStore])
@@ -71,6 +72,11 @@ trait KgStore {
 
   final def putNodes(nodes: Iterable[KgNode]): Unit =
     putNodes(nodes.iterator)
+
+  /**
+   * Put the KGTK edges with nodes to the store
+   */
+  def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes])
 
   /**
    * Put the given nodes to the store

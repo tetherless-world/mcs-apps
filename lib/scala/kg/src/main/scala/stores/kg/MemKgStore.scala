@@ -4,6 +4,7 @@ import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.field.Field
 import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
+import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath}
 import stores.StringFilter
 
@@ -93,6 +94,12 @@ class MemKgStore extends KgStore {
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit = {
     this.edges = edges.toList
+  }
+
+  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+    val edgesWithNodesList = edgesWithNodes.toList // Buffer in memory
+    putEdges(edgesWithNodesList.map(_.edge))
+    putNodes(edgesWithNodesList.flatMap(edgeWithNodes => List(edgeWithNodes.node1, edgeWithNodes.node2)))
   }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit = {
