@@ -12,13 +12,13 @@ import formats.kg.kgtk
 import scala.util.Try
 
 final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNodes](csvReader) {
-  private final val KgtkListDelim = "|";
+  private final val KgtkListDelim = '|';
 
   private val logger = LoggerFactory.getLogger(getClass)
 
   def iterator: Iterator[KgtkEdgeWithNodes] =
     csvReader.iteratorWithHeaders.map(row => {
-      val sources = row.getList("source", "|")
+      val sources = row.getList("source", KgtkListDelim)
       kgtk.KgtkEdgeWithNodes(
         edge = KgEdge(
           id = row("id"),

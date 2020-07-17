@@ -20,7 +20,7 @@ abstract class CsvReader[T](protected val csvReader: CSVReader) extends AutoClos
     def getNonBlank(key: String) =
       row.get(key).filter(!StringUtils.isBlank(_))
 
-    def getList(key: String, delim: String) =
+     def getList(key: String, delim: Char) =
       getNonBlank(key).flatMap(value => Option(value.split(delim).toList)) getOrElse List[String]()
   }
 
