@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class KgtkTsvReaderSpec extends WordSpec with Matchers with WithResource {
   "Kgtk Tsv Reader" can {
     "read the test data" in {
-      withResource(KgtkTsvReader.open(TestKgtkDataResource.getTsvResourceAsStream())) { reader =>
+      withResource(KgtkEdgesTsvReader.open(TestKgtkDataResource.getTsvResourceAsStream())) { reader =>
         val data = reader.iterator.toList
         data.size should be > 0
         for (edgeWithNodes <- data) {

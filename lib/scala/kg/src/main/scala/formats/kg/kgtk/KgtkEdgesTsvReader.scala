@@ -11,7 +11,7 @@ import formats.kg.kgtk
 
 import scala.util.Try
 
-final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNodes](csvReader) {
+final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNodes](csvReader) {
   private final val KgtkListDelim = "|";
 
   private val logger = LoggerFactory.getLogger(getClass)
@@ -49,12 +49,12 @@ final class KgtkTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNo
     )
 }
 
-object KgtkTsvReader {
+object KgtkEdgesTsvReader {
   private val csvFormat = new TSVFormat {}
-  def open(filePath: Path) = new KgtkTsvReader(CsvReader.open(filePath, csvFormat))
+  def open(filePath: Path) = new KgtkEdgesTsvReader(CsvReader.open(filePath, csvFormat))
   def open(inputStream: InputStream) =
     if (inputStream == null)
       throw new FileNotFoundException("KgtkTsvReader missing resource")
     else
-      new KgtkTsvReader (CsvReader.open(inputStream, csvFormat))
+      new KgtkEdgesTsvReader (CsvReader.open(inputStream, csvFormat))
 }
