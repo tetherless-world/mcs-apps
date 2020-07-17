@@ -26,8 +26,8 @@ jobs:
             bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/edges.csv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/edges.csv
             bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/nodes.csv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/nodes.csv
             # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/edges.csv.bz2 mcs-kg-app:/app/data/import/kg/legacy/
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/nodes.csv.bz2 mcs-kg-app:/app/data/import/kg/legacy/
+            docker cp lib/scala/kg/src/main/resources/data/test/kg/edges.csv mcs-kg-app:/app/data/import/kg/legacy/
+            docker cp lib/scala/kg/src/main/resources/data/test/kg/nodes.csv mcs-kg-app:/app/data/import/kg/legacy/
             script/import-legacy-cskg-nodes-csv
             sleep 60
             script/import-legacy-cskg-edges-csv
