@@ -49,7 +49,7 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
     "put KGTK edges TSV to the store" in {
       store.getTotalEdgesCount must be (0)
       val sourceFilePath = new File(getClass.getResource(TestKgtkDataResource.edgesTsvResourceName).toURI).toPath
-      val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
+      val destFilePath = importDirectoryPath.resolve("kg").resolve("kgtk").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putKgtkEdgesTsv(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
@@ -61,7 +61,7 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
       store.getTotalEdgesCount must be (0)
       store.putNodes(TestKgData.nodes.iterator)
       val sourceFilePath = new File(getClass.getResource(TestKgDataResources.edgesCsvBz2ResourceName).toURI).toPath
-      val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
+      val destFilePath = importDirectoryPath.resolve("kg").resolve("legacy").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putLegacyEdgesCsv(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
@@ -72,7 +72,7 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
     "put legacy nodes CSV to the store" in {
       store.getTotalNodesCount must be (0)
       val sourceFilePath = new File(getClass.getResource(TestKgDataResources.nodesCsvBz2ResourceName).toURI).toPath
-      val destFilePath = importDirectoryPath.resolve("kg").resolve(sourceFilePath.getFileName)
+      val destFilePath = importDirectoryPath.resolve("kg").resolve("legacy").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putLegacyNodesCsv(destFilePath.getFileName.toString)(FakeRequest())
 //      val bodyText = contentAsString(result)
