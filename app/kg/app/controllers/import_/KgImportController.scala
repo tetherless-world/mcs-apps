@@ -5,6 +5,7 @@ import java.nio.file.Paths
 import akka.stream.OverflowStrategy
 import controllers.Assets
 import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
+import formats.kg.kgtk.KgtkEdgesTsvReader
 import formats.kg.path.KgPathsJsonlReader
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
@@ -30,32 +31,41 @@ class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore
 //    Ok("")
 //  }
 
-  def putEdges(edgesCsvFileName: String) = Action {
-    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve(edgesCsvFileName))) { reader =>
-      withIteratorProgress(reader.iterator, "putEdges") { edges =>
+  def putKgtkEdgesTsv(edgesTsvFileName: String) = Action {
+    withResource(KgtkEdgesTsvReader.open(importDirectoryPath.resolve("kg").resolve("kgtk").resolve(edgesTsvFileName))) { reader =>
+      withIteratorProgress(reader.iterator, "putKgtkTsv") { edgesWithNodes =>
+        store.putKgtkEdgesWithNodes(edgesWithNodes)
+        Ok("")
+      }
+    }
+  }
+
+  def putLegacyEdgesCsv(edgesCsvFileName: String) = Action {
+    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(edgesCsvFileName))) { reader =>
+      withIteratorProgress(reader.iterator, "putLegacyEdgesCsv") { edges =>
         store.putEdges(edges)
         Ok("")
       }
     }
   }
 
-  def putNodes(nodesCsvFileName: String) = Action {
-    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve(nodesCsvFileName))) { reader =>
-      withIteratorProgress(reader.iterator, "putNodes") { nodes =>
+  def putLegacyNodesCsv(nodesCsvFileName: String) = Action {
+    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(nodesCsvFileName))) { reader =>
+      withIteratorProgress(reader.iterator, "putLegacyNodesCsv") { nodes =>
         store.putNodes(nodes)
         Ok("")
       }
     }
   }
 
-  def putPaths(pathsJsonlFileName: String) = Action {
-    withResource(new KgPathsJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
-      withIteratorProgress(reader.iterator, "putPaths") { paths =>
-        store.putPaths(paths)
-        Ok("")
-      }
-    }
-  }
+//  def putPaths(pathsJsonlFileName: String) = Action {
+//    withResource(new KgPathsJsonlReader(Source.fromFile(importDirectoryPath.resolve("kg").resolve(pathsJsonlFileName).toFile))) { reader =>
+//      withIteratorProgress(reader.iterator, "putPaths") { paths =>
+//        store.putPaths(paths)
+//        Ok("")
+//      }
+//    }
+//  }
 
   def withIteratorProgress[T, V](models: Iterator[T], taskName: String)(f: (Iterator[T]) => V): V = {
     val progressBar =

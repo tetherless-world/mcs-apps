@@ -39,6 +39,6 @@ COPY /app/kg/docker-entrypoint.sh /
 EXPOSE 80
 
 WORKDIR /app
-RUN mkdir -p data/import/kg
+RUN mkdir -p data/import/kg/kgtk && mkdir -p data/import/kg/legacy
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

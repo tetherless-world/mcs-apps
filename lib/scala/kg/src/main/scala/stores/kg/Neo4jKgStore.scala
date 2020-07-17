@@ -1,6 +1,7 @@
 package stores.kg
 
 import com.google.inject.Inject
+import formats.kg.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath}
@@ -382,40 +383,62 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
+  private def putEdge(edge: KgEdge, transaction: Transaction) =
+    transaction.run(
+      """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
+        |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
+        |REMOVE rel.noOp
+        |""".stripMargin,
+      toTransactionRunParameters(Map(
+        "id" -> edge.id,
+        "labels" -> edge.labels.mkString(ListDelimString),
+        "object" -> edge.`object`,
+        "origins" -> edge.origins.mkString(ListDelimString),
+        "questions" -> edge.questions.mkString(ListDelimString),
+        "predicate" -> edge.predicate,
+        "sentences" -> edge.sentences.mkString(ListDelimString),
+        "sources" -> edge.sources.mkString(ListDelimString),
+        "subject" -> edge.subject,
+        "weight" -> edge.weight.getOrElse(null)
+      ))
+    )
+
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
     putModels(edges) { (transaction, edge) => {
-      transaction.run(
-        """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-          |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
-          |REMOVE rel.noOp
-          |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "id" -> edge.id,
-          "labels" -> edge.labels.mkString(ListDelimString),
-          "object" -> edge.`object`,
-          "origins" -> edge.origins.mkString(ListDelimString),
-          "questions" -> edge.questions.mkString(ListDelimString),
-          "predicate" -> edge.predicate,
-          "sentences" -> edge.sentences.mkString(ListDelimString),
-          "sources" -> edge.sources.mkString(ListDelimString),
-          "subject" -> edge.subject,
-          "weight" -> edge.weight.getOrElse(null)
-        ))
-      )
+      putEdge(edge, transaction)
+    }}
+
+  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+    // Neo4j doesn't tolerate duplicate nodes
+    val putNodeIds = new mutable.HashSet[String]
+    putModels(edgesWithNodes) { (transaction, edgeWithNodes) => {
+      if (putNodeIds.add(edgeWithNodes.node1.id)) {
+        putNode(edgeWithNodes.node1, transaction)
+      }
+      if (putNodeIds.add(edgeWithNodes.node2.id)) {
+        putNode(edgeWithNodes.node2, transaction)
+      }
+      putEdge(edgeWithNodes.edge, transaction)
     }
     }
+  }
+
+
+  private def putNode(node: KgNode, transaction: Transaction): Unit = {
+    transaction.run(
+      "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
+      toTransactionRunParameters(Map(
+        "id" -> node.id,
+        "labels" -> node.labels.mkString(ListDelimString),
+        "pos" -> node.pos.getOrElse(null),
+        "sources" -> node.sources.mkString(ListDelimString),
+      ))
+    )
+  }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
     putModels(nodes) { (transaction, node) =>
-      transaction.run(
-        "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
-        toTransactionRunParameters(Map(
-          "id" -> node.id,
-          "labels" -> node.labels.mkString(ListDelimString),
-          "pos" -> node.pos.getOrElse(null),
-          "sources" -> node.sources.mkString(ListDelimString),
-        ))
-      )
+      putNode(node, transaction)
     }
 
   override def putPaths(paths: Iterator[KgPath]): Unit =
