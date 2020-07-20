@@ -16,11 +16,11 @@ context("KG Home Page", () => {
 
   beforeEach(() => page.visit());
 
-  it("should show all datasources", () => {
-    page.search.selectedDatasource.should("have.text", "All datasources");
+  it("should show all sources", () => {
+    page.search.selectedDatasource.should("have.text", "All sources");
   });
 
-  it("should show selected datasource", () => {
+  it("should show selected source", () => {
     page.search.selectDatasource(TestData.datasources[0]);
 
     page.search.selectedDatasource.should("have.text", TestData.datasources[0]);

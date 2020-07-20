@@ -1,6 +1,6 @@
 fragment KgNodeFieldsFragment on KgNode {
   aliases
-  datasource
+  sources
   id
   label
   other

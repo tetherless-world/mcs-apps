@@ -9,7 +9,7 @@
 export interface KgNodeFieldsFragment {
   __typename: "KgNode";
   aliases: string[] | null;
-  datasource: string;
+  sources: string[];
   id: string;
   label: string | null;
   other: string | null;

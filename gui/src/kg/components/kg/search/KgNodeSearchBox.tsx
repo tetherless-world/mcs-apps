@@ -15,7 +15,7 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "shared/models/kg/KgNode";
-import {KgDatasourceSelect} from "kg/components/kg/search/KgDatasourceSelect";
+import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
 import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
@@ -38,7 +38,7 @@ type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
 
 export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
-  datasources: string[];
+  sources: string[];
   placeholder?: string;
   showIcon?: boolean;
   onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
@@ -47,7 +47,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   onChange?: (value: KgNodeSearchBoxValue) => void;
 }> = ({
   autoFocus,
-  datasources,
+  sources,
   onSubmit: onSubmitUserDefined,
   showIcon = false,
   placeholder,
@@ -279,23 +279,23 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(node) => (
-          <KgNodeLink node={node} datasource={node.datasource} />
+          <KgNodeLink node={node} sources={node.sources} />
         )}
       ></Autocomplete>
-      <KgDatasourceSelect
-        datasources={datasources}
+      <KgSourceSelect
+        sources={sources}
         style={{display: "inline-flex", verticalAlign: "top"}}
         value={search.filters.sources || undefined}
-        onChange={(datasource: StringFilter) => {
+        onChange={(sourcesFilter: StringFilter) => {
           setSearch((prev) => ({
             ...prev,
             filters: {
               ...prev.filters,
-              datasource,
+              sources: sourcesFilter,
             },
           }));
         }}
-      ></KgDatasourceSelect>
+      ></KgSourceSelect>
     </form>
   );
 };

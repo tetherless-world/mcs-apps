@@ -3,13 +3,13 @@ import * as React from "react";
 import {Select, MenuItem, Paper} from "@material-ui/core";
 import {StringFilter} from "shared/models/StringFilter";
 
-export const KgDatasourceSelect: React.FunctionComponent<{
-  datasources: string[];
+export const KgSourceSelect: React.FunctionComponent<{
+  sources: string[];
   value?: StringFilter;
   onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
-}> = ({datasources, value, onChange, style}) => {
-  const [selectedDatasource, setSelectedDatasource] = React.useState<string>(
+}> = ({sources, value, onChange, style}) => {
+  const [selectedSource, setSelectedSource] = React.useState<string>(
     value?.include?.[0] || ""
   );
 
@@ -17,11 +17,11 @@ export const KgDatasourceSelect: React.FunctionComponent<{
     <Paper variant="outlined" square style={style} data-cy="datasourceSelect">
       <Select
         displayEmpty
-        value={selectedDatasource}
+        value={selectedSource}
         onChange={(event: React.ChangeEvent<{value: unknown}>) => {
           const value = event.target.value as string;
 
-          setSelectedDatasource(value);
+          setSelectedSource(value);
 
           if (onChange) {
             onChange(value.length > 0 ? {include: [value]} : {});
@@ -30,7 +30,7 @@ export const KgDatasourceSelect: React.FunctionComponent<{
         renderValue={(selected) => (
           <span style={{marginLeft: "5px"}} data-cy="value">
             {(selected as string).length === 0 ? (
-              <React.Fragment>All datasources</React.Fragment>
+              <React.Fragment>All sources</React.Fragment>
             ) : (
               (selected as string)
             )}
@@ -38,15 +38,15 @@ export const KgDatasourceSelect: React.FunctionComponent<{
         )}
       >
         <MenuItem value="" data-cy="allDatasourcesSelectMenuItem">
-          All datasources
+          All Sources
         </MenuItem>
-        {datasources.map((datasource) => (
+        {sources.map((source) => (
           <MenuItem
-            key={datasource}
-            value={datasource}
+            key={source}
+            value={source}
             data-cy="datasourceSelectMenuItem"
           >
-            {datasource}
+            {source}
           </MenuItem>
         ))}
       </Select>

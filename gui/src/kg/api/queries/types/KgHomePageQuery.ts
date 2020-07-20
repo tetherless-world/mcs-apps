@@ -8,7 +8,7 @@
 
 export interface KgHomePageQuery_kgById {
   __typename: "Kg";
-  datasources: string[];
+  sources: string[];
 }
 
 export interface KgHomePageQuery {

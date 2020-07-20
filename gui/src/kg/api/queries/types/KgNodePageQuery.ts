@@ -23,7 +23,7 @@ export interface KgNodePageQuery_kgById_nodeById_subjectOfEdges {
 export interface KgNodePageQuery_kgById_nodeById {
   __typename: "KgNode";
   aliases: string[] | null;
-  datasource: string;
+  sources: string[];
   id: string;
   label: string | null;
   other: string | null;
