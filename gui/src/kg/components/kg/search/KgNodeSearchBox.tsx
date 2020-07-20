@@ -45,6 +45,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   autocompleteStyle?: React.CSSProperties;
   value?: string;
   onChange?: (value: KgNodeSearchBoxValue) => void;
+  showSourcesSelect?: boolean;
 }> = ({
   autoFocus,
   sources,
@@ -54,6 +55,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   autocompleteStyle,
   value,
   onChange,
+  showSourcesSelect,
 }) => {
   const history = useHistory();
 
@@ -282,20 +284,22 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           <KgNodeLink node={node} sources={node.sources} />
         )}
       ></Autocomplete>
-      <KgSourceSelect
-        sources={sources}
-        style={{display: "inline-flex", verticalAlign: "top"}}
-        value={search.filters.sources || undefined}
-        onChange={(sourcesFilter: StringFilter) => {
-          setSearch((prev) => ({
-            ...prev,
-            filters: {
-              ...prev.filters,
-              sources: sourcesFilter,
-            },
-          }));
-        }}
-      ></KgSourceSelect>
+      {showSourcesSelect && (
+        <KgSourceSelect
+          sources={sources}
+          style={{display: "inline-flex", verticalAlign: "top"}}
+          value={search.filters.sources || undefined}
+          onChange={(sourcesFilter: StringFilter) => {
+            setSearch((prev) => ({
+              ...prev,
+              filters: {
+                ...prev.filters,
+                sources: sourcesFilter,
+              },
+            }));
+          }}
+        ></KgSourceSelect>
+      )}
     </form>
   );
 };

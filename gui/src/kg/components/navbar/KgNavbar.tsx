@@ -11,6 +11,7 @@ import {
 
 import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
+import {KgNodeSearchBox} from "../kg/search/KgNodeSearchBox";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -39,6 +40,12 @@ export const KgNavbar: React.FunctionComponent<{}> = () => {
         <Button component={Link} to={KgHrefs.home} className={classes.brand}>
           <Typography variant="h5">CSKG</Typography>
         </Button>
+        <KgNodeSearchBox
+          placeholder="Search a word"
+          sources={[]}
+          showIcon={true}
+          autocompleteStyle={{display: "inline-block"}}
+        />
       </Toolbar>
     </AppBar>
   );
