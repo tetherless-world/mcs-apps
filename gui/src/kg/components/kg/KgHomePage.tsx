@@ -86,6 +86,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                     placeholder="Search a word or try a query"
                     showIcon={true}
                     onChange={onSearchChange}
+                    showSourcesSelect={true}
                   />
                   <br />
                   <Button
