@@ -117,7 +117,9 @@ export const KgNodeViews: React.FunctionComponent<{
                 <CardContent>
                   <List>
                     <ListItemText data-cy="node-datasource">
-                      <KgSourceLink source={node.sources} />
+                      {node.sources.map((source) => (
+                        <KgSourceLink source={source} />
+                      ))}
                     </ListItemText>
                   </List>
                 </CardContent>

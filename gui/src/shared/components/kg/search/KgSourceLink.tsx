@@ -5,7 +5,7 @@ import {CSSProperties} from "@material-ui/core/styles/withStyles";
 import {kgId} from "shared/api/kgId";
 
 export const KgSourceLink: React.FunctionComponent<{
-  source: string | string[];
+  source: string;
   style?: CSSProperties;
 }> = ({source, style}) => (
   <Link
@@ -13,7 +13,7 @@ export const KgSourceLink: React.FunctionComponent<{
     style={style}
     to={Hrefs.kg({id: kgId}).nodeSearch({
       filters: {
-        sources: {include: typeof source === "string" ? [source] : source},
+        sources: {include: [source]},
       },
       __typename: "KgNodeSearchVariables",
     })}
