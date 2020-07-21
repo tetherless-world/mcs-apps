@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.file.{Files, Path}
 
 import controllers.import_.KgImportController
-import data.kg.{TestCskgCsvData, TestCskgCsvDataResources, TestKgtkDataResources}
+import data.kg.{TestCskgCsvData, TestCskgCsvDataResources, TestKgtkData, TestKgtkDataResources}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Results
@@ -51,7 +51,7 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
       val result = sut.putKgtkEdgesTsv(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
       //      //      bodyText must be("ok")
-      store.getTotalEdgesCount must be (999)
+      store.getTotalEdgesCount must be (TestKgtkData.edges.length)
     }
 
     "put legacy edges CSV to the store" in {
