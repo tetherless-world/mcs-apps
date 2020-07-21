@@ -1,13 +1,13 @@
 package formats.kg.cskg
 
-import data.kg.TestKgDataResources
+import data.kg.TestCskgCsvDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
 class CskgEdgesCsvReaderSpec extends WordSpec with Matchers with WithResource {
   "CSKG edges CSV reader" can {
     "read the test data" in {
-      withResource (CskgEdgesCsvReader.open(TestKgDataResources.getEdgesCsvResourceAsStream())) { reader =>
+      withResource (CskgEdgesCsvReader.open(TestCskgCsvDataResources.edgesCsvBz2.getAsStream())) { reader =>
         val edges = reader.iterator.toList
         edges.size should be > 0
         for (edge <- edges) {

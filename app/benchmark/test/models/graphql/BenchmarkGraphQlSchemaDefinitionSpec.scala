@@ -1,7 +1,7 @@
 package models.graphql
 
 import data.benchmark.TestBenchmarkData
-import data.kg.TestKgData
+import data.kg.TestCskgCsvData
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsObject, Json}
 import play.api.test.FakeRequest

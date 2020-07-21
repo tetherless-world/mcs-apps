@@ -1,9 +1,9 @@
 package stores.kg
 
-import data.kg.TestKgData
+import data.kg.TestCskgCsvData
 
 final class TestKgStore extends MemKgStore {
-  putNodes(TestKgData.nodes.iterator)
-  putEdges(TestKgData.edges.iterator)
-  putPaths(TestKgData.paths.iterator)
+  putNodes(TestCskgCsvData.nodes.iterator)
+  putEdges(TestCskgCsvData.edges.iterator)
+  putPaths(TestCskgCsvData.paths.iterator)
 }

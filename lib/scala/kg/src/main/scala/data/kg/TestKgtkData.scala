@@ -1,3 +1,3 @@
 package data.kg
 
-object TestKgtkData extends KgtkData(TestKgtkDataResource)
+object TestKgtkData extends KgData(TestKgtkDataResources)

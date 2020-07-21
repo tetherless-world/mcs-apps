@@ -1,13 +1,13 @@
 package formats.kg.path
 
-import data.kg.TestKgDataResources
+import data.kg.TestCskgCsvDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
 class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "KG path .jsonl reader" can {
     "read the test data" in {
-      withResource(KgPathsJsonlReader.open(TestKgDataResources.getPathsJsonlResourceAsStream())) { reader =>
+      withResource(KgPathsJsonlReader.open(TestCskgCsvDataResources.pathsJsonl.getAsStream())) { reader =>
         val paths = reader.iterator.toList
         paths.size should be > 0
         for (path <- paths) {
