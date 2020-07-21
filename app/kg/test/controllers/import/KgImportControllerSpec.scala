@@ -1,17 +1,14 @@
 package controllers.`import`
 
-import java.io.{File, FileOutputStream}
+import java.io.File
 import java.nio.file.{Files, Path}
 
 import controllers.import_.KgImportController
-import data.kg.{TestKgData, TestKgDataResources, TestKgtkDataResource}
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
+import data.kg.{TestCskgCsvData, TestCskgCsvDataResources, TestKgtkData, TestKgtkDataResources}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
-import play.api.mvc.{AnyContent, Results}
+import play.api.mvc.Results
 import play.api.test.{FakeRequest, Helpers}
-import play.api.test._
-import play.api.test.Helpers._
 import stores.kg.{KgStore, MemKgStore}
 
 import scala.reflect.io.Directory
@@ -48,36 +45,36 @@ class KgImportControllerSpec extends PlaySpec with BeforeAndAfterEach with Resul
 
     "put KGTK edges TSV to the store" in {
       store.getTotalEdgesCount must be (0)
-      val sourceFilePath = new File(getClass.getResource(TestKgtkDataResource.edgesTsvResourceName).toURI).toPath
+      val sourceFilePath = new File(getClass.getResource(TestKgtkDataResources.edgesTsvBz2.name).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve("kgtk").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putKgtkEdgesTsv(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
       //      //      bodyText must be("ok")
-      store.getTotalEdgesCount must be (999)
+      store.getTotalEdgesCount must be (TestKgtkData.edges.length)
     }
 
     "put legacy edges CSV to the store" in {
       store.getTotalEdgesCount must be (0)
-      store.putNodes(TestKgData.nodes.iterator)
-      val sourceFilePath = new File(getClass.getResource(TestKgDataResources.edgesCsvBz2ResourceName).toURI).toPath
+      store.putNodes(TestCskgCsvData.nodes.iterator)
+      val sourceFilePath = new File(getClass.getResource(TestCskgCsvDataResources.edgesCsvBz2.name).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve("legacy").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putLegacyEdgesCsv(destFilePath.getFileName.toString)(FakeRequest())
       //      val bodyText = contentAsString(result)
       //      //      bodyText must be("ok")
-      store.getTotalEdgesCount must be (TestKgData.edges.length)
+      store.getTotalEdgesCount must be (TestCskgCsvData.edges.length)
     }
 
     "put legacy nodes CSV to the store" in {
       store.getTotalNodesCount must be (0)
-      val sourceFilePath = new File(getClass.getResource(TestKgDataResources.nodesCsvBz2ResourceName).toURI).toPath
+      val sourceFilePath = new File(getClass.getResource(TestCskgCsvDataResources.nodesCsvBz2.name).toURI).toPath
       val destFilePath = importDirectoryPath.resolve("kg").resolve("legacy").resolve(sourceFilePath.getFileName)
       Files.copy(sourceFilePath, destFilePath)
       val result = sut.putLegacyNodesCsv(destFilePath.getFileName.toString)(FakeRequest())
 //      val bodyText = contentAsString(result)
 //      //      bodyText must be("ok")
-      store.getTotalNodesCount must be (TestKgData.nodes.length)
+      store.getTotalNodesCount must be (TestCskgCsvData.nodes.length)
     }
 
     //    "put paths to the store" in {

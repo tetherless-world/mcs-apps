@@ -1,13 +1,13 @@
 package formats.kg.kgtk
 
-import data.kg.TestKgtkDataResource
+import data.kg.{TestKgtkDataResources}
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
 class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
   "KGTK edges TSV Reader" can {
     "read the test data" in {
-      withResource(KgtkEdgesTsvReader.open(TestKgtkDataResource.getEdgesTsvResourceAsStream())) { reader =>
+      withResource(KgtkEdgesTsvReader.open(TestKgtkDataResources.edgesTsvBz2.getAsStream())) { reader =>
         val data = reader.iterator.toList
         data.size should be > 0
         for (edgeWithNodes <- data) {

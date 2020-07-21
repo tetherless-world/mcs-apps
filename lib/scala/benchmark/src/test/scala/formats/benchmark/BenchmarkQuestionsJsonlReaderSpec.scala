@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "Benchmark questions .jsonl reader" can {
     "read the test data" in {
-      withResource(BenchmarkQuestionsJsonlReader.open(TestBenchmarkDataResources.getBenchmarkQuestionsJsonlResourceAsStream())) { reader =>
+      withResource(BenchmarkQuestionsJsonlReader.open(TestBenchmarkDataResources.benchmarkQuestionsJsonl.getAsStream())) { reader =>
         val questions = reader.iterator.toList
         for (question <- questions) {
           question.datasetId should not be empty

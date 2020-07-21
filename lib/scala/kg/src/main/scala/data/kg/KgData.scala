@@ -1,21 +1,34 @@
 package data.kg
 
+import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath}
 
-class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnsorted: List[KgPath]) {
-  def this(resources: KgDataResources) =
-    this(
-      edgesUnsorted = resources.readEdges(),
-      nodesUnsorted = resources.readNodes(),
-      pathsUnsorted = resources.readPaths()
-    )
+import scala.collection.mutable.HashMap
 
+abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnsorted: List[KgPath]) {
   val nodesById = deduplicateNodes(sortNodes(nodesUnsorted))
   val nodes = nodesById.values.toList
   val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(edgesUnsorted), nodesById))
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
   val paths = validatePaths(edges, nodesById, pathsUnsorted)
+
+  def this(resources: CskgCsvDataResources) =
+    this(
+      edgesUnsorted = resources.readEdges(),
+      nodesUnsorted = resources.readNodes(),
+      pathsUnsorted = resources.readPaths
+    )
+
+  def this(kgtkEdgesWithNodes: List[KgtkEdgeWithNodes], pathsUnsorted: List[KgPath]) =
+    this(
+      edgesUnsorted = kgtkEdgesWithNodes.map(_.edge),
+      nodesUnsorted = kgtkEdgesWithNodes.flatMap(_.nodes),
+      pathsUnsorted = pathsUnsorted
+    )
+
+  def this(resources: KgtkDataResources) =
+    this(resources.readKgtkEdgesWithNodes(), resources.readPaths())
 
   private def checkDuplicateEdges(edges: List[KgEdge]): List[KgEdge] = {
     // Default toMap duplicate handling = use later key
@@ -60,4 +73,25 @@ class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnso
       path
     })
   }
+}
+
+object KgData {
+  def reduceNodes(nodes1: List[KgNode], nodes2: List[KgNode]): List[KgNode] = {
+    val nodesById = HashMap[String, KgNode]()
+    (nodes1 ::: nodes2).foreach(node => {
+      if (nodesById.contains(node.id))
+        nodesById(node.id) = mergeNodes(nodesById(node.id), node)
+      else
+        nodesById += (node.id -> node)
+    })
+    nodesById.values.toList
+  }
+
+  def mergeNodes(node1: KgNode, node2: KgNode) =
+    KgNode(
+      id = node1.id, // should be equal
+      labels = node1.labels ::: node2.labels distinct,
+      pos = None,
+      sources = node1.sources ::: node2.sources distinct
+    )
 }
