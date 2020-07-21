@@ -2,7 +2,7 @@ package stores.kg
 
 import java.net.InetAddress
 
-import data.kg.TestCskgCsvData
+import data.kg.TestKgData
 import org.scalatest.{BeforeAndAfterAll, WordSpec}
 import org.slf4j.LoggerFactory
 import stores.Neo4jStoreConfiguration
@@ -20,9 +20,9 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
     if (!sut.isEmpty) {
       sut.clear()
     }
-    sut.putNodes(TestCskgCsvData.nodes.iterator)
-    sut.putEdges(TestCskgCsvData.edges.iterator)
-    sut.putPaths(TestCskgCsvData.paths.iterator)
+    sut.putNodes(TestKgData.nodes.iterator)
+    sut.putEdges(TestKgData.edges.iterator)
+    sut.putPaths(TestKgData.paths.iterator)
   }
 
   if (inTestingEnvironment) {

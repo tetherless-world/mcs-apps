@@ -1,6 +1,6 @@
 package models.graphql
 
-import data.kg.TestCskgCsvData
+import data.kg.TestKgData
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsObject, Json}
 import play.api.test.FakeRequest
@@ -19,7 +19,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
 
   "GraphQL schema" must {
     "get a KG node by id" in {
-      val node = TestCskgCsvData.nodes(0)
+      val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query KgNodeByIdQuery($$kgId: String!, $$nodeId: String!) {
@@ -38,7 +38,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
     }
 
     "get KG edges the node is a subject of" in {
-      val node = TestCskgCsvData.nodes(0)
+      val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
@@ -57,13 +57,13 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
        """
 
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)))
-      for (edge <- TestCskgCsvData.edges.filter(edge => edge.subject == node.id)) {
+      for (edge <- TestKgData.edges.filter(edge => edge.subject == node.id)) {
         result must include(s"""{"predicate":"${edge.predicate}","object":"${edge.`object`}"""")
       }
     }
 
     "get KG edges the node is an object of" in {
-      val node = TestCskgCsvData.nodes(0)
+      val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
@@ -100,7 +100,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
     }
 
     "search KG nodes" in {
-      val node = TestCskgCsvData.nodes(0)
+      val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query MatchingKgNodesQuery($$kgId: String!, $$text: String!) {
@@ -120,8 +120,8 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
     }
 
     "get total KG node and edge count" in {
-      val nodeCount = TestCskgCsvData.nodes.size
-      val edgeCount = TestCskgCsvData.edges.size
+      val nodeCount = TestKgData.nodes.size
+      val edgeCount = TestKgData.edges.size
       val query =
         graphql"""
           query TotalKgCountsQuery($$kgId: String!) {
@@ -149,7 +149,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
           }
         """
 
-      val path = TestCskgCsvData.paths(0)
+      val path = TestKgData.paths(0)
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "pathId" -> path.id)))
       for (pathComponent <- path.path) {
         result must include(pathComponent)
@@ -176,13 +176,13 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         }
       """
 
-      val path = TestCskgCsvData.paths(0)
+      val path = TestKgData.paths(0)
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "pathId" -> path.id)))
       for (pathEdge <- path.edges) {
-        val presentEdge = TestCskgCsvData.edges.find(edge => edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`)
+        val presentEdge = TestKgData.edges.find(edge => edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`)
         presentEdge must not be(None)
-        val subjectNode = TestCskgCsvData.nodesById(pathEdge.subject)
-        val objectNode = TestCskgCsvData.nodesById(pathEdge.`object`)
+        val subjectNode = TestKgData.nodesById(pathEdge.subject)
+        val objectNode = TestKgData.nodesById(pathEdge.`object`)
         result must include(subjectNode.labels(0))
         result must include(objectNode.labels(0))
         result must include(pathEdge.predicate)
