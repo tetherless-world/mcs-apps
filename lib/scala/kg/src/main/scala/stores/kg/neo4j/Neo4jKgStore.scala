@@ -1,4 +1,4 @@
-package stores.kg
+package stores.kg.neo4j
 
 import com.google.inject.Inject
 import formats.kg.kgtk.KgtkEdgeWithNodes
@@ -7,6 +7,7 @@ import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
 import org.slf4j.LoggerFactory
+import stores.kg.{KgNodeFilters, KgStore}
 import stores.{Neo4jStoreConfiguration, StringFilter}
 
 import scala.collection.JavaConverters._

@@ -3,6 +3,7 @@ package stores.kg
 import com.google.inject.ImplementedBy
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import stores.kg.neo4j.Neo4jKgStore
 
 @ImplementedBy(classOf[Neo4jKgStore])
 trait KgStore {

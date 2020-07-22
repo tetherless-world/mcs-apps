@@ -1,12 +1,12 @@
-package stores.kg
+package stores.kg.mem
 
 import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
-import com.outr.lucene4s.field.Field
 import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
+import stores.kg.{KgNodeFilters, KgStore}
 
 import scala.util.Random
 

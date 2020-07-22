@@ -1,4 +1,4 @@
-package stores.kg
+package stores.kg.test
 
 import org.scalatest.{Matchers, WordSpec}
 

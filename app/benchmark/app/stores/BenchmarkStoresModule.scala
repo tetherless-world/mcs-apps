@@ -3,7 +3,9 @@ package stores
 import com.google.inject.AbstractModule
 import org.slf4j.LoggerFactory
 import stores.benchmark.{BenchmarkStore, ConfBenchmarkStore, TestBenchmarkStore}
-import stores.kg.{KgStore, Neo4jKgStore, TestKgStore}
+import stores.kg.neo4j.Neo4jKgStore
+import stores.kg.KgStore
+import stores.kg.test.TestKgStore
 
 final class BenchmarkStoresModule extends AbstractModule {
   private val logger = LoggerFactory.getLogger(classOf[BenchmarkStoresModule])

@@ -9,7 +9,8 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Results
 import play.api.test.{FakeRequest, Helpers}
-import stores.kg.{KgStore, MemKgStore}
+import stores.kg.KgStore
+import stores.kg.mem.MemKgStore
 
 import scala.reflect.io.Directory
 

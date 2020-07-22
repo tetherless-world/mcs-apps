@@ -1,11 +1,12 @@
-package stores.kg
+package stores.kg.neo4j
 
 import java.net.InetAddress
 
 import data.kg.TestKgData
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
+import org.scalatest.{BeforeAndAfterEach, WordSpec}
 import org.slf4j.LoggerFactory
 import stores.Neo4jStoreConfiguration
+import stores.kg.KgStoreBehaviors
 
 class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterEach {
   val logger = LoggerFactory.getLogger(getClass)
