@@ -1,11 +1,12 @@
-package stores.kg
+package stores.kg.neo4j
 
 import java.net.InetAddress
 
 import data.kg.TestKgData
-import org.scalatest.{BeforeAndAfterAll, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
 import org.slf4j.LoggerFactory
 import stores.Neo4jStoreConfiguration
+import stores.kg.{KgStore, KgStoreBehaviors}
 
 class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
   val logger = LoggerFactory.getLogger(getClass)
@@ -17,17 +18,31 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
     if (!inTestingEnvironment) {
       return
     }
+    resetSut()
+  }
+
+  private def resetSut(): Unit = {
     if (!sut.isEmpty) {
       sut.clear()
     }
-    sut.putNodes(TestKgData.nodes.iterator)
-    sut.putEdges(TestKgData.edges.iterator)
-    sut.putPaths(TestKgData.paths.iterator)
+    sut.putData(TestKgData)
+  }
+
+  private object Neo4jKgStoreFactory extends KgStoreFactory {
+    override def apply(testMode: TestMode)(f: KgStore => Unit): Unit = {
+      try {
+        f(sut)
+      } finally {
+        if (testMode == TestMode.ReadWrite) {
+          resetSut()
+        }
+      }
+    }
   }
 
   if (inTestingEnvironment) {
     "The neo4j store" can {
-        behave like store(sut)
+        behave like store(Neo4jKgStoreFactory)
       }
   }
 }

@@ -10,7 +10,7 @@ import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
 import stores.benchmark.TestBenchmarkStore
-import stores.kg.TestKgStore
+import stores.kg.test.TestKgStore
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
