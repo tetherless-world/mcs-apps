@@ -12,7 +12,7 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
   val paths = validatePaths(edges, nodesById, pathsUnsorted)
-  val sourcesById = (nodes.flatMap(_.sources) ++ edges.flatMap(_.sources)).map(sourceId => KgSource.WellKnownSources.getOrElse(sourceId, KgSource(id = sourceId, label = sourceId))).map(source => (source.id, source)).toMap
+  val sourcesById = (nodes.flatMap(_.sources) ++ edges.flatMap(_.sources)).map(KgSource(_)).map(source => (source.id, source)).toMap
   val sources = sourcesById.values.toList
 
   def this(resources: CskgCsvDataResources) =

@@ -121,6 +121,9 @@ class MemKgStore extends KgStore {
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
   }
 
+  private def putSourceIds(sourceIds: List[String]): Unit =
+    putSources(sourceIds.map(KgSource(_)))
+
   final override def putSources(sources: Iterator[KgSource]): Unit = {
     for (source <- sources) {
       if (!sourcesById.contains(source.id)) {

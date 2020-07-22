@@ -183,7 +183,8 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
 
         val bootstrapCypherStatements = List(
           """CALL db.index.fulltext.createNodeIndex("node",["Node"],["id", "labels", "sources"]);""",
-          """CREATE CONSTRAINT node_id_constraint ON (n:Node) ASSERT n.id IS UNIQUE;"""
+          """CREATE CONSTRAINT node_id_constraint ON (node:Node) ASSERT node.id IS UNIQUE;""",
+          """CREATE CONSTRAINT source_id_constraint ON (source:Source) ASSERT source.id IS UNIQUE;"""
         )
 
         session.writeTransaction { transaction =>
@@ -406,25 +407,30 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     )
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
-    putModels(edges) { (transaction, edge) => {
-      putEdge(edge, transaction)
+    putModelsBatched(edges) { (edges, transaction) => {
+      putSourceIds(edges.flatMap(_.sources).distinct, transaction)
+      for (edge <- edges) {
+        putEdge(edge, transaction)
+      }
     }}
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
     // Neo4j doesn't tolerate duplicate nodes
     val putNodeIds = new mutable.HashSet[String]
-    putModels(edgesWithNodes) { (transaction, edgeWithNodes) => {
-      if (putNodeIds.add(edgeWithNodes.node1.id)) {
-        putNode(edgeWithNodes.node1, transaction)
+    putModelsBatched(edgesWithNodes) { (edgesWithNodes, transaction) => {
+      putSourceIds(edgesWithNodes.flatMap(_.sources).distinct, transaction)
+      for (edgeWithNodes <- edgesWithNodes) {
+        if (putNodeIds.add(edgeWithNodes.node1.id)) {
+          putNode(edgeWithNodes.node1, transaction)
+        }
+        if (putNodeIds.add(edgeWithNodes.node2.id)) {
+          putNode(edgeWithNodes.node2, transaction)
+        }
+        putEdge(edgeWithNodes.edge, transaction)
       }
-      if (putNodeIds.add(edgeWithNodes.node2.id)) {
-        putNode(edgeWithNodes.node2, transaction)
-      }
-      putEdge(edgeWithNodes.edge, transaction)
     }
     }
   }
-
 
   private def putNode(node: KgNode, transaction: Transaction): Unit = {
     transaction.run(
@@ -439,34 +445,40 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
-    putModels(nodes) { (transaction, node) =>
-      putNode(node, transaction)
-    }
-
-  override def putPaths(paths: Iterator[KgPath]): Unit =
-    putModels(paths) { (transaction, path) => {
-      for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-        val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-        transaction.run(
-          """
-            |MATCH (subject:Node), (object: Node)
-            |WHERE subject.id = $subject AND object.id = $object
-            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
-            |""".stripMargin,
-          toTransactionRunParameters(Map(
-            "object" -> pathEdge.`object`,
-            "pathEdgeIndex" -> pathEdgeIndex,
-            "pathEdgePredicate" -> pathEdge.predicate,
-            "pathId" -> path.id,
-            "sources" -> path.sources.mkString(ListDelimString),
-            "subject" -> pathEdge.subject
-          ))
-        )
+    putModelsBatched(nodes) { (nodes, transaction) => {
+      putSourceIds(nodes.flatMap(_.sources).distinct, transaction)
+      for (node <- nodes) {
+        putNode(node, transaction)
       }
     }
     }
 
-  private def putModels[T](models: Iterator[T])(putModel: (Transaction, T)=>Unit): Unit =
+  override def putPaths(paths: Iterator[KgPath]): Unit =
+    putModelsBatched(paths) { (paths, transaction) => {
+      for (path <- paths) {
+        for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
+          val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
+          transaction.run(
+            """
+              |MATCH (subject:Node), (object: Node)
+              |WHERE subject.id = $subject AND object.id = $object
+              |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
+              |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "object" -> pathEdge.`object`,
+              "pathEdgeIndex" -> pathEdgeIndex,
+              "pathEdgePredicate" -> pathEdge.predicate,
+              "pathId" -> path.id,
+              "sources" -> path.sources.mkString(ListDelimString),
+              "subject" -> pathEdge.subject
+            ))
+          )
+        }
+      }
+    }
+    }
+
+  private def putModelsBatched[ModelT](models: Iterator[ModelT])(putModelBatch: (List[ModelT], Transaction)=>Unit): Unit =
     withSession { session => {
       // Batch the models in order to put them all in a transaction.
       // My (MG) first implementation looked like:
@@ -480,7 +492,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
 //      }
       // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
       // I don't have time to investigate that. Batching models should be OK for now.
-      val modelBatch = new mutable.MutableList[T]
+      val modelBatch = new mutable.MutableList[ModelT]
       while (models.hasNext) {
         while (modelBatch.size < configuration.commitInterval && models.hasNext) {
           modelBatch += models.next()
@@ -488,9 +500,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         if (!modelBatch.isEmpty) {
 //          logger.info("putting batch of {} models in a transaction", modelBatch.size)
           session.writeTransaction { transaction =>
-            for (model <- modelBatch) {
-              putModel(transaction, model)
-            }
+            putModelBatch(modelBatch.toList, transaction)
           }
           modelBatch.clear()
         }
@@ -498,7 +508,38 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     }
   }
 
+  private final def putSourceIds(sourceIds: List[String], transaction: Transaction) =
+    putSources(sourceIds.map(KgSource(_)).iterator, transaction)
+
   final override def putSources(sources: Iterator[KgSource]): Unit = {
+    withSession { session => {
+      session.writeTransaction { transaction =>
+        putSources(sources, transaction)
+      }
+    }
+    }
+  }
+
+  private def putSources(sources: Iterator[KgSource], transaction: Transaction): Unit = {
+    for (source <- sources) {
+      val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
+      val sourceExists =
+        transaction.run(
+          """
+            |MATCH (source:Source)
+            |WHERE source.id = $id
+            |RETURN source.label
+            |LIMIT 1
+            |""".stripMargin,
+          transactionRunParameters
+        ).hasNext
+      if (!sourceExists) {
+        transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
+        logger.info("created source {}", source.id)
+      } else {
+        logger.info(s"source {} already exists", source.id)
+      }
+    }
   }
 
   private def textMatchToCypherBindingsMap(text: Option[String]) =

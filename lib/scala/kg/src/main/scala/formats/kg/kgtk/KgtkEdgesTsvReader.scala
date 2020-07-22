@@ -28,7 +28,7 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
           questions = row.getList("question", KgtkListDelim),
           predicate = row("relation"),
           sentences = row.getList("sentence", KgtkListDelim),
-          sources = row.getList("source", KgtkListDelim),
+          sources = sources,
           subject = row("node1"),
           weight = Try(row.getNonBlank("weight").get.toDouble).toOption
         ),
@@ -43,7 +43,8 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
           labels = row.getList("node2;label", KgtkListDelim),
           pos = None,
           sources = sources
-        )
+        ),
+        sources = sources
       )
     }
     )

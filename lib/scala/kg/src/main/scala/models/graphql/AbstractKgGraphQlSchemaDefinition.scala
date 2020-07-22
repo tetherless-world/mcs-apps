@@ -20,7 +20,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   val KgSourceType = deriveObjectType[KgGraphQlSchemaContext, KgSource]()
 
   private def mapSources(sourceIds: List[String], sourcesById: Map[String, KgSource]): List[KgSource] =
-    sourceIds.map(sourceId => sourcesById.getOrElse(sourceId, KgSource(id = sourceId, label = sourceId)))
+    sourceIds.map(sourceId => sourcesById.getOrElse(sourceId, KgSource(sourceId)))
 
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54
