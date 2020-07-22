@@ -2,7 +2,7 @@ package stores.kg
 
 import com.google.inject.ImplementedBy
 import formats.kg.kgtk.KgtkEdgeWithNodes
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 
 @ImplementedBy(classOf[Neo4jKgStore])
 trait KgStore {
@@ -16,7 +16,13 @@ trait KgStore {
   /**
    * Get all sources
    */
-  def getSources: List[String]
+  final def getSources: List[KgSource] =
+    getSourcesById.values.toList
+
+  /**
+   * Get sources mapped by id
+   */
+  def getSourcesById: Map[String, KgSource]
 
   /**
    * Get edges that have the given node ID as an object.
@@ -90,4 +96,27 @@ trait KgStore {
    * Put the given paths to the store
    */
   def putPaths(paths: Iterator[KgPath]): Unit
+
+  /**
+   * Put the given source ids to the store
+   */
+  final def putSourceIds(sourceIds: Iterable[String]): Unit =
+    putSourceIds(sourceIds.iterator)
+
+  /**
+   * Put the given source ids to the store
+   */
+  def putSourceIds(sourceIds: Iterator[String]): Unit =
+    putSources(sourceIds.map(sourceId => KgSource.WellKnownSources.getOrElse(sourceId, KgSource(id = sourceId, label = sourceId))))
+
+  /**
+   * Put the given sources to the store
+   */
+  final def putSources(sources: Iterable[KgSource]): Unit =
+    putSources(sources.iterator)
+
+  /**
+   * Put the given sources to the store
+   */
+  def putSources(sources: Iterator[KgSource]): Unit
 }

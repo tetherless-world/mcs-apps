@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.Singleton
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
 import org.slf4j.LoggerFactory
 import stores.{Neo4jStoreConfiguration, StringFilter}
@@ -218,15 +218,17 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     }
   }
 
-  final override def getSources: List[String] =
+  final override def getSourcesById: Map[String, KgSource] =
     withSession { session =>
       session.readTransaction { transaction =>
         val result =
-          transaction.run("MATCH (node:Node) RETURN DISTINCT node.sources AS sources")
-        val sourceValues = result.asScala.toList.map(_.get("sources").asString)
-        // Returns list of source values which can contain multiple sources
-        // so need to extract unique sources
-        sourceValues.flatMap(_.split(ListDelimChar)).distinct
+          transaction.run("MATCH (source:Source) RETURN source.id, source.label")
+        result.asScala.map(record =>
+          KgSource(
+            id = record.get("source.id").asString(),
+            label = record.get("source.label").asString()
+          )
+        ).map(source => (source.id, source)).toMap
       }
     }
 
@@ -494,6 +496,9 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
         }
       }
     }
+  }
+
+  final override def putSources(sources: Iterator[KgSource]): Unit = {
   }
 
   private def textMatchToCypherBindingsMap(text: Option[String]) =

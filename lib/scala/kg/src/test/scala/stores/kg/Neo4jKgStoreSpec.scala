@@ -27,7 +27,7 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
 
   if (inTestingEnvironment) {
     "The neo4j store" can {
-        behave like store(sut)
+        behave like store(() => sut)
       }
   }
 }

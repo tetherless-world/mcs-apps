@@ -3,7 +3,7 @@ package models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
@@ -17,10 +17,15 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 
 
   // Object types
+  val KgSourceType = deriveObjectType[KgGraphQlSchemaContext, KgSource]()
+
+  private def mapSources(sourceIds: List[String], sourcesById: Map[String, KgSource]): List[KgSource] =
+    sourceIds.map(sourceId => sourcesById.getOrElse(sourceId, KgSource(id = sourceId, label = sourceId)))
+
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54
   lazy val KgEdgeType: ObjectType[KgGraphQlSchemaContext, KgEdge] = ObjectType("KgEdge", () => fields[KgGraphQlSchemaContext, KgEdge](
-    Field("sources", ListType(StringType), resolve = _.value.sources),
+    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sources, ctx.ctx.kgStore.getSourcesById)),
     Field("object", StringType, resolve = _.value.`object`),
     // Assume the edge is not dangling
     Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.value.`object`)),
@@ -33,7 +38,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   ))
   lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
     Field("aliases", OptionType(ListType(StringType)), resolve = ctx => if (ctx.value.labels.size > 1) Some(ctx.value.labels.slice(1, ctx.value.labels.size)) else None),
-    Field("sources", ListType(StringType), resolve = _.value.sources),
+    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sources, ctx.ctx.kgStore.getSourcesById)),
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("objectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
@@ -59,12 +64,12 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 
   // Query types
   val KgQueryType = ObjectType("Kg", fields[KgGraphQlSchemaContext, String](
-    Field("sources", ListType(StringType), resolve = ctx => ctx.ctx.kgStore.getSources),
     Field("matchingNodes", ListType(KgNodeType), arguments = KgNodeFiltersArgument :: LimitArgument :: OffsetArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getMatchingNodes(filters = ctx.args.arg(KgNodeFiltersArgument), limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), text = ctx.args.arg(OptionalTextArgument))),
     Field("matchingNodesCount", IntType, arguments = KgNodeFiltersArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getMatchingNodesCount(filters = ctx.args.arg(KgNodeFiltersArgument), text = ctx.args.arg(OptionalTextArgument))),
-    Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getPathById(ctx.args.arg(IdArgument))),
     Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.args.arg(IdArgument))),
+    Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getPathById(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeType, resolve = ctx => ctx.ctx.kgStore.getRandomNode),
+    Field("sources", ListType(KgSourceType), resolve = ctx => ctx.ctx.kgStore.getSources),
     Field("totalEdgesCount", IntType, resolve = ctx => ctx.ctx.kgStore.getTotalEdgesCount),
     Field("totalNodesCount", IntType, resolve = ctx => ctx.ctx.kgStore.getTotalNodesCount)
   ))

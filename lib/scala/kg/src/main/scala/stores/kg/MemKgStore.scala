@@ -5,7 +5,7 @@ import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.field.Field
 import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
 
 import scala.util.Random
@@ -21,16 +21,16 @@ class MemKgStore extends KgStore {
   private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
-  private var sources: List[String] = List()
+  private var sourcesById: Map[String, KgSource] = Map()
 
   final override def clear(): Unit = {
-    sources = List()
     edges = List()
     lucene.deleteAll()
     nodes = List()
     nodesById = Map()
     paths = List()
     pathsById = Map()
+    sourcesById = Map()
   }
 
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
@@ -55,9 +55,6 @@ class MemKgStore extends KgStore {
 //      !excluded && (!filters.include.isDefined || included)
 //    })
 
-  final override def getSources: List[String] =
-    this.sources
-
   final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
     edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
 
@@ -80,6 +77,9 @@ class MemKgStore extends KgStore {
   override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
 
+  final override def getSourcesById: Map[String, KgSource] =
+    sourcesById
+
   override def getRandomNode: KgNode =
     nodes(random.nextInt(nodes.size))
 
@@ -94,6 +94,7 @@ class MemKgStore extends KgStore {
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit = {
     this.edges = edges.toList
+    putSourceIds(this.edges.flatMap(_.sources).distinct)
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -107,7 +108,7 @@ class MemKgStore extends KgStore {
   final override def putNodes(nodes: Iterator[KgNode]): Unit = {
     this.nodes = nodes.toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
-    this.sources = this.nodes.flatMap(_.sources).distinct
+    putSourceIds(this.nodes.flatMap(_.sources).distinct)
     lucene.deleteAll()
     this.nodes.foreach(node => {
       lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
@@ -115,9 +116,17 @@ class MemKgStore extends KgStore {
     lucene.commit()
   }
 
-  override def putPaths(paths: Iterator[KgPath]): Unit = {
+  final override def putPaths(paths: Iterator[KgPath]): Unit = {
     this.paths = paths.toList
     this.pathsById = this.paths.map(path => (path.id, path)).toMap
+  }
+
+  final override def putSources(sources: Iterator[KgSource]): Unit = {
+    for (source <- sources) {
+      if (!sourcesById.contains(source.id)) {
+        sourcesById += (source.id -> source)
+      }
+    }
   }
 
   private def toSearchTerms(filters: Option[KgNodeFilters], text: Option[String]): List[SearchTerm] = {
