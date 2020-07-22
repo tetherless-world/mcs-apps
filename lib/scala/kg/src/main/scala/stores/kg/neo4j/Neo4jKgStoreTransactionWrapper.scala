@@ -5,7 +5,7 @@ import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver.{Result, Transaction}
 import org.slf4j.LoggerFactory
-import stores.Neo4jStoreConfiguration
+import stores.{Neo4jStoreConfiguration, StringFilter}
 import stores.kg.{KgNodeFilters, KgStore}
 
 import scala.collection.mutable
@@ -20,6 +20,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
+  private val SourceRelationshipType = "SOURCE"
 
   private implicit class Neo4jKgStoreResultWrapperImplicit(result: Result) extends Neo4jKgStoreResultWrapper(result)
 
@@ -68,27 +69,25 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     ).toEdges
 
   final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
-    val cypherFilters = CypherFilters(filters)
+    val (cypher, bindings) = toMatchingNodesCypher(filters, text)
     transaction.run(
-      s"""${textMatchToCypherMatch(text)}
-         |${cypherFilters.toCypherString}
+      s"""${cypher}
          |RETURN ${nodePropertyNamesString}
          |SKIP ${offset}
          |LIMIT ${limit}
          |""".stripMargin,
-      toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
+      toTransactionRunParameters(bindings)
     ).toNodes
   }
 
   final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
-    val cypherFilters = CypherFilters(filters)
+    val (cypher, bindings) = toMatchingNodesCypher(filters, text)
     val result =
       transaction.run(
-        s"""${textMatchToCypherMatch(text)}
-           |${cypherFilters.toCypherString}
+        s"""${cypher}
            |RETURN COUNT(node)
            |""".stripMargin,
-        toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
+        toTransactionRunParameters(bindings)
       )
     val record = result.single()
     record.get("COUNT(node)").asInt()
@@ -212,6 +211,24 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
         "sources" -> node.sources.mkString(ListDelimString),
       ))
     )
+    // Store sources as a delimited list on the node so they can be retrieved accurately
+    // In order to do filtering on individual sources we need to break them out as nodes.
+    // This is the standard way of doing multi-valued properties in neo4j: make the values
+    // separate nodes and connect to them.
+    // See #168.
+    for (sourceId <- node.sources) {
+      transaction.run(
+        s"""
+          |MATCH (source:Source), (node:Node)
+          |WHERE node.id = $$nodeId AND source.id = $$sourceId
+          |CREATE (node)-[:${SourceRelationshipType}]->(source)
+          |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "nodeId" -> node.id,
+          "sourceId" -> sourceId
+        ))
+      )
+    }
   }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
@@ -270,21 +287,71 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
 //      }
     }
 
-  private def textMatchToCypherBindingsMap(text: Option[String]) =
-    if (text.isDefined) {
-      Map(
-        "text" -> text.get
-      )
-    } else {
-      Map()
-    }
+  private def toMatchingNodesCypher(filters: Option[KgNodeFilters], text: Option[String]): (String, Map[String, Any]) = {
+    // Do this in an semi-imperative way but with immutable data structures and vals. It makes the code more readable.
 
-  private def textMatchToCypherMatch(text: Option[String]) =
-    if (text.isDefined) {
-      s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score"""
-    } else {
-      "MATCH (node: Node)"
-    }
+    val fulltextCypher = text.map(text =>
+        """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""").toList
+    val textBindings = text.map(CypherBinding("text", _)).toList
+
+    val distinctSourceIds =
+      if (filters.isDefined && filters.get.sources.isDefined) {
+        filters.get.sources.get.exclude.getOrElse(List()) ++ filters.get.sources.get.include.getOrElse(List())
+      } else {
+        List()
+      }.distinct
+
+    val distinctSourceIdBindings = distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => CypherBinding(s"source${sourceIdWithIndex._2}", sourceIdWithIndex._1))
+
+    val matchClauses: List[String] = List("(node: Node)") ++
+      distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:Source { id: $$source${sourceIdWithIndex._2} })")
+    val matchCypher = List("MATCH " + matchClauses.mkString(", "))
+
+    val whereClauses: List[String] =
+      if (filters.isDefined && filters.get.sources.isDefined) {
+        filters.get.sources.get.exclude.toList.flatMap(
+          _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
+        )) ++
+        filters.get.sources.get.include.toList.flatMap(
+          _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
+        ))
+      } else {
+        List()
+      }
+    val whereCypher =
+      if (whereClauses.nonEmpty) {
+        List("WHERE " + whereClauses.mkString(" AND "))
+      } else {
+        List()
+      }
+
+    val bindings: List[CypherBinding] = textBindings ++ distinctSourceIdBindings
+    val cypher = fulltextCypher ++ matchCypher ++ whereCypher
+
+    (cypher.mkString("\n"), bindings.map(binding => (binding.variableName -> binding.value)).toMap)
+  }
+
+  //  def toCypherBindingsMap: Map[String, Any] =
+  //    filters.flatMap(filter => filter.binding).map(binding => (binding.variableName -> binding.value)).toMap
+  //
+  //  def toCypherString: String =
+  //    if (!filters.isEmpty) {
+  //      s"WHERE ${filters.map(filter => filter.cypher).mkString(" AND ")}"
+  //    } else {
+  //      ""
+  //    }
+  // Previously used for datasource filters, when we only had one datasource per node
+  // Designed to do WHERE exact string = exact value
+//  private def toCypherFilters(bindingVariableNamePrefix: String, property: String, stringFilter: StringFilter): List[CypherFilter] = {
+//    stringFilter.exclude.getOrElse(List()).zipWithIndex.map(excludeWithIndex => {
+//      val bindingVariableName = s"${bindingVariableNamePrefix}Exclude${excludeWithIndex._2}"
+//      CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = excludeWithIndex._1)), cypher = s"NOT ${property} = $$${bindingVariableName}")
+//    }) ++
+//      stringFilter.include.getOrElse(List()).zipWithIndex.map(includeWithIndex => {
+//        val bindingVariableName = s"${bindingVariableNamePrefix}Include${includeWithIndex._2}"
+//        CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = includeWithIndex._1)), cypher = s"${property} = $$${bindingVariableName}")
+//      })
+//  }
 
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]

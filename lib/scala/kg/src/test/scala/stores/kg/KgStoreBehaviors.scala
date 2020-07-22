@@ -123,6 +123,19 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       }
     }
 
+    "filter out matching nodes" in {
+      storeFactory(TestMode.ReadOnly) { sut =>
+        val text = "Test"
+        val countBeforeFilters = sut.getMatchingNodesCount(filters = None, text = Some(text))
+        countBeforeFilters should be > 0
+        val actualCount = sut.getMatchingNodesCount(
+          filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
+          text = Some("Test")
+        )
+        actualCount should equal(0)
+      }
+    }
+
     "get node by id" in {
       storeFactory(TestMode.ReadOnly) { sut =>
         val expected = TestKgData.nodes(0)
@@ -151,19 +164,6 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
         val expected = TestKgData.nodes.size
         val actual = sut.getTotalNodesCount
         actual should equal(expected)
-      }
-    }
-
-    "filter out matching nodes" in {
-      storeFactory(TestMode.ReadOnly) { sut =>
-        val text = "Test"
-        val countBeforeFilters = sut.getMatchingNodesCount(filters = None, text = Some(text))
-        countBeforeFilters should be > 0
-        val actualCount = sut.getMatchingNodesCount(
-          filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
-          text = Some("Test")
-        )
-        actualCount should equal(0)
       }
     }
 
