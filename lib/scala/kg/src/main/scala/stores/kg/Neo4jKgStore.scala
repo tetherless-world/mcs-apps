@@ -13,7 +13,9 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 final case class CypherBinding(variableName: String, value: Any)
+
 final case class CypherFilter(cypher: String, binding: Option[CypherBinding] = None)
+
 final case class CypherFilters(filters: List[CypherFilter]) {
   def toCypherBindingsMap: Map[String, Any] =
     filters.flatMap(filter => filter.binding).map(binding => (binding.variableName -> binding.value)).toMap
@@ -25,6 +27,7 @@ final case class CypherFilters(filters: List[CypherFilter]) {
       ""
     }
 }
+
 object CypherFilters {
   def apply(nodeFilters: Option[KgNodeFilters]): CypherFilters =
     if (nodeFilters.isDefined) {
@@ -157,6 +160,275 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     }
   }
 
+  final implicit class Neo4jKgStoreTransaction(transaction: Transaction) extends KgStore {
+    final def clear(): Unit =
+    // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
+      transaction.run(
+        """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
+          |YIELD batches, total
+          |RETURN batches, total
+          |""".stripMargin)
+
+    final override def getSourcesById: Map[String, KgSource] =
+      transaction.run("MATCH (source:Source) RETURN source.id, source.label").asScala.map(record =>
+        KgSource(
+          id = record.get("source.id").asString(),
+          label = record.get("source.label").asString()
+        )
+      ).map(source => (source.id, source)).toMap
+
+    final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
+      transaction.run(
+        s"""
+           |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+           |ORDER BY type(edge), subject.id, edge
+           |SKIP ${offset}
+           |LIMIT ${limit}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "objectNodeId" -> objectNodeId
+        ))
+      ).toEdges
+
+    final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
+      transaction.run(
+        s"""
+           |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+           |ORDER BY type(edge), object.id, edge
+           |SKIP ${offset}
+           |LIMIT ${limit}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "subjectNodeId" -> subjectNodeId
+        ))
+      ).toEdges
+
+    final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
+      val cypherFilters = CypherFilters(filters)
+      transaction.run(
+        s"""${textMatchToCypherMatch(text)}
+           |${cypherFilters.toCypherString}
+           |RETURN ${nodePropertyNamesString}
+           |SKIP ${offset}
+           |LIMIT ${limit}
+           |""".stripMargin,
+        toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
+      ).toNodes
+    }
+
+    final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
+      val cypherFilters = CypherFilters(filters)
+      val result =
+        transaction.run(
+          s"""${textMatchToCypherMatch(text)}
+             |${cypherFilters.toCypherString}
+             |RETURN COUNT(node)
+             |""".stripMargin,
+          toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
+        )
+      val record = result.single()
+      record.get("COUNT(node)").asInt()
+    }
+
+    final override def getNodeById(id: String): Option[KgNode] =
+      transaction.run(
+        s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
+        toTransactionRunParameters(Map("id" -> id))
+      ).toNodes.headOption
+
+    final override def getPathById(id: String): Option[KgPath] =
+      transaction.run(
+        s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
+           |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map("id" -> id))
+      ).toPaths.headOption
+
+    final override def getRandomNode: KgNode =
+      transaction.run(
+        s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
+      ).toNodes.head
+
+    final override def getTotalEdgesCount: Int =
+      transaction.run(
+        """
+          |MATCH (subject:Node)-[r]->(object:Node)
+          |WHERE NOT type(r) = "PATH"
+          |RETURN COUNT(r) as count
+          |""".stripMargin
+      ).single().get("count").asInt()
+
+    final override def getTotalNodesCount: Int =
+      transaction.run("MATCH (n:Node) RETURN COUNT(n) as count").single().get("count").asInt()
+
+    final override def isEmpty: Boolean =
+      transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
+
+    final def putEdge(edge: KgEdge) =
+      transaction.run(
+        """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
+          |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
+          |REMOVE rel.noOp
+          |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "id" -> edge.id,
+          "labels" -> edge.labels.mkString(ListDelimString),
+          "object" -> edge.`object`,
+          "origins" -> edge.origins.mkString(ListDelimString),
+          "questions" -> edge.questions.mkString(ListDelimString),
+          "predicate" -> edge.predicate,
+          "sentences" -> edge.sentences.mkString(ListDelimString),
+          "sources" -> edge.sources.mkString(ListDelimString),
+          "subject" -> edge.subject,
+          "weight" -> edge.weight.getOrElse(null)
+        ))
+      )
+
+    final override def putEdges(edges: Iterator[KgEdge]): Unit = {
+      putModelsBatched(edges) { edges => {
+        putSources(edges.flatMap(_.sources).distinct.map(KgSource(_)))
+        for (edge <- edges) {
+          putEdge(edge)
+        }
+      }
+      }
+    }
+
+    final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+      // Neo4j doesn't tolerate duplicate nodes
+      val putNodeIds = new mutable.HashSet[String]
+      putModelsBatched(edgesWithNodes) { edgesWithNodes => {
+        putSources(edgesWithNodes.flatMap(_.sources).distinct.map(KgSource(_)))
+        for (edgeWithNodes <- edgesWithNodes) {
+          if (putNodeIds.add(edgeWithNodes.node1.id)) {
+            putNode(edgeWithNodes.node1)
+          }
+          if (putNodeIds.add(edgeWithNodes.node2.id)) {
+            putNode(edgeWithNodes.node2)
+          }
+          putEdge(edgeWithNodes.edge)
+        }
+      }
+      }
+    }
+
+    private def putModelsBatched[ModelT](models: Iterator[ModelT])(putModelBatch: (List[ModelT]) => Unit): Unit =
+      withSession { session => {
+        // Batch the models in order to put them all in a transaction.
+        // My (MG) first implementation looked like:
+        //      for (modelWithIndex <- models.zipWithIndex) {
+        //        val (model, modelIndex) = modelWithIndex
+        //        putModel(transaction, model)
+        //        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
+        //          tryOperation(() => transaction.commit())
+        //          transaction = session.beginTransaction()
+        //        }
+        //      }
+        // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
+        // I don't have time to investigate that. Batching models should be OK for now.
+        val modelBatch = new mutable.MutableList[ModelT]
+        while (models.hasNext) {
+          while (modelBatch.size < configuration.commitInterval && models.hasNext) {
+            modelBatch += models.next()
+          }
+          if (!modelBatch.isEmpty) {
+            //          logger.info("putting batch of {} models in a transaction", modelBatch.size)
+            putModelBatch(modelBatch.toList)
+            modelBatch.clear()
+          }
+        }
+      }
+      }
+
+    final def putNode(node: KgNode): Unit = {
+      transaction.run(
+        "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
+        toTransactionRunParameters(Map(
+          "id" -> node.id,
+          "labels" -> node.labels.mkString(ListDelimString),
+          "pos" -> node.pos.getOrElse(null),
+          "sources" -> node.sources.mkString(ListDelimString),
+        ))
+      )
+    }
+
+    final override def putNodes(nodes: Iterator[KgNode]): Unit =
+      putModelsBatched(nodes) { nodes => {
+        putSources(nodes.flatMap(_.sources).distinct.map(KgSource(_)))
+        for (node <- nodes) {
+          putNode(node)
+        }
+      }
+      }
+
+    final override def putPaths(paths: Iterator[KgPath]): Unit =
+      putModelsBatched(paths) { paths => {
+        for (path <- paths) {
+          for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
+            val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
+            transaction.run(
+              """
+                |MATCH (subject:Node), (object: Node)
+                |WHERE subject.id = $subject AND object.id = $object
+                |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
+                |""".stripMargin,
+              toTransactionRunParameters(Map(
+                "object" -> pathEdge.`object`,
+                "pathEdgeIndex" -> pathEdgeIndex,
+                "pathEdgePredicate" -> pathEdge.predicate,
+                "pathId" -> path.id,
+                "sources" -> path.sources.mkString(ListDelimString),
+                "subject" -> pathEdge.subject
+              ))
+            )
+          }
+        }
+      }
+      }
+
+    final override def putSources(sources: Iterator[KgSource]): Unit =
+      for (source <- sources) {
+        val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
+        val sourceExists =
+          transaction.run(
+            """
+              |MATCH (source:Source)
+              |WHERE source.id = $id
+              |RETURN source.label
+              |LIMIT 1
+              |""".stripMargin,
+            transactionRunParameters
+          ).hasNext
+        if (!sourceExists) {
+          transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
+          logger.info("created source {}", source.id)
+        } else {
+          logger.info(s"source {} already exists", source.id)
+        }
+      }
+
+    private def textMatchToCypherBindingsMap(text: Option[String]) =
+      if (text.isDefined) {
+        Map(
+          "text" -> text.get
+        )
+      } else {
+        Map()
+      }
+
+    private def textMatchToCypherMatch(text: Option[String]) =
+      if (text.isDefined) {
+        s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score"""
+      } else {
+        "MATCH (node: Node)"
+      }
+
+    private def toTransactionRunParameters(map: Map[String, Any]) =
+      map.asJava.asInstanceOf[java.util.Map[String, Object]]
+  }
+
   bootstrapStore()
 
   private def bootstrapStore(): Unit = {
@@ -202,16 +474,9 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   final def clear(): Unit = {
     // It would be simpler to use CREATE OR REPLACE DATABASE, but the free Neo4j 4.0 Community Edition doesn't support it,
     // and the open source fork of the Neo4j Enterprise Edition doesn't include 4.0 features yet.
-    withSession { session =>
-      session.writeTransaction { transaction =>
-        // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
-        transaction.run(
-          """CALL apoc.periodic.iterate("MATCH (n) return n", "DETACH DELETE n", {batchSize:1000})
-            |YIELD batches, total
-            |RETURN batches, total
-            |""".stripMargin)
-        transaction.commit()
-      }
+    withWriteTransaction { transaction =>
+      transaction.clear()
+      transaction.commit()
     }
     while (!isEmpty) {
       logger.info("waiting for neo4j to clear")
@@ -220,344 +485,112 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
   }
 
   final override def getSourcesById: Map[String, KgSource] =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        val result =
-          transaction.run("MATCH (source:Source) RETURN source.id, source.label")
-        result.asScala.map(record =>
-          KgSource(
-            id = record.get("source.id").asString(),
-            label = record.get("source.label").asString()
-          )
-        ).map(source => (source.id, source)).toMap
-      }
+    withReadTransaction { transaction =>
+      transaction.getSourcesById
     }
 
-  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] = {
-    withSession { session =>
-      session.readTransaction { transaction => {
-        transaction.run(
-          s"""
-             |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
-             |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-             |ORDER BY type(edge), subject.id, edge
-             |SKIP ${offset}
-             |LIMIT ${limit}
-             |""".stripMargin,
-          toTransactionRunParameters(Map(
-            "objectNodeId" -> objectNodeId
-          ))
-        ).toEdges
-      }
-      }
+  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
+    withReadTransaction { transaction =>
+      transaction.getEdgesByObject(limit, objectNodeId, offset)
     }
-  }
 
-  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] = {
-    withSession { session =>
-      session.readTransaction { transaction => {
-        transaction.run(
-          s"""
-             |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
-             |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-             |ORDER BY type(edge), object.id, edge
-             |SKIP ${offset}
-             |LIMIT ${limit}
-             |""".stripMargin,
-          toTransactionRunParameters(Map(
-            "subjectNodeId" -> subjectNodeId
-          ))
-        ).toEdges
-      }
-      }
+  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
+    withReadTransaction { transaction =>
+      transaction.getEdgesBySubject(limit, offset, subjectNodeId)
     }
-  }
 
-  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
-    val cypherFilters = CypherFilters(filters)
-
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run(
-          s"""${textMatchToCypherMatch(text)}
-             |${cypherFilters.toCypherString}
-             |RETURN ${nodePropertyNamesString}
-             |SKIP ${offset}
-             |LIMIT ${limit}
-             |""".stripMargin,
-          toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
-        ).toNodes
-      }
+  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] =
+    withReadTransaction { transaction =>
+      transaction.getMatchingNodes(filters, limit, offset, text)
     }
-  }
 
-  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
-    val cypherFilters = CypherFilters(filters)
-
-    withSession { session =>
-      session.readTransaction { transaction =>
-        val result =
-          transaction.run(
-            s"""${textMatchToCypherMatch(text)}
-               |${cypherFilters.toCypherString}
-               |RETURN COUNT(node)
-               |""".stripMargin,
-            toTransactionRunParameters(textMatchToCypherBindingsMap(text) ++ cypherFilters.toCypherBindingsMap)
-          )
-        val record = result.single()
-        record.get("COUNT(node)").asInt()
-      }
+  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int =
+    withReadTransaction { transaction =>
+      transaction.getMatchingNodesCount(filters, text)
     }
-  }
 
-  override final def getNodeById(id: String): Option[KgNode] = {
-    withSession { session =>
-      session.readTransaction { transaction => {
-        transaction.run(
-          s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
-          toTransactionRunParameters(Map("id" -> id))
-        ).toNodes.headOption
-      }
-      }
+  override final def getNodeById(id: String): Option[KgNode] =
+    withReadTransaction { transaction =>
+      transaction.getNodeById(id)
     }
-  }
 
-//  override def getPaths: List[KgPath] =
-//    withSession { session =>
-//      session.readTransaction { transaction =>
-//        transaction.run(
-//          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
-//            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
-//            |""".stripMargin
-//        ).toPaths
-//      }
-//    }
-//
-  override def getPathById(id: String): Option[KgPath] = {
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run(
-          s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
-             |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
-             |""".stripMargin,
-          toTransactionRunParameters(Map("id" -> id))
-        ).toPaths.headOption
-      }
+  //  override def getPaths: List[KgPath] =
+  //    withSession { session =>
+  //      session.readTransaction { transaction =>
+  //        transaction.run(
+  //          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
+  //            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
+  //            |""".stripMargin
+  //        ).toPaths
+  //      }
+  //    }
+  //
+  override def getPathById(id: String): Option[KgPath] =
+    withReadTransaction { transaction =>
+      transaction.getPathById(id)
     }
-  }
 
   final override def getRandomNode: KgNode =
-    withSession { session =>
-      session.readTransaction { transaction => {
-        transaction.run(
-          s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
-        ).toNodes.head
-      }
-      }
+    withReadTransaction { transaction =>
+      transaction.getRandomNode
     }
 
   final override def getTotalEdgesCount: Int =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run(
-          """
-            |MATCH (subject:Node)-[r]->(object:Node)
-            |WHERE NOT type(r) = "PATH"
-            |RETURN COUNT(r) as count
-            |""".stripMargin
-        ).single().get("count").asInt()
-      }
+    withReadTransaction { transaction =>
+      transaction.getTotalEdgesCount
     }
 
   final override def getTotalNodesCount: Int =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run("MATCH (n:Node) RETURN COUNT(n) as count").single().get("count").asInt()
-      }
+    withReadTransaction { transaction =>
+      transaction.getTotalNodesCount
     }
 
   final override def isEmpty: Boolean =
-    withSession { session =>
-      session.readTransaction { transaction =>
-        transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
-      }
+    withReadTransaction { transaction =>
+      transaction.isEmpty
     }
-
-  private def toTransactionRunParameters(map: Map[String, Any]) =
-    map.asJava.asInstanceOf[java.util.Map[String, Object]]
-
-  private def putEdge(edge: KgEdge, transaction: Transaction) =
-    transaction.run(
-      """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-        |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
-        |REMOVE rel.noOp
-        |""".stripMargin,
-      toTransactionRunParameters(Map(
-        "id" -> edge.id,
-        "labels" -> edge.labels.mkString(ListDelimString),
-        "object" -> edge.`object`,
-        "origins" -> edge.origins.mkString(ListDelimString),
-        "questions" -> edge.questions.mkString(ListDelimString),
-        "predicate" -> edge.predicate,
-        "sentences" -> edge.sentences.mkString(ListDelimString),
-        "sources" -> edge.sources.mkString(ListDelimString),
-        "subject" -> edge.subject,
-        "weight" -> edge.weight.getOrElse(null)
-      ))
-    )
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
-    putModelsBatched(edges) { (edges, transaction) => {
-      putSourceIds(edges.flatMap(_.sources).distinct, transaction)
-      for (edge <- edges) {
-        putEdge(edge, transaction)
-      }
-    }}
-
-  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
-    // Neo4j doesn't tolerate duplicate nodes
-    val putNodeIds = new mutable.HashSet[String]
-    putModelsBatched(edgesWithNodes) { (edgesWithNodes, transaction) => {
-      putSourceIds(edgesWithNodes.flatMap(_.sources).distinct, transaction)
-      for (edgeWithNodes <- edgesWithNodes) {
-        if (putNodeIds.add(edgeWithNodes.node1.id)) {
-          putNode(edgeWithNodes.node1, transaction)
-        }
-        if (putNodeIds.add(edgeWithNodes.node2.id)) {
-          putNode(edgeWithNodes.node2, transaction)
-        }
-        putEdge(edgeWithNodes.edge, transaction)
-      }
+    withWriteTransaction { transaction =>
+      transaction.putEdges(edges)
     }
-    }
-  }
 
-  private def putNode(node: KgNode, transaction: Transaction): Unit = {
-    transaction.run(
-      "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
-      toTransactionRunParameters(Map(
-        "id" -> node.id,
-        "labels" -> node.labels.mkString(ListDelimString),
-        "pos" -> node.pos.getOrElse(null),
-        "sources" -> node.sources.mkString(ListDelimString),
-      ))
-    )
-  }
+  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
+    withWriteTransaction { transaction =>
+      transaction.putKgtkEdgesWithNodes(edgesWithNodes)
+    }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
-    putModelsBatched(nodes) { (nodes, transaction) => {
-      putSourceIds(nodes.flatMap(_.sources).distinct, transaction)
-      for (node <- nodes) {
-        putNode(node, transaction)
-      }
-    }
+    withWriteTransaction { transaction =>
+      transaction.putNodes(nodes)
     }
 
-  override def putPaths(paths: Iterator[KgPath]): Unit =
-    putModelsBatched(paths) { (paths, transaction) => {
-      for (path <- paths) {
-        for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-          val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-          transaction.run(
-            """
-              |MATCH (subject:Node), (object: Node)
-              |WHERE subject.id = $subject AND object.id = $object
-              |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
-              |""".stripMargin,
-            toTransactionRunParameters(Map(
-              "object" -> pathEdge.`object`,
-              "pathEdgeIndex" -> pathEdgeIndex,
-              "pathEdgePredicate" -> pathEdge.predicate,
-              "pathId" -> path.id,
-              "sources" -> path.sources.mkString(ListDelimString),
-              "subject" -> pathEdge.subject
-            ))
-          )
-        }
-      }
-    }
+  final override def putPaths(paths: Iterator[KgPath]): Unit =
+    withWriteTransaction { transaction =>
+      transaction.putPaths(paths)
     }
 
-  private def putModelsBatched[ModelT](models: Iterator[ModelT])(putModelBatch: (List[ModelT], Transaction)=>Unit): Unit =
+  final override def putSources(sources: Iterator[KgSource]): Unit =
+    withWriteTransaction { transaction =>
+      transaction.putSources(sources)
+    }
+
+  private def withReadTransaction[V](f: Transaction => V): V =
     withSession { session => {
-      // Batch the models in order to put them all in a transaction.
-      // My (MG) first implementation looked like:
-//      for (modelWithIndex <- models.zipWithIndex) {
-//        val (model, modelIndex) = modelWithIndex
-//        putModel(transaction, model)
-//        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
-//          tryOperation(() => transaction.commit())
-//          transaction = session.beginTransaction()
-//        }
-//      }
-      // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
-      // I don't have time to investigate that. Batching models should be OK for now.
-      val modelBatch = new mutable.MutableList[ModelT]
-      while (models.hasNext) {
-        while (modelBatch.size < configuration.commitInterval && models.hasNext) {
-          modelBatch += models.next()
-        }
-        if (!modelBatch.isEmpty) {
-//          logger.info("putting batch of {} models in a transaction", modelBatch.size)
-          session.writeTransaction { transaction =>
-            putModelBatch(modelBatch.toList, transaction)
-          }
-          modelBatch.clear()
-        }
+      session.readTransaction { transaction =>
+        f(transaction)
       }
     }
-  }
-
-  private final def putSourceIds(sourceIds: List[String], transaction: Transaction) =
-    putSources(sourceIds.map(KgSource(_)).iterator, transaction)
-
-  final override def putSources(sources: Iterator[KgSource]): Unit = {
-    withSession { session => {
-      session.writeTransaction { transaction =>
-        putSources(sources, transaction)
-      }
-    }
-    }
-  }
-
-  private def putSources(sources: Iterator[KgSource], transaction: Transaction): Unit = {
-    for (source <- sources) {
-      val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
-      val sourceExists =
-        transaction.run(
-          """
-            |MATCH (source:Source)
-            |WHERE source.id = $id
-            |RETURN source.label
-            |LIMIT 1
-            |""".stripMargin,
-          transactionRunParameters
-        ).hasNext
-      if (!sourceExists) {
-        transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
-        logger.info("created source {}", source.id)
-      } else {
-        logger.info(s"source {} already exists", source.id)
-      }
-    }
-  }
-
-  private def textMatchToCypherBindingsMap(text: Option[String]) =
-    if (text.isDefined) {
-      Map(
-        "text" -> text.get
-      )
-    } else {
-      Map()
-    }
-
-  private def textMatchToCypherMatch(text: Option[String]) =
-    if (text.isDefined) {
-      s"""CALL db.index.fulltext.queryNodes("node", $$text) YIELD node, score"""
-    } else {
-      "MATCH (node: Node)"
     }
 
   private def withSession[V](f: Session => V): V =
     withResource[Session, V](driver.session())(f)
+
+  private def withWriteTransaction[V](f: Transaction => V): V =
+    withSession { session => {
+      session.writeTransaction { transaction =>
+        f(transaction)
+      }
+    }
+    }
 }

@@ -44,12 +44,12 @@ trait KgStore {
    */
   def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int;
 
-  def getPathById(id: String): Option[KgPath]
-
   /**
    * Get a node by ID.
    */
   def getNodeById(id: String): Option[KgNode]
+
+  def getPathById(id: String): Option[KgPath]
 
   /**
    * Get a random node
