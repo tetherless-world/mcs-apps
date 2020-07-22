@@ -1,6 +1,7 @@
 package stores.kg
 
 import com.google.inject.ImplementedBy
+import data.kg.KgData
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.kg.neo4j.Neo4jKgStore
@@ -71,6 +72,18 @@ trait KgStore {
 
   final def putEdges(edges: Iterable[KgEdge]): Unit =
     putEdges(edges.iterator)
+
+  /**
+   * Convenience method for putting a KgData to the store.
+   *
+   * Also useful for batch writing to a transactional store.
+   */
+  def putData(data: KgData): Unit = {
+    putSources(data.sources)
+    putNodes(data.nodes)
+    putEdges(data.edges)
+    putPaths(data.paths)
+  }
 
   /**
    * Put the given edges to the store

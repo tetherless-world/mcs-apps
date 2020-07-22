@@ -1,5 +1,6 @@
 package stores.kg.neo4j
 
+import data.kg.KgData
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver.{Result, Transaction}
@@ -262,10 +263,11 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
         ).hasNext
       if (!sourceExists) {
         transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
-        logger.info("created source {}", source.id)
-      } else {
-        logger.info(s"source {} already exists", source.id)
+//        logger.debug("created source {}", source.id)
       }
+//      else {
+//        logger.debug(s"source {} already exists", source.id)
+//      }
     }
 
   private def textMatchToCypherBindingsMap(text: Option[String]) =

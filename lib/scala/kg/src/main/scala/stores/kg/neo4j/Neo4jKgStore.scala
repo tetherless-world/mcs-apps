@@ -1,6 +1,7 @@
 package stores.kg.neo4j
 
 import com.google.inject.Inject
+import data.kg.KgData
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.Singleton
@@ -74,7 +75,7 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
     }
     while (!isEmpty) {
       logger.info("waiting for neo4j to clear")
-      Thread.sleep(100)
+      Thread.sleep(10)
     }
   }
 
@@ -144,29 +145,41 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       transaction.isEmpty
     }
 
+  override def putData(data: KgData): Unit = {
+    withWriteTransaction { transaction =>
+      transaction.putData(data)
+      transaction.commit()
+    }
+  }
+
   final override def putEdges(edges: Iterator[KgEdge]): Unit =
     withWriteTransaction { transaction =>
       transaction.putEdges(edges)
+      transaction.commit()
     }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
     withWriteTransaction { transaction =>
       transaction.putKgtkEdgesWithNodes(edgesWithNodes)
+      transaction.commit()
     }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
     withWriteTransaction { transaction =>
       transaction.putNodes(nodes)
+      transaction.commit()
     }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit =
     withWriteTransaction { transaction =>
       transaction.putPaths(paths)
+      transaction.commit()
     }
 
   final override def putSources(sources: Iterator[KgSource]): Unit =
     withWriteTransaction { transaction =>
       transaction.putSources(sources)
+      transaction.commit()
     }
 
   private def withReadTransaction[V](f: Transaction => V): V =
