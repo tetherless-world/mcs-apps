@@ -26,7 +26,7 @@ class MemKgStore extends KgStore {
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
-  @tailrec final def calcNodePageRanks(
+  @tailrec private final def calcNodePageRanks(
                                         pageRanks: Map[String, Double] = nodesById map {node => (node._1, 1.0 / nodes.size)},
                                         iteration: Int = 0,
                                         maxIterations: Int = 1000,
