@@ -6,9 +6,15 @@
 // GraphQL query operation: KgHomePageQuery
 // ====================================================
 
+export interface KgHomePageQuery_kgById_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
+}
+
 export interface KgHomePageQuery_kgById {
   __typename: "Kg";
-  sources: string[];
+  sources: KgHomePageQuery_kgById_sources[];
 }
 
 export interface KgHomePageQuery {

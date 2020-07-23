@@ -13,6 +13,7 @@ logs/
 /project/project/
 /project/metals.sbt
 .python-version
+schema.graphql
 target/
 **/integration/cypress/plugins/
 **/integration/cypress/videos/

@@ -1,4 +1,4 @@
-import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {BenchmarkTestData} from "../../support/benchmark/BenchmarkTestData";
 import {Benchmark} from "../../support/benchmark/models/Benchmark";
 import {BenchmarkDataset} from "../../support/benchmark/models/BenchmarkDataset";
 import {BenchmarkDatasetPage} from "../../support/benchmark/pages/BenchmarkDatasetPage";
@@ -9,7 +9,7 @@ context("Benchmark dataset page", () => {
   let page: BenchmarkDatasetPage;
 
   before(() => {
-    TestData.benchmarks.then((benchmarks) => {
+    BenchmarkTestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
       dataset = benchmark.datasets.find((dataset) =>
         dataset.id.endsWith("-test")
@@ -24,19 +24,21 @@ context("Benchmark dataset page", () => {
   });
 
   it("should show questions", () => {
-    TestData.benchmarkQuestionsByDataset(dataset.id).then((questions) => {
-      questions.slice(0, 10).forEach((question) => {
-        question.prompts.forEach((prompt) => {
-          page.questions
-            .question(question.id)
-            .text.should("contain", prompt.text);
+    BenchmarkTestData.benchmarkQuestionsByDataset(dataset.id).then(
+      (questions) => {
+        questions.slice(0, 10).forEach((question) => {
+          question.prompts.forEach((prompt) => {
+            page.questions
+              .question(question.id)
+              .text.should("contain", prompt.text);
+          });
         });
-      });
-    });
+      }
+    );
   });
 
   it("should show submissions", () => {
-    TestData.benchmarkSubmissions.then((submissions) => {
+    BenchmarkTestData.benchmarkSubmissions.then((submissions) => {
       submissions
         .filter(
           (submission) =>

@@ -1,5 +1,5 @@
 import {KgHomePage} from "../../support/kg/pages/KgHomePage";
-import {TestData} from "../../support/kg/KgTestData";
+import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
@@ -9,7 +9,7 @@ context("KG Home Page", () => {
   let node: KgNode;
 
   before(() => {
-    TestData.kgNodes.then((nodes) => {
+    KgTestData.kgNodes.then((nodes) => {
       node = nodes[0];
     });
   });
@@ -21,9 +21,12 @@ context("KG Home Page", () => {
   });
 
   it("should show selected source", () => {
-    page.search.selectDatasource(TestData.datasources[0]);
+    page.search.selectSource(KgTestData.kgSources[0].label);
 
-    page.search.selectedDatasource.should("have.text", TestData.datasources[0]);
+    page.search.selectedDatasource.should(
+      "have.text",
+      KgTestData.kgSources[0].id
+    );
   });
 
   it("should be the home page", () => {
@@ -32,7 +35,7 @@ context("KG Home Page", () => {
   });
 
   it("should show node page", () => {
-    page.search.get().type(node.label);
+    page.search.get().type(node.labels[0]);
 
     page.search.suggestion(0).get().click();
 
@@ -42,11 +45,11 @@ context("KG Home Page", () => {
   });
 
   it("should show node search results page", () => {
-    page.search.get().type(node.label);
+    page.search.get().type(node.labels[0]);
 
     page.search.enter();
 
-    const nodeSearchResultsPage = new KgNodeSearchResultsPage(node.label);
+    const nodeSearchResultsPage = new KgNodeSearchResultsPage(node.labels[0]);
 
     nodeSearchResultsPage.assertLoaded();
   });

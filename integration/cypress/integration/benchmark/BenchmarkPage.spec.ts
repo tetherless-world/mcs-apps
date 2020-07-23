@@ -1,4 +1,4 @@
-import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {BenchmarkTestData} from "../../support/benchmark/BenchmarkTestData";
 import {BenchmarkPage} from "../../support/benchmark/pages/BenchmarkPage";
 import {Benchmark} from "../../support/benchmark/models/Benchmark";
 import {BenchmarkSubmission} from "../../support/benchmark/models/BenchmarkSubmission";
@@ -11,11 +11,11 @@ context("Benchmark page", () => {
   let page: BenchmarkPage;
 
   before(() => {
-    TestData.benchmarks.then((benchmarks) => {
+    BenchmarkTestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
-      TestData.benchmarkQuestions.then((questions) => {
+      BenchmarkTestData.benchmarkQuestions.then((questions) => {
         benchmarkQuestions = questions;
-        TestData.benchmarkSubmissions.then((submissions) => {
+        BenchmarkTestData.benchmarkSubmissions.then((submissions) => {
           benchmarkSubmissions = submissions;
           page = new BenchmarkPage(benchmark.id);
           page.visit();
@@ -51,8 +51,8 @@ context("Benchmark page", () => {
   });
 
   it("should show submissions", () => {
-    TestData.benchmarks.then(benchmarks => {
-      TestData.benchmarkSubmissions.then((submissions) => {
+    BenchmarkTestData.benchmarks.then(benchmarks => {
+      BenchmarkTestData.benchmarkSubmissions.then((submissions) => {
         submissions
           .filter((submission) => submission.benchmarkId == benchmark.id)
           .forEach((submission) => {

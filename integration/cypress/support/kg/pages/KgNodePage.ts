@@ -1,5 +1,5 @@
-import { Page } from "../../Page";
-import { TestData } from "../KgTestData";
+import {Page} from "../../Page";
+import {KgTestData} from "../KgTestData";
 
 class EdgeList {
   constructor(private readonly selector: string) {}
@@ -27,7 +27,7 @@ export class KgNodePage extends Page {
     super();
   }
 
-  readonly relativeUrl = `/kg/${TestData.kgId}/node/${encodeURIComponent(
+  readonly relativeUrl = `/kg/${KgTestData.kgId}/node/${encodeURIComponent(
     this.nodeId
   )}`;
   readonly listRelUrl = this.relativeUrl + "/list";
@@ -43,7 +43,7 @@ export class KgNodePage extends Page {
   }
 
   get datasource() {
-    return cy.get(this.frame.selector + " [data-cy=node-datasource]");
+    return cy.get(this.frame.selector + " [data-cy=node-source]");
   }
 
   private tab(tab: KgNodePageTab) {

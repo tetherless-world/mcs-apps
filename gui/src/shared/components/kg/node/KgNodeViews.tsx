@@ -20,14 +20,15 @@ import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid
 import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
 import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
 import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
+import {KgSource} from "shared/models/kg/KgSource";
 
 export const KgNodeViews: React.FunctionComponent<{
   node: {
     aliases: string[] | null;
-    sources: string[];
     id: string;
     label: string | null;
     pos: string | null;
+    sources: KgSource[];
     subjectOfEdges: KgNodeSubjectOfEdge[];
   };
 }> = ({node}) => {
@@ -116,11 +117,11 @@ export const KgNodeViews: React.FunctionComponent<{
                 <CardHeader title="Source(s)"></CardHeader>
                 <CardContent>
                   <List>
-                    <ListItemText data-cy="node-datasource">
-                      {node.sources.map((source) => (
+                    {node.sources.map((source) => (
+                      <ListItemText data-cy="node-source">
                         <KgSourceLink source={source} />
-                      ))}
-                    </ListItemText>
+                      </ListItemText>
+                    ))}
                   </List>
                 </CardContent>
               </Card>
