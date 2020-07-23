@@ -5,4 +5,5 @@ final case class KgNode(
                        labels: List[String],
                        pos: Option[String],
                        sources: List[String],
+                       pageRank: Option[Double]
                      )

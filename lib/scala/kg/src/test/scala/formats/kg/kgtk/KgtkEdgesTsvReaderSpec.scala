@@ -21,6 +21,7 @@ class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
             node.id should not be empty
             node.labels.size should be > 0
             node.sources.size should be > 0
+            node.pageRank.isEmpty should be false
           }
         }
       }

@@ -38,7 +38,8 @@ class Neo4jKgStoreRecordWrapper(record: Record) {
       id = recordMap("node.id"),
       labels = toList(recordMap("node.labels")),
       pos = Option(recordMap("node.pos")),
-      sources = toList(recordMap("node.sources"))
+      sources = toList(recordMap("node.sources")),
+      pageRank = Option(recordMap("node.pageRank")).map(weight => weight.asInstanceOf[Double].doubleValue())
     )
   }
 

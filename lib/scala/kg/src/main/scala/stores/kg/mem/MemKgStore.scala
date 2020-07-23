@@ -20,7 +20,6 @@ class MemKgStore extends KgStore {
   private val luceneNodeLabelsField = lucene.create.field[String]("labels", fullTextSearchable = true)
   private var nodes: List[KgNode] = List()
   private var nodesById: Map[String, KgNode] = Map()
-  private var nodesPageRanks: Map[String, Double] = Map()
   private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
@@ -123,7 +122,7 @@ class MemKgStore extends KgStore {
     this.edges = edges.toList
     putSourceIds(this.edges.flatMap(_.sources).distinct)
 
-    if (nodes.size > 0) this.nodesPageRanks = calcNodePageRanks()
+    if (nodes.size > 0) writeNodePageRanks
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -144,7 +143,7 @@ class MemKgStore extends KgStore {
     })
     lucene.commit()
 
-    if (edges.size > 0) this.nodesPageRanks = calcNodePageRanks()
+    if (edges.size > 0) writeNodePageRanks
   }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit = {
@@ -184,5 +183,10 @@ class MemKgStore extends KgStore {
   private def toSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
     stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
     stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
+  }
+
+  private def writeNodePageRanks = {
+    this.nodes = calcNodePageRanks().map(nodeRank => this.nodesById(nodeRank._1).copy(pageRank = Some(nodeRank._2))).toList
+    this.nodesById = this.nodes.map(node => (node.id, node)).toMap
   }
 }
