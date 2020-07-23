@@ -4,5 +4,4 @@ export type KgNode = {
   readonly aliases: [string];
   readonly pos: string;
   readonly datasource: string;
-  readonly other: {};
 };

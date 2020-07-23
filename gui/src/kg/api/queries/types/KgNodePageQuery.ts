@@ -32,7 +32,6 @@ export interface KgNodePageQuery_kgById_nodeById {
   sources: KgNodePageQuery_kgById_nodeById_sources[];
   id: string;
   label: string | null;
-  other: string | null;
   pos: string | null;
   subjectOfEdges: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
 }

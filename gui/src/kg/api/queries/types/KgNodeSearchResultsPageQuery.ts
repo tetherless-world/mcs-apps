@@ -20,7 +20,6 @@ export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   sources: KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources[];
   id: string;
   label: string | null;
-  other: string | null;
   pos: string | null;
 }
 

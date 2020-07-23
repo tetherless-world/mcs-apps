@@ -6,6 +6,5 @@ fragment KgNodeFieldsFragment on KgNode {
   }
   id
   label
-  other
   pos
 }

@@ -18,6 +18,5 @@ export interface KgNodeFieldsFragment {
   sources: KgNodeFieldsFragment_sources[];
   id: string;
   label: string | null;
-  other: string | null;
   pos: string | null;
 }

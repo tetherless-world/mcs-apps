@@ -5,7 +5,6 @@ export interface KgNode {
   aliases: string[] | null;
   id: string;
   label: string | null;
-  other: string | null;
   sources: KgSource[];
   pos: string | null;
 }

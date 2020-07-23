@@ -82,10 +82,6 @@ const columns: MUIDataTableColumn[] = [
     },
   },
   {
-    name: "other",
-    label: "Other",
-  },
-  {
     name: "pos",
     label: "Pos",
     options: {
