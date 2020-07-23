@@ -23,14 +23,10 @@ jobs:
       - run:
           name: Load the database
           command: |
-            bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/edges.csv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/edges.csv
-            bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/nodes.csv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/nodes.csv
+            bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv
             # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/edges.csv mcs-kg-app:/app/data/import/kg/legacy/
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/nodes.csv mcs-kg-app:/app/data/import/kg/legacy/
-            script/import-legacy-cskg-nodes-csv
-            sleep 60
-            script/import-legacy-cskg-edges-csv
+            docker cp lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv mcs-kg-app:/app/data/import/kg/kgtk/
+            script/import-kgtk-cskg-tsv
       - run:
           name: Test that the database is loaded
           command: |
