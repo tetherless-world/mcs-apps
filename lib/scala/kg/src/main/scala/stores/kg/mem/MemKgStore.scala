@@ -8,6 +8,9 @@ import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
 import stores.kg.{KgNodeFilters, KgStore}
 
+import scala.annotation.tailrec
+import scala.collection.GenSeq
+import scala.math.sqrt
 import scala.util.Random
 
 class MemKgStore extends KgStore {
@@ -18,10 +21,35 @@ class MemKgStore extends KgStore {
   private val luceneNodeLabelsField = lucene.create.field[String]("labels", fullTextSearchable = true)
   private var nodes: List[KgNode] = List()
   private var nodesById: Map[String, KgNode] = Map()
+  private var nodesPageRanks: Map[String, Double] = Map()
   private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
+
+  @tailrec final def calcNodePageRanks(
+                                        pageRanks: Map[String, Double] = nodesById map {node => (node._1, 1.0 / nodes.size)},
+                                        iteration: Int = 0,
+                                        maxIterations: Int = 1000,
+                                        dampingFactor: Double = 0.85,
+                                        convergenceThreshold: Double = 0.01
+                                      ): Map[String, Double] = {
+    if (iteration >= maxIterations) return pageRanks
+
+    val newPageRanks: Map[String, Double] = pageRanks map { nodeRank =>
+      val nodeId = nodeRank._1
+      val inboundNodes = edges.filter(_.`object` == nodeId).map(_.subject)
+      val inboundNodesSum = inboundNodes.map {
+        inboundNodeId => pageRanks(inboundNodeId) / edges.filter{edge => edge.subject == inboundNodeId}.size
+      }.sum
+      (nodeId, dampingFactor*inboundNodesSum + (1-dampingFactor)/pageRanks.size)
+    }
+
+    if (sqrt(nodes.map(node => (newPageRanks(node.id)-pageRanks(node.id))*(newPageRanks(node.id)-pageRanks(node.id))).sum/nodes.size)<=convergenceThreshold)
+      newPageRanks
+    else
+      calcNodePageRanks(newPageRanks, iteration + 1, maxIterations, dampingFactor, convergenceThreshold)
+  }
 
   final override def clear(): Unit = {
     edges = List()
@@ -95,6 +123,8 @@ class MemKgStore extends KgStore {
   final override def putEdges(edges: Iterator[KgEdge]): Unit = {
     this.edges = edges.toList
     putSourceIds(this.edges.flatMap(_.sources).distinct)
+
+    if (nodes.size > 0) this.nodesPageRanks = calcNodePageRanks()
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -114,6 +144,8 @@ class MemKgStore extends KgStore {
       lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
     })
     lucene.commit()
+
+    if (edges.size > 0) this.nodesPageRanks = calcNodePageRanks()
   }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit = {
