@@ -9,7 +9,6 @@ import stores.StringFilter
 import stores.kg.{KgNodeFilters, KgStore}
 
 import scala.annotation.tailrec
-import scala.collection.GenSeq
 import scala.math.sqrt
 import scala.util.Random
 
@@ -84,10 +83,10 @@ class MemKgStore extends KgStore {
 //    })
 
   final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
+    edges.filter(edge => edge.`object` == objectNodeId).sortBy(edge => nodesPageRanks(edge.subject)).drop(offset).take(limit)
 
   final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(edge => edge.subject == subjectNodeId).drop(offset).take(limit)
+    edges.filter(edge => edge.subject == subjectNodeId).sortBy(edge => nodesPageRanks(edge.`object`)).drop(offset).take(limit)
 
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
