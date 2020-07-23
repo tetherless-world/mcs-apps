@@ -36,7 +36,7 @@ export class KgNodeSearchBox {
     cy.get("[data-cy=allDatasourcesSelectMenuItem]").click();
   }
 
-  selectDatasource(label: string) {
+  selectSource(label: string) {
     cy.get(this.parentSelector + " [data-cy=datasourceSelect]").click();
 
     cy.get("[data-cy=datasourceSelectMenuItem]").contains(label).click();

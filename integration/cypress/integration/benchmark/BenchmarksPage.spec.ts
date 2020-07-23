@@ -1,4 +1,4 @@
-import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {BenchmarkTestData} from "../../support/benchmark/BenchmarkTestData";
 import {BenchmarksPage} from "../../support/benchmark/pages/BenchmarksPage";
 import {Benchmark} from "../../support/benchmark/models/Benchmark";
 import {BenchmarkPage} from "../../support/benchmark/pages/BenchmarkPage";
@@ -8,7 +8,7 @@ context("Benchmarks page", () => {
   const page = new BenchmarksPage();
 
   before(() => {
-    TestData.benchmarks.then((benchmarks) => {
+    BenchmarkTestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
     });
   });

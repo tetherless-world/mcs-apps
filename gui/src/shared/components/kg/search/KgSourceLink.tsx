@@ -10,7 +10,7 @@ export const KgSourceLink: React.FunctionComponent<{
   style?: CSSProperties;
 }> = ({source, style}) => (
   <Link
-    data-cy="datasource-link"
+    data-cy="source-link"
     style={style}
     to={Hrefs.kg({id: kgId}).nodeSearch({
       filters: {

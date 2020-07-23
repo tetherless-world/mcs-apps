@@ -1,9 +1,9 @@
-import { Benchmark } from "./models/Benchmark";
-import { BenchmarkSubmission } from "./models/BenchmarkSubmission";
-import { BenchmarkAnswer } from "./models/BenchmarkAnswer";
-import { BenchmarkQuestion } from "./models/BenchmarkQuestion";
+import {Benchmark} from "./models/Benchmark";
+import {BenchmarkSubmission} from "./models/BenchmarkSubmission";
+import {BenchmarkAnswer} from "./models/BenchmarkAnswer";
+import {BenchmarkQuestion} from "./models/BenchmarkQuestion";
 
-export class TestData {
+export class BenchmarkTestData {
   static readonly kgId = "cskg";
 
   static readonly datasources = ["portal_test_data"];
@@ -17,7 +17,7 @@ export class TestData {
   }
 
   static benchmarkQuestionsByDataset(datasetId: string) {
-    return TestData.benchmarkQuestions.then((questions) =>
+    return BenchmarkTestData.benchmarkQuestions.then((questions) =>
       questions
         .filter((question) => question.datasetId === datasetId)
         .sort(

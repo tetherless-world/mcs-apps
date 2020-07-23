@@ -1,5 +1,5 @@
 import {BenchmarkAnswerPage} from "../../support/benchmark/pages/BenchmarkAnswerPage";
-import {TestData} from "../../support/benchmark/BenchmarkTestData";
+import {BenchmarkTestData} from "../../support/benchmark/BenchmarkTestData";
 import {Benchmark} from "../../support/benchmark/models/Benchmark";
 import {BenchmarkDataset} from "../../support/benchmark/models/BenchmarkDataset";
 import {BenchmarkSubmission} from "../../support/benchmark/models/BenchmarkSubmission";
@@ -22,27 +22,27 @@ context("BenchmarkAnswerPage", () => {
   let page: BenchmarkAnswerPage;
 
   before(() => {
-    TestData.benchmarks.then((benchmarks) => {
+    BenchmarkTestData.benchmarks.then((benchmarks) => {
       benchmark = benchmarks[0];
 
       dataset = benchmark.datasets.find((dataset) =>
         dataset.id.endsWith("-test")
       )!;
 
-      TestData.benchmarkSubmissions.then((submissions) => {
+      BenchmarkTestData.benchmarkSubmissions.then((submissions) => {
         submission = submissions.find(
           (submission) =>
             submission.benchmarkId === benchmark.id &&
             submission.datasetId === dataset.id
         )!;
 
-        TestData.benchmarkQuestions.then((questions) => {
+        BenchmarkTestData.benchmarkQuestions.then((questions) => {
           question = questions.find(
             (question) =>
               question.datasetId === dataset.id && question.id.search("test")
           )!;
 
-          TestData.benchmarkAnswers.then((answers) => {
+          BenchmarkTestData.benchmarkAnswers.then((answers) => {
             answer = answers.find(
               (answer) =>
                 answer.submissionId === submission.id &&

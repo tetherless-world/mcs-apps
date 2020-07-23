@@ -1,6 +1,6 @@
 import {KgNodePage, KgNodePageTab} from "../../support/kg/pages/KgNodePage";
 import {KgNode} from "../../support/kg/models/KgNode";
-import {TestData} from "../../support/kg/KgTestData";
+import {KgTestData} from "../../support/kg/KgTestData";
 import {KgEdge} from "../../support/kg/models/KgEdge";
 
 context("KG node page", () => {
@@ -9,9 +9,9 @@ context("KG node page", () => {
   let testNodeEdges: KgEdge[];
 
   before(() => {
-    TestData.kgNodes.then((nodes) => {
+    KgTestData.kgNodes.then((nodes) => {
       node = nodes[0];
-      TestData.kgEdges.then((edges) => {
+      KgTestData.kgEdges.then((edges) => {
         testNodeEdges = edges.filter((edge) => edge.subject === node.id);
       });
       page = new KgNodePage(node.id);
@@ -23,7 +23,7 @@ context("KG node page", () => {
   });
 
   it("should have the node label in its card title", () => {
-    page.nodeTitle.should("contain", node.label);
+    page.nodeTitle.should("contain", node.labels[0]);
   });
 
   it("should show edges by predicate", () => {
@@ -32,7 +32,7 @@ context("KG node page", () => {
   });
 
   it("should show the node datasource", () => {
-    page.datasource.should("have.text", node.datasource);
+    page.datasource.should("contain", "Portal test data");
   });
 
   it("should have the grid tab selected by default", () => {

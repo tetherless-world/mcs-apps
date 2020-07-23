@@ -1,6 +1,6 @@
 import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
 import {KgNode} from "../../support/kg/models/KgNode";
-import {TestData} from "../../support/kg/KgTestData";
+import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 
 context("KgNodeSearchResultsPage", () => {
@@ -9,9 +9,9 @@ context("KgNodeSearchResultsPage", () => {
   let totalNodes: number;
 
   before(() => {
-    TestData.kgNodes.then((kgNodes) => {
+    KgTestData.kgNodes.then((kgNodes) => {
       node = kgNodes[0];
-      page = new KgNodeSearchResultsPage(node.label);
+      page = new KgNodeSearchResultsPage(node.labels[0]);
       totalNodes = kgNodes.length;
     });
   });
@@ -24,7 +24,7 @@ context("KgNodeSearchResultsPage", () => {
     // no idea why
     page.resultsTable.title.should(
       "have.text",
-      `${totalNodes} results for "${node.label}"${totalNodes} results for "${node.label}"`
+      `${totalNodes} results for "${node.labels[0]}"${totalNodes} results for "${node.labels[0]}"`
     );
   });
 
@@ -41,7 +41,7 @@ context("KgNodeSearchResultsPage", () => {
 
     page.resultsTable.title.should(
       "have.text",
-      `${totalNodes} results in ${node.datasource}${totalNodes} results in ${node.datasource}`
+      `${totalNodes} results in ${node.sources[0]}${totalNodes} results in ${node.sources[0]}`
     );
   });
 

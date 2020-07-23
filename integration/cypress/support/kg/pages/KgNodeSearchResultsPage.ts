@@ -1,5 +1,5 @@
-import { Page } from "../../Page";
-import { TestData } from "../KgTestData";
+import {Page} from "../../Page";
+import {KgTestData} from "../KgTestData";
 
 class MUIDataTable {
   constructor(private readonly selector: string) {}
@@ -54,7 +54,7 @@ class KgNodeResultsNodeTableRowKgDatasourceLink {
   constructor(private readonly row: KgNodeResultsTableRow) {}
 
   click() {
-    this.row.get().find("[data-cy=datasource-link]").click();
+    this.row.get().find("[data-cy=source-link]").first().click();
   }
 }
 
@@ -75,7 +75,8 @@ export class KgNodeSearchResultsPage extends Page {
 
   get relativeUrl() {
     return (
-      `/kg/${TestData.kgId}/node/search?text=` + encodeURIComponent(this.search)
+      `/kg/${KgTestData.kgId}/node/search?text=` +
+      encodeURIComponent(this.search)
     );
   }
 }

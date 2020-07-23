@@ -1,5 +1,5 @@
 import {RandomKgNodePage} from "../../support/kg/pages/RandomKgNodePage";
-import {TestData} from "../../support/kg/KgTestData";
+import {KgTestData} from "../../support/kg/KgTestData";
 
 context("Random KG node page", () => {
   const page = new RandomKgNodePage();
@@ -8,7 +8,7 @@ context("Random KG node page", () => {
     cy.visit(page.relativeUrl);
     cy.url().should(
       "contains",
-      Cypress.config().baseUrl + `/kg/${TestData.kgId}/node/`
+      Cypress.config().baseUrl + `/kg/${KgTestData.kgId}/node/`
     );
   });
 });
