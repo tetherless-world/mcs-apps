@@ -45,7 +45,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"""
          |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
          |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-         |ORDER BY type(edge), subject.id, edge
+         |ORDER BY type(edge), subject.pageRank, edge
          |SKIP ${offset}
          |LIMIT ${limit}
          |""".stripMargin,
@@ -59,7 +59,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"""
          |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
          |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-         |ORDER BY type(edge), object.id, edge
+         |ORDER BY type(edge), object.pageRank, edge
          |SKIP ${offset}
          |LIMIT ${limit}
          |""".stripMargin,
@@ -199,6 +199,8 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
         modelBatch.clear()
       }
     }
+
+    writeNodePageRanks
     }
 
   final def putNode(node: KgNode): Unit = {
@@ -355,4 +357,14 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
 
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
+
+  private def writeNodePageRanks =
+    transaction.run(
+      """
+        |CALL gds.pageRank.write({
+        |nodeProjection: 'Node',
+        |relationshipProjection: "*",
+        |writeProperty: "pageRank"
+        |})
+        |""".stripMargin)
 }
