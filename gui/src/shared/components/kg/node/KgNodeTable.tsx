@@ -6,6 +6,7 @@ import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
+import {KgSource} from "shared/models/kg/KgSource";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
@@ -70,8 +71,8 @@ const columns: MUIDataTableColumn[] = [
     options: {
       customBodyRender(sources) {
         return sources
-          ? (sources as string[]).map((source) => (
-              <React.Fragment key={source}>
+          ? (sources as KgSource[]).map((source) => (
+              <React.Fragment key={source.id}>
                 <KgSourceLink source={source} />
                 <br />
               </React.Fragment>

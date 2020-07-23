@@ -1,6 +1,9 @@
 fragment KgNodeFieldsFragment on KgNode {
   aliases
-  sources
+  sources {
+    id
+    label
+  }
   id
   label
   other

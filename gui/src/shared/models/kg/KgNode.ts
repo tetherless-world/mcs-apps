@@ -1,9 +1,11 @@
+import {KgSource} from "shared/models/kg/KgSource";
+
 export interface KgNode {
   __typename: "KgNode";
   aliases: string[] | null;
-  sources: string[];
   id: string;
   label: string | null;
   other: string | null;
+  sources: KgSource[];
   pos: string | null;
 }

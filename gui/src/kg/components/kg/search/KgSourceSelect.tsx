@@ -2,9 +2,10 @@ import * as React from "react";
 
 import {Select, MenuItem, Paper} from "@material-ui/core";
 import {StringFilter} from "shared/models/StringFilter";
+import {KgSource} from "shared/models/kg/KgSource";
 
 export const KgSourceSelect: React.FunctionComponent<{
-  sources: string[];
+  sources: KgSource[];
   value?: StringFilter;
   onChange?: (datasourceFilters: StringFilter) => void;
   style?: React.CSSProperties;
@@ -42,11 +43,11 @@ export const KgSourceSelect: React.FunctionComponent<{
         </MenuItem>
         {sources.map((source) => (
           <MenuItem
-            key={source}
-            value={source}
+            key={source.id}
+            value={source.id}
             data-cy="datasourceSelectMenuItem"
           >
-            {source}
+            {source.label}
           </MenuItem>
         ))}
       </Select>

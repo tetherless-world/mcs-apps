@@ -9,11 +9,12 @@ import {
 import * as React from "react";
 import {KgNodeLink} from "./KgNodeLink";
 import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
+import {KgSource} from "shared/models/kg/KgSource";
 
 const EdgeList: React.FunctionComponent<{
   edges: KgNodeSubjectOfEdge[];
   predicate: string;
-  sources: string[];
+  sources: KgSource[];
 }> = ({edges, predicate, sources}) => {
   return (
     <Card>
@@ -39,7 +40,7 @@ export const KgNodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
     [predicate: string]: KgNodeSubjectOfEdge[];
   };
-  sources: string[];
+  sources: KgSource[];
 }> = ({predicateSubjects, sources}) => {
   return (
     <Grid container spacing={4}>

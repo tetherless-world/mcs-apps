@@ -21,6 +21,7 @@ import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgNodeFilters} from "shared/models/kg/KgNodeFilters";
 import {StringFilter} from "shared/models/StringFilter";
+import {KgSource} from "shared/models/kg/KgSource";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -38,7 +39,7 @@ type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
 
 export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
-  sources: string[];
+  sources: KgSource[];
   placeholder?: string;
   showIcon?: boolean;
   onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;

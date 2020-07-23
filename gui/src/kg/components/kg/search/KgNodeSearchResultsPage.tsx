@@ -100,7 +100,7 @@ const makeTitle = (
   return title.join(" ");
 };
 
-export const KgNodeSearchResultsPage: React.FunctionComponent<{}> = ({}) => {
+export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   const history = useHistory();
 
   const location = useLocation();

@@ -8,10 +8,16 @@ import { KgNodeFilters } from "./../../graphqlGlobalTypes";
 // GraphQL query operation: KgNodeSearchResultsPageQuery
 // ====================================================
 
+export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
+}
+
 export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   __typename: "KgNode";
   aliases: string[] | null;
-  sources: string[];
+  sources: KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources[];
   id: string;
   label: string | null;
   other: string | null;
