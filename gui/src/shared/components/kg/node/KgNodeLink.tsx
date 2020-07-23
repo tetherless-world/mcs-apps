@@ -12,7 +12,9 @@ export const KgNodeLink: React.FunctionComponent<{
     <Link data-cy="node-link" to={Hrefs.kg({id: kgId}).node({id: node.id})}>
       {(node.label ? node.label : node.id) +
         (node.pos ? " (" + node.pos + ")" : "") +
-        (sources && sources.length > 0 ? " - " + sources.join("|") : "")}
+        (sources && sources.length > 0
+          ? " - " + sources.map((source) => source.label).join(" | ")
+          : "")}
     </Link>
   );
 };
