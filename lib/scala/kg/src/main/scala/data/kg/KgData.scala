@@ -94,6 +94,7 @@ object KgData {
       id = node1.id, // should be equal
       labels = node1.labels ::: node2.labels distinct,
       pos = None,
-      sources = node1.sources ::: node2.sources distinct
+      sources = node1.sources ::: node2.sources distinct,
+      pageRank = None // should not be initialized yet
     )
 }

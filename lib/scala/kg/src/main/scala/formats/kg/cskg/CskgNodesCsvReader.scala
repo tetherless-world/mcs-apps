@@ -15,7 +15,8 @@ final class CskgNodesCsvReader(csvReader: CSVReader) extends CsvReader[KgNode](c
         sources = List(row("datasource")),
         id = row("id"),
         labels = List(row("label")) ::: row.getNonBlank("aliases").map(aliases => aliases.split(' ').toList).getOrElse(List()),
-        pos = row.getNonBlank("pos")
+        pos = row.getNonBlank("pos"),
+        pageRank = None
       )
     )
 }

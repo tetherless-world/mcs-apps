@@ -36,13 +36,15 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
           id = row("node1"),
           labels = row.getList("node1;label", KgtkListDelim),
           pos = None,
-          sources = sources
+          sources = sources,
+          pageRank = None
         ),
         node2 = KgNode(
           id = row("node2"),
           labels = row.getList("node2;label", KgtkListDelim),
           pos = None,
-          sources = sources
+          sources = sources,
+          pageRank = None
         ),
         sources = sources
       )
