@@ -48,7 +48,7 @@ jobs:
         name: mcs-neo4j
         environment:
           NEO4J_AUTH: neo4j/nC1aB4mji623s2Zs
-          NEO4JLABS_PLUGINS: '["apoc"]'
+          NEO4JLABS_PLUGINS: '["apoc","graph-data-science"]'
     steps:
       - attach_workspace:
           at: /tmp/workspace
