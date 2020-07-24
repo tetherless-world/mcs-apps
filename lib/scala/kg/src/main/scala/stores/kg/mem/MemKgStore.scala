@@ -121,8 +121,6 @@ class MemKgStore extends KgStore {
   final override def putEdges(edges: Iterator[KgEdge]): Unit = {
     this.edges = edges.toList
     putSourceIds(this.edges.flatMap(_.sources).distinct)
-
-    if (nodes.size > 0) writeNodePageRanks
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -142,8 +140,6 @@ class MemKgStore extends KgStore {
       lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
     })
     lucene.commit()
-
-    if (edges.size > 0) writeNodePageRanks
   }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit = {

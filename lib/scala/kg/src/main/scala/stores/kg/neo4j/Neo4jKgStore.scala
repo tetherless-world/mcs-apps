@@ -200,6 +200,12 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       }
     }
     }
+
+  final override def writeNodePageRanks: Unit =
+    withWriteTransaction { transaction =>
+      transaction.writeNodePageRanks
+      transaction.commit()
+    }
 }
 
 object Neo4jKgStore {
