@@ -16,7 +16,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
   private val ListDelimString = Neo4jKgStore.ListDelimChar.toString
   private val logger = LoggerFactory.getLogger(getClass)
-  private val nodePropertyNameList = List("id", "labels", "pos", "sources")
+  private val nodePropertyNameList = List("id", "labels", "pos", "sources", "pageRank")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
