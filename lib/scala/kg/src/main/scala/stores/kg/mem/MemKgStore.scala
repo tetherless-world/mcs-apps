@@ -181,7 +181,7 @@ class MemKgStore extends KgStore {
     stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
   }
 
-  private def writeNodePageRanks = {
+ final override def writeNodePageRanks() = {
     this.nodes = calcNodePageRanks().map(nodeRank => this.nodesById(nodeRank._1).copy(pageRank = Some(nodeRank._2))).toList
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
   }

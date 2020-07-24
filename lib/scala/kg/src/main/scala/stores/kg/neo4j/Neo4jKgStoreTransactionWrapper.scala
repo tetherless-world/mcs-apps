@@ -358,7 +358,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
-  private def writeNodePageRanks =
+  final override def writeNodePageRanks =
     transaction.run(
       """
         |CALL gds.pageRank.write({
