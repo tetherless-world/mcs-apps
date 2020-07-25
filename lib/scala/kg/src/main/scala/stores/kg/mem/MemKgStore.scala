@@ -7,7 +7,7 @@ import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
 import stores.kg.{KgNodeFilters, KgStore}
-import util.CalcNodesPageRank
+import util.NodePageRankCalculator
 
 import scala.annotation.tailrec
 import scala.math.sqrt
@@ -159,7 +159,7 @@ class MemKgStore extends KgStore {
   }
 
  final override def writeNodePageRanks() = {
-    this.nodes = CalcNodesPageRank(this.nodes, this.edges)
+    this.nodes = NodePageRankCalculator(this.nodes, this.edges)
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
   }
 }
