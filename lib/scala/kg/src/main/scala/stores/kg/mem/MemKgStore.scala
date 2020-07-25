@@ -7,6 +7,7 @@ import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
 import stores.kg.{KgNodeFilters, KgStore}
+import util.CalcNodesPageRank
 
 import scala.annotation.tailrec
 import scala.math.sqrt
@@ -24,30 +25,6 @@ class MemKgStore extends KgStore {
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
-
-  @tailrec private final def calcNodePageRanks(
-                                        pageRanks: Map[String, Double] = nodesById map {node => (node._1, 1.0 / nodes.size)},
-                                        iteration: Int = 0,
-                                        maxIterations: Int = 1000,
-                                        dampingFactor: Double = 0.85,
-                                        convergenceThreshold: Double = 0.01
-                                      ): Map[String, Double] = {
-    if (iteration >= maxIterations) return pageRanks
-
-    val newPageRanks: Map[String, Double] = pageRanks map { nodeRank =>
-      val nodeId = nodeRank._1
-      val inboundNodes = edges.filter(_.`object` == nodeId).map(_.subject)
-      val inboundNodesSum = inboundNodes.map {
-        inboundNodeId => pageRanks(inboundNodeId) / edges.filter{edge => edge.subject == inboundNodeId}.size
-      }.sum
-      (nodeId, dampingFactor*inboundNodesSum + (1-dampingFactor)/pageRanks.size)
-    }
-
-    if (sqrt(nodes.map(node => (newPageRanks(node.id)-pageRanks(node.id))*(newPageRanks(node.id)-pageRanks(node.id))).sum/nodes.size)<=convergenceThreshold)
-      newPageRanks
-    else
-      calcNodePageRanks(newPageRanks, iteration + 1, maxIterations, dampingFactor, convergenceThreshold)
-  }
 
   final override def clear(): Unit = {
     edges = List()
@@ -182,7 +159,7 @@ class MemKgStore extends KgStore {
   }
 
  final override def writeNodePageRanks() = {
-    this.nodes = calcNodePageRanks().map(nodeRank => this.nodesById(nodeRank._1).copy(pageRank = Some(nodeRank._2))).toList
+    this.nodes = CalcNodesPageRank(this.nodes, this.edges)
     this.nodesById = this.nodes.map(node => (node.id, node)).toMap
   }
 }

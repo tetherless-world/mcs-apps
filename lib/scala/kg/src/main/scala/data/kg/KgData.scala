@@ -2,18 +2,20 @@ package data.kg
 
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import util.CalcNodesPageRank
 
 import scala.collection.mutable.HashMap
 
 abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnsorted: List[KgPath]) {
-  val nodesById = deduplicateNodes(sortNodes(nodesUnsorted))
-  val nodes = nodesById.values.toList
-  val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(edgesUnsorted), nodesById))
+  private val nodesByIdUnranked = deduplicateNodes(sortNodes(nodesUnsorted))
+  val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(edgesUnsorted), nodesByIdUnranked))
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
-  val paths = validatePaths(edges, nodesById, pathsUnsorted)
-  val sourcesById = (nodes.flatMap(_.sources) ++ edges.flatMap(_.sources)).map(KgSource(_)).map(source => (source.id, source)).toMap
+  val paths = validatePaths(edges, nodesByIdUnranked, pathsUnsorted)
+  val sourcesById = (nodesByIdUnranked.flatMap(_._2.sources) ++ edges.flatMap(_.sources)).map(KgSource(_)).map(source => (source.id, source)).toMap
   val sources = sourcesById.values.toList
+  val nodes = CalcNodesPageRank(nodesByIdUnranked.values.toList, edges)
+  val nodesById = nodes.map{node => (node.id, node)}.toMap
 
   def this(resources: CskgCsvDataResources) =
     this(
@@ -21,6 +23,7 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
       nodesUnsorted = resources.readNodes(),
       pathsUnsorted = resources.readPaths
     )
+
 
   def this(kgtkEdgesWithNodes: List[KgtkEdgeWithNodes], pathsUnsorted: List[KgPath]) =
     this(
