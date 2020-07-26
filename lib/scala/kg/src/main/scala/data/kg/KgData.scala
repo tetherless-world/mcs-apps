@@ -8,6 +8,7 @@ import scala.collection.mutable.HashMap
 
 abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], pathsUnsorted: List[KgPath]) {
   private val nodesByIdUnranked = deduplicateNodes(sortNodes(nodesUnsorted))
+  val nodesUnranked = nodesByIdUnranked.values.toList
   val edges = sortEdges(checkDanglingEdges(checkDuplicateEdges(edgesUnsorted), nodesByIdUnranked))
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)

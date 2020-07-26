@@ -80,7 +80,7 @@ trait KgStore {
    */
   def putData(data: KgData): Unit = {
     putSources(data.sources)
-    putNodes(data.nodes)
+    putNodes(data.nodesUnranked)
     putEdges(data.edges)
     putPaths(data.paths)
 

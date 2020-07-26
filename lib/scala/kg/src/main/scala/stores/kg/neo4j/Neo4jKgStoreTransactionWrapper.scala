@@ -199,8 +199,6 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
         modelBatch.clear()
       }
     }
-
-    writeNodePageRanks
     }
 
   final def putNode(node: KgNode): Unit = {
