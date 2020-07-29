@@ -31,7 +31,7 @@ class KgDataDirectoryLoaderSpec extends WordSpec with Matchers with WithResource
         store.isEmpty should be(true)
         new KgDataDirectoryLoader(dataDirectoryPath = tempDirPath, store = store)
         def waitForData: Boolean = {
-          for (i <- 0 to 10) {
+          for (i <- 0 to 100) {
             if (!store.isEmpty) {
               return true;
             }
