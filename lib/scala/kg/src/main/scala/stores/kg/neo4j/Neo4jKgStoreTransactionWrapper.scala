@@ -148,58 +148,30 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     )
 
   final override def putEdges(edges: Iterator[KgEdge]): Unit = {
-    putModelsBatched(edges) { edges => {
-      putSources(edges.flatMap(_.sources).distinct.map(KgSource(_)))
-      for (edge <- edges) {
-        putEdge(edge)
-      }
-    }
+    // The putEdges, putNodes, et al. methods assume that the iterator is small enough to buffer.
+    // We buffer here, but the transaction also buffers.
+    val edgesList = edges.toList
+    putSources(edgesList.flatMap(_.sources).distinct.map(KgSource(_)))
+    for (edge <- edgesList) {
+      putEdge(edge)
     }
   }
 
   final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+    val edgesWithNodesList = edgesWithNodes.toList
     // Neo4j doesn't tolerate duplicate nodes
     val putNodeIds = new mutable.HashSet[String]
-    putModelsBatched(edgesWithNodes) { edgesWithNodes => {
-      putSources(edgesWithNodes.flatMap(_.sources).distinct.map(KgSource(_)))
-      for (edgeWithNodes <- edgesWithNodes) {
-        if (putNodeIds.add(edgeWithNodes.node1.id)) {
-          putNode(edgeWithNodes.node1)
-        }
-        if (putNodeIds.add(edgeWithNodes.node2.id)) {
-          putNode(edgeWithNodes.node2)
-        }
-        putEdge(edgeWithNodes.edge)
+    putSources(edgesWithNodesList.flatMap(_.sources).distinct.map(KgSource(_)))
+    for (edgeWithNodes <- edgesWithNodesList) {
+      if (putNodeIds.add(edgeWithNodes.node1.id)) {
+        putNode(edgeWithNodes.node1)
       }
-    }
+      if (putNodeIds.add(edgeWithNodes.node2.id)) {
+        putNode(edgeWithNodes.node2)
+      }
+      putEdge(edgeWithNodes.edge)
     }
   }
-
-  private def putModelsBatched[ModelT](models: Iterator[ModelT])(putModelBatch: (List[ModelT]) => Unit): Unit = {
-    // Batch the models in order to put them all in a transaction.
-    // My (MG) first implementation looked like:
-    //      for (modelWithIndex <- models.zipWithIndex) {
-    //        val (model, modelIndex) = modelWithIndex
-    //        putModel(transaction, model)
-    //        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
-    //          tryOperation(() => transaction.commit())
-    //          transaction = session.beginTransaction()
-    //        }
-    //      }
-    // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
-    // I don't have time to investigate that. Batching models should be OK for now.
-    val modelBatch = new mutable.MutableList[ModelT]
-    while (models.hasNext) {
-      while (modelBatch.size < configuration.commitInterval && models.hasNext) {
-        modelBatch += models.next()
-      }
-      if (!modelBatch.isEmpty) {
-        //          logger.info("putting batch of {} models in a transaction", modelBatch.size)
-        putModelBatch(modelBatch.toList)
-        modelBatch.clear()
-      }
-    }
-    }
 
   final def putNode(node: KgNode): Unit = {
     transaction.run(
@@ -219,10 +191,10 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     for (sourceId <- node.sources) {
       transaction.run(
         s"""
-          |MATCH (source:Source), (node:Node)
-          |WHERE node.id = $$nodeId AND source.id = $$sourceId
-          |CREATE (node)-[:${SourceRelationshipType}]->(source)
-          |""".stripMargin,
+           |MATCH (source:Source), (node:Node)
+           |WHERE node.id = $$nodeId AND source.id = $$sourceId
+           |CREATE (node)-[:${SourceRelationshipType}]->(source)
+           |""".stripMargin,
         toTransactionRunParameters(Map(
           "nodeId" -> node.id,
           "sourceId" -> sourceId
@@ -231,38 +203,34 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     }
   }
 
-  final override def putNodes(nodes: Iterator[KgNode]): Unit =
-    putModelsBatched(nodes) { nodes => {
-      putSources(nodes.flatMap(_.sources).distinct.map(KgSource(_)))
-      for (node <- nodes) {
-        putNode(node)
-      }
+  final override def putNodes(nodes: Iterator[KgNode]): Unit = {
+    val nodesList = nodes.toList
+    putSources(nodesList.flatMap(_.sources).distinct.map(KgSource(_)))
+    for (node <- nodesList) {
+      putNode(node)
     }
-    }
+  }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit =
-    putModelsBatched(paths) { paths => {
-      for (path <- paths) {
-        for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-          val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-          transaction.run(
-            """
-              |MATCH (subject:Node), (object: Node)
-              |WHERE subject.id = $subject AND object.id = $object
-              |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
-              |""".stripMargin,
-            toTransactionRunParameters(Map(
-              "object" -> pathEdge.`object`,
-              "pathEdgeIndex" -> pathEdgeIndex,
-              "pathEdgePredicate" -> pathEdge.predicate,
-              "pathId" -> path.id,
-              "sources" -> path.sources.mkString(ListDelimString),
-              "subject" -> pathEdge.subject
-            ))
-          )
-        }
+    for (path <- paths) {
+      for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
+        val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
+        transaction.run(
+          """
+            |MATCH (subject:Node), (object: Node)
+            |WHERE subject.id = $subject AND object.id = $object
+            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
+            |""".stripMargin,
+          toTransactionRunParameters(Map(
+            "object" -> pathEdge.`object`,
+            "pathEdgeIndex" -> pathEdgeIndex,
+            "pathEdgePredicate" -> pathEdge.predicate,
+            "pathId" -> path.id,
+            "sources" -> path.sources.mkString(ListDelimString),
+            "subject" -> pathEdge.subject
+          ))
+        )
       }
-    }
     }
 
   final override def putSources(sources: Iterator[KgSource]): Unit =
@@ -280,18 +248,18 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
         ).hasNext
       if (!sourceExists) {
         transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
-//        logger.debug("created source {}", source.id)
+        //        logger.debug("created source {}", source.id)
       }
-//      else {
-//        logger.debug(s"source {} already exists", source.id)
-//      }
+      //      else {
+      //        logger.debug(s"source {} already exists", source.id)
+      //      }
     }
 
   private def toMatchingNodesCypher(filters: Option[KgNodeFilters], text: Option[String]): (String, Map[String, Any]) = {
     // Do this in an semi-imperative way but with immutable data structures and vals. It makes the code more readable.
 
     val fulltextCypher = text.map(text =>
-        """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""").toList
+      """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""").toList
     val textBindings = text.map(CypherBinding("text", _)).toList
 
     val distinctSourceIds =
@@ -311,10 +279,10 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       if (filters.isDefined && filters.get.sources.isDefined) {
         filters.get.sources.get.exclude.toList.flatMap(
           _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
-        )) ++
-        filters.get.sources.get.include.toList.flatMap(
-          _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
-        ))
+          )) ++
+          filters.get.sources.get.include.toList.flatMap(
+            _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
+            ))
       } else {
         List()
       }
@@ -342,16 +310,16 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   //    }
   // Previously used for datasource filters, when we only had one datasource per node
   // Designed to do WHERE exact string = exact value
-//  private def toCypherFilters(bindingVariableNamePrefix: String, property: String, stringFilter: StringFilter): List[CypherFilter] = {
-//    stringFilter.exclude.getOrElse(List()).zipWithIndex.map(excludeWithIndex => {
-//      val bindingVariableName = s"${bindingVariableNamePrefix}Exclude${excludeWithIndex._2}"
-//      CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = excludeWithIndex._1)), cypher = s"NOT ${property} = $$${bindingVariableName}")
-//    }) ++
-//      stringFilter.include.getOrElse(List()).zipWithIndex.map(includeWithIndex => {
-//        val bindingVariableName = s"${bindingVariableNamePrefix}Include${includeWithIndex._2}"
-//        CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = includeWithIndex._1)), cypher = s"${property} = $$${bindingVariableName}")
-//      })
-//  }
+  //  private def toCypherFilters(bindingVariableNamePrefix: String, property: String, stringFilter: StringFilter): List[CypherFilter] = {
+  //    stringFilter.exclude.getOrElse(List()).zipWithIndex.map(excludeWithIndex => {
+  //      val bindingVariableName = s"${bindingVariableNamePrefix}Exclude${excludeWithIndex._2}"
+  //      CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = excludeWithIndex._1)), cypher = s"NOT ${property} = $$${bindingVariableName}")
+  //    }) ++
+  //      stringFilter.include.getOrElse(List()).zipWithIndex.map(includeWithIndex => {
+  //        val bindingVariableName = s"${bindingVariableNamePrefix}Include${includeWithIndex._2}"
+  //        CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = includeWithIndex._1)), cypher = s"${property} = $$${bindingVariableName}")
+  //      })
+  //  }
 
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
