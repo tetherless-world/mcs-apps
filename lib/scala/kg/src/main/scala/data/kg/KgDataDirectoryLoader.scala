@@ -9,6 +9,7 @@ import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
+import stores.WithIteratorProgress
 import stores.kg.KgStore
 
 import scala.collection.JavaConverters._
@@ -20,7 +21,7 @@ import scala.collection.JavaConverters._
  * https://www.playframework.com/documentation/2.6.x/ScalaDependencyInjection#Eager-bindings
  */
 @Singleton
-class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithResource {
+class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithIteratorProgress {
   private val logger = LoggerFactory.getLogger(getClass)
 
   private def loadDataDirectory(dataDirectoryPath: Path): Boolean = {
@@ -45,7 +46,9 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithResource {
           case ".tsv" => {
             logger.info("loading KGTK edges from {}", filePath)
             withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
-              store.putKgtkEdgesWithNodes(reader.iterator)
+              withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
+                store.putKgtkEdgesWithNodes(iterator)
+              }
             }
             true
           }
