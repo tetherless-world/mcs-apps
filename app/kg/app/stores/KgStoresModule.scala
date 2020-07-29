@@ -1,6 +1,7 @@
 package stores
 
 import com.google.inject.AbstractModule
+import data.kg.KgDataDirectoryLoader
 import org.slf4j.LoggerFactory
 import stores.kg.neo4j.Neo4jKgStore
 import stores.kg.KgStore
@@ -15,5 +16,7 @@ final class KgStoresModule extends AbstractModule {
       logger.info("using test stores for integration testing")
     }
     bind(classOf[KgStore]).to(if (useTestStores) classOf[TestKgStore] else classOf[Neo4jKgStore])
+
+    bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()
   }
 }
