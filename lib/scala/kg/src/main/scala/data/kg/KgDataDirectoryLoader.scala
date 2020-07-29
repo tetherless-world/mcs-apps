@@ -48,7 +48,10 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithResource {
             }
             true
           }
-          case _ => result
+          case _ => {
+            logger.warn("ignoring unknown file {}", filePath)
+            result
+          }
         }
       })
     if (loaded) {
