@@ -2,21 +2,14 @@ package controllers.import_
 
 import java.nio.file.Paths
 
-import akka.stream.OverflowStrategy
-import controllers.Assets
-import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.kgtk.KgtkEdgesTsvReader
-import formats.kg.path.KgPathsJsonlReader
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
-import me.tongfei.progressbar.{DelegatingProgressBarConsumer, ProgressBar, ProgressBarBuilder}
+import me.tongfei.progressbar.{DelegatingProgressBarConsumer, ProgressBarBuilder}
 import org.slf4j.LoggerFactory
 import play.api.Configuration
-import play.api.http.HttpEntity
 import play.api.mvc.InjectedController
 import stores.kg.KgStore
-
-import scala.io.Source
 
 @Singleton
 class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore) extends InjectedController with WithResource {
@@ -35,24 +28,6 @@ class KgImportController(importDirectoryPath: java.nio.file.Path, store: KgStore
     withResource(KgtkEdgesTsvReader.open(importDirectoryPath.resolve("kg").resolve("kgtk").resolve(edgesTsvFileName))) { reader =>
       withIteratorProgress(reader.iterator, "putKgtkTsv") { edgesWithNodes =>
         store.putKgtkEdgesWithNodes(edgesWithNodes)
-        Ok("")
-      }
-    }
-  }
-
-  def putLegacyEdgesCsv(edgesCsvFileName: String) = Action {
-    withResource(CskgEdgesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(edgesCsvFileName))) { reader =>
-      withIteratorProgress(reader.iterator, "putLegacyEdgesCsv") { edges =>
-        store.putEdges(edges)
-        Ok("")
-      }
-    }
-  }
-
-  def putLegacyNodesCsv(nodesCsvFileName: String) = Action {
-    withResource(CskgNodesCsvReader.open(importDirectoryPath.resolve("kg").resolve("legacy").resolve(nodesCsvFileName))) { reader =>
-      withIteratorProgress(reader.iterator, "putLegacyNodesCsv") { nodes =>
-        store.putNodes(nodes)
         Ok("")
       }
     }
