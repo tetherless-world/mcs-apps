@@ -31,17 +31,30 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithResource {
 
     logger.info("scanning {} for KG data", dataDirectoryPath)
 
-    Files.list(dataDirectoryPath).collect(Collectors.toList()).asScala.filter(Files.isRegularFile(_)).map(filePath => {
-      FilenameUtils.getExtension(filePath.getFileName.toString).toLowerCase match {
-        case ".tsv" => {
-          logger.info("loading KGTK edges from {}", filePath)
-          withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
-            store.putKgtkEdgesWithNodes(reader.iterator)
+    val filePaths = Files.list(dataDirectoryPath).collect(Collectors.toList()).asScala.toList.filter(Files.isRegularFile(_))
+
+    if (filePaths.isEmpty) {
+      logger.warn("KG data directory {} is empty", dataDirectoryPath)
+      return false
+    }
+
+    val loaded =
+      filePaths.foldLeft(false)((result, filePath) => {
+        FilenameUtils.getExtension(filePath.getFileName.toString).toLowerCase match {
+          case ".tsv" => {
+            logger.info("loading KGTK edges from {}", filePath)
+            withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
+              store.putKgtkEdgesWithNodes(reader.iterator)
+            }
+            true
           }
+          case _ => result
         }
-      }
-    })
-    true
+      })
+    if (loaded) {
+      logger.info("loaded KG data from {}", dataDirectoryPath)
+    }
+    loaded
   }
 
   if (store.isEmpty) {
