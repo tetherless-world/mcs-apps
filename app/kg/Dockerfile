@@ -36,8 +36,6 @@ COPY --from=build-gui /build/dist/kg /usr/share/nginx/html
 # Copy in entrypoint
 COPY /app/kg/docker-entrypoint.sh /
 
-RUN mkdir -p /app/data/import/kg/kgtk && mkdir -p /app/data/import/kg/legacy
-
 EXPOSE 80
 
 WORKDIR /app

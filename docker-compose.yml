@@ -14,7 +14,7 @@ services:
       - 127.0.0.1:8080:80
     restart: unless-stopped
     volumes:
-      - ./app/kg/data:/app/data
+      - ./data/kg:/data
   neo4j:
     build:
       # Use the same context to share a .dockerignore
