@@ -42,8 +42,8 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithIteratorProgre
     val loaded =
       filePaths.foldLeft(false)((result, filePath) => {
         FilenameUtils.getExtension(filePath.getFileName.toString).toLowerCase match {
-          case ".md" => result
-          case ".tsv" => {
+          case "md" => result
+          case "tsv" => {
             logger.info("loading KGTK edges from {}", filePath)
             withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
               withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
@@ -53,7 +53,7 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithIteratorProgre
             true
           }
           case _ => {
-            logger.warn("ignoring unknown file {}", filePath)
+            logger.warn("ignoring file {} with unknown extension", filePath)
             result
           }
         }
