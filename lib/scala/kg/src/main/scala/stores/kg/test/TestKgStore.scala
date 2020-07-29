@@ -5,4 +5,5 @@ import stores.kg.mem.MemKgStore
 
 final class TestKgStore extends MemKgStore {
   putData(TestKgData)
+  writeNodePageRanks
 }

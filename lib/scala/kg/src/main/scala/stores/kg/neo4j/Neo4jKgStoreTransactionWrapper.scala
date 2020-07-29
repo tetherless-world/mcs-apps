@@ -16,7 +16,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
   private val ListDelimString = Neo4jKgStore.ListDelimChar.toString
   private val logger = LoggerFactory.getLogger(getClass)
-  private val nodePropertyNameList = List("id", "labels", "pos", "sources")
+  private val nodePropertyNameList = List("id", "labels", "pos", "sources", "pageRank")
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
@@ -45,7 +45,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"""
          |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
          |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-         |ORDER BY type(edge), subject.id, edge
+         |ORDER BY type(edge), subject.pageRank, edge
          |SKIP ${offset}
          |LIMIT ${limit}
          |""".stripMargin,
@@ -59,7 +59,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"""
          |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
          |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-         |ORDER BY type(edge), object.id, edge
+         |ORDER BY type(edge), object.pageRank, edge
          |SKIP ${offset}
          |LIMIT ${limit}
          |""".stripMargin,
@@ -355,4 +355,16 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
 
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
+
+  final override def writeNodePageRanks = {
+    transaction.run(
+      """
+        |CALL gds.pageRank.write({
+        |nodeQuery: 'MATCH (n: Node) RETURN id(n) as id',
+        |relationshipQuery: 'MATCH (source: Node)-[r]->(target: Node) WHERE TYPE(r)<>"PATH" RETURN id(source) as source, id(target) as target',
+        |writeProperty: 'pageRank'
+        |})
+        |""".stripMargin
+    )
+  }
 }

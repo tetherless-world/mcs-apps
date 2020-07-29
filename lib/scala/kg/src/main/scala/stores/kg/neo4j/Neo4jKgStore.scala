@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory
 import stores.kg.{KgNodeFilters, KgStore}
 import stores.{Neo4jStoreConfiguration, StringFilter}
 
-import scala.collection.JavaConverters._
-import scala.collection.mutable
-
 
 
 @Singleton
@@ -200,6 +197,13 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       }
     }
     }
+
+  final override def writeNodePageRanks: Unit = {
+    withWriteTransaction { transaction =>
+      transaction.writeNodePageRanks
+      transaction.commit()
+    }
+  }
 }
 
 object Neo4jKgStore {

@@ -80,7 +80,7 @@ trait KgStore {
    */
   def putData(data: KgData): Unit = {
     putSources(data.sources)
-    putNodes(data.nodes)
+    putNodes(data.nodesUnranked)
     putEdges(data.edges)
     putPaths(data.paths)
   }
@@ -121,4 +121,9 @@ trait KgStore {
    * Put the given sources to the store
    */
   def putSources(sources: Iterator[KgSource]): Unit
+
+  /**
+   * Generate page ranks for nodes
+   */
+  def writeNodePageRanks: Unit
 }
