@@ -18,14 +18,6 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
   val nodes = NodePageRankCalculator(nodesByIdUnranked.values.toList, edges)
   val nodesById = nodes.map{node => (node.id, node)}.toMap
 
-  def this(resources: CskgCsvDataResources) =
-    this(
-      edgesUnsorted = resources.readEdges(),
-      nodesUnsorted = resources.readNodes(),
-      pathsUnsorted = resources.readPaths
-    )
-
-
   def this(kgtkEdgesWithNodes: List[KgtkEdgeWithNodes], pathsUnsorted: List[KgPath]) =
     this(
       edgesUnsorted = kgtkEdgesWithNodes.map(_.edge),
