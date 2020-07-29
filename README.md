@@ -20,6 +20,8 @@ Currently the data must be in in [KGTK](https://github.com/usc-isi-i2/kgtk) edge
 
     mv ~/cskg.tsv ./data/kg
 
+Progress messages will be printed to the application console as the data loads asynchronously.
+
 ## Starting the application
 
 In the current directory:
