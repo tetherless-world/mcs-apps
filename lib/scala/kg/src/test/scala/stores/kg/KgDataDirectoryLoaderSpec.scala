@@ -3,8 +3,6 @@ package stores.kg
 import java.io.FileOutputStream
 import java.nio.file.Files
 
-import akka.actor.ActorSystem
-import com.typesafe.config.ConfigFactory
 import data.kg.TestKgtkDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.apache.commons.io.IOUtils
