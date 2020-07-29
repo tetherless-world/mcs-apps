@@ -33,20 +33,6 @@ After starting the application, copy a KGTK CSKG `cskg.tsv` into `app/kg/data/im
 Then run:
 
     script/import-kgtk-cskg-tsv
-
-### Legacy CSV format
-
-After starting the application, copy a legacy CSKG `nodes.csv` and `edges.csv` into `app/kg/data/import/kg/legacy/`.
- 
-Then run:
-
-    script/import-legacy-cskg-nodes-csv
-
-The middleware will log its progress to the console.
-
-When the nodes are done importing, run:
-
-    script/import-legacy-cskg-edges-csv
         
 ## Viewing the application
 

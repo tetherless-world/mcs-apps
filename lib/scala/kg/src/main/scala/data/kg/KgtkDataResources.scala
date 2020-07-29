@@ -1,11 +1,10 @@
 package data.kg
 
 import data.DataResource
-import formats.kg.cskg.{CskgEdgesCsvReader, CskgNodesCsvReader}
 import formats.kg.kgtk.{KgtkEdgeWithNodes, KgtkEdgesTsvReader}
 import formats.kg.path.KgPathsJsonlReader
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
-import models.kg.{KgEdge, KgNode, KgPath}
+import models.kg.KgPath
 
 class KgtkDataResources(
                          val edgesTsvBz2: DataResource,

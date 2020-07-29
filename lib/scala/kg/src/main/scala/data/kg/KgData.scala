@@ -15,13 +15,6 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
   val sourcesById = (nodes.flatMap(_.sources) ++ edges.flatMap(_.sources)).map(KgSource(_)).map(source => (source.id, source)).toMap
   val sources = sourcesById.values.toList
 
-  def this(resources: CskgCsvDataResources) =
-    this(
-      edgesUnsorted = resources.readEdges(),
-      nodesUnsorted = resources.readNodes(),
-      pathsUnsorted = resources.readPaths
-    )
-
   def this(kgtkEdgesWithNodes: List[KgtkEdgeWithNodes], pathsUnsorted: List[KgPath]) =
     this(
       edgesUnsorted = kgtkEdgesWithNodes.map(_.edge),
