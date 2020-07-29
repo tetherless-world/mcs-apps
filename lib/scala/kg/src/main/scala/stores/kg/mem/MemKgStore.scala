@@ -7,7 +7,10 @@ import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
 import stores.kg.{KgNodeFilters, KgStore}
+import util.NodePageRankCalculator
 
+import scala.annotation.tailrec
+import scala.math.sqrt
 import scala.util.Random
 
 class MemKgStore extends KgStore {
@@ -56,10 +59,10 @@ class MemKgStore extends KgStore {
 //    })
 
   final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    edges.filter(edge => edge.`object` == objectNodeId).drop(offset).take(limit)
+    edges.filter(edge => edge.`object` == objectNodeId).sortBy(edge => nodesById(edge.subject).pageRank.get).drop(offset).take(limit)
 
   final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(edge => edge.subject == subjectNodeId).drop(offset).take(limit)
+    edges.filter(edge => edge.subject == subjectNodeId).sortBy(edge => nodesById(edge.`object`).pageRank.get).drop(offset).take(limit)
 
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
@@ -153,5 +156,10 @@ class MemKgStore extends KgStore {
   private def toSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
     stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
     stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
+  }
+
+ final override def writeNodePageRanks() = {
+    this.nodes = NodePageRankCalculator(this.nodes, this.edges)
+    this.nodesById = this.nodes.map(node => (node.id, node)).toMap
   }
 }

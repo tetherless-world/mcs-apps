@@ -26,6 +26,7 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
       sut.clear()
     }
     sut.putData(TestKgData)
+    sut.writeNodePageRanks
   }
 
   private object Neo4jKgStoreFactory extends KgStoreFactory {

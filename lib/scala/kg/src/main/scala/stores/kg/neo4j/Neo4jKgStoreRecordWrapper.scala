@@ -4,6 +4,7 @@ import models.kg.{KgEdge, KgNode}
 import org.neo4j.driver.Record
 
 import scala.collection.JavaConverters._
+import scala.util.Try
 
 class Neo4jKgStoreRecordWrapper(record: Record) {
   private val ListDelimChar = Neo4jKgStore.ListDelimChar
@@ -33,12 +34,13 @@ class Neo4jKgStoreRecordWrapper(record: Record) {
   }
 
   def toNode: KgNode = {
-    val recordMap = record.asMap().asScala.toMap.asInstanceOf[Map[String, String]]
+    val recordMap = record.asMap().asScala.toMap
     KgNode(
-      id = recordMap("node.id"),
-      labels = toList(recordMap("node.labels")),
-      pos = Option(recordMap("node.pos")),
-      sources = toList(recordMap("node.sources"))
+      id = recordMap("node.id").asInstanceOf[String],
+      labels = toList(recordMap("node.labels").asInstanceOf[String]),
+      pageRank = Try(recordMap("node.pageRank").asInstanceOf[Double].doubleValue()).toOption,
+      pos = Option(recordMap("node.pos")).map(_.asInstanceOf[String]),
+      sources = toList(recordMap("node.sources").asInstanceOf[String])
     )
   }
 
