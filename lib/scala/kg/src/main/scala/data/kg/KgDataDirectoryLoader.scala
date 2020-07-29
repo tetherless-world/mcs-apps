@@ -41,6 +41,7 @@ class KgDataDirectoryLoader @Inject()(store: KgStore) extends WithResource {
     val loaded =
       filePaths.foldLeft(false)((result, filePath) => {
         FilenameUtils.getExtension(filePath.getFileName.toString).toLowerCase match {
+          case ".md" => result
           case ".tsv" => {
             logger.info("loading KGTK edges from {}", filePath)
             withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
