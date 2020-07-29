@@ -13,8 +13,7 @@ lazy val kgApp = (project in file("app/kg"))
   .enablePlugins(PlayScala)
   .settings(
     libraryDependencies ++= Seq(
-      "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
-      "me.tongfei" % "progressbar" % "0.8.1",
+      "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test
     ),
     maintainer := maintainerValue,
     name := "mcs-kg-app",
@@ -51,6 +50,7 @@ lazy val kgLib =
         "com.outr" %% "lucene4s" % "1.9.1",
         "io.github.tetherless-world" %% "twxplore-base" % twxploreVersion,
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
+        "me.tongfei" % "progressbar" % "0.8.1",
         "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1"
       ),
       maintainer := maintainerValue,

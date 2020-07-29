@@ -3,9 +3,6 @@ GET         /api/graphql                    controllers.graphql.KgGraphQlControl
 POST        /api/graphql                    controllers.graphql.KgGraphQlController.graphqlBody
 GET         /api/graphql-schema             controllers.graphql.KgGraphQlController.renderSchema
 
-# Import
-PUT         /api/import/kg/kgtk/edges/:edgesTsvFileName                controllers.import_.KgImportController.putKgtkEdgesTsv(edgesTsvFileName: String)
-
 # Assets
 GET         /             controllers.Assets.at(path="/public", file="index.html")
 GET         /$path<.*>    controllers.assets.KgAssetsController.frontEndPath(path)

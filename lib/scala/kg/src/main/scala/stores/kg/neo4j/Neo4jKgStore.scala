@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import stores.kg.{KgNodeFilters, KgStore}
 import stores.{Neo4jStoreConfiguration, StringFilter}
 
+import scala.collection.mutable
 
 
 @Singleton
@@ -142,35 +143,69 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       transaction.isEmpty
     }
 
-  override def putData(data: KgData): Unit = {
-    withWriteTransaction { transaction =>
-      transaction.putData(data)
-      transaction.commit()
+  final override def putEdges(edges: Iterator[KgEdge]): Unit =
+    putModelsBatched(edges) { (edges, transaction) => {
+      transaction.putEdges(edges)
+    }
+    }
+
+  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+    // Neo4j doesn't tolerate duplicate nodes
+    val putNodeIds = new mutable.HashSet[String]
+    putModelsBatched(edgesWithNodes) { (edgesWithNodes, transaction) => {
+      putSources(edgesWithNodes.flatMap(_.sources).distinct.map(KgSource(_)))
+      for (edgeWithNodes <- edgesWithNodes) {
+        if (putNodeIds.add(edgeWithNodes.node1.id)) {
+          transaction.putNode(edgeWithNodes.node1)
+        }
+        if (putNodeIds.add(edgeWithNodes.node2.id)) {
+          transaction.putNode(edgeWithNodes.node2)
+        }
+        transaction.putEdge(edgeWithNodes.edge)
+      }
+    }
     }
   }
 
-  final override def putEdges(edges: Iterator[KgEdge]): Unit =
-    withWriteTransaction { transaction =>
-      transaction.putEdges(edges)
-      transaction.commit()
+  private def putModelsBatched[ModelT](models: Iterator[ModelT])(putModelBatch: (List[ModelT], Transaction) => Unit): Unit = {
+    // Batch the models in order to put them all in a transaction.
+    // My (MG) first implementation looked like:
+    //      for (modelWithIndex <- models.zipWithIndex) {
+    //        val (model, modelIndex) = modelWithIndex
+    //        putModel(transaction, model)
+    //        if (modelIndex > 0 && (modelIndex + 1) % PutCommitInterval == 0) {
+    //          tryOperation(() => transaction.commit())
+    //          transaction = session.beginTransaction()
+    //        }
+    //      }
+    // tryOperation handled TransientException, but the first transaction always failed and was rolled back.
+    // I don't have time to investigate that. Batching models should be OK for now.
+    val modelBatch = new mutable.MutableList[ModelT]
+    while (models.hasNext) {
+      while (modelBatch.size < configuration.commitInterval && models.hasNext) {
+        modelBatch += models.next()
+      }
+      if (!modelBatch.isEmpty) {
+        //          logger.info("putting batch of {} models in a transaction", modelBatch.size)
+        withWriteTransaction { transaction =>
+          putModelBatch(modelBatch.toList, transaction)
+          transaction.commit()
+        }
+        modelBatch.clear()
+      }
     }
-
-  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
-    withWriteTransaction { transaction =>
-      transaction.putKgtkEdgesWithNodes(edgesWithNodes)
-      transaction.commit()
-    }
+  }
 
   final override def putNodes(nodes: Iterator[KgNode]): Unit =
-    withWriteTransaction { transaction =>
+    putModelsBatched(nodes) { (nodes, transaction) => {
       transaction.putNodes(nodes)
-      transaction.commit()
+    }
     }
 
   final override def putPaths(paths: Iterator[KgPath]): Unit =
-    withWriteTransaction { transaction =>
+    putModelsBatched(paths) { (paths, transaction) => {
       transaction.putPaths(paths)
-      transaction.commit()
+    }
     }
 
   final override def putSources(sources: Iterator[KgSource]): Unit =
