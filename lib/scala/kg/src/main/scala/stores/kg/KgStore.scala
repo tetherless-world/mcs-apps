@@ -83,8 +83,6 @@ trait KgStore {
     putNodes(data.nodesUnranked)
     putEdges(data.edges)
     putPaths(data.paths)
-
-    writeNodePageRanks
   }
 
   /**

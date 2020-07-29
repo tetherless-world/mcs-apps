@@ -356,13 +356,15 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private def toTransactionRunParameters(map: Map[String, Any]) =
     map.asJava.asInstanceOf[java.util.Map[String, Object]]
 
-  final override def writeNodePageRanks =
+  final override def writeNodePageRanks = {
     transaction.run(
       """
         |CALL gds.pageRank.write({
-        |nodeProjection: 'Node',
-        |relationshipProjection: "*",
-        |writeProperty: "pageRank"
+        |nodeQuery: 'MATCH (n: Node) RETURN id(n) as id',
+        |relationshipQuery: 'MATCH (source: Node)-[r]->(target: Node) WHERE TYPE(r)<>"PATH" RETURN id(source) as source, id(target) as target',
+        |writeProperty: 'pageRank'
         |})
-        |""".stripMargin)
+        |""".stripMargin
+    )
+  }
 }

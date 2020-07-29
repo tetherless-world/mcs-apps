@@ -1,10 +1,11 @@
 package stores.kg
 
 import data.kg.TestKgData
-import models.kg.KgEdge
+import models.kg.{KgEdge, KgNode}
 import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, WordSpec}
 import stores.StringFilter
+import scala.math.abs
 
 trait KgStoreBehaviors extends Matchers { this: WordSpec =>
   sealed trait TestMode
@@ -16,6 +17,10 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
   trait KgStoreFactory {
     def apply(testMode: TestMode)(f: (KgStore) => Unit)
   }
+
+  private def equals(left: KgNode, right: KgNode) =
+    left.id == right.id && abs(left.pageRank.getOrElse(-1.0) - right.pageRank.getOrElse(-1.0)) < 0.1 && left.sources == right.sources && left.labels == right.labels && left.pos == right.pos
+
 
   def store(storeFactory: KgStoreFactory) {
     "get edges by object" in {
@@ -56,6 +61,7 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
         expected.size should be > 1
         val actual = (0 until expected.size).flatMap(offset => sut.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
         actual should equal(expected)
+
       }
     }
 
@@ -64,7 +70,7 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(expected.labels(0)))
         actual should not be empty
-        actual(0) should equal(expected)
+        equals(actual(0), expected) shouldEqual true
       }
     }
 
@@ -110,7 +116,7 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""sources:${expected.sources(0)} labels:"${expected.labels(0)}""""))
         actual should not be empty
-        actual(0) should equal(expected)
+        equals(actual(0), expected) shouldEqual true
       }
     }
 
@@ -119,7 +125,7 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = sut.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""id:"${expected.id}""""))
         actual.size should be(1)
-        actual(0) should equal(expected)
+        equals(actual(0), expected) shouldEqual true
       }
     }
 
@@ -139,15 +145,16 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
     "get node by id" in {
       storeFactory(TestMode.ReadOnly) { sut =>
         val expected = TestKgData.nodes(0)
-        val actual = sut.getNodeById(expected.id)
-        actual should equal(Some(expected))
+        val actual = sut.getNodeById(expected.id).get
+        equals(actual, expected) shouldEqual true
       }
     }
 
     "get a random node" in {
       storeFactory(TestMode.ReadOnly) { sut =>
-        val node = sut.getRandomNode
-        sut.getNodeById(node.id) should equal(Some(node))
+        val expected = sut.getRandomNode
+        val actual = sut.getNodeById(expected.id).get
+        equals(actual, expected) shouldEqual true
       }
     }
 
