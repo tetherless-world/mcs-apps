@@ -1,4 +1,4 @@
-package stores.kg
+ package stores.kg
 
 import java.nio.file.{Files, Path, Paths}
 import java.util.concurrent.TimeUnit
@@ -22,7 +22,11 @@ import scala.concurrent.duration.FiniteDuration
  * https://www.playframework.com/documentation/2.6.x/ScalaDependencyInjection#Eager-bindings
  */
 @Singleton
-class KgDataDirectoryLoader @Inject()(store: KgStore, dataDirectoryPath: Path = Paths.get("/data"))(implicit ec: ExecutionContext) extends WithIteratorProgress {
+class KgDataDirectoryLoader(dataDirectoryPath: Path, store: KgStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
+  @Inject
+  def this(store: KgStore)(implicit ec: ExecutionContext) =
+    this(Paths.get("/data"), store)
+
   private val logger = LoggerFactory.getLogger(getClass)
 
   private def loadDataDirectory(dataDirectoryPath: Path): Boolean = {
