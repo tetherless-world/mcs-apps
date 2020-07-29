@@ -1,18 +1,15 @@
-package data.kg
+package stores.kg
 
 import java.nio.file.{Files, Path, Paths}
-import java.util.Collections
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 
 import akka.actor.ActorSystem
 import formats.kg.kgtk.KgtkEdgesTsvReader
-import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import javax.inject.{Inject, Singleton}
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
 import stores.WithIteratorProgress
-import stores.kg.KgStore
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
@@ -25,7 +22,7 @@ import scala.concurrent.duration.FiniteDuration
  * https://www.playframework.com/documentation/2.6.x/ScalaDependencyInjection#Eager-bindings
  */
 @Singleton
-class KgDataDirectoryLoader @Inject()(actorSystem: ActorSystem, store: KgStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
+class KgDataDirectoryLoader @Inject()(store: KgStore, dataDirectoryPath: Path = Paths.get("/data"))(implicit ec: ExecutionContext) extends WithIteratorProgress {
   private val logger = LoggerFactory.getLogger(getClass)
 
   private def loadDataDirectory(dataDirectoryPath: Path): Boolean = {
@@ -45,33 +42,32 @@ class KgDataDirectoryLoader @Inject()(actorSystem: ActorSystem, store: KgStore)(
 
     val loaded =
       filePaths.foldLeft(false)((result, filePath) => {
-        FilenameUtils.getExtension(filePath.getFileName.toString).toLowerCase match {
-          case "md" => result
-          case "tsv" => {
-            logger.info("loading KGTK edges from {}", filePath)
-            actorSystem.scheduler.scheduleOnce(FiniteDuration(0, TimeUnit.SECONDS)) { () => {
-              withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
-                withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
-                  store.putKgtkEdgesWithNodes(iterator)
-                }
+        val fileName = filePath.getFileName.toString.toLowerCase
+        if (fileName.endsWith(".tsv") || fileName.endsWith(".tsv.bz2")) {
+          logger.info("loading KGTK edges from {}", filePath)
+          ec.execute { () => {
+            withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
+              withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
+                store.putKgtkEdgesWithNodes(iterator)
               }
-            }}
-            true
-          }
-          case _ => {
-            logger.warn("ignoring file {} with unknown extension", filePath)
-            result
-          }
+            }
+          }}
+          true
+        } else if (fileName.endsWith(".md")) {
+          false
+        } else {
+          logger.warn("ignoring file {} with unknown extension", filePath)
+          result
         }
       })
-    if (loaded) {
-      logger.info("loaded KG data from {}", dataDirectoryPath)
-    }
+//    if (loaded) {
+//      logger.info("loaded KG data from {}", dataDirectoryPath)
+//    }
     loaded
   }
 
   if (store.isEmpty) {
-    loadDataDirectory(Paths.get("/data"))
+    loadDataDirectory(dataDirectoryPath)
   } else {
     logger.info("KG store is not empty, not attempting to load data from the file system")
   }

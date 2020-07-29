@@ -1,10 +1,9 @@
 package stores
 
 import com.google.inject.AbstractModule
-import data.kg.KgDataDirectoryLoader
 import org.slf4j.LoggerFactory
 import stores.kg.neo4j.Neo4jKgStore
-import stores.kg.KgStore
+import stores.kg.{KgDataDirectoryLoader, KgStore}
 import stores.kg.test.TestKgStore
 
 final class KgStoresModule extends AbstractModule {

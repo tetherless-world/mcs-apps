@@ -16,7 +16,7 @@ This work is supported by the [DARPA Machine Common Sense (MCS)](https://www.dar
 
 If the neo4j database is empty, the application Docker container looks for data in the container's `/data` directory. The `docker-compose.yml` mounts the `/data/kg` directory on the host to `/data` in the container.
 
-Currently the data must be in in [KGTK](https://github.com/usc-isi-i2/kgtk) edges format and have the file extension `.tsv`:
+Currently the data must be in in [KGTK](https://github.com/usc-isi-i2/kgtk) edges format and have the file extension `.tsv` or `.tsv.bz2`:
 
     mv ~/cskg.tsv ./data/kg
 
