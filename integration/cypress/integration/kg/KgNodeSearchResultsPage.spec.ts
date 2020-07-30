@@ -45,7 +45,7 @@ context("KgNodeSearchResultsPage", () => {
 
     page.resultsTable.title.should(
       "have.text",
-      `${totalNodes} results in ${source.label}${totalNodes} results in ${node.sources[0]}`
+      `${totalNodes} results in ${source.label}${totalNodes} results in ${source.label}`
     );
   });
 

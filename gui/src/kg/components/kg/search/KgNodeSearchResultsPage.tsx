@@ -15,7 +15,6 @@ import * as qs from "qs";
 import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
-import {text} from "@fortawesome/fontawesome-svg-core";
 import {KgSource} from "shared/models/kg/KgSource";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
@@ -92,7 +91,7 @@ const makeTitle = (kwds: {
 
   if (filters) {
     if (filters.sources) {
-      const {includeSourceIds} = filters.sources;
+      const {include: includeSourceIds} = filters.sources;
 
       if (includeSourceIds) {
         title.push("in");
@@ -129,11 +128,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     KgNodeSearchResultsPageQueryVariables
   >(KgNodeSearchResultsPageQueryDocument, {
     variables: {
+      initialQuery: true,
       kgId,
-      text: searchVariables.text,
       limit: 10,
       offset: 0,
-      withCount: true,
+      text: searchVariables.text,
     },
   });
 
@@ -153,7 +152,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         variables: {
           kgId,
           ...newSearchVariables.object,
-          withCount: false,
+          initialQuery: false,
         },
       })
       .then(({data, errors, loading}) => {
@@ -177,7 +176,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     <KgFrame data={data} error={error} loading={loading}>
       {({
         data: {
-          kgById: {matchingNodes: initialNodes, matchingNodesCount: count},
+          kgById: {
+            matchingNodes: initialNodes,
+            matchingNodesCount: count,
+            sources,
+          },
         },
       }) => {
         return (
@@ -188,7 +191,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                   text: searchVariables.text,
                   count,
                   filters: searchVariables.filters,
-                  sources: [],
+                  sources,
                 })}
                 nodes={nodes ?? initialNodes}
                 rowsPerPage={searchVariables.limit}

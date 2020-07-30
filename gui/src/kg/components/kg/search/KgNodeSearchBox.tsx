@@ -159,12 +159,12 @@ export const KgNodeSearchBox: React.FunctionComponent<{
 
     throttledQuery.current(
       {
+        initialQuery: false,
         kgId,
         text: `${search.text}`,
         filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
-        withCount: false,
       },
       ({kgById}, errors) => {
         if (!active) {
