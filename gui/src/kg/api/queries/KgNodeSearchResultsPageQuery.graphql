@@ -3,10 +3,10 @@
 query KgNodeSearchResultsPageQuery(
   $filters: KgNodeFilters
   $kgId: String!
+  $initialQuery: Boolean!
   $limit: Int!
   $offset: Int!
   $text: String
-  $withCount: Boolean!
 ) {
   kgById(id: $kgId) {
     matchingNodes(
@@ -17,6 +17,10 @@ query KgNodeSearchResultsPageQuery(
     ) {
       ...KgNodeFieldsFragment
     }
-    matchingNodesCount(filters: $filters, text: $text) @include(if: $withCount)
+    matchingNodesCount(filters: $filters, text: $text) @include(if: $initialQuery)
+    sources @include(if: $initialQuery) {
+      id
+      label
+    }
   }
 }

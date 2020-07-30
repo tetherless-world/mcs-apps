@@ -15,6 +15,7 @@ import * as qs from "qs";
 import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
+import {KgSource} from "shared/models/kg/KgSource";
 
 class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   public readonly __typename = "KgNodeSearchVariables";
@@ -70,11 +71,14 @@ class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
   }
 }
 
-const makeTitle = (
-  text: string,
-  count: number,
-  filters?: KgNodeFilters
-): string => {
+const makeTitle = (kwds: {
+  text: string;
+  count: number;
+  filters?: KgNodeFilters;
+  sources: KgSource[];
+}): string => {
+  const {text, count, filters, sources} = kwds;
+
   let title: string[] = [];
 
   title.push(count + "" || "No");
@@ -87,12 +91,22 @@ const makeTitle = (
 
   if (filters) {
     if (filters.sources) {
-      const {include} = filters.sources;
+      const {include: includeSourceIds} = filters.sources;
 
-      if (include) {
+      if (includeSourceIds) {
         title.push("in");
 
-        title.push(include.join(", "));
+        const includeSourceLabels = [];
+        for (const includeSourceId of includeSourceIds) {
+          const includeSource = sources.find(
+            (source) => source.id === includeSourceId
+          );
+          includeSourceLabels.push(
+            includeSource ? includeSource.label : includeSourceId
+          );
+        }
+
+        title.push(includeSourceLabels.join(", "));
       }
     }
   }
@@ -114,11 +128,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     KgNodeSearchResultsPageQueryVariables
   >(KgNodeSearchResultsPageQueryDocument, {
     variables: {
+      initialQuery: true,
       kgId,
-      text: searchVariables.text,
       limit: 10,
       offset: 0,
-      withCount: true,
+      text: searchVariables.text,
     },
   });
 
@@ -138,7 +152,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         variables: {
           kgId,
           ...newSearchVariables.object,
-          withCount: false,
+          initialQuery: false,
         },
       })
       .then(({data, errors, loading}) => {
@@ -162,40 +176,47 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     <KgFrame data={data} error={error} loading={loading}>
       {({
         data: {
-          kgById: {matchingNodes: initialNodes, matchingNodesCount: count},
+          kgById: {
+            matchingNodes: initialNodes,
+            matchingNodesCount: count,
+            sources,
+          },
         },
-      }) => (
-        <Grid container spacing={3}>
-          <Grid item xs>
-            <KgNodeTable
-              title={makeTitle(
-                searchVariables.text,
-                count,
-                searchVariables.filters
-              )}
-              nodes={nodes ?? initialNodes}
-              rowsPerPage={searchVariables.limit}
-              count={count}
-              page={searchVariables.page}
-              onChangePage={(newPage: number) =>
-                tableUpdateQuery(
-                  searchVariables.replace({
-                    offset: newPage * searchVariables.limit,
-                  })
-                )
-              }
-              onChangeRowsPerPage={(newRowsPerPage: number) =>
-                tableUpdateQuery(
-                  searchVariables.replace({
-                    offset: 0,
-                    limit: newRowsPerPage,
-                  })
-                )
-              }
-            />
+      }) => {
+        return (
+          <Grid container spacing={3}>
+            <Grid item xs>
+              <KgNodeTable
+                title={makeTitle({
+                  text: searchVariables.text,
+                  count,
+                  filters: searchVariables.filters,
+                  sources,
+                })}
+                nodes={nodes ?? initialNodes}
+                rowsPerPage={searchVariables.limit}
+                count={count}
+                page={searchVariables.page}
+                onChangePage={(newPage: number) =>
+                  tableUpdateQuery(
+                    searchVariables.replace({
+                      offset: newPage * searchVariables.limit,
+                    })
+                  )
+                }
+                onChangeRowsPerPage={(newRowsPerPage: number) =>
+                  tableUpdateQuery(
+                    searchVariables.replace({
+                      offset: 0,
+                      limit: newRowsPerPage,
+                    })
+                  )
+                }
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      )}
+        );
+      }}
     </KgFrame>
   );
 };

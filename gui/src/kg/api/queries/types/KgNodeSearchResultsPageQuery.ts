@@ -23,10 +23,17 @@ export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   pos: string | null;
 }
 
+export interface KgNodeSearchResultsPageQuery_kgById_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
+}
+
 export interface KgNodeSearchResultsPageQuery_kgById {
   __typename: "Kg";
   matchingNodes: KgNodeSearchResultsPageQuery_kgById_matchingNodes[];
   matchingNodesCount: number;
+  sources: KgNodeSearchResultsPageQuery_kgById_sources[];
 }
 
 export interface KgNodeSearchResultsPageQuery {
@@ -36,8 +43,8 @@ export interface KgNodeSearchResultsPageQuery {
 export interface KgNodeSearchResultsPageQueryVariables {
   filters?: KgNodeFilters | null;
   kgId: string;
+  initialQuery: boolean;
   limit: number;
   offset: number;
   text?: string | null;
-  withCount: boolean;
 }
