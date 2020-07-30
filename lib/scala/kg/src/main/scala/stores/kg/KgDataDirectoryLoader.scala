@@ -9,6 +9,7 @@ import formats.kg.kgtk.KgtkEdgesTsvReader
 import javax.inject.{Inject, Singleton}
 import org.apache.commons.io.FilenameUtils
 import org.slf4j.LoggerFactory
+import play.api.Configuration
 import stores.WithIteratorProgress
 
 import scala.collection.JavaConverters._
@@ -24,8 +25,8 @@ import scala.concurrent.duration.FiniteDuration
 @Singleton
 class KgDataDirectoryLoader(dataDirectoryPath: Path, store: KgStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
   @Inject
-  def this(store: KgStore)(implicit ec: ExecutionContext) =
-    this(Paths.get("/data"), store)
+  def this(configuration: Configuration, store: KgStore)(implicit ec: ExecutionContext) =
+    this(Paths.get(configuration.getOptional[String]("kgDataDirectoryPath").getOrElse("/data")), store)
 
   private val logger = LoggerFactory.getLogger(getClass)
 

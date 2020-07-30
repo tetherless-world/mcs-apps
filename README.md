@@ -141,7 +141,7 @@ or in the sbt shell. The app listens to port 9000. It expects to be able to reac
 
 The app can use an in-memory test data store (`MemStore`) with synthetic data in lieu of connecting to neo4j:
 
-    sbt "project kgApp" -DtestIntegration run
+    sbt "project kgApp" -DkgStore=test run
     
 The same system property can be set in an IntelliJ run configuration.
 
