@@ -145,7 +145,7 @@ workflows:
             cp ~/project/.circleci/cypress.json .
             apt-get update && apt-get install -y default-jre
             cd ~/dist/app/kg
-            bin/mcs-kg-app -DtestIntegration
+            bin/mcs-kg-app -DkgStore=test
           wait-on: "http-get://localhost:9000/index.html"
           working_directory: integration
 #      - kg-app-docker:
