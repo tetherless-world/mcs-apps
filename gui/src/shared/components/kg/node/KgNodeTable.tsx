@@ -157,6 +157,7 @@ export const KgNodeTable: React.FunctionComponent<{
           serverSide: true,
           sort: false,
           filter: false,
+          selectableRows: "none",
           onChangePage,
           onChangeRowsPerPage,
           setRowProps(_, rowIndex) {
