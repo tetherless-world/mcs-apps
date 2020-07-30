@@ -2,16 +2,20 @@ import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResult
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
+import {KgSource} from "gui/src/shared/models/kg/KgSource";
 
 context("KgNodeSearchResultsPage", () => {
   let page: KgNodeSearchResultsPage;
   let node: KgNode;
+  let source: KgSource;
   let totalNodes: number;
 
   before(() => {
     KgTestData.kgNodes.then((kgNodes) => {
       node = kgNodes[0];
       page = new KgNodeSearchResultsPage(node.labels[0]);
+      source = KgTestData.kgSources[0];
+      assert(source.id === node.sources[0]);
       totalNodes = kgNodes.length;
     });
   });
@@ -36,12 +40,12 @@ context("KgNodeSearchResultsPage", () => {
     nodePage.assertLoaded();
   });
 
-  it("Should show datasource search", () => {
+  it("Should show source search", () => {
     page.resultsTable.row(0).datasourceLink.click();
 
     page.resultsTable.title.should(
       "have.text",
-      `${totalNodes} results in ${node.sources[0]}${totalNodes} results in ${node.sources[0]}`
+      `${totalNodes} results in ${source.label}${totalNodes} results in ${node.sources[0]}`
     );
   });
 
