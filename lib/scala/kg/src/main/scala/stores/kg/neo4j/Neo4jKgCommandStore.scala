@@ -20,8 +20,6 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
   private final class Neo4jKgCommandStoreTransaction extends KgCommandStoreTransaction {
       private final implicit class Neo4jKgStoreTransactionWrapper(transaction: Transaction) extends KgCommandStoreTransaction {
-        private val ListDelimString = ListDelimChar.toString
-
         final def clear(): Unit =
         // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
           transaction.run(

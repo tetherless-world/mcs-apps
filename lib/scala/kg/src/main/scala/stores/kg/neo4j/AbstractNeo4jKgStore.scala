@@ -7,6 +7,7 @@ import scala.collection.JavaConverters._
 
 abstract class AbstractNeo4jKgStore(protected val configuration: Neo4jStoreConfiguration) extends WithResource {
   protected val ListDelimChar = '|'
+  protected val ListDelimString = ListDelimChar.toString
   protected val PathRelationshipType = "PATH"
   protected val SourceRelationshipType = "SOURCE"
 

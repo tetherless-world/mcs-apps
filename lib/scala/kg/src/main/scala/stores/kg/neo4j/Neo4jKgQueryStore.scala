@@ -87,7 +87,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   private final implicit class TransactionWrapper(transaction: Transaction) extends KgQueryStore {
     private val edgePropertyNameList = List("id", "labels", "object", "origins", "questions", "sentences", "sources", "subject", "weight")
     private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
-    private val ListDelimString = ListDelimChar.toString
     private val nodePropertyNameList = List("id", "labels", "pos", "sources", "pageRank")
     private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
     private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
