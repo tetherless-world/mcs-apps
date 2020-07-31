@@ -3,8 +3,8 @@ package stores
 import com.google.inject.AbstractModule
 import org.slf4j.LoggerFactory
 import play.api.{Configuration, Environment}
-import stores.kg.neo4j.Neo4jKgStore
-import stores.kg.{KgDataDirectoryLoader, KgStore}
+import stores.kg.neo4j.{Neo4jKgCommandStore, Neo4jKgQueryStore}
+import stores.kg.{KgCommandStore, KgDataDirectoryLoader, KgQueryStore}
 import stores.kg.test.TestKgStore
 
 final class KgStoresModule(environment: Environment, configuration: Configuration) extends AbstractModule {
@@ -14,10 +14,12 @@ final class KgStoresModule(environment: Environment, configuration: Configuratio
     configuration.getOptional[String]("kgStore").getOrElse("neo4j") match {
       case "test" => {
         logger.info("using test stores")
-        bind(classOf[KgStore]).to(classOf[TestKgStore])
+        bind(classOf[KgCommandStore]).to(classOf[TestKgStore])
+        bind(classOf[KgQueryStore]).to(classOf[TestKgStore])
       }
       case _ => {
-        bind(classOf[KgStore]).to(classOf[Neo4jKgStore])
+        bind(classOf[KgCommandStore]).to(classOf[Neo4jKgCommandStore])
+        bind(classOf[KgQueryStore]).to(classOf[Neo4jKgQueryStore])
         bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()
       }
     }
