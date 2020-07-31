@@ -112,6 +112,46 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
     ).toNodes.head
 
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node ID as an object
+   */
+  override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
+    transaction.run(
+      s"""
+         |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+         |WITH edge, subject, object
+         |ORDER BY subject.pageRank DESC
+         |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+         |UNWIND groupByRelation as group
+         |WITH group[0] as edge, group[1] as subject, group[2] as object
+         |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+         |""".stripMargin,
+      toTransactionRunParameters(Map(
+        "objectNodeId" -> objectNodeId
+      ))
+    ).toEdges
+  }
+
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node ID as a subject
+   */
+  override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
+    transaction.run(
+      s"""
+         |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+         |WITH edge, subject, object
+         |ORDER BY object.pageRank DESC
+         |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+         |UNWIND groupByRelation as group
+         |WITH group[0] as edge, group[1] as subject, group[2] as object
+         |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+         |""".stripMargin,
+      toTransactionRunParameters(Map(
+        "subjectNodeId" -> subjectNodeId
+      ))
+    ).toEdges
+  }
+
   final override def getTotalEdgesCount: Int =
     transaction.run(
       """

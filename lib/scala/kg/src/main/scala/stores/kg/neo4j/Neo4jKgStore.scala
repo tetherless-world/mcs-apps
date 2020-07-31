@@ -128,6 +128,16 @@ final class Neo4jKgStore @Inject()(configuration: Neo4jStoreConfiguration) exten
       transaction.getRandomNode
     }
 
+  override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] =
+    withReadTransaction { transaction =>
+      transaction.getTopEdgesByObject(limit, objectNodeId)
+    }
+
+  override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] =
+    withReadTransaction { transaction =>
+      transaction.getTopEdgesBySubject(limit, subjectNodeId)
+    }
+
   final override def getTotalEdgesCount: Int =
     withReadTransaction { transaction =>
       transaction.getTotalEdgesCount

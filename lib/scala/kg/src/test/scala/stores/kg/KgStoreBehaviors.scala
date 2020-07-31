@@ -74,6 +74,44 @@ trait KgStoreBehaviors extends Matchers { this: WordSpec =>
       }
     }
 
+    "get top edges by object" in {
+      storeFactory(TestMode.ReadOnly) { sut =>
+        val limit = 2
+        val objectNodeId = TestKgData.nodes(0).id
+        val actual = sut.getTopEdgesByObject(limit, objectNodeId)
+
+        val objectEdges = TestKgData.edges.filter(_.`object` == objectNodeId)
+        var partitionStart = 0
+        for (partitionEnd <- 1 until actual.size + 1) {
+          if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
+            partitionEnd - partitionStart should be <= limit
+            actual.slice(partitionStart, partitionEnd) should equal(objectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.subject).pageRank.get).take(limit))
+
+            partitionStart = partitionEnd
+          }
+        }
+      }
+    }
+
+    "get top edges by subject" in {
+      storeFactory(TestMode.ReadOnly) { sut =>
+        val limit = 2
+        val subjectNodeId = TestKgData.nodes(0).id
+        val actual = sut.getTopEdgesBySubject(limit, subjectNodeId)
+
+        val subjectEdges = TestKgData.edges.filter(_.subject == subjectNodeId)
+        var partitionStart = 0
+        for (partitionEnd <- 1 until actual.size + 1) {
+          if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
+            partitionEnd - partitionStart should be <= limit
+            actual.slice(partitionStart, partitionEnd) should equal(subjectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.`object`).pageRank.get).take(limit))
+
+            partitionStart = partitionEnd
+          }
+        }
+      }
+    }
+
     "get count of matching nodes by label" in {
       storeFactory(TestMode.ReadOnly) { sut =>
         val expected = TestKgData.nodes(0)
