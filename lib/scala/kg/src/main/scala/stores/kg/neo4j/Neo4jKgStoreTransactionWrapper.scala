@@ -119,6 +119,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     transaction.run(
       s"""
          |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+         |WHERE type(edge)<>"PATH"
          |WITH edge, subject, object
          |ORDER BY subject.pageRank DESC
          |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
@@ -139,6 +140,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
     transaction.run(
       s"""
          |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+         |WHERE type(edge)<>"PATH"
          |WITH edge, subject, object
          |ORDER BY object.pageRank DESC
          |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
