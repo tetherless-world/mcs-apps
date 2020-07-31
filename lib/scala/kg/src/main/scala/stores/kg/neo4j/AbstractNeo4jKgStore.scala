@@ -8,7 +8,9 @@ import scala.collection.JavaConverters._
 abstract class AbstractNeo4jKgStore(protected val configuration: Neo4jStoreConfiguration) extends WithResource {
   protected val ListDelimChar = '|'
   protected val ListDelimString = ListDelimChar.toString
+  protected val NodeLabel = "Node"
   protected val PathRelationshipType = "PATH"
+  protected val SourceLabel = "Source"
   protected val SourceRelationshipType = "SOURCE"
 
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))

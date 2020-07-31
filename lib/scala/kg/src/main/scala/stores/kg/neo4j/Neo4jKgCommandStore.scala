@@ -32,8 +32,8 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final def putEdge(edge: KgEdge) =
           transaction.run(
-            """MATCH (subject:Node {id: $subject}), (object:Node {id: $object})
-              |CALL apoc.create.relationship(subject, $predicate, {id: $id, labels: $labels, origins: $origins, questions: $questions, sentences: $sentences, sources: $sources, weight: toFloat($weight)}, object) YIELD rel
+            s"""MATCH (subject:${NodeLabel} {id: $$subject}), (object:${NodeLabel} {id: $$object})
+              |CALL apoc.create.relationship(subject, $$predicate, {id: $$id, labels: $$labels, origins: $$origins, questions: $$questions, sentences: $$sentences, sources: $$sources, weight: toFloat($$weight)}, object) YIELD rel
               |REMOVE rel.noOp
               |""".stripMargin,
             toTransactionRunParameters(Map(
@@ -78,7 +78,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final def putNode(node: KgNode): Unit = {
           transaction.run(
-            "CREATE (:Node { id: $id, labels: $labels, pos: $pos, sources: $sources });",
+            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources });",
             toTransactionRunParameters(Map(
               "id" -> node.id,
               "labels" -> node.labels.mkString(ListDelimString),
@@ -94,7 +94,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           for (sourceId <- node.sources) {
             transaction.run(
               s"""
-                 |MATCH (source:Source), (node:Node)
+                 |MATCH (source:${SourceLabel}), (node:${NodeLabel})
                  |WHERE node.id = $$nodeId AND source.id = $$sourceId
                  |CREATE (node)-[:${SourceRelationshipType}]->(source)
                  |""".stripMargin,
@@ -120,9 +120,9 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
               transaction.run(
                 s"""
-                   |MATCH (subject:Node), (object: Node)
+                   |MATCH (subject:${NodeLabel}), (object: ${NodeLabel})
                    |WHERE subject.id = $$subject AND object.id = $$object
-                   |CREATE (subject)-[path:${PathRelationshipType} {id: $$pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $$pathEdgePredicate, sources: $$sources}]->(object)
+                   |CREATE (subject)-[path:${PathRelationshipType} {id: $$pathId, pathEdgeIndex: $$pathEdgeIndex, pathEdgePredicate: $$pathEdgePredicate, sources: $$sources}]->(object)
                    |""".stripMargin,
                 toTransactionRunParameters(Map(
                   "object" -> pathEdge.`object`,
@@ -141,9 +141,9 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
             val sourceExists =
               transaction.run(
-                """
-                  |MATCH (source:Source)
-                  |WHERE source.id = $id
+                s"""
+                  |MATCH (source:${SourceLabel})
+                  |WHERE source.id = $$id
                   |RETURN source.label
                   |LIMIT 1
                   |""".stripMargin,
@@ -159,15 +159,15 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           }
 
         final def writeNodePageRanks: Unit = {
-          if (!transaction.run("MATCH (n: NODE) RETURN n LIMIT 1").hasNext) {
+          if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
 
           transaction.run(
             s"""
                |CALL gds.pageRank.write({
-               |nodeQuery: 'MATCH (n: Node) RETURN id(n) as id',
-               |relationshipQuery: 'MATCH (source: Node)-[r]->(target: Node) WHERE TYPE(r)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(r)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
                |writeProperty: 'pageRank'
                |})
                |""".stripMargin
@@ -297,9 +297,9 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         logger.info("bootstrapping neo4j indices")
 
         val bootstrapCypherStatements = List(
-          """CALL db.index.fulltext.createNodeIndex("node",["Node"],["id", "labels", "sources"]);""",
-          """CREATE CONSTRAINT node_id_constraint ON (node:Node) ASSERT node.id IS UNIQUE;""",
-          """CREATE CONSTRAINT source_id_constraint ON (source:Source) ASSERT source.id IS UNIQUE;"""
+          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}"],["id", "labels", "sources"]);""",
+          s"""CREATE CONSTRAINT node_id_constraint ON (node:${NodeLabel}) ASSERT node.id IS UNIQUE;""",
+          s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;"""
         )
 
         session.writeTransaction { transaction =>

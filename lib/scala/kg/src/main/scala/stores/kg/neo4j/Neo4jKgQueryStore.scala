@@ -1,16 +1,13 @@
 package stores.kg.neo4j
 
 import com.google.inject.Inject
-import formats.kg.kgtk.KgtkEdgeWithNodes
 import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
-import org.slf4j.LoggerFactory
 import stores.Neo4jStoreConfiguration
 import stores.kg.{KgNodeFilters, KgQueryStore}
 
 import scala.collection.JavaConverters._
-import scala.collection.mutable
 import scala.util.Try
 
 @Singleton
@@ -101,7 +98,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           |""".stripMargin)
 
     final override def getSourcesById: Map[String, KgSource] =
-      transaction.run("MATCH (source:Source) RETURN source.id, source.label").asScala.map(record =>
+      transaction.run(s"MATCH (source:${SourceLabel}) RETURN source.id, source.label").asScala.map(record =>
         KgSource(
           id = record.get("source.id").asString(),
           label = record.get("source.label").asString()
@@ -111,7 +108,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
       transaction.run(
         s"""
-           |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
            |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
            |ORDER BY type(edge), subject.pageRank, edge
            |SKIP ${offset}
@@ -125,7 +122,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
       transaction.run(
         s"""
-           |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
            |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
            |ORDER BY type(edge), object.pageRank, edge
            |SKIP ${offset}
@@ -163,13 +160,13 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     final override def getNodeById(id: String): Option[KgNode] =
       transaction.run(
-        s"MATCH (node:Node {id: $$id}) RETURN ${nodePropertyNamesString};",
+        s"MATCH (node:${NodeLabel} {id: $$id}) RETURN ${nodePropertyNamesString};",
         toTransactionRunParameters(Map("id" -> id))
       ).toNodes.headOption
 
     final override def getPathById(id: String): Option[KgPath] =
       transaction.run(
-        s"""MATCH (subjectNode:Node)-[path:${PathRelationshipType} {id: $$id}]->(objectNode:Node)
+        s"""MATCH (subjectNode:${NodeLabel})-[path:${PathRelationshipType} {id: $$id}]->(objectNode:${NodeLabel})
            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
            |""".stripMargin,
         toTransactionRunParameters(Map("id" -> id))
@@ -177,7 +174,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     final override def getRandomNode: KgNode =
       transaction.run(
-        s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
+        s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
     /**
@@ -186,7 +183,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
       transaction.run(
         s"""
-           |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
            |WHERE type(edge)<>"${PathRelationshipType}"
            |WITH edge, subject, object
            |ORDER BY subject.pageRank DESC
@@ -207,7 +204,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
       transaction.run(
         s"""
-           |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
            |WHERE type(edge)<>"${PathRelationshipType}"
            |WITH edge, subject, object
            |ORDER BY object.pageRank DESC
@@ -225,14 +222,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getTotalEdgesCount: Int =
       transaction.run(
         s"""
-           |MATCH (subject:Node)-[r]->(object:Node)
+           |MATCH (subject:${NodeLabel})-[r]->(object:${NodeLabel})
            |WHERE NOT type(r) = "${PathRelationshipType}"
            |RETURN COUNT(r) as count
            |""".stripMargin
       ).single().get("count").asInt()
 
     final override def getTotalNodesCount: Int =
-      transaction.run("MATCH (n:Node) RETURN COUNT(n) as count").single().get("count").asInt()
+      transaction.run(s"MATCH (n:${NodeLabel}) RETURN COUNT(n) as count").single().get("count").asInt()
 
     final override def isEmpty: Boolean =
       transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
@@ -253,8 +250,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
       val distinctSourceIdBindings = distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => CypherBinding(s"source${sourceIdWithIndex._2}", sourceIdWithIndex._1))
 
-      val matchClauses: List[String] = List("(node: Node)") ++
-        distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:Source { id: $$source${sourceIdWithIndex._2} })")
+      val matchClauses: List[String] = List(s"(node: ${NodeLabel})") ++
+        distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:${SourceLabel} { id: $$source${sourceIdWithIndex._2} })")
       val matchCypher = List("MATCH " + matchClauses.mkString(", "))
 
       val whereClauses: List[String] =
