@@ -19,25 +19,18 @@ class Neo4jKgStoreRecordWrapper(record: Record) {
 
   def toEdge: KgEdge = {
     val recordMap = record.asMap().asScala.toMap
-    try {
-      KgEdge(
-        id = recordMap("edge.id").asInstanceOf[String],
-        labels = toList(recordMap("edge.labels").asInstanceOf[String]),
-        `object` = recordMap("object.id").asInstanceOf[String],
-        origins = toList(recordMap("edge.origins").asInstanceOf[String]),
-        questions = toList(recordMap("edge.questions").asInstanceOf[String]),
-        sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
-        predicate = recordMap("type(edge)").asInstanceOf[String],
-        sources = toList(recordMap("edge.sources").asInstanceOf[String]),
-        subject = recordMap("subject.id").asInstanceOf[String],
-        weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].doubleValue())
-      )
-    } catch {
-      case e: NullPointerException => {
-        println(recordMap)
-        throw e
-      }
-    }
+    KgEdge(
+      id = recordMap("edge.id").asInstanceOf[String],
+      labels = toList(recordMap("edge.labels").asInstanceOf[String]),
+      `object` = recordMap("object.id").asInstanceOf[String],
+      origins = toList(recordMap("edge.origins").asInstanceOf[String]),
+      questions = toList(recordMap("edge.questions").asInstanceOf[String]),
+      sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
+      predicate = recordMap("type(edge)").asInstanceOf[String],
+      sources = toList(recordMap("edge.sources").asInstanceOf[String]),
+      subject = recordMap("subject.id").asInstanceOf[String],
+      weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].doubleValue())
+    )
   }
 
   def toNode: KgNode = {
