@@ -115,7 +115,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   /**
    * Get top edges using pageRank grouped by relation that have the given node ID as an object
    */
-  override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
+  final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
     transaction.run(
       s"""
          |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
@@ -136,7 +136,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   /**
    * Get top edges using pageRank grouped by relation that have the given node ID as a subject
    */
-  override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
+  final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
     transaction.run(
       s"""
          |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
