@@ -41,6 +41,10 @@ jobs:
           name: Test that the user interface is up
           command: |
             docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_ID -p $DOCKER_PASSWORD && docker-compose push app
   scala:
     docker:
       - image: circleci/openjdk:11
