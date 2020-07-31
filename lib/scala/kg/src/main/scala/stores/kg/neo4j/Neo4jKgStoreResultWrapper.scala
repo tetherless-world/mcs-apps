@@ -5,6 +5,9 @@ import org.neo4j.driver.{Record, Result}
 
 import scala.collection.JavaConverters._
 
+/**
+ * Implicit class to add conversion methods to a neo4j Result.
+ */
 class Neo4jKgStoreResultWrapper(result: Result) {
   private implicit class Neo4jKgStoreRecordWrapperImplicit(record: Record) extends Neo4jKgStoreRecordWrapper(record)
 

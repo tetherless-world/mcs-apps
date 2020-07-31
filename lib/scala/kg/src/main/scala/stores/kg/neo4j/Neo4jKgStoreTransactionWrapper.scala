@@ -1,17 +1,19 @@
 package stores.kg.neo4j
 
-import data.kg.KgData
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver.{Result, Transaction}
 import org.slf4j.LoggerFactory
-import stores.{Neo4jStoreConfiguration, StringFilter}
+import stores.Neo4jStoreConfiguration
 import stores.kg.{KgNodeFilters, KgStore}
 
-import scala.collection.mutable
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
-class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, transaction: Transaction) extends KgStore {
+/**
+ * Implicit class to add KgStore methods to a neo4j Transaction.
+ */
+class Neo4jKgStoreTransactionWrapper(transaction: Transaction) extends KgStore {
   private val edgePropertyNameList = List("id", "labels", "object", "origins", "questions", "sentences", "sources", "subject", "weight")
   private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
   private val ListDelimString = Neo4jKgStore.ListDelimChar.toString

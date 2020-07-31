@@ -6,6 +6,9 @@ import org.neo4j.driver.Record
 import scala.collection.JavaConverters._
 import scala.util.Try
 
+/**
+ * Implicit class to add conversion methods to a neo4j Record.
+ */
 class Neo4jKgStoreRecordWrapper(record: Record) {
   private val ListDelimChar = Neo4jKgStore.ListDelimChar
 
