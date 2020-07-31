@@ -29,7 +29,7 @@ export const KgNodeViews: React.FunctionComponent<{
     label: string | null;
     pos: string | null;
     sources: KgSource[];
-    subjectOfEdges: KgNodeSubjectOfEdge[];
+    topSubjectOfEdges: KgNodeSubjectOfEdge[];
   };
 }> = ({node}) => {
   const location = useLocation();
@@ -45,7 +45,7 @@ export const KgNodeViews: React.FunctionComponent<{
   const predicateSubjects: {
     [index: string]: KgNodeSubjectOfEdge[];
   } = {};
-  for (const edge of node.subjectOfEdges) {
+  for (const edge of node.topSubjectOfEdges) {
     if (!edge.objectNode) {
       continue;
     } else if (!edge.predicate) {
