@@ -7,7 +7,7 @@ import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.kg.neo4j.Neo4jKgStore
 
 @ImplementedBy(classOf[Neo4jKgStore])
-trait KgStore {
+trait KgQueryStore {
   /**
    * Clear the store.
    *
