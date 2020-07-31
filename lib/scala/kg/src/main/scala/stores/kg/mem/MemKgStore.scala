@@ -87,10 +87,10 @@ class MemKgStore extends KgStore {
     nodes(random.nextInt(nodes.size))
 
   final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] =
-    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get).take(limit)).values.flatten.toList
+    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
 
   final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get).take(limit)).values.flatten.toList
+    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
 
   final override def getTotalEdgesCount: Int =
     edges.size
