@@ -8,6 +8,6 @@ import play.api.mvc.Request
 import stores.kg.KgQueryStore
 
 @Singleton
-class KgGraphQlController @Inject()(kgStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[KgGraphQlSchemaContext](KgGraphQlSchemaDefinition.schema, system) {
-  override protected def getContext(request: Request[_]): KgGraphQlSchemaContext = new KgGraphQlSchemaContext(kgStore, request)
+class KgGraphQlController @Inject()(kgQueryStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[KgGraphQlSchemaContext](KgGraphQlSchemaDefinition.schema, system) {
+  override protected def getContext(request: Request[_]): KgGraphQlSchemaContext = new KgGraphQlSchemaContext(kgQueryStore, request)
 }

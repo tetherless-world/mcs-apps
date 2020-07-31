@@ -12,8 +12,8 @@ object BenchmarkGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinitio
   )
   implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionAnswerPaths](
     AddFields(
-      Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.value.endNodeId)),
-      Field("startNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgStore.getNodeById(ctx.value.startNodeId)),
+      Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.endNodeId)),
+      Field("startNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.startNodeId)),
     )
   )
   implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()

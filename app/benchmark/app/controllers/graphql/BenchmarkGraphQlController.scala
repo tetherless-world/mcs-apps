@@ -9,6 +9,6 @@ import stores.benchmark.BenchmarkStore
 import stores.kg.KgQueryStore
 
 @Singleton
-class BenchmarkGraphQlController @Inject()(benchmarkStore: BenchmarkStore, kgStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[BenchmarkGraphQlSchemaContext](BenchmarkGraphQlSchemaDefinition.schema, system) {
-  override protected def getContext(request: Request[_]): BenchmarkGraphQlSchemaContext = new BenchmarkGraphQlSchemaContext(benchmarkStore, kgStore, request)
+class BenchmarkGraphQlController @Inject()(benchmarkStore: BenchmarkStore, kgQueryStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[BenchmarkGraphQlSchemaContext](BenchmarkGraphQlSchemaDefinition.schema, system) {
+  override protected def getContext(request: Request[_]): BenchmarkGraphQlSchemaContext = new BenchmarkGraphQlSchemaContext(benchmarkStore, kgQueryStore, request)
 }
