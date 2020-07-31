@@ -18,29 +18,12 @@ jobs:
       - run:
           name: Wait for the server to start
           command: |
-            sleep 120
+            sleep 90
             docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
       - run:
-          name: Load the database
+          name: Push to DockerHub
           command: |
-            bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/kgtk/cskg.tsv
-            # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker exec mcs-kg-app find /app
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/kgtk/cskg.tsv mcs-kg-app:/app/data/import/kg/kgtk/
-            docker exec mcs-kg-app find /app
-            # script/import-kgtk-cskg-tsv
-      - run:
-          name: Test that the database is loaded
-          command: |
-            # Copy a file in in order to use -f
-            # If we cat the Cypher into the docker exec then the cypher-shell doesn't print anything.
-            echo "MATCH (n) RETURN COUNT(n);" >test-neo4j.cypher
-            docker cp test-neo4j.cypher mcs-neo4j:/var/lib/neo4j
-            docker exec --interactive mcs-neo4j cypher-shell -u neo4j -p nC1aB4mji623s2Zs --non-interactive -f test-neo4j.cypher
-      - run:
-          name: Test that the user interface is up
-          command: |
-            docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
+            docker login -u $DOCKER_ID -p $DOCKER_PASSWORD && docker-compose push kg-app
   scala:
     docker:
       - image: circleci/openjdk:11
@@ -148,12 +131,12 @@ workflows:
             bin/mcs-kg-app -DkgStore=test
           wait-on: "http-get://localhost:9000/index.html"
           working_directory: integration
-#      - kg-app-docker:
-#          filters:
-#            branches:
-#              only: master
-#          post-steps:
-#            - slack/status
+      - kg-app-docker:
+          filters:
+            branches:
+              only: master
+          post-steps:
+            - slack/status
       - scala:
           requires:
             - ts
