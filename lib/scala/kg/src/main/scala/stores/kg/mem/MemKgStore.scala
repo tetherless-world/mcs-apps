@@ -6,14 +6,72 @@ import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
-import stores.kg.{KgNodeFilters, KgStore}
+import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFilters, KgQueryStore}
 import util.NodePageRankCalculator
 
-import scala.annotation.tailrec
-import scala.math.sqrt
 import scala.util.Random
 
-class MemKgStore extends KgStore {
+class MemKgStore extends KgCommandStore with KgQueryStore {
+  private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
+    final override def clear(): Unit = {
+      edges = List()
+      lucene.deleteAll()
+      nodes = List()
+      nodesById = Map()
+      paths = List()
+      pathsById = Map()
+      sourcesById = Map()
+    }
+
+    override def close(): Unit =
+      writeNodePageRanks
+
+    final override def putEdges(edges: Iterator[KgEdge]): Unit = {
+      MemKgStore.this.edges = edges.toList
+      putSourceIds(MemKgStore.this.edges.flatMap(_.sources).distinct)
+    }
+
+    final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
+      val edgesWithNodesList = edgesWithNodes.toList
+      val uniqueEdges = edgesWithNodesList.map(edgeWithNodes => (edgeWithNodes.edge.id, edgeWithNodes.edge)).toMap.values.toList
+      val uniqueNodes = edgesWithNodesList.flatMap(edgeWithNodes => List((edgeWithNodes.node1.id, edgeWithNodes.node1), (edgeWithNodes.node2.id, edgeWithNodes.node2))).toMap.values.toList
+      putNodes(uniqueNodes)
+      putEdges(uniqueEdges)
+    }
+
+    final override def putNodes(nodes: Iterator[KgNode]): Unit = {
+      MemKgStore.this.nodes = nodes.toList
+      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
+      putSourceIds(MemKgStore.this.nodes.flatMap(_.sources).distinct)
+      lucene.deleteAll()
+      MemKgStore.this.nodes.foreach(node => {
+        lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
+      })
+      lucene.commit()
+    }
+
+    final override def putPaths(paths: Iterator[KgPath]): Unit = {
+      MemKgStore.this.paths = paths.toList
+      MemKgStore.this.pathsById = MemKgStore.this.paths.map(path => (path.id, path)).toMap
+    }
+
+    private def putSourceIds(sourceIds: List[String]): Unit =
+      putSources(sourceIds.map(KgSource(_)))
+
+    final override def putSources(sources: Iterator[KgSource]): Unit = {
+      for (source <- sources) {
+        if (!sourcesById.contains(source.id)) {
+          sourcesById += (source.id -> source)
+        }
+      }
+    }
+
+    private def writeNodePageRanks: Unit = {
+      MemKgStore.this.nodes = NodePageRankCalculator(MemKgStore.this.nodes, MemKgStore.this.edges)
+      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
+    }
+  }
+
   private var edges: List[KgEdge] = List()
   private val lucene = new DirectLucene(List("sources", "id", "labels"), autoCommit = false)
   private val luceneNodeSourceField = lucene.create.facet("source", multiValued = true)
@@ -25,16 +83,6 @@ class MemKgStore extends KgStore {
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
-
-  final override def clear(): Unit = {
-    edges = List()
-    lucene.deleteAll()
-    nodes = List()
-    nodesById = Map()
-    paths = List()
-    pathsById = Map()
-    sourcesById = Map()
-  }
 
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
 //    if (filters.isDefined) {
@@ -101,45 +149,6 @@ class MemKgStore extends KgStore {
   override def isEmpty: Boolean =
     edges.isEmpty && nodes.isEmpty && paths.isEmpty
 
-  final override def putEdges(edges: Iterator[KgEdge]): Unit = {
-    this.edges = edges.toList
-    putSourceIds(this.edges.flatMap(_.sources).distinct)
-  }
-
-  final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
-    val edgesWithNodesList = edgesWithNodes.toList
-    val uniqueEdges = edgesWithNodesList.map(edgeWithNodes => (edgeWithNodes.edge.id, edgeWithNodes.edge)).toMap.values.toList
-    val uniqueNodes = edgesWithNodesList.flatMap(edgeWithNodes => List((edgeWithNodes.node1.id, edgeWithNodes.node1), (edgeWithNodes.node2.id, edgeWithNodes.node2))).toMap.values.toList
-    putNodes(uniqueNodes)
-    putEdges(uniqueEdges)
-  }
-
-  final override def putNodes(nodes: Iterator[KgNode]): Unit = {
-    this.nodes = nodes.toList
-    this.nodesById = this.nodes.map(node => (node.id, node)).toMap
-    putSourceIds(this.nodes.flatMap(_.sources).distinct)
-    lucene.deleteAll()
-    this.nodes.foreach(node => {
-      lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
-    })
-    lucene.commit()
-  }
-
-  final override def putPaths(paths: Iterator[KgPath]): Unit = {
-    this.paths = paths.toList
-    this.pathsById = this.paths.map(path => (path.id, path)).toMap
-  }
-
-  private def putSourceIds(sourceIds: List[String]): Unit =
-    putSources(sourceIds.map(KgSource(_)))
-
-  final override def putSources(sources: Iterator[KgSource]): Unit = {
-    for (source <- sources) {
-      if (!sourcesById.contains(source.id)) {
-        sourcesById += (source.id -> source)
-      }
-    }
-  }
 
   private def toSearchTerms(filters: Option[KgNodeFilters], text: Option[String]): List[SearchTerm] = {
     val textSearchTerm = text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
@@ -164,8 +173,6 @@ class MemKgStore extends KgStore {
     stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
   }
 
- final override def writeNodePageRanks() = {
-    this.nodes = NodePageRankCalculator(this.nodes, this.edges)
-    this.nodesById = this.nodes.map(node => (node.id, node)).toMap
-  }
+  final override def beginTransaction: KgCommandStoreTransaction =
+    new MemKgCommandStoreTransaction
 }

@@ -23,10 +23,10 @@ import scala.concurrent.duration.FiniteDuration
  * https://www.playframework.com/documentation/2.6.x/ScalaDependencyInjection#Eager-bindings
  */
 @Singleton
-class KgDataDirectoryLoader(dataDirectoryPath: Path, store: KgStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
+class KgDataDirectoryLoader(dataDirectoryPath: Path, kgCommandStore: KgCommandStore, kgQueryStore: KgQueryStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
   @Inject
-  def this(configuration: Configuration, store: KgStore)(implicit ec: ExecutionContext) =
-    this(Paths.get(configuration.getOptional[String]("kgDataDirectoryPath").getOrElse("/data")), store)
+  def this(configuration: Configuration, kgCommandStore: KgCommandStore, kgQueryStore: KgQueryStore)(implicit ec: ExecutionContext) =
+    this(Paths.get(configuration.getOptional[String]("kgDataDirectoryPath").getOrElse("/data")), kgCommandStore, kgQueryStore)
 
   private val logger = LoggerFactory.getLogger(getClass)
 
@@ -53,7 +53,7 @@ class KgDataDirectoryLoader(dataDirectoryPath: Path, store: KgStore)(implicit ec
           ec.execute { () => {
             withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
               withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
-                store.putKgtkEdgesWithNodes(iterator)
+                kgCommandStore.withTransaction { _.putKgtkEdgesWithNodes(iterator) }
               }
             }
           }}
@@ -71,7 +71,7 @@ class KgDataDirectoryLoader(dataDirectoryPath: Path, store: KgStore)(implicit ec
     loaded
   }
 
-  if (store.isEmpty) {
+  if (kgQueryStore.isEmpty) {
     loadDataDirectory(dataDirectoryPath)
   } else {
     logger.info("KG store is not empty, not attempting to load data from the file system")

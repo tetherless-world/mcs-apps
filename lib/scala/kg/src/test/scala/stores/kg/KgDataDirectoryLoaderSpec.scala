@@ -27,7 +27,7 @@ class KgDataDirectoryLoaderSpec extends WordSpec with Matchers with WithResource
 
         val store = new MemKgStore
         store.isEmpty should be(true)
-        new KgDataDirectoryLoader(dataDirectoryPath = tempDirPath, store = store)
+        new KgDataDirectoryLoader(dataDirectoryPath = tempDirPath, kgCommandStore = store, kgQueryStore = store)
         def waitForData: Boolean = {
           for (i <- 0 to 100) {
             if (!store.isEmpty) {

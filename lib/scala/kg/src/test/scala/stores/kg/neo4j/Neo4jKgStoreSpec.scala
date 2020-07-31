@@ -6,11 +6,13 @@ import data.kg.TestKgData
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
 import org.slf4j.LoggerFactory
 import stores.Neo4jStoreConfiguration
-import stores.kg.{KgStore, KgStoreBehaviors}
+import stores.kg.{KgCommandStore, KgQueryStore, KgStoreBehaviors}
 
 class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
   val logger = LoggerFactory.getLogger(getClass)
-  val sut = new Neo4jKgStore(new Neo4jStoreConfiguration(commitInterval = Neo4jStoreConfiguration.CommitIntervalDefault, password = "nC1aB4mji623s2Zs", uri = "bolt://mcs-neo4j:7687", user = "neo4j"))
+  val configuration = new Neo4jStoreConfiguration(commitInterval = Neo4jStoreConfiguration.CommitIntervalDefault, password = "nC1aB4mji623s2Zs", uri = "bolt://mcs-neo4j:7687", user = "neo4j")
+  val command = new Neo4jKgCommandStore(configuration)
+  val query = new Neo4jKgQueryStore(configuration)
   val neo4jHostAddress = InetAddress.getByName("mcs-neo4j").getHostAddress
   val inTestingEnvironment = System.getenv("CI") != null || neo4jHostAddress != "128.113.12.49"
 
@@ -22,17 +24,16 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
   }
 
   private def resetSut(): Unit = {
-    if (!sut.isEmpty) {
-      sut.clear()
+    if (!query.isEmpty) {
+      command.withTransaction { _.clear() }
     }
-    sut.putData(TestKgData)
-    sut.writeNodePageRanks
+    command.withTransaction { _.putData(TestKgData) }
   }
 
   private object Neo4jKgStoreFactory extends KgStoreFactory {
-    override def apply(testMode: TestMode)(f: KgStore => Unit): Unit = {
+    override def apply(testMode: TestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
       try {
-        f(sut)
+        f(command, query)
       } finally {
         if (testMode == TestMode.ReadWrite) {
           resetSut()

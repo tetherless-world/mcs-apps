@@ -4,17 +4,10 @@ import com.google.inject.ImplementedBy
 import data.kg.KgData
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import stores.kg.neo4j.Neo4jKgStore
+import stores.kg.neo4j.Neo4jKgQueryStore
 
-@ImplementedBy(classOf[Neo4jKgStore])
+@ImplementedBy(classOf[Neo4jKgQueryStore])
 trait KgQueryStore {
-  /**
-   * Clear the store.
-   *
-   * This operation is not guaranteed to complete immediately. It should not be used for large stores.
-   */
-  def clear()
-
   /**
    * Get all sources
    */
