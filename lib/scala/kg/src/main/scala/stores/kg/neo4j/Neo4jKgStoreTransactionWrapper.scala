@@ -20,6 +20,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
   private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
   private val pathPropertyNameList = List("id", "objectNode", "pathEdgeIndex", "pathEdgePredicate", "sources", "subjectNode")
   private val pathPropertyNamesString = pathPropertyNameList.map(pathPropertyName => "path." + pathPropertyName).mkString(", ")
+  private val PathRelationshipType = "PATH"
   private val SourceRelationshipType = "SOURCE"
 
   private implicit class Neo4jKgStoreResultWrapperImplicit(result: Result) extends Neo4jKgStoreResultWrapper(result)
@@ -101,7 +102,7 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
 
   final override def getPathById(id: String): Option[KgPath] =
     transaction.run(
-      s"""MATCH (subjectNode:Node)-[path:PATH {id: $$id}]->(objectNode:Node)
+      s"""MATCH (subjectNode:Node)-[path:${PathRelationshipType} {id: $$id}]->(objectNode:Node)
          |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
          |""".stripMargin,
       toTransactionRunParameters(Map("id" -> id))
@@ -112,11 +113,53 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       s"MATCH (node:Node) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
     ).toNodes.head
 
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node ID as an object
+   */
+  final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
+    transaction.run(
+      s"""
+         |MATCH (subject:Node)-[edge]->(object:Node {id: $$objectNodeId})
+         |WHERE type(edge)<>"${PathRelationshipType}"
+         |WITH edge, subject, object
+         |ORDER BY subject.pageRank DESC
+         |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+         |UNWIND groupByRelation as group
+         |WITH group[0] as edge, group[1] as subject, group[2] as object
+         |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+         |""".stripMargin,
+      toTransactionRunParameters(Map(
+        "objectNodeId" -> objectNodeId
+      ))
+    ).toEdges
+  }
+
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node ID as a subject
+   */
+  final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
+    transaction.run(
+      s"""
+         |MATCH (subject:Node {id: $$subjectNodeId})-[edge]->(object:Node)
+         |WHERE type(edge)<>"${PathRelationshipType}"
+         |WITH edge, subject, object
+         |ORDER BY object.pageRank DESC
+         |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+         |UNWIND groupByRelation as group
+         |WITH group[0] as edge, group[1] as subject, group[2] as object
+         |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+         |""".stripMargin,
+      toTransactionRunParameters(Map(
+        "subjectNodeId" -> subjectNodeId
+      ))
+    ).toEdges
+  }
+
   final override def getTotalEdgesCount: Int =
     transaction.run(
-      """
+      s"""
         |MATCH (subject:Node)-[r]->(object:Node)
-        |WHERE NOT type(r) = "PATH"
+        |WHERE NOT type(r) = "${PathRelationshipType}"
         |RETURN COUNT(r) as count
         |""".stripMargin
     ).single().get("count").asInt()
@@ -216,10 +259,10 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
       for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
         val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
         transaction.run(
-          """
+          s"""
             |MATCH (subject:Node), (object: Node)
-            |WHERE subject.id = $subject AND object.id = $object
-            |CREATE (subject)-[path:PATH {id: $pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $pathEdgePredicate, sources: $sources}]->(object)
+            |WHERE subject.id = $$subject AND object.id = $$object
+            |CREATE (subject)-[path:${PathRelationshipType} {id: $$pathId, pathEdgeIndex: $pathEdgeIndex, pathEdgePredicate: $$pathEdgePredicate, sources: $$sources}]->(object)
             |""".stripMargin,
           toTransactionRunParameters(Map(
             "object" -> pathEdge.`object`,
@@ -326,10 +369,10 @@ class Neo4jKgStoreTransactionWrapper(configuration: Neo4jStoreConfiguration, tra
 
   final override def writeNodePageRanks = {
     transaction.run(
-      """
+      s"""
         |CALL gds.pageRank.write({
         |nodeQuery: 'MATCH (n: Node) RETURN id(n) as id',
-        |relationshipQuery: 'MATCH (source: Node)-[r]->(target: Node) WHERE TYPE(r)<>"PATH" RETURN id(source) as source, id(target) as target',
+        |relationshipQuery: 'MATCH (source: Node)-[r]->(target: Node) WHERE TYPE(r)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
         |writeProperty: 'pageRank'
         |})
         |""".stripMargin

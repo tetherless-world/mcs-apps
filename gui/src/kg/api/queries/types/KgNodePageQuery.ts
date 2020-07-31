@@ -12,17 +12,17 @@ export interface KgNodePageQuery_kgById_nodeById_sources {
   label: string;
 }
 
-export interface KgNodePageQuery_kgById_nodeById_subjectOfEdges_objectNode {
+export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges_objectNode {
   __typename: "KgNode";
   id: string;
   label: string | null;
   pos: string | null;
 }
 
-export interface KgNodePageQuery_kgById_nodeById_subjectOfEdges {
+export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges {
   __typename: "KgEdge";
   object: string;
-  objectNode: KgNodePageQuery_kgById_nodeById_subjectOfEdges_objectNode | null;
+  objectNode: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges_objectNode | null;
   predicate: string;
 }
 
@@ -33,7 +33,7 @@ export interface KgNodePageQuery_kgById_nodeById {
   id: string;
   label: string | null;
   pos: string | null;
-  subjectOfEdges: KgNodePageQuery_kgById_nodeById_subjectOfEdges[];
+  topSubjectOfEdges: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges[];
 }
 
 export interface KgNodePageQuery_kgById {

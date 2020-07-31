@@ -59,7 +59,17 @@ trait KgStore {
   def getRandomNode: KgNode
 
   /**
-   * Get toal number of edges.
+   * Get top edges using pageRank grouped by relation that have the given node ID as an object
+   */
+  def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge]
+
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node ID as a subject
+   */
+  def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge]
+
+  /**
+   * Get total number of edges.
    */
   def getTotalEdgesCount: Int;
 

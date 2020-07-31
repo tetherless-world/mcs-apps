@@ -45,7 +45,9 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("other", OptionType(StringType), resolve = _ => None),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("pos", OptionType(StringType), resolve = _.value.pos),
-    Field("subjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id))
+    Field("subjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id)),
+    Field("topObjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getTopEdgesByObject(limit = ctx.args.arg(LimitArgument), objectNodeId = ctx.value.id)),
+    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgStore.getTopEdgesBySubject(limit = ctx.args.arg(LimitArgument), subjectNodeId = ctx.value.id))
   ))
   val KgPathType = deriveObjectType[KgGraphQlSchemaContext, KgPath](
     AddFields(
