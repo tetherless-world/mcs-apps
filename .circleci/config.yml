@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Wait for the server to start
           command: |
-            sleep 60
+            sleep 90
             docker exec mcs-kg-app curl --retry 10 --retry-connrefused -s http://localhost
       - run:
           name: Push to DockerHub
