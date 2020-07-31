@@ -19,7 +19,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
   private val logger = LoggerFactory.getLogger(getClass)
 
   private final class Neo4jKgCommandStoreTransaction extends KgCommandStoreTransaction {
-      private final implicit class Neo4jKgStoreTransactionWrapper(transaction: Transaction) extends KgCommandStoreTransaction {
+      private final implicit class TransactionWrapper(transaction: Transaction) extends KgCommandStoreTransaction {
         final def clear(): Unit =
         // https://neo4j.com/developer/kb/large-delete-transaction-best-practices-in-neo4j/
           transaction.run(
@@ -158,7 +158,11 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             //      }
           }
 
-        final def writeNodePageRanks = {
+        final def writeNodePageRanks: Unit = {
+          if (!transaction.run("MATCH (n: NODE) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
           transaction.run(
             s"""
                |CALL gds.pageRank.write({
