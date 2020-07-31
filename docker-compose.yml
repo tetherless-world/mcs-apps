@@ -16,16 +16,13 @@ services:
     volumes:
       - ./data/kg:/data
   neo4j:
-    build:
-      # Use the same context to share a .dockerignore
-      # Note that relative paths are to the first docker-compose.yml specified with -f
-      # https://forums.docker.com/t/relative-path-of-build-context-in-docker-compose-configuration-is-not-resolved-relative-to-the-compose-yml-file-location/41784
-      # so docker-compose -f app/test/docker-compose.yml -f db/neo4j/docker-compose.yml
-      # Paths are relative to app/test, not the current docker-compose.yml file.
-      # That's why the directory tree has the depth it does.
-      context: .
-      dockerfile: db/neo4j/Dockerfile
     container_name: mcs-neo4j
+    environment:
+      NEO4J_AUTH: "neo4j/nC1aB4mji623s2Zs"
+      NEO4JLABS_PLUGINS: "[\"apoc\",\"graph-data-science\"]"
+      NEO4J_dbms_memory_pagecache_size: "4G"
+      NEO4J_dbms_memory_heap_max__size: "4G"
+    image: library/neo4j:4.0.4
     networks:
       - mcs
     ports:
