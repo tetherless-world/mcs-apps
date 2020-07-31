@@ -38,7 +38,7 @@ class KgDataDirectoryLoader(dataDirectoryPath: Path, kgCommandStore: KgCommandSt
 
     logger.info("scanning {} for KG data", dataDirectoryPath)
 
-    val filePaths = Files.list(dataDirectoryPath).collect(Collectors.toList()).asScala.toList.filter(Files.isRegularFile(_))
+    val filePaths: List[Path] = Files.list(dataDirectoryPath).collect(Collectors.toList()).asScala.toList.filter(Files.isRegularFile(_))
 
     if (filePaths.isEmpty) {
       logger.warn("KG data directory {} is empty", dataDirectoryPath)
