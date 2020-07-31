@@ -10,7 +10,7 @@ This work is supported by the [DARPA Machine Common Sense (MCS)](https://www.dar
 
 * [Docker](https://docs.docker.com/get-docker/)
 * [Docker Compose](https://docs.docker.com/compose/)
-* A CSKG release (`edges.csv` and `nodes.csv`)
+* A CSKG release
 
 ## Loading the database
 
@@ -21,6 +21,14 @@ Currently the data must be in in [KGTK](https://github.com/usc-isi-i2/kgtk) edge
     mv ~/cskg.tsv ./data/kg
 
 Progress messages will be printed to the application console as the data loads asynchronously.
+
+## Downloading the application
+
+The latest stable build is available on DockerHub.
+
+In the current directory:
+
+    docker-compose pull kg-app
 
 ## Starting the application
 
