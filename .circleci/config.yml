@@ -23,12 +23,7 @@ jobs:
       - run:
           name: Load the database
           command: |
-            bzip2 -dc lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv.bz2 >lib/scala/kg/src/main/resources/data/test/kg/kgtk/cskg.tsv
-            # Can't do volume mounts in CircleCI Docker, so have to copy
-            docker exec mcs-kg-app find /app
-            docker cp lib/scala/kg/src/main/resources/data/test/kg/kgtk/cskg.tsv mcs-kg-app:/app/data/import/kg/kgtk/
-            docker exec mcs-kg-app find /app
-            # script/import-kgtk-cskg-tsv
+            docker cp lib/scala/kg/src/main/resources/data/test/kg/kgtk/edges.tsv.bz2 mcs-kg-app:/data
       - run:
           name: Test that the database is loaded
           command: |
@@ -122,49 +117,49 @@ workflows:
   version: 2
   kg-app:
     jobs:
-      - cypress/install:
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
-          requires:
-            - scala
-          working_directory: integration
-          post-steps:
-            - slack/status:
-                fail_only: true
-      - cypress/run:
-          attach-workspace: true
-          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
-          post-steps:
-            - store_test_results:
-                path: integration/results
-            - store_artifacts:
-                path: integration/cypress/screenshots
-            - store_artifacts:
-                path: integration/cypress/videos
-            - slack/status
-          requires:
-            - cypress/install
-          spec: "cypress/integration/kg/*.spec.ts"
-          start: |
-            pwd
-            cp ~/project/.circleci/cypress.json .
-            apt-get update && apt-get install -y default-jre
-            cd ~/dist/app/kg
-            bin/mcs-kg-app -DkgStore=test
-          wait-on: "http-get://localhost:9000/index.html"
-          working_directory: integration
-#      - kg-app-docker:
+#      - cypress/install:
+#          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
+#          requires:
+#            - scala
+#          working_directory: integration
+#          post-steps:
+#            - slack/status:
+#                fail_only: true
+#      - cypress/run:
+#          attach-workspace: true
+#          cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
+#          post-steps:
+#            - store_test_results:
+#                path: integration/results
+#            - store_artifacts:
+#                path: integration/cypress/screenshots
+#            - store_artifacts:
+#                path: integration/cypress/videos
+#            - slack/status
+#          requires:
+#            - cypress/install
+#          spec: "cypress/integration/kg/*.spec.ts"
+#          start: |
+#            pwd
+#            cp ~/project/.circleci/cypress.json .
+#            apt-get update && apt-get install -y default-jre
+#            cd ~/dist/app/kg
+#            bin/mcs-kg-app -DkgStore=test
+#          wait-on: "http-get://localhost:9000/index.html"
+#          working_directory: integration
+      - kg-app-docker:
 #          filters:
 #            branches:
 #              only: master
+          post-steps:
+            - slack/status
+#      - scala:
+#          requires:
+#            - ts
 #          post-steps:
-#            - slack/status
-      - scala:
-          requires:
-            - ts
-          post-steps:
-            - slack/status:
-                fail_only: true
-      - ts:
-          post-steps:
-            - slack/status:
-                fail_only: true
+#            - slack/status:
+#                fail_only: true
+#      - ts:
+#          post-steps:
+#            - slack/status:
+#                fail_only: true
