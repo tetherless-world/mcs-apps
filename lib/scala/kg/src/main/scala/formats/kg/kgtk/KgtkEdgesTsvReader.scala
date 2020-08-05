@@ -5,7 +5,7 @@ import com.github.tototoshi.csv.{CSVReader, TSVFormat}
 import models.kg.{KgEdge, KgNode}
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
-import java.io.{FileNotFoundException, InputStream}
+import java.io.{FileNotFoundException, InputStream, Reader}
 
 import formats.kg.kgtk
 
@@ -19,17 +19,21 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
   def iterator: Iterator[KgtkEdgeWithNodes] =
     csvReader.iteratorWithHeaders.map(row => {
       val sources = row.getList("source", KgtkListDelim)
+      val node1 = row("node1")
+      val node2 = row("node2")
+      val relation = row("relation")
+
       kgtk.KgtkEdgeWithNodes(
         edge = KgEdge(
-          id = row("id"),
+          id = row.get("id").getOrElse(s"${node1}-${relation}-${node2}"),
           labels = row.getList("relation;label", KgtkListDelim),
-          `object` = row("node2"),
+          `object` = node2,
           origins = row.getList("origin", KgtkListDelim),
           questions = row.getList("question", KgtkListDelim),
-          predicate = row("relation"),
+          predicate = relation,
           sentences = row.getList("sentence", KgtkListDelim),
           sources = sources,
-          subject = row("node1"),
+          subject = node1,
           weight = Try(row.getNonBlank("weight").get.toDouble).toOption
         ),
         node1 = KgNode(
@@ -62,4 +66,5 @@ object KgtkEdgesTsvReader {
       throw new FileNotFoundException("KgtkTsvReader missing resource")
     else
       new KgtkEdgesTsvReader (CsvReader.open(inputStream, csvFormat))
+  def open(reader: Reader) = new KgtkEdgesTsvReader(CsvReader.open(reader, csvFormat))
 }
