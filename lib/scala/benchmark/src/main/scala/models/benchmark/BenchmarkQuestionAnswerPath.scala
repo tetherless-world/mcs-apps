@@ -9,13 +9,10 @@ final case class BenchmarkQuestionAnswerPath(path: List[String], score: Float) {
         id = s"${path(0)}-${path(path.length - 1)}-${pathI}",
         labels = List(),
         `object` = path(pathI + 2),
-        origins = List(),
-        questions = List(),
         predicate = path(pathI + 1),
         sentences = List(),
         sources = List(),
-        subject = path(pathI),
-        weight = None
+        subject = path(pathI)
       )
     ).toList
   }

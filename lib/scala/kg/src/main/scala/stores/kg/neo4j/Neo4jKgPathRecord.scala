@@ -13,14 +13,10 @@ final case class Neo4jKgPathRecord(
   def toEdge: KgEdge =
     KgEdge(
       id = s"${pathId}-${pathEdgeIndex}",
-      labels = List(),
-      `object` = objectNodeId,
-      origins = List(),
-      questions = List(),
+      labels = List(), `object` = objectNodeId,
       predicate = pathEdgePredicate,
       sentences = List(),
       sources = sources,
-      subject = subjectNodeId,
-      weight = None
+      subject = subjectNodeId
     )
 }

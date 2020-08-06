@@ -33,20 +33,17 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         final def putEdge(edge: KgEdge) =
           transaction.run(
             s"""MATCH (subject:${NodeLabel} {id: $$subject}), (object:${NodeLabel} {id: $$object})
-              |CALL apoc.create.relationship(subject, $$predicate, {id: $$id, labels: $$labels, origins: $$origins, questions: $$questions, sentences: $$sentences, sources: $$sources, weight: toFloat($$weight)}, object) YIELD rel
+              |CALL apoc.create.relationship(subject, $$predicate, {id: $$id, labels: $$labels, sentences: $$sentences, sources: $$sources}, object) YIELD rel
               |REMOVE rel.noOp
               |""".stripMargin,
             toTransactionRunParameters(Map(
               "id" -> edge.id,
               "labels" -> edge.labels.mkString(ListDelimString),
               "object" -> edge.`object`,
-              "origins" -> edge.origins.mkString(ListDelimString),
-              "questions" -> edge.questions.mkString(ListDelimString),
               "predicate" -> edge.predicate,
               "sentences" -> edge.sentences.mkString(ListDelimString),
               "sources" -> edge.sources.mkString(ListDelimString),
               "subject" -> edge.subject,
-              "weight" -> edge.weight.getOrElse(null)
             ))
           )
 

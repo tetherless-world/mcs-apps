@@ -11,13 +11,10 @@ final case class KgPath(id: String, path: List[String], sources: List[String]) {
         id = id + "-" + pathI,
         labels = List(),
         `object` = path(pathI + 2),
-        origins = List(),
-        questions = List(),
         predicate = path(pathI + 1),
         sentences = List(),
         sources = sources,
-        subject = path(pathI),
-        weight = None
+        subject = path(pathI)
       )
     ).toList
   }
