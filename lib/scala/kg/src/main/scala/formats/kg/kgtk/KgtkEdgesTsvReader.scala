@@ -63,13 +63,10 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
                 id = csvRowMap.get("id").getOrElse(s"${node1}-${relation}-${node2}"),
                 labels = csvRowMap.getList("relation;label", KgtkListDelim),
                 `object` = node2,
-                origins = csvRowMap.getList("origin", KgtkListDelim),
-                questions = csvRowMap.getList("question", KgtkListDelim),
                 predicate = relation,
                 sentences = csvRowMap.getList("sentence", KgtkListDelim),
                 sources = sources,
-                subject = node1,
-                weight = Try(csvRowMap.getNonBlank("weight").get.toDouble).toOption
+                subject = node1
               ),
               node1 = KgNode(
                 id = csvRowMap("node1"),

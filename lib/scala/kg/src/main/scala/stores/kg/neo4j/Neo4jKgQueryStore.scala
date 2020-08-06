@@ -27,13 +27,10 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         id = recordMap("edge.id").asInstanceOf[String],
         labels = toList(recordMap("edge.labels").asInstanceOf[String]),
         `object` = recordMap("object.id").asInstanceOf[String],
-        origins = toList(recordMap("edge.origins").asInstanceOf[String]),
-        questions = toList(recordMap("edge.questions").asInstanceOf[String]),
-        sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
         predicate = recordMap("type(edge)").asInstanceOf[String],
+        sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
         sources = toList(recordMap("edge.sources").asInstanceOf[String]),
-        subject = recordMap("subject.id").asInstanceOf[String],
-        weight = Option(recordMap("edge.weight")).map(weight => weight.asInstanceOf[Double].doubleValue())
+        subject = recordMap("subject.id").asInstanceOf[String]
       )
     }
 
@@ -82,7 +79,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   }
 
   private final implicit class TransactionWrapper(transaction: Transaction) extends KgQueryStore {
-    private val edgePropertyNameList = List("id", "labels", "object", "origins", "questions", "sentences", "sources", "subject", "weight")
+    private val edgePropertyNameList = List("id", "labels", "object", "sentences", "sources", "subject")
     private val edgePropertyNamesString = edgePropertyNameList.map(edgePropertyName => "edge." + edgePropertyName).mkString(", ")
     private val nodePropertyNameList = List("id", "labels", "pos", "sources", "pageRank")
     private val nodePropertyNamesString = nodePropertyNameList.map(nodePropertyName => "node." + nodePropertyName).mkString(", ")
