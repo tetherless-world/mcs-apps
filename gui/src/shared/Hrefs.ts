@@ -1,5 +1,6 @@
 import * as qs from "qs";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
+import * as _ from "lodash";
 
 export class Hrefs {
   static readonly contact = "mailto:gordom6@rpi.edu";
@@ -30,7 +31,7 @@ export class Hrefs {
           "node/search" +
           qs.stringify(
             {
-              filters: searchVariables.filters
+              filters: !_.isEmpty(searchVariables.filters)
                 ? JSON.stringify(searchVariables.filters)
                 : undefined,
               limit: searchVariables.limit,

@@ -20,13 +20,14 @@ import {
   useQueryParams,
   QueryParamConfig,
 } from "use-query-params";
+import * as _ from "lodash";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
 
 const filtersQueryParamConfig: QueryParamConfig<KgNodeFilters | undefined> = {
   decode: (value) => (value ? JSON.parse(value as string) : undefined),
-  encode: (value) => (value ? JSON.stringify(value) : undefined),
+  encode: (value) => (!_.isEmpty(value) ? JSON.stringify(value) : undefined),
   equals: (left, right) => JSON.stringify(left) === JSON.stringify(right),
 };
 
