@@ -2,11 +2,11 @@ package stores.kg.mem
 
 import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
-import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
+import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, PagedResults, SearchResult, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
-import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFilters, KgNodeQuery, KgQueryStore}
+import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeFilters, KgNodeQuery, KgQueryStore}
 import util.NodePageRankCalculator
 
 import scala.util.Random
@@ -45,7 +45,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       putSourceIds(MemKgStore.this.nodes.flatMap(_.sources).distinct)
       lucene.deleteAll()
       MemKgStore.this.nodes.foreach(node => {
-        lucene.doc().facets(node.sources.map(luceneNodeSourceField(_)):_*).fields(luceneNodeIdField(node.id), luceneNodeLabelsField(node.labels.mkString(" "))).index()
+        lucene.doc().facets(node.sources.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" "))).index()
       })
       lucene.commit()
     }
@@ -74,9 +74,11 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   private var edges: List[KgEdge] = List()
   private val lucene = new DirectLucene(List("sources", "id", "labels"), autoCommit = false)
-  private val luceneNodeSourceField = lucene.create.facet("source", multiValued = true)
-  private val luceneNodeIdField = lucene.create.field[String]("id", fullTextSearchable = true)
-  private val luceneNodeLabelsField = lucene.create.field[String]("labels", fullTextSearchable = true)
+  private object LuceneFields {
+    val nodeId = lucene.create.field[String]("id", fullTextSearchable = true)
+    val nodeLabels = lucene.create.field[String]("labels", fullTextSearchable = true)
+    val nodeSource = lucene.create.facet("source", multiValued = true)
+  }
   private var nodes: List[KgNode] = List()
   private var nodesById: Map[String, KgNode] = Map()
   private var paths: List[KgPath] = List()
@@ -115,9 +117,17 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
+  final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets = {
+    val results = lucene.query().filter(toSearchTerms(query):_*).facet(LuceneFields.nodeSource, limit = 100).search()
+    // The facet result also has a count per value, which we're ignoring
+    KgNodeFacets(
+      sources = results.facet(LuceneFields.nodeSource).map(_.values.map(_.value).map(sourceId => sourcesById(sourceId)).toList).getOrElse(List())
+    )
+  }
+
   final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] = {
-    val results = lucene.query().filter(toSearchTerms(query):_*).limit(limit).offset(offset).search()
-    results.results.toList.map(searchResult => nodesById(searchResult(luceneNodeIdField)))
+    val results: PagedResults[SearchResult] = lucene.query().filter(toSearchTerms(query):_*).limit(limit).offset(offset).search()
+    results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
   }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
@@ -165,7 +175,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   }
 
   private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sources.map(source => toSearchTerms(luceneNodeSourceField, source)).getOrElse(List())
+    nodeFilters.sources.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
   }
 
   private def toSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
