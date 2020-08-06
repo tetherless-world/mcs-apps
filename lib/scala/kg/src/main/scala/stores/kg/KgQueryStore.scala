@@ -32,12 +32,12 @@ trait KgQueryStore {
   /**
    * Fulltext search nodes.
    */
-  def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode]
+  def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode]
 
   /**
    * Get count of fulltext search results.
    */
-  def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int;
+  def getMatchingNodesCount(query: KgNodeQuery): Int;
 
   /**
    * Get a node by ID.

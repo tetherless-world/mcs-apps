@@ -105,10 +105,10 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         graphql"""
          query MatchingKgNodesQuery($$kgId: String!, $$text: String!) {
            kgById(id: $$kgId) {
-             matchingNodes(text: $$text, limit: 1, offset: 0) {
+             matchingNodes(query: {text: $$text}, limit: 1, offset: 0) {
               id
              }
-             matchingNodesCount(text: $$text)
+             matchingNodesCount(query: {text: $$text})
            }
          }
        """
