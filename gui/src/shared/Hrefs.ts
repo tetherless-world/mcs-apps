@@ -24,10 +24,21 @@ export class Hrefs {
         }
 
         const {__typename, ...searchVariables} = kwds;
+
         return (
           kgPrefix +
           "node/search" +
-          qs.stringify(searchVariables, {addQueryPrefix: true})
+          qs.stringify(
+            {
+              filters: searchVariables.filters
+                ? JSON.stringify(searchVariables.filters)
+                : undefined,
+              limit: searchVariables.limit,
+              offset: searchVariables.offset,
+              text: searchVariables.text,
+            },
+            {addQueryPrefix: true}
+          )
         );
       },
 
