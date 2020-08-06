@@ -192,7 +192,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching node facets for filtered nodes" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val facets = query.getMatchingNodeFacets(query = KgNodeQuery(filters = None, text = Some(s"""sources:${expected.sources(0)} labels:"${expected.labels(0)}"""")))
+        val facets = query.getMatchingNodeFacets(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(include = Some(expected.sources), exclude = None)))), text = None))
         facets.sources.size should be < TestKgData.sources.size
         facets.sources.sortBy(_.id).map(_.id) should equal(expected.sources.sortBy(sourceId => sourceId))
       }

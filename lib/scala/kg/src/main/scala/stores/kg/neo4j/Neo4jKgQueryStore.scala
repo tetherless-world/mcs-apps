@@ -146,7 +146,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         transaction.run(
           s"""
              |${cypher.fulltextCall.getOrElse("")}
-             |MATCH ${(cypher.matchClauses ++ List(s"(node)-[source:${SourceRelationshipType}->(source:${SourceLabel})")).mkString(", ")}
+             |MATCH ${(cypher.matchClauses ++ List(s"(node)-[:${SourceRelationshipType}]->(source:${SourceLabel})")).mkString(", ")}
+             |${if (cypher.whereClauses.nonEmpty) "WHERE " + cypher.whereClauses.mkString(" AND ") else ""}
              |RETURN DISTINCT source.id, source.label
              |""".stripMargin,
           toTransactionRunParameters(cypher.bindings)
