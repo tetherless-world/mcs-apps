@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {KgNode} from "shared/models/kg/KgNode";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
-import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
+import {KgSourcePill} from "shared/components/kg/search/KgSourcePill";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
@@ -73,7 +73,7 @@ const columns: MUIDataTableColumn[] = [
         return sources
           ? (sources as KgSource[]).map((source) => (
               <React.Fragment key={source.id}>
-                <KgSourceLink source={source} />
+                <KgSourcePill source={source} />
                 <br />
               </React.Fragment>
             ))

@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
-import {KgSourceLink} from "shared/components/kg/search/KgSourceLink";
+import {KgSourcePill} from "shared/components/kg/search/KgSourcePill";
 import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
 import {KgSource} from "shared/models/kg/KgSource";
 
@@ -119,7 +119,7 @@ export const KgNodeViews: React.FunctionComponent<{
                   <List>
                     {node.sources.map((source) => (
                       <ListItemText data-cy="node-source">
-                        <KgSourceLink source={source} />
+                        <KgSourcePill source={source} />
                       </ListItemText>
                     ))}
                   </List>
