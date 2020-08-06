@@ -75,8 +75,8 @@ export class KgNodeSearchResultsPage extends Page {
 
   get relativeUrl() {
     return (
-      `/kg/${KgTestData.kgId}/node/search?text=` +
-      encodeURIComponent(this.search)
+      `/kg/${KgTestData.kgId}/node/search?query=` +
+      encodeURIComponent(JSON.stringify({text: this.search}))
     );
   }
 }

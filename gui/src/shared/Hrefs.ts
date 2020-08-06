@@ -26,6 +26,11 @@ export class Hrefs {
 
         const {__typename, ...searchVariables} = kwds;
 
+        const query = searchVariables.query;
+        if (query && _.isEmpty(query.filters)) {
+          delete query.filters;
+        }
+
         return (
           kgPrefix +
           "node/search" +
@@ -33,9 +38,7 @@ export class Hrefs {
             {
               limit: searchVariables.limit,
               offset: searchVariables.offset,
-              query: !_.isEmpty(searchVariables.query)
-                ? JSON.stringify(searchVariables.query)
-                : undefined,
+              query: !_.isEmpty(query) ? JSON.stringify(query) : undefined,
             },
             {addQueryPrefix: true}
           )
