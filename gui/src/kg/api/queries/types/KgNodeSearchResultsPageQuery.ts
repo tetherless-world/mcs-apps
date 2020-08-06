@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { KgNodeFilters } from "./../../graphqlGlobalTypes";
+import { KgNodeQuery } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: KgNodeSearchResultsPageQuery
@@ -41,10 +41,9 @@ export interface KgNodeSearchResultsPageQuery {
 }
 
 export interface KgNodeSearchResultsPageQueryVariables {
-  filters?: KgNodeFilters | null;
-  kgId: string;
   initialQuery: boolean;
+  kgId: string;
   limit: number;
+  query: KgNodeQuery;
   offset: number;
-  text?: string | null;
 }

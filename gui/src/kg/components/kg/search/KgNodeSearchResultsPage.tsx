@@ -10,22 +10,17 @@ import {
 } from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
-import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
+import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/KgSource";
-import {
-  NumberParam,
-  StringParam,
-  useQueryParams,
-  QueryParamConfig,
-} from "use-query-params";
+import {NumberParam, QueryParamConfig, useQueryParams} from "use-query-params";
 import * as _ from "lodash";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
 
-const filtersQueryParamConfig: QueryParamConfig<KgNodeFilters | undefined> = {
+const queryQueryParamConfig: QueryParamConfig<KgNodeQuery | undefined> = {
   decode: (value) => (value ? JSON.parse(value as string) : undefined),
   encode: (value) => (!_.isEmpty(value) ? JSON.stringify(value) : undefined),
   equals: (left, right) => JSON.stringify(left) === JSON.stringify(right),
@@ -33,11 +28,10 @@ const filtersQueryParamConfig: QueryParamConfig<KgNodeFilters | undefined> = {
 
 const makeTitle = (kwds: {
   count: number;
-  filters?: KgNodeFilters;
+  query?: KgNodeQuery;
   sources: KgSource[];
-  text?: string;
 }): string => {
-  const {text, count, filters, sources} = kwds;
+  const {count, query, sources} = kwds;
 
   let title: string[] = [];
 
@@ -45,13 +39,13 @@ const makeTitle = (kwds: {
 
   title.push("results");
 
-  if (text) {
-    title.push(`for "${text}"`);
+  if (query && query.text) {
+    title.push(`for "${query.text}"`);
   }
 
-  if (filters) {
-    if (filters.sources) {
-      const {include: includeSourceIds} = filters.sources;
+  if (query && query.filters) {
+    if (query.filters.sources) {
+      const {include: includeSourceIds} = query.filters.sources;
 
       if (includeSourceIds) {
         title.push("in");
@@ -76,17 +70,15 @@ const makeTitle = (kwds: {
 
 export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   let [queryParams, setQueryParams] = useQueryParams({
-    filters: filtersQueryParamConfig,
     limit: NumberParam,
     offset: NumberParam,
-    text: StringParam,
+    query: queryQueryParamConfig,
   });
   const searchVariables: KgNodeSearchVariables = {
     __typename: "KgNodeSearchVariables",
-    filters: queryParams.filters,
     limit: queryParams.limit ?? LIMIT_DEFAULT,
     offset: queryParams.offset ?? OFFSET_DEFAULT,
-    text: queryParams.text ? queryParams.text : undefined,
+    query: queryParams.query ?? {},
   };
 
   const {data, loading, error} = useQuery<
@@ -96,9 +88,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     variables: {
       initialQuery: true,
       kgId,
-      ...searchVariables,
       limit: searchVariables.limit!,
       offset: searchVariables.offset!,
+      query: searchVariables.query!,
     },
   });
 
@@ -117,11 +109,10 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         query: KgNodeSearchResultsPageQueryDocument,
         variables: {
           kgId,
-          filters: newSearchVariables.filters,
           limit,
           offset,
           initialQuery: false,
-          text: newSearchVariables.text,
+          query: newSearchVariables.query ?? {},
         },
       })
       .then(({data, errors, loading}) => {

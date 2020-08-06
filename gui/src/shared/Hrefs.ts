@@ -31,12 +31,11 @@ export class Hrefs {
           "node/search" +
           qs.stringify(
             {
-              filters: !_.isEmpty(searchVariables.filters)
-                ? JSON.stringify(searchVariables.filters)
-                : undefined,
               limit: searchVariables.limit,
               offset: searchVariables.offset,
-              text: searchVariables.text,
+              query: !_.isEmpty(searchVariables.query)
+                ? JSON.stringify(searchVariables.query)
+                : undefined,
             },
             {addQueryPrefix: true}
           )

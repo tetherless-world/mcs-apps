@@ -161,10 +161,12 @@ export const KgNodeSearchBox: React.FunctionComponent<{
       {
         initialQuery: false,
         kgId,
-        text: `${search.text}`,
-        filters: search.filters,
         limit: MAXIMUM_SUGGESTIONS,
         offset: 0,
+        query: {
+          filters: search.filters,
+          text: `${search.text}`,
+        },
       },
       ({kgById}, errors) => {
         if (!active) {
@@ -202,8 +204,10 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           history.push(
             Hrefs.kg({id: kgId}).nodeSearch({
               __typename: "KgNodeSearchVariables",
-              text,
-              filters: search.filters,
+              query: {
+                filters: search.filters,
+                text,
+              },
             })
           );
         } else if (value.__typename === "KgNode") {
