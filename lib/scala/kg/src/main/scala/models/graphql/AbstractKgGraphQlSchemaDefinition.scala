@@ -8,14 +8,15 @@ import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType
 import sangria.marshalling.circe._
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import stores.StringFilter
-import stores.kg.{KgNodeFilters, KgNodeQuery}
+import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments
   val IdArgument = Argument("id", StringType)
 
   // Object types
-  val KgSourceType = deriveObjectType[KgGraphQlSchemaContext, KgSource]()
+  implicit val KgSourceType = deriveObjectType[KgGraphQlSchemaContext, KgSource]()
+  val KgNodeFacetsType = deriveObjectType[KgGraphQlSchemaContext, KgNodeFacets]()
 
   private def mapSources(sourceIds: List[String], sourcesById: Map[String, KgSource]): List[KgSource] =
     sourceIds.map(sourceId => sourcesById.getOrElse(sourceId, KgSource(sourceId)))
@@ -66,6 +67,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 
   // Query types
   val KgQueryType = ObjectType("Kg", fields[KgGraphQlSchemaContext, String](
+    Field("matchingNodeFacets", KgNodeFacetsType, arguments = KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodeFacets(query = ctx.args.arg(KgNodeQueryArgument))),
     Field("matchingNodes", ListType(KgNodeType), arguments = LimitArgument :: OffsetArgument :: KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodes(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgNodeQueryArgument))),
     Field("matchingNodesCount", IntType, arguments = KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodesCount(query = ctx.args.arg(KgNodeQueryArgument))),
     Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.args.arg(IdArgument))),

@@ -30,7 +30,12 @@ trait KgQueryStore {
   def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
 
   /**
-   * Fulltext search nodes.
+   * Search nodes and return facets.
+   */
+  def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets
+
+  /**
+   * Search nodes.
    */
   def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode]
 

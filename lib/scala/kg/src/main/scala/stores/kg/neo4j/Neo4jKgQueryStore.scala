@@ -5,7 +5,7 @@ import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
 import stores.Neo4jStoreConfiguration
-import stores.kg.{KgNodeFilters, KgNodeQuery, KgQueryStore}
+import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgQueryStore}
 
 import scala.collection.JavaConverters._
 import scala.util.Try
@@ -53,6 +53,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         pathEdgePredicate = record.get("path.pathEdgePredicate").asString(),
         sources = record.get("path.sources").asString().split(ListDelimChar).toList,
         subjectNodeId = record.get("subjectNode.id").asString()
+      )
+    }
+
+    def toSource: KgSource = {
+      val recordMap = record.asMap().asScala.toMap
+      KgSource(
+        id = recordMap("source.id").asInstanceOf[String],
+        label = recordMap("source.label").asInstanceOf[String]
       )
     }
   }
@@ -130,26 +138,47 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         ))
       ).toEdges
 
+    final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets = {
+      val cypher = KgNodeQueryCypher(query)
+
+      // Get sources
+      val sources =
+        transaction.run(
+          s"""
+             |${cypher.fulltextCall.getOrElse("")}
+             |MATCH ${(cypher.matchClauses ++ List(s"(node)-[:${SourceRelationshipType}]->(source:${SourceLabel})")).mkString(", ")}
+             |${if (cypher.whereClauses.nonEmpty) "WHERE " + cypher.whereClauses.mkString(" AND ") else ""}
+             |RETURN DISTINCT source.id, source.label
+             |""".stripMargin,
+          toTransactionRunParameters(cypher.bindings)
+        ).asScala.map(record => record.toSource).toSet.toList
+
+      KgNodeFacets(
+        sources = sources
+      )
+    }
+
+
     final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] = {
-      val (cypher, bindings) = toMatchingNodesCypher(query)
+      val cypher = KgNodeQueryCypher(query)
       transaction.run(
         s"""${cypher}
            |RETURN ${nodePropertyNamesString}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
-        toTransactionRunParameters(bindings)
+        toTransactionRunParameters(cypher.bindings)
       ).toNodes
     }
 
     final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
-      val (cypher, bindings) = toMatchingNodesCypher(query)
+      val cypher = KgNodeQueryCypher(query)
       val result =
         transaction.run(
           s"""${cypher}
              |RETURN COUNT(node)
              |""".stripMargin,
-          toTransactionRunParameters(bindings)
+          toTransactionRunParameters(cypher.bindings)
         )
       val record = result.single()
       record.get("COUNT(node)").asInt()
@@ -231,105 +260,83 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def isEmpty: Boolean =
       transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
 
-    private def toMatchingNodesCypher(query: KgNodeQuery): (String, Map[String, Any]) = {
-      // Do this in an semi-imperative way but with immutable data structures and vals. It makes the code more readable.
-
-      val fulltextCypher = query.text.map(text =>
-        """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""").toList
-      val textBindings = query.text.map(CypherBinding("text", _)).toList
-
-      val distinctSourceIds =
-        if (query.filters.isDefined && query.filters.get.sources.isDefined) {
-          query.filters.get.sources.get.exclude.getOrElse(List()) ++ query.filters.get.sources.get.include.getOrElse(List())
-        } else {
-          List()
-        }.distinct
-
-      val distinctSourceIdBindings = distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => CypherBinding(s"source${sourceIdWithIndex._2}", sourceIdWithIndex._1))
-
-      val matchClauses: List[String] = List(s"(node: ${NodeLabel})") ++
-        distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:${SourceLabel} { id: $$source${sourceIdWithIndex._2} })")
-      val matchCypher = List("MATCH " + matchClauses.mkString(", "))
-
-      val whereClauses: List[String] =
-        if (query.filters.isDefined && query.filters.get.sources.isDefined) {
-          query.filters.get.sources.get.exclude.toList.flatMap(
-            _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
-            )) ++
-            query.filters.get.sources.get.include.toList.flatMap(
-              _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
-              ))
-        } else {
-          List()
-        }
-      val whereCypher =
-        if (whereClauses.nonEmpty) {
-          List("WHERE " + whereClauses.mkString(" AND "))
-        } else {
-          List()
-        }
-
-      val bindings: List[CypherBinding] = textBindings ++ distinctSourceIdBindings
-      val cypher = fulltextCypher ++ matchCypher ++ whereCypher
-
-      (cypher.mkString("\n"), bindings.map(binding => (binding.variableName -> binding.value)).toMap)
+    private final case class KgNodeQueryCypher(
+                                                bindings: Map[String, Any],
+                                                fulltextCall: Option[String],
+                                                matchClauses: List[String],
+                                                whereClauses: List[String]
+                                              ) {
+      final override def toString =
+        (fulltextCall.toList ++
+          List("MATCH " + matchClauses.mkString(", ")) ++
+          (if (whereClauses.nonEmpty) List("WHERE " + whereClauses.mkString(" AND ")) else List())).mkString("\n")
     }
 
-    //  def toCypherBindingsMap: Map[String, Any] =
-    //    filters.flatMap(filter => filter.binding).map(binding => (binding.variableName -> binding.value)).toMap
-    //
-    //  def toCypherString: String =
-    //    if (!filters.isEmpty) {
-    //      s"WHERE ${filters.map(filter => filter.cypher).mkString(" AND ")}"
-    //    } else {
-    //      ""
-    //    }
-    // Previously used for datasource filters, when we only had one datasource per node
-    // Designed to do WHERE exact string = exact value
-    //  private def toCypherFilters(bindingVariableNamePrefix: String, property: String, stringFilter: StringFilter): List[CypherFilter] = {
-    //    stringFilter.exclude.getOrElse(List()).zipWithIndex.map(excludeWithIndex => {
-    //      val bindingVariableName = s"${bindingVariableNamePrefix}Exclude${excludeWithIndex._2}"
-    //      CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = excludeWithIndex._1)), cypher = s"NOT ${property} = $$${bindingVariableName}")
-    //    }) ++
-    //      stringFilter.include.getOrElse(List()).zipWithIndex.map(includeWithIndex => {
-    //        val bindingVariableName = s"${bindingVariableNamePrefix}Include${includeWithIndex._2}"
-    //        CypherFilter(binding = Some(CypherBinding(variableName = bindingVariableName, value = includeWithIndex._1)), cypher = s"${property} = $$${bindingVariableName}")
-    //      })
-    //  }
+    private object KgNodeQueryCypher {
+      def apply(query: KgNodeQuery): KgNodeQueryCypher = {
+        // Do this in an semi-imperative way but with immutable data structures and vals. It makes the code more readable.
+
+        val fulltextCall = query.text.map(text =>
+          """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""")
+        val textBindings = query.text.map("text" -> _).toList
+
+        val distinctSourceIds =
+          if (query.filters.isDefined && query.filters.get.sources.isDefined) {
+            query.filters.get.sources.get.exclude.getOrElse(List()) ++ query.filters.get.sources.get.include.getOrElse(List())
+          } else {
+            List()
+          }.distinct
+
+        val distinctSourceIdBindings = distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"source${sourceIdWithIndex._2}" -> sourceIdWithIndex._1)
+
+        val matchClauses: List[String] = List(s"(node: ${NodeLabel})") ++
+          distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:${SourceLabel} { id: $$source${sourceIdWithIndex._2} })")
+
+        val whereClauses: List[String] =
+          if (query.filters.isDefined && query.filters.get.sources.isDefined) {
+            query.filters.get.sources.get.exclude.toList.flatMap(
+              _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
+              )) ++
+              query.filters.get.sources.get.include.toList.flatMap(
+                _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
+                ))
+          } else {
+            List()
+          }
+
+        KgNodeQueryCypher(
+          bindings = (textBindings ++ distinctSourceIdBindings).toMap,
+          fulltextCall = fulltextCall,
+          matchClauses = matchClauses,
+          whereClauses = whereClauses
+        )
+      }
+    }
 
     private def toTransactionRunParameters(map: Map[String, Any]) =
       map.asJava.asInstanceOf[java.util.Map[String, Object]]
   }
 
   final override def getSourcesById: Map[String, KgSource] =
-    withReadTransaction { transaction =>
-      transaction.getSourcesById
-    }
+    withReadTransaction { _.getSourcesById }
 
   override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    withReadTransaction { transaction =>
-      transaction.getEdgesByObject(limit, objectNodeId, offset)
-    }
+    withReadTransaction { _.getEdgesByObject(limit, objectNodeId, offset) }
 
   override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction { transaction =>
-      transaction.getEdgesBySubject(limit, offset, subjectNodeId)
-    }
+    withReadTransaction { _.getEdgesBySubject(limit, offset, subjectNodeId) }
+
+  final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets =
+    withReadTransaction { _.getMatchingNodeFacets(query) }
 
   final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] =
-    withReadTransaction { transaction =>
-      transaction.getMatchingNodes(limit, offset, query)
-    }
+    withReadTransaction { _.getMatchingNodes(limit, offset, query) }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int =
-    withReadTransaction { transaction =>
-      transaction.getMatchingNodesCount(query)
-    }
+    withReadTransaction { _.getMatchingNodesCount(query) }
 
   override final def getNodeById(id: String): Option[KgNode] =
-    withReadTransaction { transaction =>
-      transaction.getNodeById(id)
-    }
+    withReadTransaction { _.getNodeById(id) }
 
   //  override def getPaths: List[KgPath] =
   //    withSession { session =>
@@ -343,37 +350,23 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   //    }
   //
   override def getPathById(id: String): Option[KgPath] =
-    withReadTransaction { transaction =>
-      transaction.getPathById(id)
-    }
+    withReadTransaction { _.getPathById(id) }
 
   final override def getRandomNode: KgNode =
-    withReadTransaction { transaction =>
-      transaction.getRandomNode
-    }
+    withReadTransaction { _.getRandomNode }
 
   final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] =
-    withReadTransaction { transaction =>
-      transaction.getTopEdgesByObject(limit, objectNodeId)
-    }
+    withReadTransaction { _.getTopEdgesByObject(limit, objectNodeId) }
 
   final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction { transaction =>
-      transaction.getTopEdgesBySubject(limit, subjectNodeId)
-    }
+    withReadTransaction { _.getTopEdgesBySubject(limit, subjectNodeId) }
 
   final override def getTotalEdgesCount: Int =
-    withReadTransaction { transaction =>
-      transaction.getTotalEdgesCount
-    }
+    withReadTransaction { _.getTotalEdgesCount }
 
   final override def getTotalNodesCount: Int =
-    withReadTransaction { transaction =>
-      transaction.getTotalNodesCount
-    }
+    withReadTransaction { _.getTotalNodesCount }
 
   final override def isEmpty: Boolean =
-    withReadTransaction { transaction =>
-      transaction.isEmpty
-    }
+    withReadTransaction { _.isEmpty }
 }
