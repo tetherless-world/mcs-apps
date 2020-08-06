@@ -8,13 +8,11 @@ import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType
 import sangria.marshalling.circe._
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import stores.StringFilter
-import stores.kg.KgNodeFilters
+import stores.kg.{KgNodeFilters, KgNodeQuery}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments
   val IdArgument = Argument("id", StringType)
-  val OptionalTextArgument = Argument("text", OptionInputType(StringType))
-
 
   // Object types
   val KgSourceType = deriveObjectType[KgGraphQlSchemaContext, KgSource]()
@@ -57,17 +55,19 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
   implicit val kgNodeFiltersDecoder: Decoder[KgNodeFilters] = deriveDecoder
+  implicit val kgNodeQueryDecoder: Decoder[KgNodeQuery] = deriveDecoder
   // Input object types
   implicit val StringFilterType = deriveInputObjectType[StringFilter]()
   implicit val KgNodeFiltersType = deriveInputObjectType[KgNodeFilters]()
+  implicit val KgNodeQueryType = deriveInputObjectType[KgNodeQuery]()
 
   // Object argument types types
-  val KgNodeFiltersArgument = Argument("filters", OptionInputType(KgNodeFiltersType))
+  val KgNodeQueryArgument = Argument("query", KgNodeQueryType)
 
   // Query types
   val KgQueryType = ObjectType("Kg", fields[KgGraphQlSchemaContext, String](
-    Field("matchingNodes", ListType(KgNodeType), arguments = KgNodeFiltersArgument :: LimitArgument :: OffsetArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodes(filters = ctx.args.arg(KgNodeFiltersArgument), limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), text = ctx.args.arg(OptionalTextArgument))),
-    Field("matchingNodesCount", IntType, arguments = KgNodeFiltersArgument :: OptionalTextArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodesCount(filters = ctx.args.arg(KgNodeFiltersArgument), text = ctx.args.arg(OptionalTextArgument))),
+    Field("matchingNodes", ListType(KgNodeType), arguments = LimitArgument :: OffsetArgument :: KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodes(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgNodeQueryArgument))),
+    Field("matchingNodesCount", IntType, arguments = KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodesCount(query = ctx.args.arg(KgNodeQueryArgument))),
     Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.args.arg(IdArgument))),
     Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPathById(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeType, resolve = ctx => ctx.ctx.kgQueryStore.getRandomNode),

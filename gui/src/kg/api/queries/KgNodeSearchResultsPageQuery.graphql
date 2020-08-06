@@ -1,23 +1,21 @@
 #import "./KgNodeFieldsFragment.graphql"
 
 query KgNodeSearchResultsPageQuery(
-  $filters: KgNodeFilters
-  $kgId: String!
   $initialQuery: Boolean!
+  $kgId: String!
   $limit: Int!
+  $query: KgNodeQuery!
   $offset: Int!
-  $text: String
 ) {
   kgById(id: $kgId) {
     matchingNodes(
-      filters: $filters
       limit: $limit
       offset: $offset
-      text: $text
+      query: $query
     ) {
       ...KgNodeFieldsFragment
     }
-    matchingNodesCount(filters: $filters, text: $text) @include(if: $initialQuery)
+    matchingNodesCount(query: $query) @include(if: $initialQuery)
     sources @include(if: $initialQuery) {
       id
       label

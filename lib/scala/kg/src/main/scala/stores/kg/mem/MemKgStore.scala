@@ -6,7 +6,7 @@ import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFilter
-import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFilters, KgQueryStore}
+import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFilters, KgNodeQuery, KgQueryStore}
 import util.NodePageRankCalculator
 
 import scala.util.Random
@@ -115,13 +115,13 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getMatchingNodes(filters: Option[KgNodeFilters], limit: Int, offset: Int, text: Option[String]): List[KgNode] = {
-    val results = lucene.query().filter(toSearchTerms(filters, text):_*).limit(limit).offset(offset).search()
+  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] = {
+    val results = lucene.query().filter(toSearchTerms(query):_*).limit(limit).offset(offset).search()
     results.results.toList.map(searchResult => nodesById(searchResult(luceneNodeIdField)))
   }
 
-  final override def getMatchingNodesCount(filters: Option[KgNodeFilters], text: Option[String]): Int = {
-    val results = lucene.query().filter(toSearchTerms(filters, text):_*).search()
+  final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
+    val results = lucene.query().filter(toSearchTerms(query):_*).search()
     results.total.intValue
   }
 
@@ -150,10 +150,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     edges.isEmpty && nodes.isEmpty && paths.isEmpty
 
 
-  private def toSearchTerms(filters: Option[KgNodeFilters], text: Option[String]): List[SearchTerm] = {
-    val textSearchTerm = text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
-    if (filters.isDefined) {
-      val filterSearchTerms = toSearchTerms(filters.get)
+  private def toSearchTerms(query: KgNodeQuery): List[SearchTerm] = {
+    val textSearchTerm = query.text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
+    if (query.filters.isDefined) {
+      val filterSearchTerms = toSearchTerms(query.filters.get)
       if (!filterSearchTerms.isEmpty) {
         List(textSearchTerm, grouped(filterSearchTerms:_*))
       } else {

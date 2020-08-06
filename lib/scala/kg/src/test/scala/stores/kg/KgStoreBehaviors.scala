@@ -70,7 +70,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(expected.labels(0)))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(expected.labels(0))))
         actual should not be empty
         equals(actual(0), expected) shouldEqual true
       }
@@ -117,7 +117,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get count of matching nodes by label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodesCount(filters = None, text = Some(expected.labels(0)))
+        val actual = query.getMatchingNodesCount(query = KgNodeQuery(filters = None, text = Some(expected.labels(0))))
         actual should be >= 1
       }
     }
@@ -125,7 +125,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by source" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"sources:${expected.sources}"))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sources}")))
         actual should not be empty
         actual(0).sources should equal(expected.sources)
       }
@@ -133,28 +133,28 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
 
     "not return matching nodes for a non-extant source" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        val actual = query.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"sources:nonextant"))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:nonextant")))
         actual.size should be(0)
       }
     }
 
     "get matching nodes count with no text search and no filters" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        query.getMatchingNodesCount(filters = None, text = None) should equal(TestKgData.nodes.size)
+        query.getMatchingNodesCount(query = KgNodeQuery(filters = None, text = None)) should equal(TestKgData.nodes.size)
       }
     }
 
     "get matching nodes count with no text search but with filters" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        query.getMatchingNodesCount(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sources(0))))))), text = None) should equal(TestKgData.nodes.size)
-        query.getMatchingNodesCount(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))))))), text = None) should equal(0)
+        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(TestKgData.nodes.size)
+        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(0)
       }
     }
 
     "get matching nodes by source and label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""sources:${expected.sources(0)} labels:"${expected.labels(0)}""""))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""sources:${expected.sources(0)} labels:"${expected.labels(0)}"""")))
         actual should not be empty
         equals(actual(0), expected) shouldEqual true
       }
@@ -163,7 +163,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by id" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(filters = None, limit = 10, offset = 0, text = Some(s"""id:"${expected.id}""""))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""id:"${expected.id}"""")))
         actual.size should be(1)
         equals(actual(0), expected) shouldEqual true
       }
@@ -172,12 +172,12 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "filter out matching nodes" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val text = "Test"
-        val countBeforeFilters = query.getMatchingNodesCount(filters = None, text = Some(text))
+        val countBeforeFilters = query.getMatchingNodesCount(query = KgNodeQuery(filters = None, text = Some(text)))
         countBeforeFilters should be > 0
-        val actualCount = query.getMatchingNodesCount(
+        val actualCount = query.getMatchingNodesCount(query = KgNodeQuery(
           filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
           text = Some("Test")
-        )
+        ))
         actualCount should equal(0)
       }
     }

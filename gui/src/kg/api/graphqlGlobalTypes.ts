@@ -10,6 +10,11 @@ export interface KgNodeFilters {
   sources?: StringFilter | null;
 }
 
+export interface KgNodeQuery {
+  filters?: KgNodeFilters | null;
+  text?: string | null;
+}
+
 export interface StringFilter {
   exclude?: string[] | null;
   include?: string[] | null;
