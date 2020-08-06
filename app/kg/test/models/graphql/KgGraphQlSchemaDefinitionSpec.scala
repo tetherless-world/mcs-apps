@@ -119,6 +119,28 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
            |""".stripMargin))
     }
 
+    "get KG node facets" in {
+      val query =
+        graphql"""
+         query MatchingKgNodesQuery($$kgId: String!) {
+           kgById(id: $$kgId) {
+             matchingNodeFacets(query: {}) {
+              sources {
+                id
+                label
+              }
+             }
+           }
+         }
+       """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId)))
+      for (source <- TestKgData.sources) {
+        result must include(source.id)
+        result must include(source.label)
+      }
+    }
+
     "get total KG node and edge count" in {
       val nodeCount = TestKgData.nodes.size
       val edgeCount = TestKgData.edges.size
