@@ -2,80 +2,40 @@ import * as React from "react";
 import {Grid} from "@material-ui/core";
 import {KgFrame} from "kg/components/frame/KgFrame";
 import * as ReactDOM from "react-dom";
-import {useQuery, useApolloClient} from "@apollo/react-hooks";
+import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import {
   KgNodeSearchResultsPageQuery,
-  KgNodeSearchResultsPageQueryVariables,
   KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
+  KgNodeSearchResultsPageQueryVariables,
 } from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
-import {useLocation, useHistory} from "react-router-dom";
-import * as qs from "qs";
 import {KgNodeFilters} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/KgSource";
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  QueryParamConfig,
+} from "use-query-params";
+import * as _ from "lodash";
 
-class QueryStringKgNodeSearchVariables implements KgNodeSearchVariables {
-  public readonly __typename = "KgNodeSearchVariables";
+const LIMIT_DEFAULT = 10;
+const OFFSET_DEFAULT = 0;
 
-  private constructor(
-    public readonly text: string,
-    public readonly filters: KgNodeFilters | undefined = undefined,
-    public readonly offset: number = 0,
-    public readonly limit: number = 10
-  ) {}
-
-  get page() {
-    return this.offset / this.limit;
-  }
-
-  get object() {
-    return {
-      text: this.text,
-      filters: this.filters,
-      offset: this.offset,
-      limit: this.limit,
-    };
-  }
-
-  static parse(queryString: string) {
-    const {text, filters, offset, limit} = (qs.parse(queryString, {
-      ignoreQueryPrefix: true,
-    }) as unknown) as {
-      text: string;
-      filters: KgNodeFilters | undefined;
-      offset: string;
-      limit: string;
-    };
-    return new QueryStringKgNodeSearchVariables(
-      text,
-      filters,
-      offset === undefined ? undefined : +offset,
-      limit === undefined ? undefined : +limit
-    );
-  }
-
-  stringify() {
-    return qs.stringify(this.object, {addQueryPrefix: true});
-  }
-
-  replace({text, filters, offset, limit}: Partial<KgNodeSearchVariables>) {
-    return new QueryStringKgNodeSearchVariables(
-      text !== undefined ? text : this.text,
-      filters !== undefined ? filters : this.filters,
-      offset !== undefined ? offset : this.offset,
-      limit !== undefined ? limit : this.limit
-    );
-  }
-}
+const filtersQueryParamConfig: QueryParamConfig<KgNodeFilters | undefined> = {
+  decode: (value) => (value ? JSON.parse(value as string) : undefined),
+  encode: (value) => (!_.isEmpty(value) ? JSON.stringify(value) : undefined),
+  equals: (left, right) => JSON.stringify(left) === JSON.stringify(right),
+};
 
 const makeTitle = (kwds: {
-  text: string;
   count: number;
   filters?: KgNodeFilters;
   sources: KgSource[];
+  text?: string;
 }): string => {
   const {text, count, filters, sources} = kwds;
 
@@ -115,13 +75,19 @@ const makeTitle = (kwds: {
 };
 
 export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
-  const history = useHistory();
-
-  const location = useLocation();
-
-  const searchVariables = QueryStringKgNodeSearchVariables.parse(
-    location.search
-  );
+  let [queryParams, setQueryParams] = useQueryParams({
+    filters: filtersQueryParamConfig,
+    limit: NumberParam,
+    offset: NumberParam,
+    text: StringParam,
+  });
+  const searchVariables: KgNodeSearchVariables = {
+    __typename: "KgNodeSearchVariables",
+    filters: queryParams.filters,
+    limit: queryParams.limit ?? LIMIT_DEFAULT,
+    offset: queryParams.offset ?? OFFSET_DEFAULT,
+    text: queryParams.text ? queryParams.text : undefined,
+  };
 
   const {data, loading, error} = useQuery<
     KgNodeSearchResultsPageQuery,
@@ -130,9 +96,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     variables: {
       initialQuery: true,
       kgId,
-      limit: 10,
-      offset: 0,
-      text: searchVariables.text,
+      ...searchVariables,
+      limit: searchVariables.limit!,
+      offset: searchVariables.offset!,
     },
   });
 
@@ -140,9 +106,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
 
   const [nodes, setNodes] = React.useState<KgNode[] | null>(null);
 
-  const tableUpdateQuery = (
-    newSearchVariables: QueryStringKgNodeSearchVariables
-  ) => {
+  const tableUpdateQuery = (newSearchVariables: KgNodeSearchVariables) => {
+    const limit = newSearchVariables.limit ?? LIMIT_DEFAULT;
+    const offset = newSearchVariables.offset ?? OFFSET_DEFAULT;
     apolloClient
       .query<
         KgNodeSearchResultsPageQuery,
@@ -151,8 +117,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         query: KgNodeSearchResultsPageQueryDocument,
         variables: {
           kgId,
-          ...newSearchVariables.object,
+          filters: newSearchVariables.filters,
+          limit,
+          offset,
           initialQuery: false,
+          text: newSearchVariables.text,
         },
       })
       .then(({data, errors, loading}) => {
@@ -167,7 +136,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         // Might be change in v17
         ReactDOM.unstable_batchedUpdates(() => {
           setNodes(data.kgById.matchingNodes);
-          history.push(newSearchVariables.stringify());
+          const newSearchVariablesCopy = Object.assign({}, newSearchVariables);
+          delete newSearchVariablesCopy["__typename"];
+          setQueryParams(newSearchVariablesCopy);
         });
       });
   };
@@ -188,27 +159,26 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
             <Grid item xs>
               <KgNodeTable
                 title={makeTitle({
-                  text: searchVariables.text,
                   count,
-                  filters: searchVariables.filters,
                   sources,
+                  ...searchVariables,
                 })}
                 nodes={nodes ?? initialNodes}
-                rowsPerPage={searchVariables.limit}
+                rowsPerPage={searchVariables.limit!}
                 count={count}
-                page={searchVariables.page}
+                page={searchVariables.offset! / searchVariables.limit!}
                 onChangePage={(newPage: number) =>
                   tableUpdateQuery(
-                    searchVariables.replace({
-                      offset: newPage * searchVariables.limit,
+                    Object.assign({}, searchVariables, {
+                      offset: newPage * searchVariables.limit!,
                     })
                   )
                 }
                 onChangeRowsPerPage={(newRowsPerPage: number) =>
                   tableUpdateQuery(
-                    searchVariables.replace({
-                      offset: 0,
+                    Object.assign({}, searchVariables, {
                       limit: newRowsPerPage,
+                      offset: 0,
                     })
                   )
                 }

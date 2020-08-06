@@ -1,5 +1,6 @@
 import * as qs from "qs";
 import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
+import * as _ from "lodash";
 
 export class Hrefs {
   static readonly contact = "mailto:gordom6@rpi.edu";
@@ -24,10 +25,21 @@ export class Hrefs {
         }
 
         const {__typename, ...searchVariables} = kwds;
+
         return (
           kgPrefix +
           "node/search" +
-          qs.stringify(searchVariables, {addQueryPrefix: true})
+          qs.stringify(
+            {
+              filters: !_.isEmpty(searchVariables.filters)
+                ? JSON.stringify(searchVariables.filters)
+                : undefined,
+              limit: searchVariables.limit,
+              offset: searchVariables.offset,
+              text: searchVariables.text,
+            },
+            {addQueryPrefix: true}
+          )
         );
       },
 
