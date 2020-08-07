@@ -1,5 +1,5 @@
 import * as React from "react";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 import {Chip} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";

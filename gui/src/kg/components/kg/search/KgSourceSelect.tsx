@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {Select, MenuItem, Paper} from "@material-ui/core";
 import {StringFilter} from "shared/models/StringFilter";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgSourceSelect: React.FunctionComponent<{
   sources: KgSource[];

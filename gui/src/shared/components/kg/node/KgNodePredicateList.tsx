@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 import * as React from "react";
 import {KgNodeLink} from "./KgNodeLink";
-import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgNodeSubjectOfEdge} from "shared/models/kg/node/KgNodeSubjectOfEdge";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 const useStyles = makeStyles(() =>
   createStyles({

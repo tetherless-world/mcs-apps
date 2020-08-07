@@ -2,7 +2,7 @@ import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResult
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
-import {KgSource} from "gui/src/shared/models/kg/KgSource";
+import {KgSource} from "gui/src/shared/models/kg/source/KgSource";
 
 context("KgNodeSearchResultsPage", () => {
   let page: KgNodeSearchResultsPage;

@@ -1,4 +1,4 @@
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 export interface KgNode {
   __typename: "KgNode";

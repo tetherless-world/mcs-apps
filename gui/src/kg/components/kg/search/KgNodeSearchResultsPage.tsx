@@ -11,9 +11,9 @@ import {
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
 import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "shared/models/kg/KgNodeSearchVariables";
+import {KgNodeSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 import {NumberParam, QueryParamConfig, useQueryParams} from "use-query-params";
 import * as _ from "lodash";
 

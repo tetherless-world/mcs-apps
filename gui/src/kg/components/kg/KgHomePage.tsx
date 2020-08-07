@@ -15,7 +15,7 @@ import {
 import {useHistory, Link} from "react-router-dom";
 
 import {KgHrefs} from "kg/KgHrefs";
-import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
+import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
 import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";

@@ -14,14 +14,14 @@ import {
 import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {KgNode} from "shared/models/kg/KgNode";
+import {KgNode} from "shared/models/kg/node/KgNode";
 import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
-import {KgNodeSearchBoxValue} from "shared/models/kg/KgNodeSearchBoxValue";
+import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
-import {KgNodeFilters} from "shared/models/kg/KgNodeFilters";
+import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
 import {StringFilter} from "shared/models/StringFilter";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
