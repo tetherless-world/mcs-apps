@@ -4,11 +4,12 @@ import {KgFrame} from "kg/components/frame/KgFrame";
 import * as ReactDOM from "react-dom";
 import {useApolloClient, useQuery} from "@apollo/react-hooks";
 import {
-  KgNodeSearchResultsPageQuery,
-  KgNodeSearchResultsPageQuery_kgById_matchingNodes as KgNode,
-  KgNodeSearchResultsPageQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
-import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
+  KgNodeSearchResultsPageInitialQuery,
+  KgNodeSearchResultsPageInitialQuery_kgById_matchingNodes as KgNode,
+  KgNodeSearchResultsPageInitialQueryVariables,
+} from "kg/api/queries/types/KgNodeSearchResultsPageInitialQuery";
+import * as KgNodeSearchResultsPageInitialQueryDocument from "kg/api/queries/KgNodeSearchResultsPageInitialQuery.graphql";
+import * as KgNodeSearchResultsPagePaginationQueryDocument from "kg/api/queries/KgNodeSearchResultsPagePaginationQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
 import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
@@ -16,6 +17,10 @@ import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {NumberParam, QueryParamConfig, useQueryParams} from "use-query-params";
 import * as _ from "lodash";
+import {
+  KgNodeSearchResultsPagePaginationQuery,
+  KgNodeSearchResultsPagePaginationQueryVariables,
+} from "kg/api/queries/types/KgNodeSearchResultsPagePaginationQuery";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
@@ -82,11 +87,10 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   };
 
   const {data, loading, error} = useQuery<
-    KgNodeSearchResultsPageQuery,
-    KgNodeSearchResultsPageQueryVariables
-  >(KgNodeSearchResultsPageQueryDocument, {
+    KgNodeSearchResultsPageInitialQuery,
+    KgNodeSearchResultsPageInitialQueryVariables
+  >(KgNodeSearchResultsPageInitialQueryDocument, {
     variables: {
-      initialQuery: true,
       kgId,
       limit: searchVariables.limit!,
       offset: searchVariables.offset!,
@@ -103,15 +107,14 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     const offset = newSearchVariables.offset ?? OFFSET_DEFAULT;
     apolloClient
       .query<
-        KgNodeSearchResultsPageQuery,
-        KgNodeSearchResultsPageQueryVariables
+        KgNodeSearchResultsPagePaginationQuery,
+        KgNodeSearchResultsPagePaginationQueryVariables
       >({
-        query: KgNodeSearchResultsPageQueryDocument,
+        query: KgNodeSearchResultsPagePaginationQueryDocument,
         variables: {
           kgId,
           limit,
           offset,
-          initialQuery: false,
           query: newSearchVariables.query ?? {},
         },
       })

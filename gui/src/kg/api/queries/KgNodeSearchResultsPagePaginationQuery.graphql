@@ -1,0 +1,18 @@
+#import "./KgNodeFragment.graphql"
+
+query KgNodeSearchResultsPagePaginationQuery(
+  $kgId: String!
+  $limit: Int!
+  $offset: Int!
+  $query: KgNodeQuery!
+) {
+  kgById(id: $kgId) {
+    matchingNodes(
+      limit: $limit
+      offset: $offset
+      query: $query
+    ) {
+      ...KgNodeFragment
+    }
+  }
+}

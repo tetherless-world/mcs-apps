@@ -1,8 +1,7 @@
 #import "./KgNodeFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
-query KgNodeSearchResultsPageQuery(
-  $initialQuery: Boolean!
+query KgNodeSearchResultsPageInitialQuery(
   $kgId: String!
   $limit: Int!
   $offset: Int!
@@ -21,8 +20,8 @@ query KgNodeSearchResultsPageQuery(
     ) {
       ...KgNodeFragment
     }
-    matchingNodesCount(query: $query) @include(if: $initialQuery)
-    sources @include(if: $initialQuery) {
+    matchingNodesCount(query: $query)
+    sources {
       ... KgSourceFragment
     }
   }
