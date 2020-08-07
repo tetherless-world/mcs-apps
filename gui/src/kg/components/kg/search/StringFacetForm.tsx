@@ -44,8 +44,8 @@ export const StringFacetForm: React.FunctionComponent<{
       Object.keys(valueUniverse).length,
     "sets should account for all values"
   );
-  console.info("Exclude: " + [...excludeValueIdSet]);
-  console.info("Include: " + [...includeValueIdSet]);
+  // console.info("Exclude: " + [...excludeValueIdSet]);
+  // console.info("Include: " + [...includeValueIdSet]);
 
   return (
     <List>

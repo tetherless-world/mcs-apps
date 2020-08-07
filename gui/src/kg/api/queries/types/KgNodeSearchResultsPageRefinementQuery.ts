@@ -26,6 +26,7 @@ export interface KgNodeSearchResultsPageRefinementQuery_kgById_matchingNodes {
 export interface KgNodeSearchResultsPageRefinementQuery_kgById {
   __typename: "Kg";
   matchingNodes: KgNodeSearchResultsPageRefinementQuery_kgById_matchingNodes[];
+  matchingNodesCount: number;
 }
 
 export interface KgNodeSearchResultsPageRefinementQuery {

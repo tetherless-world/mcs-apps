@@ -14,5 +14,6 @@ query KgNodeSearchResultsPageRefinementQuery(
     ) {
       ...KgNodeFragment
     }
+    matchingNodesCount(query: $query)
   }
 }

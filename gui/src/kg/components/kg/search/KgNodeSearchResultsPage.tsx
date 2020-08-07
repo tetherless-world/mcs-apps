@@ -130,7 +130,10 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         // Might be change in v17
         ReactDOM.unstable_batchedUpdates(() => {
           setData((prevState) =>
-            Object.assign({}, prevState, {nodes: data.kgById.matchingNodes})
+            Object.assign({}, prevState, {
+              nodes: data.kgById.matchingNodes,
+              nodesCount: data.kgById.matchingNodesCount,
+            })
           );
           const newSearchVariablesCopy = Object.assign({}, newSearchVariables);
           delete newSearchVariablesCopy["__typename"];
