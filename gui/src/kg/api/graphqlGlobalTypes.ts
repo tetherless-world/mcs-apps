@@ -7,7 +7,7 @@
 //==============================================================
 
 export interface KgNodeFilters {
-  sources?: StringFacetFilter | null;
+  sourceIds?: StringFacetFilter | null;
 }
 
 export interface KgNodeQuery {

@@ -287,7 +287,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
         <KgSourceSelect
           sources={sources}
           style={{display: "inline-flex", verticalAlign: "top"}}
-          value={search.filters.sources || undefined}
+          value={search.filters.sourceIds || undefined}
           onChange={(sourcesFilter: StringFacetFilter) => {
             setSearch((prev) => ({
               ...prev,

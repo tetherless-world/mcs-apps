@@ -25,7 +25,7 @@ export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
           Hrefs.kg({id: kgId}).nodeSearch({
             query: {
               filters: {
-                sources: {include: [source.id]},
+                sourceIds: {include: [source.id]},
               },
             },
             __typename: "KgNodeSearchVariables",

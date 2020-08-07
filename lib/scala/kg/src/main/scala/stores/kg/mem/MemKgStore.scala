@@ -42,10 +42,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     final override def putNodes(nodes: Iterator[KgNode]): Unit = {
       MemKgStore.this.nodes = nodes.toList
       MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
-      putSourceIds(MemKgStore.this.nodes.flatMap(_.sources).distinct)
+      putSourceIds(MemKgStore.this.nodes.flatMap(_.sourceIds).distinct)
       lucene.deleteAll()
       MemKgStore.this.nodes.foreach(node => {
-        lucene.doc().facets(node.sources.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" "))).index()
+        lucene.doc().facets(node.sourceIds.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" "))).index()
       })
       lucene.commit()
     }
@@ -175,7 +175,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   }
 
   private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sources.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
+    nodeFilters.sourceIds.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
   }
 
   private def toSearchTerms(field: FacetField, stringFilter: StringFacetFilter): List[(SearchTerm, Condition)] = {

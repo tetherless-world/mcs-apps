@@ -23,7 +23,7 @@ class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
           for (node <- List(edgeWithNodes.node1, edgeWithNodes.node2)) {
             node.id should not be empty
             node.labels.size should be > 0
-            node.sources.size should be > 0
+            node.sourceIds.size should be > 0
           }
         }
       }

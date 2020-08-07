@@ -49,8 +49,8 @@ const makeTitle = (kwds: {
   }
 
   if (query && query.filters) {
-    if (query.filters.sources) {
-      const {include: includeSourceIds} = query.filters.sources;
+    if (query.filters.sourceIds) {
+      const {include: includeSourceIds} = query.filters.sourceIds;
 
       if (includeSourceIds) {
         title.push("in");
