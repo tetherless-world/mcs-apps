@@ -1,6 +1,22 @@
 import {Page} from "../../Page";
 import {KgTestData} from "../KgTestData";
 
+class StringFacetForm {
+  constructor(private readonly selector: string) {}
+
+  disclose() {
+    return cy.get(this.selector).click();
+  }
+
+  valueCheckbox(valueId: string) {
+    return cy.get(`[data-cy="facet-value-${valueId}"]`);
+  }
+}
+
+class KgNodeFacets {
+  readonly sources = new StringFacetForm("[data-cy=sources-facet]");
+}
+
 class MUIDataTable {
   constructor(private readonly selector: string) {}
 
@@ -31,7 +47,22 @@ class KgNodeResultsTable extends MUIDataTable {
   }
 
   get title() {
-    return this.get().find("[data-cy=title]");
+    const selector = "[data-cy=title]";
+    const self = this;
+    return {
+      get() {
+        return self.get().find(selector);
+      },
+      get count() {
+        return this.get().find("[data-cy=count]");
+      },
+      get filters() {
+        return this.get().find("[data-cy=filters]");
+      },
+      get queryText() {
+        return this.get().find("[data-cy=query-text]");
+      },
+    };
   }
 }
 
@@ -47,7 +78,7 @@ class KgNodeResultsTableRow {
 
   readonly nodeLink = new KgNodeResultsNodeTableRowKgNodeLink(this);
 
-  readonly datasourceLink = new KgNodeResultsNodeTableRowKgDatasourceLink(this);
+  readonly sourceLink = new KgNodeResultsNodeTableRowKgDatasourceLink(this);
 }
 
 class KgNodeResultsNodeTableRowKgDatasourceLink {
@@ -71,6 +102,7 @@ export class KgNodeSearchResultsPage extends Page {
     super();
   }
 
+  readonly facets = new KgNodeFacets();
   readonly resultsTable = new KgNodeResultsTable();
 
   get relativeUrl() {

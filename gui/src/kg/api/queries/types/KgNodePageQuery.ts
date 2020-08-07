@@ -29,9 +29,9 @@ export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges {
 export interface KgNodePageQuery_kgById_nodeById {
   __typename: "KgNode";
   aliases: string[] | null;
-  sources: KgNodePageQuery_kgById_nodeById_sources[];
   id: string;
   label: string | null;
+  sources: KgNodePageQuery_kgById_nodeById_sources[];
   pos: string | null;
   topSubjectOfEdges: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges[];
 }

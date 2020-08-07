@@ -41,7 +41,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         labels = toList(recordMap("node.labels").asInstanceOf[String]),
         pageRank = Try(recordMap("node.pageRank").asInstanceOf[Double].doubleValue()).toOption,
         pos = Option(recordMap("node.pos")).map(_.asInstanceOf[String]),
-        sources = toList(recordMap("node.sources").asInstanceOf[String])
+        sourceIds = toList(recordMap("node.sources").asInstanceOf[String])
       )
     }
 
@@ -281,8 +281,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         val textBindings = query.text.map("text" -> _).toList
 
         val distinctSourceIds =
-          if (query.filters.isDefined && query.filters.get.sources.isDefined) {
-            query.filters.get.sources.get.exclude.getOrElse(List()) ++ query.filters.get.sources.get.include.getOrElse(List())
+          if (query.filters.isDefined && query.filters.get.sourceIds.isDefined) {
+            query.filters.get.sourceIds.get.exclude.getOrElse(List()) ++ query.filters.get.sourceIds.get.include.getOrElse(List())
           } else {
             List()
           }.distinct
@@ -293,11 +293,11 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:${SourceLabel} { id: $$source${sourceIdWithIndex._2} })")
 
         val whereClauses: List[String] =
-          if (query.filters.isDefined && query.filters.get.sources.isDefined) {
-            query.filters.get.sources.get.exclude.toList.flatMap(
+          if (query.filters.isDefined && query.filters.get.sourceIds.isDefined) {
+            query.filters.get.sourceIds.get.exclude.toList.flatMap(
               _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
               )) ++
-              query.filters.get.sources.get.include.toList.flatMap(
+              query.filters.get.sourceIds.get.include.toList.flatMap(
                 _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
                 ))
           } else {

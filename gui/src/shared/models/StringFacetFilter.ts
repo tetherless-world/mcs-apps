@@ -1,4 +1,4 @@
-export interface StringFilter {
+export interface StringFacetFilter {
   exclude?: string[] | null;
   include?: string[] | null;
 }

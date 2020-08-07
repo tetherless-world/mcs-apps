@@ -1,5 +1,5 @@
 import * as React from "react";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 import {Chip} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
@@ -25,7 +25,7 @@ export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
           Hrefs.kg({id: kgId}).nodeSearch({
             query: {
               filters: {
-                sources: {include: [source.id]},
+                sourceIds: {include: [source.id]},
               },
             },
             __typename: "KgNodeSearchVariables",

@@ -3,20 +3,20 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: KgNodeFieldsFragment
+// GraphQL fragment: KgNodeFragment
 // ====================================================
 
-export interface KgNodeFieldsFragment_sources {
+export interface KgNodeFragment_sources {
   __typename: "KgSource";
   id: string;
   label: string;
 }
 
-export interface KgNodeFieldsFragment {
+export interface KgNodeFragment {
   __typename: "KgNode";
   aliases: string[] | null;
-  sources: KgNodeFieldsFragment_sources[];
   id: string;
   label: string | null;
+  sources: KgNodeFragment_sources[];
   pos: string | null;
 }

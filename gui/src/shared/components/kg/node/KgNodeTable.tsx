@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import {KgNode} from "shared/models/kg/KgNode";
+import {KgNode} from "shared/models/kg/node/KgNode";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
-import {KgSourcePill} from "shared/components/kg/search/KgSourcePill";
+import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
-import {KgSource} from "shared/models/kg/KgSource";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
@@ -101,21 +101,21 @@ const getPropertyColumnIndex = (
 };
 
 export const KgNodeTable: React.FunctionComponent<{
-  title: string;
-  nodes: KgNode[];
-  rowsPerPage: number;
   count: number;
-  page: number;
+  nodes: readonly KgNode[];
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
+  rowsPerPage: number;
+  page: number;
+  title: React.ReactNode;
 }> = ({
-  title,
-  nodes,
-  rowsPerPage,
   count,
-  page,
+  nodes,
   onChangePage,
   onChangeRowsPerPage,
+  page,
+  rowsPerPage,
+  title,
 }) => {
   // https://github.com/gregnb/mui-datatables/issues/756
   // Since the MUIDataTable has its own state, it ignores passed in values
@@ -150,7 +150,7 @@ export const KgNodeTable: React.FunctionComponent<{
             {title}
           </Typography>
         }
-        data={nodes}
+        data={nodes.concat()}
         columns={columns}
         options={{
           count,

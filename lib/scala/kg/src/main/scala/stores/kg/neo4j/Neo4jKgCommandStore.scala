@@ -80,7 +80,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               "id" -> node.id,
               "labels" -> node.labels.mkString(ListDelimString),
               "pos" -> node.pos.getOrElse(null),
-              "sources" -> node.sources.mkString(ListDelimString),
+              "sources" -> node.sourceIds.mkString(ListDelimString),
             ))
           )
           // Store sources as a delimited list on the node so they can be retrieved accurately
@@ -88,7 +88,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           // This is the standard way of doing multi-valued properties in neo4j: make the values
           // separate nodes and connect to them.
           // See #168.
-          for (sourceId <- node.sources) {
+          for (sourceId <- node.sourceIds) {
             transaction.run(
               s"""
                  |MATCH (source:${SourceLabel}), (node:${NodeLabel})
@@ -105,7 +105,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final override def putNodes(nodes: Iterator[KgNode]): Unit = {
           val nodesList = nodes.toList
-          putSources(nodesList.flatMap(_.sources).distinct.map(KgSource(_)))
+          putSources(nodesList.flatMap(_.sourceIds).distinct.map(KgSource(_)))
           for (node <- nodesList) {
             putNode(node)
           }

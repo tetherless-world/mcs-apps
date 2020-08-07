@@ -25,7 +25,7 @@ context("KG Home Page", () => {
 
     page.search.selectedDatasource.should(
       "have.text",
-      KgTestData.kgSources[0].id
+      KgTestData.kgSources[0].label
     );
   });
 

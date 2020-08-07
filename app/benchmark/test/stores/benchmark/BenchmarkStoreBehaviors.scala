@@ -2,7 +2,7 @@ package stores.benchmark
 
 import data.benchmark.TestBenchmarkData
 import org.scalatest.{Matchers, WordSpec}
-import stores.StringFilter
+import stores.StringFacetFilter
 
 trait BenchmarkStoreBehaviors extends Matchers { this: WordSpec =>
   def store(sut: BenchmarkStore) {

@@ -5,7 +5,7 @@ import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, PagedResults, SearchResult, SearchTerm}
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import stores.StringFilter
+import stores.StringFacetFilter
 import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeFilters, KgNodeQuery, KgQueryStore}
 import util.NodePageRankCalculator
 
@@ -42,10 +42,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     final override def putNodes(nodes: Iterator[KgNode]): Unit = {
       MemKgStore.this.nodes = nodes.toList
       MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
-      putSourceIds(MemKgStore.this.nodes.flatMap(_.sources).distinct)
+      putSourceIds(MemKgStore.this.nodes.flatMap(_.sourceIds).distinct)
       lucene.deleteAll()
       MemKgStore.this.nodes.foreach(node => {
-        lucene.doc().facets(node.sources.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" "))).index()
+        lucene.doc().facets(node.sourceIds.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" "))).index()
       })
       lucene.commit()
     }
@@ -100,7 +100,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 //      nodes
 //    }
 //
-//  private def filterNodes(filters: StringFilter, nodes: List[Node], nodePropertyGetter: (Node) => String): List[Node] =
+//  private def filterNodes(filters: StringFacetFilter, nodes: List[Node], nodePropertyGetter: (Node) => String): List[Node] =
 //    nodes.filter(node => {
 //      val nodeProperty = nodePropertyGetter(node)
 //      val excluded = filters.exclude.getOrElse(List()).exists(exclude => exclude == nodeProperty)
@@ -175,10 +175,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   }
 
   private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sources.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
+    nodeFilters.sourceIds.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
   }
 
-  private def toSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
+  private def toSearchTerms(field: FacetField, stringFilter: StringFacetFilter): List[(SearchTerm, Condition)] = {
     stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
     stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
   }

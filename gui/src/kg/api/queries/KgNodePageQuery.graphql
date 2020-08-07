@@ -1,4 +1,4 @@
-#import "./KgNodeFieldsFragment.graphql"
+#import "./KgNodeFragment.graphql"
 
 query KgNodePageQuery(
   $kgId: String!,
@@ -6,7 +6,7 @@ query KgNodePageQuery(
 ) {
   kgById(id: $kgId) {
     nodeById(id: $nodeId) {
-      ...KgNodeFieldsFragment
+      ...KgNodeFragment
       topSubjectOfEdges(limit: 100) {
         object
         objectNode {

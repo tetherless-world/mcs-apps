@@ -72,14 +72,14 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
                 id = csvRowMap("node1"),
                 labels = csvRowMap.getList("node1;label", KgtkListDelim),
                 pos = None,
-                sources = sources,
+                sourceIds = sources,
                 pageRank = None
               ),
               node2 = KgNode(
                 id = csvRowMap("node2"),
                 labels = csvRowMap.getList("node2;label", KgtkListDelim),
                 pos = None,
-                sources = sources,
+                sourceIds = sources,
                 pageRank = None
               ),
               sources = sources
