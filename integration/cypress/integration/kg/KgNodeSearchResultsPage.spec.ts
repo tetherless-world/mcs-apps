@@ -21,7 +21,7 @@ context("KgNodeSearchResultsPage", () => {
 
   beforeEach(() => page.visit());
 
-  it("Should show node page", () => {
+  it("should show node page", () => {
     page.resultsTable.row(0).nodeLink.click();
 
     const nodePage = new KgNodePage(node.id);
@@ -29,13 +29,13 @@ context("KgNodeSearchResultsPage", () => {
     nodePage.assertLoaded();
   });
 
-  it("Should show source search", () => {
+  it("should show source search", () => {
     page.resultsTable.row(0).sourceLink.click();
     page.resultsTable.title.count.should("contain", totalNodes.toString());
-    page.resultsTable.title.filters.should("contain", "in " + source.label);
+    page.resultsTable.title.filters.should("contain", source.label);
   });
 
-  it("Should show rows per page", () => {
+  it("should show rows per page", () => {
     page.resultsTable.rowsPerPage.should("have.text", 10);
   });
 
@@ -52,5 +52,16 @@ context("KgNodeSearchResultsPage", () => {
   it("should show count and query in the title", () => {
     page.resultsTable.title.count.should("contain", totalNodes.toString());
     page.resultsTable.title.queryText.should("contain", node.labels[0]);
+  });
+
+  it("should exclude some results by faceted search", () => {
+    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.facets.sources.disclose();
+    page.facets.sources.valueCheckbox("portal_test_data_secondary_0").click();
+    page.resultsTable.title.count.should("not.contain", totalNodes.toString());
+    page.resultsTable.title.filters.should(
+      "contain",
+      "Portal test data secondary 0"
+    );
   });
 });

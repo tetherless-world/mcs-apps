@@ -2,7 +2,11 @@ import {Page} from "../../Page";
 import {KgTestData} from "../KgTestData";
 
 class StringFacetForm {
-  constructor(readonly selector: string) {}
+  constructor(private readonly selector: string) {}
+
+  disclose() {
+    return cy.get(this.selector).click();
+  }
 
   valueCheckbox(valueId: string) {
     return cy.get(`[data-cy="facet-value-${valueId}"]`);
