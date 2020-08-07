@@ -95,6 +95,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
       limit: searchVariables.limit!,
       offset: searchVariables.offset!,
       query: searchVariables.query!,
+      queryText: searchVariables.query!.text,
     },
   });
 
