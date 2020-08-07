@@ -86,7 +86,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     query: queryParams.query ?? {},
   };
 
-  const {data, loading, error} = useQuery<
+  const {
+    data: initialData,
+    loading: initialLoading,
+    error: initialError,
+  } = useQuery<
     KgNodeSearchResultsPageInitialQuery,
     KgNodeSearchResultsPageInitialQueryVariables
   >(KgNodeSearchResultsPageInitialQueryDocument, {
@@ -139,7 +143,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   };
 
   return (
-    <KgFrame data={data} error={error} loading={loading}>
+    <KgFrame data={initialData} error={initialError} loading={initialLoading}>
       {({
         data: {
           kgById: {
