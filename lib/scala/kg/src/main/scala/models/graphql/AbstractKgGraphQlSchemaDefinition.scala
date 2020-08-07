@@ -7,7 +7,7 @@ import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
 import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import stores.StringFilter
+import stores.StringFacetFilter
 import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
@@ -54,11 +54,11 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   )
 
   // Input object decoders
-  implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
+  implicit val stringFilterDecoder: Decoder[StringFacetFilter] = deriveDecoder
   implicit val kgNodeFiltersDecoder: Decoder[KgNodeFilters] = deriveDecoder
   implicit val kgNodeQueryDecoder: Decoder[KgNodeQuery] = deriveDecoder
   // Input object types
-  implicit val StringFilterType = deriveInputObjectType[StringFilter]()
+  implicit val StringFacetFilterType = deriveInputObjectType[StringFacetFilter]()
   implicit val KgNodeFiltersType = deriveInputObjectType[KgNodeFilters]()
   implicit val KgNodeQueryType = deriveInputObjectType[KgNodeQuery]()
 

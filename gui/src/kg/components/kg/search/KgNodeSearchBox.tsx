@@ -20,7 +20,7 @@ import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
-import {StringFilter} from "shared/models/StringFilter";
+import {StringFacetFilter} from "shared/models/StringFacetFilter";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 // Throttle wait duration in milliseconds
@@ -288,7 +288,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           sources={sources}
           style={{display: "inline-flex", verticalAlign: "top"}}
           value={search.filters.sources || undefined}
-          onChange={(sourcesFilter: StringFilter) => {
+          onChange={(sourcesFilter: StringFacetFilter) => {
             setSearch((prev) => ({
               ...prev,
               filters: {

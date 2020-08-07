@@ -5,7 +5,7 @@ import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.kg.{KgEdge, KgNode}
 import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, WordSpec}
-import stores.StringFilter
+import stores.StringFacetFilter
 
 import scala.math.abs
 
@@ -146,8 +146,8 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
 
     "get matching nodes count with no text search but with filters" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(TestKgData.nodes.size)
-        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(0)
+        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(TestKgData.nodes.size)
+        query.getMatchingNodesCount(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))))))), text = None)) should equal(0)
       }
     }
 
@@ -175,7 +175,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
         val countBeforeFilters = query.getMatchingNodesCount(query = KgNodeQuery(filters = None, text = Some(text)))
         countBeforeFilters should be > 0
         val actualCount = query.getMatchingNodesCount(query = KgNodeQuery(
-          filters = Some(KgNodeFilters(sources = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
+          filters = Some(KgNodeFilters(sources = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sources(0))), include = None)))),
           text = Some("Test")
         ))
         actualCount should equal(0)
@@ -192,7 +192,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching node facets for filtered nodes" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val facets = query.getMatchingNodeFacets(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFilter(include = Some(expected.sources), exclude = None)))), text = None))
+        val facets = query.getMatchingNodeFacets(query = KgNodeQuery(filters = Some(KgNodeFilters(sources = Some(StringFacetFilter(include = Some(expected.sources), exclude = None)))), text = None))
         facets.sources.size should be < TestKgData.sources.size
         facets.sources.sortBy(_.id).map(_.id) should equal(expected.sources.sortBy(sourceId => sourceId))
       }

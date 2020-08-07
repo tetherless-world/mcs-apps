@@ -1,7 +1,7 @@
 package stores.kg
 
-import stores.StringFilter
+import stores.StringFacetFilter
 
 final case class KgNodeFilters(
-                                sources: Option[StringFilter]
+                                sources: Option[StringFacetFilter]
                             )

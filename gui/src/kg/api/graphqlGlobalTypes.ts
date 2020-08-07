@@ -7,7 +7,7 @@
 //==============================================================
 
 export interface KgNodeFilters {
-  sources?: StringFilter | null;
+  sources?: StringFacetFilter | null;
 }
 
 export interface KgNodeQuery {
@@ -15,7 +15,7 @@ export interface KgNodeQuery {
   text?: string | null;
 }
 
-export interface StringFilter {
+export interface StringFacetFilter {
   exclude?: string[] | null;
   include?: string[] | null;
 }
