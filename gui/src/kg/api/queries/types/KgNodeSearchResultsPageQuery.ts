@@ -17,9 +17,9 @@ export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources {
 export interface KgNodeSearchResultsPageQuery_kgById_matchingNodes {
   __typename: "KgNode";
   aliases: string[] | null;
-  sources: KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources[];
   id: string;
   label: string | null;
+  sources: KgNodeSearchResultsPageQuery_kgById_matchingNodes_sources[];
   pos: string | null;
 }
 
@@ -44,6 +44,6 @@ export interface KgNodeSearchResultsPageQueryVariables {
   initialQuery: boolean;
   kgId: string;
   limit: number;
-  query: KgNodeQuery;
   offset: number;
+  query: KgNodeQuery;
 }

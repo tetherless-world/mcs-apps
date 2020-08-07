@@ -1,24 +1,29 @@
-#import "./KgNodeFieldsFragment.graphql"
+#import "./KgNodeFragment.graphql"
+#import "./KgSourceFragment.graphql"
 
 query KgNodeSearchResultsPageQuery(
   $initialQuery: Boolean!
   $kgId: String!
   $limit: Int!
-  $query: KgNodeQuery!
   $offset: Int!
+  $query: KgNodeQuery!
 ) {
   kgById(id: $kgId) {
+#    matchingNodeFacets(query: {text: $queryText}) {
+#      sources {
+#        ... KgSourceFragment
+#      }
+#    }
     matchingNodes(
       limit: $limit
       offset: $offset
       query: $query
     ) {
-      ...KgNodeFieldsFragment
+      ...KgNodeFragment
     }
     matchingNodesCount(query: $query) @include(if: $initialQuery)
     sources @include(if: $initialQuery) {
-      id
-      label
+      ... KgSourceFragment
     }
   }
 }

@@ -1,0 +1,5 @@
+fragment KgSourceFragment on KgSource {
+    id
+    label
+}
+
