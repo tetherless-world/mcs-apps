@@ -5,26 +5,26 @@ import {invariant} from "ts-invariant";
 import {Checkbox, FormControlLabel, List, ListItem} from "@material-ui/core";
 
 export const StringFacetForm: React.FunctionComponent<{
-  allValues: {[index: string]: string}; // value id: value label
   currentState?: StringFacetFilter; // value id's only
   onChange: (newState?: StringFacetFilter) => void;
-}> = ({allValues, currentState, onChange}) => {
-  if (_.isEmpty(allValues)) {
+  valueUniverse: {[index: string]: string}; // value id: value label
+}> = ({currentState, onChange, valueUniverse}) => {
+  if (_.isEmpty(valueUniverse)) {
     return null;
   }
 
   // Build sets of the excludeValueIdSet and includeValueIdSet values to avoid repeatedly iterating over the arrays.
   const excludeValueIdSet: Set<string> =
     currentState && currentState.exclude
-      ? new Set(...currentState.exclude)
+      ? new Set(currentState.exclude)
       : new Set();
   const includeValueIdSet: Set<string> =
     currentState && currentState.include
-      ? new Set(...currentState.include)
+      ? new Set(currentState.include)
       : new Set();
 
   // If a value is not in one of the sets it's implicitly included.
-  Object.keys(allValues).forEach((valueId) => {
+  Object.keys(valueUniverse).forEach((valueId) => {
     if (valueId in excludeValueIdSet) {
       invariant(
         !(valueId in includeValueIdSet),
@@ -37,14 +37,14 @@ export const StringFacetForm: React.FunctionComponent<{
   });
   invariant(
     includeValueIdSet.size + excludeValueIdSet.size ===
-      Object.keys(allValues).length,
+      Object.keys(valueUniverse).length,
     "sets should account for all values"
   );
 
   return (
     <List>
-      {Object.keys(allValues).map((valueId) => {
-        const valueLabel = allValues[valueId];
+      {Object.keys(valueUniverse).map((valueId) => {
+        const valueLabel = valueUniverse[valueId];
 
         const onChangeValue = (
           e: React.ChangeEvent<HTMLInputElement>
@@ -60,13 +60,15 @@ export const StringFacetForm: React.FunctionComponent<{
 
           invariant(
             includeValueIdSet.size + excludeValueIdSet.size ===
-              Object.keys(allValues).length,
+              Object.keys(valueUniverse).length,
             "sets should account for all values"
           );
 
-          if (includeValueIdSet.size === Object.keys(allValues).length) {
+          if (includeValueIdSet.size === Object.keys(valueUniverse).length) {
             onChange(undefined); // Implicitly includeValueIdSet all values
-          } else if (excludeValueIdSet.size === Object.keys(allValues).length) {
+          } else if (
+            excludeValueIdSet.size === Object.keys(valueUniverse).length
+          ) {
             onChange({exclude: [...excludeValueIdSet]}); // Explicitly excludeValueIdSet all values
           } else if (includeValueIdSet.size >= excludeValueIdSet.size) {
             invariant(

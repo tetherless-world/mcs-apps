@@ -102,7 +102,7 @@ const getPropertyColumnIndex = (
 
 export const KgNodeTable: React.FunctionComponent<{
   title: string;
-  nodes: KgNode[];
+  nodes: readonly KgNode[];
   rowsPerPage: number;
   count: number;
   page: number;
@@ -150,7 +150,7 @@ export const KgNodeTable: React.FunctionComponent<{
             {title}
           </Typography>
         }
-        data={nodes}
+        data={nodes.concat()}
         columns={columns}
         options={{
           count,

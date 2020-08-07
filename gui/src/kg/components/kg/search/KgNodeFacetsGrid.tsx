@@ -57,19 +57,19 @@ export const KgNodeFacetsGrid: React.FunctionComponent<{
     <Grid container direction="column">
       <FacetExpansionPanel id="sources" title="Sources">
         <StringFacetForm
-          allValues={facets.sources.reduce(
-            (map: {[index: string]: string}, source) => {
-              map[source.id] = source.label;
-              return map;
-            },
-            {}
-          )}
           currentState={
             query.filters && query.filters.sourceIds
               ? query.filters.sourceIds
               : undefined
           }
           onChange={onChangeSourceIds}
+          valueUniverse={facets.sources.reduce(
+            (map: {[index: string]: string}, source) => {
+              map[source.id] = source.label;
+              return map;
+            },
+            {}
+          )}
         />
       </FacetExpansionPanel>
     </Grid>

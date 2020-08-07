@@ -1,6 +1,6 @@
 #import "./KgNodeFragment.graphql"
 
-query KgNodeSearchResultsPagePaginationQuery(
+query KgNodeSearchResultsPageRefinementQuery(
   $kgId: String!
   $limit: Int!
   $offset: Int!
