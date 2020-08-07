@@ -33,7 +33,7 @@ export const KgSourceSelect: React.FunctionComponent<{
             {(selected as string).length === 0 ? (
               <React.Fragment>All sources</React.Fragment>
             ) : (
-              (selected as string)
+              sources.find((source) => source.id === selected)!.label
             )}
           </span>
         )}
