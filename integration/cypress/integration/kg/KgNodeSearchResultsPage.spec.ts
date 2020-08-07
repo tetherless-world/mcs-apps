@@ -2,12 +2,11 @@ import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResult
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
-import {KgSource} from "gui/src/shared/models/kg/source/KgSource";
 
 context("KgNodeSearchResultsPage", () => {
   let page: KgNodeSearchResultsPage;
   let node: KgNode;
-  let source: KgSource;
+  let source: {id: string; label: string};
   let totalNodes: number;
 
   before(() => {
@@ -22,16 +21,6 @@ context("KgNodeSearchResultsPage", () => {
 
   beforeEach(() => page.visit());
 
-  it("Should show title", () => {
-    // MUIDataTable appears to be creating two
-    // title elements, only one is visible, and I have
-    // no idea why
-    page.resultsTable.title.should(
-      "have.text",
-      `${totalNodes} results for "${node.labels[0]}"${totalNodes} results for "${node.labels[0]}"`
-    );
-  });
-
   it("Should show node page", () => {
     page.resultsTable.row(0).nodeLink.click();
 
@@ -41,12 +30,9 @@ context("KgNodeSearchResultsPage", () => {
   });
 
   it("Should show source search", () => {
-    page.resultsTable.row(0).datasourceLink.click();
-
-    page.resultsTable.title.should(
-      "have.text",
-      `${totalNodes} results in ${source.label}${totalNodes} results in ${source.label}`
-    );
+    page.resultsTable.row(0).sourceLink.click();
+    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.resultsTable.title.filters.should("contain", "in " + source.label);
   });
 
   it("Should show rows per page", () => {
@@ -61,5 +47,10 @@ context("KgNodeSearchResultsPage", () => {
     page.resultsTable.paginateBack();
 
     page.resultsTable;
+  });
+
+  it("should show count and query in the title", () => {
+    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.resultsTable.title.queryText.should("contain", node.labels[0]);
   });
 });

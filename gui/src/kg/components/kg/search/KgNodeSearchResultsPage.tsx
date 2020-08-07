@@ -45,7 +45,7 @@ const makeTitle = (kwds: {
 
   if (count > 0) {
     title.push(
-      <span data-cy="node-count" key="node-count">
+      <span data-cy="count" key="count">
         {count}
       </span>
     );
@@ -53,7 +53,7 @@ const makeTitle = (kwds: {
     title.push("No");
   }
 
-  title.push(" results ");
+  title.push("results");
 
   if (query && query.text) {
     title.push(
@@ -106,26 +106,34 @@ const makeTitle = (kwds: {
         break;
       case 1:
         title.push(
-          <React.Fragment key="filters">
-            &nbsp;{filterRepresentations[0]}
-          </React.Fragment>
+          <span data-cy="filters" key="filters">
+            {filterRepresentations[0]}
+          </span>
         );
         break;
       default:
         title.push(
-          <>
-            &nbsp;
+          <span data-cy="filters" key="filters">
             {filterRepresentations.reduce((result, item) => (
               <React.Fragment key="filters">
                 {result} and {item}
               </React.Fragment>
             ))}
-          </>
+          </span>
         );
     }
   }
 
-  return <>{...title}</>;
+  return (
+    <>
+      {title.reduce((result, item) => (
+        <React.Fragment>
+          {result}&nbsp;
+          {item}
+        </React.Fragment>
+      ))}
+    </>
+  );
 };
 
 export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
