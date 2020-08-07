@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {KgNode} from "shared/models/kg/KgNode";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
-import {KgSourcePill} from "shared/components/kg/search/KgSourcePill";
+import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";

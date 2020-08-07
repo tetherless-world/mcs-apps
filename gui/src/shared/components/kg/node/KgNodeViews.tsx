@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
-import {KgSourcePill} from "shared/components/kg/search/KgSourcePill";
+import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {KgNodeSubjectOfEdge} from "shared/models/kg/KgNodeSubjectOfEdge";
 import {KgSource} from "shared/models/kg/KgSource";
 
