@@ -8,11 +8,11 @@ import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {GraphQLError} from "graphql";
 import {
-  KgNodeSearchResultsPageQuery,
-  KgNodeSearchResultsPageQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageQuery";
+  KgNodeSearchBoxQuery,
+  KgNodeSearchBoxQueryVariables,
+} from "kg/api/queries/types/KgNodeSearchBoxQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgNodeSearchResultsPageQueryDocument from "kg/api/queries/KgNodeSearchResultsPageQuery.graphql";
+import * as KgNodeSearchBoxQueryDocument from "kg/api/queries/KgNodeSearchBoxQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "shared/models/kg/node/KgNode";
 import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
@@ -26,9 +26,6 @@ import {KgSource} from "shared/models/kg/source/KgSource";
 // Throttle wait duration in milliseconds
 // Minimum time between requests
 const THROTTLE_WAIT_DURATION = 500;
-
-// Maximum number of suggestions to show
-const MAXIMUM_SUGGESTIONS = 5;
 
 interface KgNodeSearchTextValue {
   __typename: "string";
@@ -119,9 +116,9 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   const throttledQuery = React.useRef(
     _.throttle(
       (
-        variables: KgNodeSearchResultsPageQueryVariables,
+        variables: KgNodeSearchBoxQueryVariables,
         callback: (
-          data: KgNodeSearchResultsPageQuery,
+          data: KgNodeSearchBoxQuery,
           errors: readonly GraphQLError[] | undefined
         ) => void
       ) => {
@@ -134,10 +131,10 @@ export const KgNodeSearchBox: React.FunctionComponent<{
         setIsLoading(true);
 
         apolloClient
-          .query<
-            KgNodeSearchResultsPageQuery,
-            KgNodeSearchResultsPageQueryVariables
-          >({query: KgNodeSearchResultsPageQueryDocument, variables})
+          .query<KgNodeSearchBoxQuery, KgNodeSearchBoxQueryVariables>({
+            query: KgNodeSearchBoxQueryDocument,
+            variables,
+          })
           .then(({data, errors}) => {
             setIsLoading(false);
             callback(data, errors);
@@ -159,10 +156,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
 
     throttledQuery.current(
       {
-        initialQuery: false,
         kgId,
-        limit: MAXIMUM_SUGGESTIONS,
-        offset: 0,
         query: {
           filters: search.filters,
           text: `${search.text}`,
