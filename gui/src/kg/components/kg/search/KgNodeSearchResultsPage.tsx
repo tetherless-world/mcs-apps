@@ -100,6 +100,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   } | null>(null);
 
   const tableUpdateQuery = (newSearchVariables: KgNodeSearchVariables) => {
+    console.info("New search variables: " + JSON.stringify(newSearchVariables));
     const limit = newSearchVariables.limit ?? LIMIT_DEFAULT;
     const offset = newSearchVariables.offset ?? OFFSET_DEFAULT;
     apolloClient

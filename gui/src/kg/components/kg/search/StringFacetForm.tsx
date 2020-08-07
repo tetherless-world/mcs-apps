@@ -25,13 +25,17 @@ export const StringFacetForm: React.FunctionComponent<{
 
   // If a value is not in one of the sets it's implicitly included.
   Object.keys(valueUniverse).forEach((valueId) => {
-    if (valueId in excludeValueIdSet) {
+    if (excludeValueIdSet.has(valueId)) {
       invariant(
-        !(valueId in includeValueIdSet),
+        !includeValueIdSet.has(valueId),
         "value both included and excluded"
       );
-    } else if (valueId in includeValueIdSet) {
+    } else if (includeValueIdSet.has(valueId)) {
+    } else if (currentState?.include && currentState.include.length > 0) {
+      // If the current state explicitly included something then everything not explicitly included is excluded
+      excludeValueIdSet.add(valueId);
     } else {
+      // If the current state explicitly excluded something then everything not explicitly excluded is included
       includeValueIdSet.add(valueId);
     }
   });
@@ -40,6 +44,8 @@ export const StringFacetForm: React.FunctionComponent<{
       Object.keys(valueUniverse).length,
     "sets should account for all values"
   );
+  console.info("Exclude: " + [...excludeValueIdSet]);
+  console.info("Include: " + [...includeValueIdSet]);
 
   return (
     <List>
