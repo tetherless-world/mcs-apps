@@ -38,42 +38,94 @@ const makeTitle = (kwds: {
   count: number;
   query?: KgNodeQuery;
   sources: readonly KgSource[];
-}): string => {
+}): React.ReactNode => {
   const {count, query, sources} = kwds;
 
-  let title: string[] = [];
+  let title: React.ReactNode[] = [];
 
-  title.push(count + "" || "No");
+  if (count > 0) {
+    title.push(
+      <span data-cy="node-count" key="node-count">
+        {count}
+      </span>
+    );
+  } else {
+    title.push("No");
+  }
 
-  title.push("results");
+  title.push(" results ");
 
   if (query && query.text) {
-    title.push(`for "${query.text}"`);
+    title.push(
+      <React.Fragment key="query-text">
+        for <i data-cy="query-text">{query.text}</i>
+      </React.Fragment>
+    );
   }
 
   if (query && query.filters) {
+    const filterRepresentations = [];
     if (query.filters.sourceIds) {
-      const {include: includeSourceIds} = query.filters.sourceIds;
+      const {
+        exclude: excludeSourceIds,
+        include: includeSourceIds,
+      } = query.filters.sourceIds;
 
-      if (includeSourceIds) {
-        title.push("in");
-
-        const includeSourceLabels = [];
-        for (const includeSourceId of includeSourceIds) {
-          const includeSource = sources.find(
-            (source) => source.id === includeSourceId
-          );
-          includeSourceLabels.push(
-            includeSource ? includeSource.label : includeSourceId
-          );
+      const sourceLabels = (sourceIds: readonly string[]) => {
+        const sourceLabels = [];
+        for (const sourceId of sourceIds) {
+          const source = sources.find((source) => source.id === sourceId);
+          sourceLabels.push(source ? source.label : sourceId);
         }
+        return sourceLabels;
+      };
 
-        title.push(includeSourceLabels.join(", "));
+      if (excludeSourceIds) {
+        filterRepresentations.push(
+          <React.Fragment key="exclude-sources">
+            not in&nbsp;
+            <span data-cy="exclude-source-labels">
+              {sourceLabels(excludeSourceIds).join(", ")}
+            </span>
+          </React.Fragment>
+        );
       }
+      if (includeSourceIds) {
+        filterRepresentations.push(
+          <React.Fragment key="include-sources">
+            in&nbsp;
+            <span data-cy="include-source-labels">
+              {sourceLabels(includeSourceIds).join(", ")}
+            </span>
+          </React.Fragment>
+        );
+      }
+    }
+    switch (filterRepresentations.length) {
+      case 0:
+        break;
+      case 1:
+        title.push(
+          <React.Fragment key="filters">
+            &nbsp;{filterRepresentations[0]}
+          </React.Fragment>
+        );
+        break;
+      default:
+        title.push(
+          <>
+            &nbsp;
+            {filterRepresentations.reduce((result, item) => (
+              <React.Fragment key="filters">
+                {result} and {item}
+              </React.Fragment>
+            ))}
+          </>
+        );
     }
   }
 
-  return title.join(" ");
+  return <>{...title}</>;
 };
 
 export const KgNodeSearchResultsPage: React.FunctionComponent = () => {

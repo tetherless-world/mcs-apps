@@ -102,6 +102,7 @@ export const StringFacetForm: React.FunctionComponent<{
                   onChange={onChangeValue}
                 />
               }
+              data-cy={"facet-value-" + valueId}
               label={valueLabel}
             />
           </ListItem>

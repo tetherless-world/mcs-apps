@@ -101,21 +101,21 @@ const getPropertyColumnIndex = (
 };
 
 export const KgNodeTable: React.FunctionComponent<{
-  title: string;
-  nodes: readonly KgNode[];
-  rowsPerPage: number;
   count: number;
-  page: number;
+  nodes: readonly KgNode[];
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
+  rowsPerPage: number;
+  page: number;
+  title: React.ReactNode;
 }> = ({
-  title,
-  nodes,
-  rowsPerPage,
   count,
-  page,
+  nodes,
   onChangePage,
   onChangeRowsPerPage,
+  page,
+  rowsPerPage,
+  title,
 }) => {
   // https://github.com/gregnb/mui-datatables/issues/756
   // Since the MUIDataTable has its own state, it ignores passed in values
