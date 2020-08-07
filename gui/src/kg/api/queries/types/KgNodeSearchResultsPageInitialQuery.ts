@@ -57,4 +57,5 @@ export interface KgNodeSearchResultsPageInitialQueryVariables {
   limit: number;
   offset: number;
   query: KgNodeQuery;
+  queryText?: string | null;
 }

@@ -7,9 +7,10 @@ query KgNodeSearchResultsPageInitialQuery(
   $limit: Int!
   $offset: Int!
   $query: KgNodeQuery!
+  $queryText: String
 ) {
   kgById(id: $kgId) {
-    matchingNodeFacets(query: $query) {
+    matchingNodeFacets(query: {text: $queryText}) {
       ... KgNodeFacetsFragment
     }
     matchingNodes(
