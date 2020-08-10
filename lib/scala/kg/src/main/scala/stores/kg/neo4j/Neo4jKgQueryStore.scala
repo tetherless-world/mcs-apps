@@ -5,7 +5,7 @@ import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
 import stores.Neo4jStoreConfiguration
-import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgQueryStore}
+import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgNodeSort, KgQueryStore}
 
 import scala.collection.JavaConverters._
 import scala.util.Try
@@ -159,14 +159,10 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     }
 
 
-    final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] = {
+    final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
       val cypher = KgNodeQueryCypher(query)
       transaction.run(
-        s"""${cypher}
-           |RETURN ${nodePropertyNamesString}
-           |SKIP ${offset}
-           |LIMIT ${limit}
-           |""".stripMargin,
+        (List(cypher) ++ List(s"RETURN ${nodePropertyNamesString}") ++ (if (sorts.nonEmpty) List(s"ORDER by ${sorts.get.map(sort => s"${sort.field.toString} ${sort.direction.toString}").mkString(", ")}") else List()) ++ List(s"SKIP ${offset}") ++ List(s"LIMIT ${limit}")).mkString("\n"),
         toTransactionRunParameters(cypher.bindings)
       ).toNodes
     }
@@ -329,8 +325,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets =
     withReadTransaction { _.getMatchingNodeFacets(query) }
 
-  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] =
-    withReadTransaction { _.getMatchingNodes(limit, offset, query) }
+  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] =
+    withReadTransaction { _.getMatchingNodes(limit, offset, query, sorts) }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int =
     withReadTransaction { _.getMatchingNodesCount(query) }

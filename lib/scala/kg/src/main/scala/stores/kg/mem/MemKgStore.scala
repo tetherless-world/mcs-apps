@@ -6,7 +6,7 @@ import com.outr.lucene4s.query.{Condition, MatchAllSearchTerm, PagedResults, Sea
 import formats.kg.kgtk.KgtkEdgeWithNodes
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import stores.StringFacetFilter
-import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeFilters, KgNodeQuery, KgQueryStore}
+import stores.kg.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeFilters, KgNodeQuery, KgNodeSort, KgQueryStore}
 import util.NodePageRankCalculator
 
 import scala.util.Random
@@ -125,9 +125,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     )
   }
 
-  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery): List[KgNode] = {
+  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
     val results: PagedResults[SearchResult] = lucene.query().filter(toSearchTerms(query):_*).limit(limit).offset(offset).search()
-    results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
+    val resultNodes = results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
+    if (sorts.isEmpty) resultNodes else KgNodeSort(resultNodes, sorts.get)
   }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
