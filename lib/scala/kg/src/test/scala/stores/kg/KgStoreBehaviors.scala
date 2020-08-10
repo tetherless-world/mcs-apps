@@ -172,9 +172,18 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by source sorted by pageRank descending" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds(0)}")), sorts = Some(List(KgNodeSort(KgNodeField.PageRank, SortDirection.Descending))))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeField.PageRank, SortDirection.Descending))))
         actual should not be empty
         actual should be(actual.sortBy(_.pageRank.get)(Ordering[Double].reverse))
+      }
+    }
+
+    "get matching nodes by source sorted by pageRank ascending" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeField.PageRank, SortDirection.Ascending))))
+        actual should not be empty
+        actual should be(actual.sortBy(_.pageRank.get)(Ordering[Double]))
       }
     }
 
