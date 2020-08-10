@@ -128,7 +128,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
     val results: PagedResults[SearchResult] = lucene.query().filter(toSearchTerms(query):_*).limit(limit).offset(offset).search()
     val resultNodes = results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
-    if (sorts.isEmpty) resultNodes else KgNodeSort(resultNodes, sorts.get)
+    if (sorts.isEmpty) resultNodes else KgNodeSort.sort(resultNodes, sorts.get)
   }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
