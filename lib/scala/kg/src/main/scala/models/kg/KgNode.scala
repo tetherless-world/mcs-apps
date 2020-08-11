@@ -1,7 +1,6 @@
 package models.kg
 
 import stores.kg.KgNodeSortableField
-import stores.kg.KgNodeSortableField.KgNodeSortableField
 
 final case class KgNode(
                          id: String,

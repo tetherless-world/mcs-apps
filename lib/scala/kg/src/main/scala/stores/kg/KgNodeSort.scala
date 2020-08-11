@@ -2,8 +2,6 @@ package stores.kg
 
 import models.kg.KgNode
 import stores.SortDirection
-import stores.SortDirection.SortDirection
-import stores.kg.KgNodeSortableField.KgNodeSortableField
 
 final case class KgNodeSort(field: KgNodeSortableField, direction: SortDirection)
 

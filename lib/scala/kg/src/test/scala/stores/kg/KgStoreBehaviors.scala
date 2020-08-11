@@ -174,7 +174,11 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
         actual should not be empty
-        actual should be(actual.sortBy(_.pageRank.get)(Ordering[Double].reverse))
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds == expected.sourceIds).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
+//        println(actual)
+//        println(expectedNodes)
+
+        actual should be(expectedNodes)
       }
     }
 
@@ -183,7 +187,10 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Ascending))))
         actual should not be empty
-        actual should be(actual.sortBy(_.pageRank.get)(Ordering[Double]))
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds == expected.sourceIds).sortBy(_.pageRank.get)(Ordering[Double]).take(10)
+//        println(actual)
+//        println(expectedNodes)
+        actual should be(expectedNodes)
       }
     }
 

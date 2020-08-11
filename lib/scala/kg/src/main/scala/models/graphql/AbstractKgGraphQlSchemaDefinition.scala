@@ -52,16 +52,8 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   )
 
   // Input enum types
-  implicit val KgNodeSortableFieldType = deriveEnumType[KgNodeSortableField.Value](
-    IncludeValues("Id", "Labels", "Sources", "PageRank")
-  )
-  implicit val SortDirectionType = deriveEnumType[SortDirection.Value](
-    IncludeValues("Ascending", "Descending")
-  )
-
-  // Input enum decoders
-  implicit val kgNodeSortableFieldDecoder: Decoder[KgNodeSortableField.Value] = Decoder.decodeEnumeration(KgNodeSortableField)
-  implicit val sortDirectionDecoder: Decoder[SortDirection.Value] = Decoder.decodeEnumeration(SortDirection)
+  implicit val KgNodeSortableFieldType = KgNodeSortableField.sangriaType
+  implicit val SortDirectionType = SortDirection.sangriaType
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFacetFilter] = deriveDecoder
