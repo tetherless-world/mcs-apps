@@ -174,10 +174,9 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
         actual should not be empty
-        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
 
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
         actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
-//        actual should be(expectedNodes)
       }
     }
 
@@ -187,9 +186,19 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
 
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Ascending))))
         actual should not be empty
-        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double]).take(10)
 
-//        actual should be(expectedNodes)
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double]).take(10)
+        actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
+      }
+    }
+
+    "get matching nodes by source sorted by pageRank descending with offset" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getMatchingNodes(limit = 10, offset = 5, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
+        actual should not be empty
+
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).slice(5, 15)
         actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
       }
     }
