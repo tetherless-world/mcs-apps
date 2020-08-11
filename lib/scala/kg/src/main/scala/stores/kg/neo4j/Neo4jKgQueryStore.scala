@@ -164,7 +164,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       transaction.run(
         s"""${cypher}
            |RETURN ${nodePropertyNamesString}
-           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${sort.field.toString} ${sort.direction.toString}").mkString(", ")}").getOrElse("")}
+           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${sort.field.value} ${sort.direction.value}").mkString(", ")}").getOrElse("")}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
