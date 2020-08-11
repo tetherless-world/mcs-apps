@@ -162,7 +162,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
       val cypher = KgNodeQueryCypher(query)
       transaction.run(
-        (List(cypher) ++ List(s"RETURN ${nodePropertyNamesString}") ++ (if (sorts.nonEmpty) List(s"ORDER by ${sorts.get.map(sort => s"node.${sort.field.toString} ${sort.direction.toString}").mkString(", ")}") else List()) ++ List(s"SKIP ${offset}") ++ List(s"LIMIT ${limit}")).mkString("\n"),
+        s"""${cypher}
+           |RETURN ${nodePropertyNamesString}
+           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${sort.field.toString} ${sort.direction.toString}").mkString(", ")}").getOrElse("")}
+           |SKIP ${offset}
+           |LIMIT ${limit}
+           |""".stripMargin,
         toTransactionRunParameters(cypher.bindings)
       ).toNodes
     }
