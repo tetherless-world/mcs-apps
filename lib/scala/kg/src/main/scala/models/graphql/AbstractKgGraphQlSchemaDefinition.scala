@@ -8,7 +8,7 @@ import sangria.macros.derive.{AddFields, IncludeValues, deriveEnumType, deriveIn
 import sangria.marshalling.circe._
 import sangria.schema.{Argument, Field, FloatType, IntType, ListInputType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
 import stores.{SortDirection, StringFacetFilter}
-import stores.kg.{KgNodeFacets, KgNodeField, KgNodeFilters, KgNodeQuery, KgNodeSort}
+import stores.kg.{KgNodeFacets, KgNodeSortableField, KgNodeFilters, KgNodeQuery, KgNodeSort}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments
@@ -52,7 +52,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   )
 
   // Input enum types
-  implicit val KgNodeFieldType = deriveEnumType[KgNodeField.Value](
+  implicit val KgNodeSortableFieldType = deriveEnumType[KgNodeSortableField.Value](
     IncludeValues("Id", "Labels", "Sources", "PageRank")
   )
   implicit val SortDirectionType = deriveEnumType[SortDirection.Value](
@@ -60,7 +60,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   )
 
   // Input enum decoders
-  implicit val kgNodeFieldDecoder: Decoder[KgNodeField.Value] = Decoder.decodeEnumeration(KgNodeField)
+  implicit val kgNodeSortableFieldDecoder: Decoder[KgNodeSortableField.Value] = Decoder.decodeEnumeration(KgNodeSortableField)
   implicit val sortDirectionDecoder: Decoder[SortDirection.Value] = Decoder.decodeEnumeration(SortDirection)
 
   // Input object decoders
