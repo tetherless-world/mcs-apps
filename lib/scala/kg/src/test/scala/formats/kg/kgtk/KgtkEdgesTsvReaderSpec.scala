@@ -1,11 +1,11 @@
 package formats.kg.kgtk
 
-import java.io.StringReader
-
 import data.DataResource
 import data.kg.TestKgtkDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
+
+import scala.io.Source
 
 class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
   "KGTK edges TSV Reader" can {
@@ -31,7 +31,7 @@ class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
 
     "skip an unparseable line" in {
       val tsv = DataResource("/formats/kg/kgtk/unparseable_line.tsv").getAsString()
-      withResource(KgtkEdgesTsvReader.open(new StringReader(tsv))) { reader =>
+      withResource(new KgtkEdgesTsvReader(Source.fromString(tsv))) { reader =>
         val data = reader.iterator.toList
         data.size should be(3)  // 5 lines, two unparseable because of open quotes
       }
