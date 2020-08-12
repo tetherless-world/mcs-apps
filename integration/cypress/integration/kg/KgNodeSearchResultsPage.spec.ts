@@ -64,4 +64,19 @@ context("KgNodeSearchResultsPage", () => {
       "Portal test data secondary 0"
     );
   });
+
+  it("should sort by label ascending", async () => {
+    page.resultsTable.header.column("Label").click();
+    const labels: string[] = [];
+    page.resultsTable
+      .get()
+      .find("[data-cy=node-link]")
+      .each(($el) => {
+        labels.push($el.text());
+      })
+      .then(() => {
+        const actual = labels.slice();
+        cy.wrap(actual).should("deep.equal", labels.sort());
+      });
+  });
 });
