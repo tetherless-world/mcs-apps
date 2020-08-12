@@ -130,7 +130,7 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
           })
         } catch {
           case e: MalformedCSVException => {
-            logger.warn("skipping malformed CSV line: {}", e)
+            logger.warn("skipping malformed CSV line: {}", e.getMessage)
             readNext()
           }
         }
