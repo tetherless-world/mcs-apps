@@ -11,7 +11,12 @@ import {
 import * as KgNodeSearchResultsPageInitialQueryDocument from "kg/api/queries/KgNodeSearchResultsPageInitialQuery.graphql";
 import * as KgNodeSearchResultsPageRefinementQueryDocument from "kg/api/queries/KgNodeSearchResultsPageRefinementQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
-import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
+import {
+  KgNodeQuery,
+  KgNodeSort,
+  KgNodeSortableField,
+  SortDirection,
+} from "kg/api/graphqlGlobalTypes";
 import {KgNodeSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/source/KgSource";
@@ -28,11 +33,25 @@ import {ApolloError} from "apollo-boost";
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
 
-const queryQueryParamConfig: QueryParamConfig<KgNodeQuery | undefined> = {
-  decode: (value) => (value ? JSON.parse(value as string) : undefined),
-  encode: (value) => (!_.isEmpty(value) ? JSON.stringify(value) : undefined),
-  equals: (left, right) => JSON.stringify(left) === JSON.stringify(right),
-};
+class JsonQueryParamConfig<T> implements QueryParamConfig<T | undefined> {
+  encode(value: T | undefined) {
+    return !_.isEmpty(value) ? JSON.stringify(value) : undefined;
+  }
+  decode(value: string | (string | null)[] | null | undefined) {
+    return value ? JSON.parse(value as string) : undefined;
+  }
+  equals(left: T | undefined, right: T | undefined) {
+    return JSON.stringify(left) === JSON.stringify(right);
+  }
+}
+
+const queryQueryParamConfig: QueryParamConfig<
+  KgNodeQuery | undefined
+> = new JsonQueryParamConfig<KgNodeQuery>();
+
+const querySortsParamConfig: QueryParamConfig<
+  KgNodeSort[] | undefined
+> = new JsonQueryParamConfig<KgNodeSort[]>();
 
 const makeTitle = (kwds: {
   count: number;
@@ -141,12 +160,14 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     limit: NumberParam,
     offset: NumberParam,
     query: queryQueryParamConfig,
+    sorts: querySortsParamConfig,
   });
   const searchVariables: KgNodeSearchVariables = {
     __typename: "KgNodeSearchVariables",
     limit: queryParams.limit ?? LIMIT_DEFAULT,
     offset: queryParams.offset ?? OFFSET_DEFAULT,
     query: queryParams.query ?? {},
+    sorts: queryParams.sorts,
   };
 
   const apolloClient = useApolloClient();
@@ -174,6 +195,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
           limit,
           offset,
           query: newSearchVariables.query ?? {},
+          sorts: newSearchVariables.sorts,
         },
       })
       .then(({data, errors, loading}) => {
@@ -276,6 +298,53 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     offset: 0,
                   })
                 }
+                onColumnSortChange={(
+                  changedColumn: string,
+                  direction: string
+                ) => {
+                  console.log(changedColumn + " - " + direction);
+
+                  const sorts = searchVariables.sorts ?? [];
+
+                  let sortField: KgNodeSortableField;
+
+                  switch (changedColumn) {
+                    case "id":
+                      sortField = KgNodeSortableField.Id;
+                      break;
+                    case "label":
+                      sortField = KgNodeSortableField.Labels;
+                      break;
+                    case "sources":
+                      sortField = KgNodeSortableField.Sources;
+                      break;
+                    default:
+                      throw new Error("Changed column not supported");
+                  }
+
+                  const sortIndex = sorts.findIndex(
+                    (sort) => sort.field === sortField
+                  );
+
+                  const newSort = {
+                    field: sortField,
+                    direction:
+                      direction === "asc"
+                        ? SortDirection.Ascending
+                        : SortDirection.Descending,
+                  };
+
+                  if (sortIndex === -1) {
+                    sorts.push(newSort);
+                  } else {
+                    sorts.splice(sortIndex, 1, newSort);
+                  }
+
+                  tableUpdateQuery({
+                    ...searchVariables,
+                    sorts,
+                  });
+                }}
               />
             </Grid>
             <Grid item xs={2}>

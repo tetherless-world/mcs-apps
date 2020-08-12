@@ -25,11 +25,11 @@ class MUIDataTable {
   }
 
   paginateBack() {
-    this.get().find("tfoot [data-testid=pagination-back]");
+    this.get().find("tfoot [data-testid=pagination-back]").click();
   }
 
   paginateNext() {
-    this.get().find("tfoot [data-testid=pagination-next]");
+    this.get().find("tfoot [data-testid=pagination-next]").click();
   }
 
   get rowsPerPage() {
@@ -64,6 +64,20 @@ class KgNodeResultsTable extends MUIDataTable {
       },
     };
   }
+
+  get header() {
+    const selector = "thead>tr";
+    const self = this;
+
+    return {
+      get() {
+        return self.get().find(selector);
+      },
+      column(label: string) {
+        return this.get().contains("th", label);
+      },
+    };
+  }
 }
 
 class KgNodeResultsTableRow {
@@ -92,8 +106,12 @@ class KgNodeResultsNodeTableRowKgDatasourceLink {
 class KgNodeResultsNodeTableRowKgNodeLink {
   constructor(private readonly row: KgNodeResultsTableRow) {}
 
+  get() {
+    return this.row.get().find("[data-cy=node-link]");
+  }
+
   click() {
-    this.row.get().find("[data-cy=node-link]").click();
+    this.get().click();
   }
 }
 
