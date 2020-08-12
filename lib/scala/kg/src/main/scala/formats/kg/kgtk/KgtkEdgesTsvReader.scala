@@ -1,42 +1,62 @@
 package formats.kg.kgtk
 
-import formats.CsvReader
-import com.github.tototoshi.csv.{CSVReader, MalformedCSVException, TSVFormat}
-import models.kg.{KgEdge, KgNode}
-import org.slf4j.LoggerFactory
-import java.nio.file.Path
 import java.io.{FileNotFoundException, InputStream, Reader}
+import java.nio.file.Path
 import java.util.NoSuchElementException
 
+import com.github.tototoshi.csv.{CSVReader, LineReader, MalformedCSVException, SourceLineReader, TSVFormat}
 import formats.kg.kgtk
+import models.kg.{KgEdge, KgNode}
+import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
+import org.apache.commons.lang3.StringUtils
+import org.slf4j.LoggerFactory
 
 import scala.annotation.tailrec
-import scala.util.Try
+import scala.io.Source
 
-final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeWithNodes](csvReader) {
-  private final val KgtkListDelim = '|';
+final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterable[KgtkEdgeWithNodes] {
+  private val Format = new TSVFormat {
+    override val escapeChar: Char = 0
+  }
+
+  // Have to inherit CSVReader since its constructor is protected
+  private final class KgtkEdgesCSVReader(lineReader: LineReader) extends CSVReader(lineReader)(Format) {
+  }
+
+  private final val ValueDelimiter = '|';
+
+  private implicit class RowWrapper(row: Map[String, String]) {
+    def getNonBlank(key: String) =
+      row.get(key).filter(!StringUtils.isBlank(_))
+
+    def getList(key: String) =
+      getNonBlank(key).flatMap(value => Option(value.split(ValueDelimiter).toList)) getOrElse List[String]()
+  }
 
   private val logger = LoggerFactory.getLogger(getClass)
 
-  def iterator: Iterator[KgtkEdgeWithNodes] = {
-    val csvHeader = csvReader.readNext()
+  final override def close(): Unit =
+    source.close()
+
+  final def iterator: Iterator[KgtkEdgeWithNodes] = {
+    val lineReader = new SourceLineReader(source)
+    val csvHeader = new KgtkEdgesCSVReader(lineReader).readNext()
     if (!csvHeader.isDefined) {
       logger.error("KGTK TSV file is empty or has no valid header")
       return List().iterator
     }
 
-    // Adapted code from CSVReader
     new Iterator[KgtkEdgeWithNodes] {
       private[this] var _next: Option[KgtkEdgeWithNodes] = None
 
-      def hasNext: Boolean = {
+      final def hasNext: Boolean = {
         _next match {
-          case Some(row) => true
+          case Some(_) => true
           case None => _next = readNext(); _next.isDefined
         }
       }
 
-      def next(): KgtkEdgeWithNodes = {
+      final def next(): KgtkEdgeWithNodes = {
         _next match {
           case Some(row) => {
             val _row = row
@@ -47,13 +67,16 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
         }
       }
 
-      @tailrec
       private def readNext(): Option[KgtkEdgeWithNodes] = {
         try {
-          csvReader.readNext().map(csvRowList => {
+          // #191: create a new CSVReader for every line
+          // The previous approach of catching and ignoring MalformedCSVRowException's from the CSVReader leaves the CSVReader in an inconsistent internal state. For example, on an unclosed quote it keeps reading lines until it reaches the next quote, and skips all those lines. This is dropping quite a few lines.
+          // Prior to that we did not catch MalformedCSVRowException at all, so any malformed line would stop iteration.
+          // Our format doesn't allow newlines within quotes, so the only newline in a row should be the EOL terminator.
+          new KgtkEdgesCSVReader(lineReader).readNext().map(csvRowList => {
             val csvRowMap: Map[String, String] = csvHeader.get.zip(csvRowList).toMap
 
-            val sources = csvRowMap.getList("source", KgtkListDelim)
+            val sources = csvRowMap.getList("source")
             val node1 = csvRowMap("node1")
             val node2 = csvRowMap("node2")
             val relation = csvRowMap("relation")
@@ -61,23 +84,23 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
             kgtk.KgtkEdgeWithNodes(
               edge = KgEdge(
                 id = csvRowMap.get("id").getOrElse(s"${node1}-${relation}-${node2}"),
-                labels = csvRowMap.getList("relation;label", KgtkListDelim),
+                labels = csvRowMap.getList("relation;label"),
                 `object` = node2,
                 predicate = relation,
-                sentences = csvRowMap.getList("sentence", KgtkListDelim),
+                sentences = csvRowMap.getList("sentence"),
                 sources = sources,
                 subject = node1
               ),
               node1 = KgNode(
                 id = csvRowMap("node1"),
-                labels = csvRowMap.getList("node1;label", KgtkListDelim),
+                labels = csvRowMap.getList("node1;label"),
                 pos = None,
                 sourceIds = sources,
                 pageRank = None
               ),
               node2 = KgNode(
                 id = csvRowMap("node2"),
-                labels = csvRowMap.getList("node2;label", KgtkListDelim),
+                labels = csvRowMap.getList("node2;label"),
                 pos = None,
                 sourceIds = sources,
                 pageRank = None
@@ -97,17 +120,18 @@ final class KgtkEdgesTsvReader(csvReader: CSVReader) extends CsvReader[KgtkEdgeW
 }
 
 object KgtkEdgesTsvReader {
-  private val csvFormat = new TSVFormat {
-    override val escapeChar: Char = 0
-  }
+  def open(filePath: Path) = new KgtkEdgesTsvReader(Source.fromFile(filePath.toFile))
 
-  def open(filePath: Path) = new KgtkEdgesTsvReader(CsvReader.open(filePath, csvFormat))
-
-  def open(inputStream: InputStream) =
-    if (inputStream == null)
+  def open(inputStream: InputStream): KgtkEdgesTsvReader =
+    if (inputStream == null) {
       throw new FileNotFoundException("KgtkTsvReader missing resource")
-    else
-      new KgtkEdgesTsvReader(CsvReader.open(inputStream, csvFormat))
-
-  def open(reader: Reader) = new KgtkEdgesTsvReader(CsvReader.open(reader, csvFormat))
+    } else {
+      new KgtkEdgesTsvReader(Source.fromInputStream(
+        try {
+          new CompressorStreamFactory().createCompressorInputStream(inputStream)
+        } catch {
+          case _: CompressorException => inputStream // CompressorStreamFactory throws an exception if it can't recognize a signature
+        }
+      ))
+    }
 }
