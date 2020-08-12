@@ -1,6 +1,6 @@
 package formats.kg.kgtk
 
-import java.io.{FileNotFoundException, InputStream, Reader}
+import java.io.{FileInputStream, FileNotFoundException, InputStream, Reader}
 import java.nio.file.Path
 import java.util.NoSuchElementException
 
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
 import scala.annotation.tailrec
-import scala.io.Source
+import scala.io.{Codec, Source}
 
 final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterable[KgtkEdgeWithNodes] {
   private val Format = new TSVFormat {
@@ -120,7 +120,8 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
 }
 
 object KgtkEdgesTsvReader {
-  def open(filePath: Path) = new KgtkEdgesTsvReader(Source.fromFile(filePath.toFile))
+  def open(filePath: Path): KgtkEdgesTsvReader =
+    open(new FileInputStream(filePath.toFile)) // Don't use Source.fromFile because the file may be compressed
 
   def open(inputStream: InputStream): KgtkEdgesTsvReader =
     if (inputStream == null) {
@@ -132,6 +133,6 @@ object KgtkEdgesTsvReader {
         } catch {
           case _: CompressorException => inputStream // CompressorStreamFactory throws an exception if it can't recognize a signature
         }
-      ))
+      )(Codec.UTF8))
     }
 }
