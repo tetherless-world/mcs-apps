@@ -5,7 +5,7 @@ import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import models.kg.{KgEdge, KgNode}
 import org.scalactic.TolerantNumerics
 import org.scalatest.{Matchers, WordSpec}
-import stores.StringFacetFilter
+import stores.{SortDirection, StringFacetFilter}
 
 import scala.math.abs
 
@@ -70,7 +70,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(expected.labels(0))))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(expected.labels(0))), sorts = None)
         actual should not be empty
         equals(actual(0), expected) shouldEqual true
       }
@@ -125,7 +125,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by source" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = None)
         actual should not be empty
         actual(0).sourceIds should equal(expected.sourceIds)
       }
@@ -133,7 +133,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
 
     "not return matching nodes for a non-extant source" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:nonextant")))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:nonextant")), sorts = None)
         actual.size should be(0)
       }
     }
@@ -154,7 +154,7 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by source and label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""sources:${expected.sourceIds(0)} labels:"${expected.labels(0)}"""")))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""sources:${expected.sourceIds(0)} labels:"${expected.labels(0)}"""")), sorts = None)
         actual should not be empty
         equals(actual(0), expected) shouldEqual true
       }
@@ -163,9 +163,43 @@ trait KgStoreBehaviors extends Matchers with WithResource { this: WordSpec =>
     "get matching nodes by id" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""id:"${expected.id}"""")))
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""id:"${expected.id}"""")), sorts = None)
         actual.size should be(1)
         equals(actual(0), expected) shouldEqual true
+      }
+    }
+
+    "get matching nodes by source sorted by pageRank descending" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
+        actual should not be empty
+
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
+        actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
+      }
+    }
+
+    "get matching nodes by source sorted by pageRank ascending" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+
+        val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Ascending))))
+        actual should not be empty
+
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double]).take(10)
+        actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
+      }
+    }
+
+    "get matching nodes by source sorted by pageRank descending with offset" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getMatchingNodes(limit = 10, offset = 5, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
+        actual should not be empty
+
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).slice(5, 15)
+        actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
       }
     }
 

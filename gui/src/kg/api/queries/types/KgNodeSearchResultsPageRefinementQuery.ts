@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { KgNodeQuery } from "./../../graphqlGlobalTypes";
+import { KgNodeQuery, KgNodeSort } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: KgNodeSearchResultsPageRefinementQuery
@@ -38,4 +38,5 @@ export interface KgNodeSearchResultsPageRefinementQueryVariables {
   limit: number;
   offset: number;
   query: KgNodeQuery;
+  sorts?: KgNodeSort[] | null;
 }

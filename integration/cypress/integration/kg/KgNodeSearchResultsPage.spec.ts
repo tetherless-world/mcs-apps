@@ -8,6 +8,7 @@ context("KgNodeSearchResultsPage", () => {
   let node: KgNode;
   let source: {id: string; label: string};
   let totalNodes: number;
+  let topNodesByLabelDescending: KgNode[];
 
   before(() => {
     KgTestData.kgNodes.then((kgNodes) => {
@@ -16,6 +17,15 @@ context("KgNodeSearchResultsPage", () => {
       source = KgTestData.kgSources[0];
       assert(source.id === node.sources[0]);
       totalNodes = kgNodes.length;
+      topNodesByLabelDescending = kgNodes
+        .sort((left, right) =>
+          right.labels
+            .slice()
+            .sort()
+            .join(" ")
+            .localeCompare(left.labels.slice().sort().join(" "))
+        )
+        .slice(0, 20);
     });
   });
 
@@ -39,16 +49,6 @@ context("KgNodeSearchResultsPage", () => {
     page.resultsTable.rowsPerPage.should("have.text", 10);
   });
 
-  it("Pagination should not break", () => {
-    page.resultsTable.paginateNext();
-
-    page.resultsTable;
-
-    page.resultsTable.paginateBack();
-
-    page.resultsTable;
-  });
-
   it("should show count and query in the title", () => {
     page.resultsTable.title.count.should("contain", totalNodes.toString());
     page.resultsTable.title.queryText.should("contain", node.labels[0]);
@@ -63,5 +63,50 @@ context("KgNodeSearchResultsPage", () => {
       "contain",
       "Portal test data secondary 0"
     );
+  });
+
+  it("should sort by label descending", () => {
+    page.resultsTable.header.column("Label").click();
+    page.resultsTable.header.column("Label").click();
+
+    page.resultsTable
+      .row(0)
+      .nodeLink.get()
+      .should("have.text", topNodesByLabelDescending[0].labels[0]);
+
+    page.resultsTable
+      .get()
+      .find("[data-cy=node-link]")
+      .should(($els) => {
+        expect($els.toArray().map(($el) => $el.innerText)).to.deep.equal(
+          topNodesByLabelDescending.slice(0, 10).map((node) => node.labels[0])
+        );
+      });
+  });
+
+  it("should paginate on sorted nodes", () => {
+    page.resultsTable.header.column("Label").click();
+    page.resultsTable.header.column("Label").click();
+
+    page.resultsTable
+      .row(0)
+      .nodeLink.get()
+      .should("have.text", topNodesByLabelDescending[0].labels[0]);
+
+    page.resultsTable.paginateNext();
+
+    page.resultsTable
+      .row(0)
+      .nodeLink.get()
+      .should("have.text", topNodesByLabelDescending[10].labels[0]);
+
+    page.resultsTable
+      .get()
+      .find("[data-cy=node-link]")
+      .should(($els) => {
+        expect($els.toArray().map(($el) => $el.innerText)).to.deep.equal(
+          topNodesByLabelDescending.slice(10, 20).map((node) => node.labels[0])
+        );
+      });
   });
 });

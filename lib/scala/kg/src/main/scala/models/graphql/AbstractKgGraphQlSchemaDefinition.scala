@@ -4,11 +4,11 @@ import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
+import sangria.macros.derive.{AddFields, IncludeValues, deriveEnumType, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
-import sangria.schema.{Argument, Field, FloatType, IntType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import stores.StringFacetFilter
-import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery}
+import sangria.schema.{Argument, Field, FloatType, IntType, ListInputType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
+import stores.{SortDirection, StringFacetFilter}
+import stores.kg.{KgNodeFacets, KgNodeSortableField, KgNodeFilters, KgNodeQuery, KgNodeSort}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments
@@ -51,22 +51,29 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     )
   )
 
+  // Input enum types
+  implicit val KgNodeSortableFieldType = KgNodeSortableField.sangriaType
+  implicit val SortDirectionType = SortDirection.sangriaType
+
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFacetFilter] = deriveDecoder
   implicit val kgNodeFiltersDecoder: Decoder[KgNodeFilters] = deriveDecoder
   implicit val kgNodeQueryDecoder: Decoder[KgNodeQuery] = deriveDecoder
+  implicit val kgNodeSortDecoder: Decoder[KgNodeSort] = deriveDecoder
   // Input object types
   implicit val StringFacetFilterType = deriveInputObjectType[StringFacetFilter]()
   implicit val KgNodeFiltersType = deriveInputObjectType[KgNodeFilters]()
   implicit val KgNodeQueryType = deriveInputObjectType[KgNodeQuery]()
+  implicit val KgNodeSortType = deriveInputObjectType[KgNodeSort]()
 
   // Object argument types types
   val KgNodeQueryArgument = Argument("query", KgNodeQueryType)
+  val KgNodeSortsArgument = Argument("sorts", OptionInputType(ListInputType(KgNodeSortType)))
 
   // Query types
   val KgQueryType = ObjectType("Kg", fields[KgGraphQlSchemaContext, String](
     Field("matchingNodeFacets", KgNodeFacetsType, arguments = KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodeFacets(query = ctx.args.arg(KgNodeQueryArgument))),
-    Field("matchingNodes", ListType(KgNodeType), arguments = LimitArgument :: OffsetArgument :: KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodes(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgNodeQueryArgument))),
+    Field("matchingNodes", ListType(KgNodeType), arguments = LimitArgument :: OffsetArgument :: KgNodeQueryArgument :: KgNodeSortsArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodes(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgNodeQueryArgument), sorts = ctx.args.arg(KgNodeSortsArgument).map(_.toList))),
     Field("matchingNodesCount", IntType, arguments = KgNodeQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getMatchingNodesCount(query = ctx.args.arg(KgNodeQueryArgument))),
     Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.args.arg(IdArgument))),
     Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPathById(ctx.args.arg(IdArgument))),

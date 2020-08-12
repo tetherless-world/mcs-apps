@@ -20,6 +20,7 @@ const columns: MUIDataTableColumn[] = [
   {
     name: "#",
     options: {
+      sort: false,
       customBodyRender(_, tableMeta) {
         return (
           tableMeta.tableState.page * tableMeta.tableState.rowsPerPage +
@@ -32,6 +33,7 @@ const columns: MUIDataTableColumn[] = [
   {
     name: "id",
     options: {
+      sort: false,
       display: "false",
     },
   },
@@ -39,6 +41,7 @@ const columns: MUIDataTableColumn[] = [
     name: "label",
     label: "Label",
     options: {
+      sort: true,
       customBodyRender(_, tableMeta) {
         const nodeRowData = (tableMeta.tableData[
           tableMeta.rowIndex
@@ -60,6 +63,7 @@ const columns: MUIDataTableColumn[] = [
     name: "aliases",
     label: "Aliases",
     options: {
+      sort: false,
       customBodyRender(aliases) {
         return aliases ? showListAsColumn(aliases as string[]) : null;
       },
@@ -69,6 +73,7 @@ const columns: MUIDataTableColumn[] = [
     name: "sources",
     label: "Sources",
     options: {
+      sort: true,
       customBodyRender(sources) {
         return sources
           ? (sources as KgSource[]).map((source) => (
@@ -85,6 +90,7 @@ const columns: MUIDataTableColumn[] = [
     name: "pos",
     label: "Pos",
     options: {
+      sort: false,
       customBodyRender(pos) {
         return pos ? showListAsColumn((pos as string).split(",")) : null;
       },
@@ -105,6 +111,7 @@ export const KgNodeTable: React.FunctionComponent<{
   nodes: readonly KgNode[];
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
+  onColumnSortChange: (columnName: string, direction: string) => void;
   rowsPerPage: number;
   page: number;
   title: React.ReactNode;
@@ -113,6 +120,7 @@ export const KgNodeTable: React.FunctionComponent<{
   nodes,
   onChangePage,
   onChangeRowsPerPage,
+  onColumnSortChange,
   page,
   rowsPerPage,
   title,
@@ -155,11 +163,11 @@ export const KgNodeTable: React.FunctionComponent<{
         options={{
           count,
           serverSide: true,
-          sort: false,
           filter: false,
           selectableRows: "none",
           onChangePage,
           onChangeRowsPerPage,
+          onColumnSortChange,
           setRowProps(_, rowIndex) {
             return {"data-cy": "node-" + rowIndex};
           },
