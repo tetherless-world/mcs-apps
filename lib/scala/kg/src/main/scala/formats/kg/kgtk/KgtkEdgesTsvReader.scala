@@ -1,6 +1,6 @@
 package formats.kg.kgtk
 
-import java.io.{FileInputStream, FileNotFoundException, InputStream, Reader}
+import java.io.{BufferedInputStream, FileInputStream, FileNotFoundException, InputStream, Reader}
 import java.nio.file.Path
 import java.util.NoSuchElementException
 
@@ -121,7 +121,7 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
 
 object KgtkEdgesTsvReader {
   def open(filePath: Path): KgtkEdgesTsvReader =
-    open(new FileInputStream(filePath.toFile)) // Don't use Source.fromFile because the file may be compressed
+    open(new BufferedInputStream(new FileInputStream(filePath.toFile))) // Don't use Source.fromFile because the file may be compressed
 
   def open(inputStream: InputStream): KgtkEdgesTsvReader =
     if (inputStream == null) {
