@@ -6,8 +6,8 @@ import sangria.macros.derive.deriveEnumType
 sealed abstract class SortDirection(val value: String) extends StringEnumEntry
 
 case object SortDirection extends StringEnum[SortDirection] with StringCirceEnum[SortDirection] {
-  case object Ascending extends SortDirection("asc")
-  case object Descending extends SortDirection("desc")
+  case object Ascending extends SortDirection("Ascending")
+  case object Descending extends SortDirection("Descending")
   val sangriaType = deriveEnumType[SortDirection]()
   val values = findValues
 }

@@ -4,8 +4,8 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 import models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import org.neo4j.driver._
-import stores.Neo4jStoreConfiguration
-import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgNodeSort, KgQueryStore}
+import stores.{Neo4jStoreConfiguration, SortDirection}
+import stores.kg.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgNodeSort, KgNodeSortableField, KgQueryStore}
 
 import scala.collection.JavaConverters._
 import scala.util.Try
@@ -164,7 +164,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       transaction.run(
         s"""${cypher}
            |RETURN ${nodePropertyNamesString}
-           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${sort.field.value} ${sort.direction.value}").mkString(", ")}").getOrElse("")}
+           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${if (sort.field == KgNodeSortableField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}").getOrElse("")}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
