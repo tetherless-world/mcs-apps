@@ -84,7 +84,6 @@ export const KgHomePage: React.FunctionComponent = () => {
                     autoFocus
                     sources={data.kgById.sources}
                     placeholder="Search a word or try a query"
-                    showIcon={true}
                     onChange={onSearchChange}
                     showSourcesSelect={true}
                   />

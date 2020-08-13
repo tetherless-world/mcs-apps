@@ -38,7 +38,6 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
   sources: KgSource[];
   placeholder?: string;
-  showIcon?: boolean;
   onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
   autocompleteStyle?: React.CSSProperties;
   value?: string;
@@ -48,7 +47,6 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   autoFocus,
   sources,
   onSubmit: onSubmitUserDefined,
-  showIcon = false,
   placeholder,
   autocompleteStyle,
   value,
@@ -263,17 +261,15 @@ export const KgNodeSearchBox: React.FunctionComponent<{
               placeholder={placeholder}
               fullWidth
               startAdornment={
-                showIcon ? (
-                  <InputAdornment position="end" style={{marginRight: "8px"}}>
-                    <IconButton
-                      color="primary"
-                      size="small"
-                      onClick={() => handleSubmit()}
-                    >
-                      <FontAwesomeIcon icon={faSearch} />
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
+                <InputAdornment position="end" style={{marginRight: "8px"}}>
+                  <IconButton
+                    color="primary"
+                    size="small"
+                    onClick={() => handleSubmit()}
+                  >
+                    <FontAwesomeIcon icon={faSearch} />
+                  </IconButton>
+                </InputAdornment>
               }
               error={searchErrors !== undefined}
             ></InputBase>
