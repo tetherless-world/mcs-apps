@@ -247,20 +247,14 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         } else if (!data) {
           throw new EvalError();
         }
-        // React does not batch updates called in
-        // "timouts, promises, async" code, so we
-        // manually do it
-        // Might be change in v17
-        ReactDOM.unstable_batchedUpdates(() => {
-          setData((prevState) =>
-            Object.assign({}, prevState, {
-              nodeFacets: data.kgById.matchingNodeFacets,
-              nodes: data.kgById.matchingNodes,
-              nodesCount: data.kgById.matchingNodesCount,
-              sources: data.kgById.sources,
-            })
-          );
-        });
+        setData((prevState) =>
+          Object.assign({}, prevState, {
+            nodeFacets: data.kgById.matchingNodeFacets,
+            nodes: data.kgById.matchingNodes,
+            nodesCount: data.kgById.matchingNodesCount,
+            sources: data.kgById.sources,
+          })
+        );
       });
   }, [queryParams]);
 
