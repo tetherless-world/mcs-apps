@@ -21,6 +21,7 @@ export interface KgNodeSearchResultsPageRefinementQuery_kgById_matchingNodes {
   label: string | null;
   sources: KgNodeSearchResultsPageRefinementQuery_kgById_matchingNodes_sources[];
   pos: string | null;
+  pageRank: number;
 }
 
 export interface KgNodeSearchResultsPageRefinementQuery_kgById {

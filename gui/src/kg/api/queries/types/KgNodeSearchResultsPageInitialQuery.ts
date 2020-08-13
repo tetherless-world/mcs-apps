@@ -32,6 +32,7 @@ export interface KgNodeSearchResultsPageInitialQuery_kgById_matchingNodes {
   label: string | null;
   sources: KgNodeSearchResultsPageInitialQuery_kgById_matchingNodes_sources[];
   pos: string | null;
+  pageRank: number;
 }
 
 export interface KgNodeSearchResultsPageInitialQuery_kgById_sources {

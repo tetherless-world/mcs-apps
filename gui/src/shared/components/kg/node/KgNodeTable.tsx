@@ -32,9 +32,9 @@ const columns: MUIDataTableColumn[] = [
   },
   {
     name: "id",
+    label: "ID",
     options: {
-      sort: false,
-      display: "false",
+      sort: true,
     },
   },
   {
@@ -93,6 +93,16 @@ const columns: MUIDataTableColumn[] = [
       sort: false,
       customBodyRender(pos) {
         return pos ? showListAsColumn((pos as string).split(",")) : null;
+      },
+    },
+  },
+  {
+    name: "pageRank",
+    label: "PageRank",
+    options: {
+      sort: true,
+      customBodyRender(pageRank) {
+        return (pageRank as number).toFixed(3);
       },
     },
   },

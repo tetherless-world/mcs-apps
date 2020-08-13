@@ -19,4 +19,5 @@ export interface KgNodeFragment {
   label: string | null;
   sources: KgNodeFragment_sources[];
   pos: string | null;
+  pageRank: number;
 }
