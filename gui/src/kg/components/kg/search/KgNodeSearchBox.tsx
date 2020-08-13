@@ -19,7 +19,6 @@ import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
-import {KgSource} from "shared/models/kg/source/KgSource";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -39,8 +38,6 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   placeholder?: string;
   onChange?: (value: KgNodeSearchBoxValue) => void;
   onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
-  sources: KgSource[];
-  showSourcesSelect?: boolean;
   value?: string;
 }> = ({
   autocompleteStyle,
@@ -49,8 +46,6 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   onChange,
   onSubmit: onSubmitUserDefined,
   placeholder,
-  showSourcesSelect,
-  sources,
 }) => {
   const history = useHistory();
 
@@ -262,22 +257,6 @@ export const KgNodeSearchBox: React.FunctionComponent<{
           <KgNodeLink node={node} sources={node.sources} />
         )}
       ></Autocomplete>
-      {/*{showSourcesSelect && (*/}
-      {/*  <KgSourceSelect*/}
-      {/*    sources={sources}*/}
-      {/*    style={{display: "inline-flex", verticalAlign: "top"}}*/}
-      {/*    value={search.filters.sourceIds || undefined}*/}
-      {/*    onChange={(sourcesFilter: StringFacetFilter) => {*/}
-      {/*      setSearch((prev) => ({*/}
-      {/*        ...prev,*/}
-      {/*        filters: {*/}
-      {/*          ...prev.filters,*/}
-      {/*          sources: sourcesFilter,*/}
-      {/*        },*/}
-      {/*      }));*/}
-      {/*    }}*/}
-      {/*  ></KgSourceSelect>*/}
-      {/*)}*/}
     </form>
   );
 };
