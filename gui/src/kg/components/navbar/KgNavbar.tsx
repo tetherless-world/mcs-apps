@@ -41,10 +41,8 @@ export const KgNavbar: React.FunctionComponent<{}> = () => {
           <Typography variant="h5">CSKG</Typography>
         </Button>
         <KgNodeSearchBox
-          placeholder="Search a word"
-          sources={[]}
-          showIcon={true}
           autocompleteStyle={{display: "inline-block"}}
+          placeholder="Search a word"
         />
       </Toolbar>
     </AppBar>
