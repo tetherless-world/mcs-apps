@@ -224,7 +224,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
       });
   };
 
-  if (error == null && data === null) {
+  React.useEffect(() => {
     apolloClient
       .query<
         KgNodeSearchResultsPageInitialQuery,
@@ -262,7 +262,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
           );
         });
       });
-  }
+  }, [queryParams]);
 
   return (
     <KgFrame data={data} error={error} loading={data === null}>
