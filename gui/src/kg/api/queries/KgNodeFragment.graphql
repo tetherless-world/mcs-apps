@@ -7,4 +7,5 @@ fragment KgNodeFragment on KgNode {
     label
   }
   pos
+  pageRank
 }

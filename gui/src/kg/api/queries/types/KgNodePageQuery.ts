@@ -33,6 +33,7 @@ export interface KgNodePageQuery_kgById_nodeById {
   label: string | null;
   sources: KgNodePageQuery_kgById_nodeById_sources[];
   pos: string | null;
+  pageRank: number;
   topSubjectOfEdges: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges[];
 }
 

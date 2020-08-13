@@ -296,8 +296,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                   changedColumn: string,
                   direction: string
                 ) => {
-                  console.log(changedColumn + " - " + direction);
-
                   const sorts = searchVariables.sorts ?? [];
 
                   let sortField: KgNodeSortableField;
@@ -312,13 +310,17 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     case "sources":
                       sortField = KgNodeSortableField.Sources;
                       break;
+                    case "pageRank":
+                      sortField = KgNodeSortableField.PageRank;
+                      break;
                     default:
                       throw new Error("Changed column not supported");
                   }
 
-                  const sortIndex = sorts.findIndex(
-                    (sort) => sort.field === sortField
-                  );
+                  // const sortIndex = sorts.findIndex(
+                  //   (sort) => sort.field === sortField
+                  // );
+                  const sortIndex = 0;
 
                   const newSort = {
                     field: sortField,
@@ -328,7 +330,8 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                         : SortDirection.Descending,
                   };
 
-                  if (sortIndex === -1) {
+                  if (sorts.length === 0) {
+                    //if (sortIndex === -1) {
                     sorts.push(newSort);
                   } else {
                     sorts.splice(sortIndex, 1, newSort);
