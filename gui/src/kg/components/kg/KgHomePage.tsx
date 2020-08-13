@@ -63,11 +63,9 @@ export const KgHomePage: React.FunctionComponent = () => {
       case "KgNode":
         history.push(KgHrefs.kg({id: kgId}).node({id: searchBoxValue.id}));
         break;
-      case "KgNodeSearchVariables":
+      case "text":
         const query: KgNodeQuery = {};
-        if (searchBoxValue.query?.text) {
-          query.text = searchBoxValue.query.text;
-        }
+        query.text = searchBoxValue.text;
         if (sourcesFilter) {
           query.filters = {sourceIds: sourcesFilter};
         }

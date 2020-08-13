@@ -24,20 +24,13 @@ import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
 // Minimum time between requests
 const THROTTLE_WAIT_DURATION = 500;
 
-interface KgNodeSearchTextValue {
-  __typename: "string";
-  value: string;
-}
-
-type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
-
 export const KgNodeSearchBox: React.FunctionComponent<{
   autocompleteStyle?: React.CSSProperties;
   autoFocus?: boolean;
   filters?: KgNodeFilters;
   placeholder?: string;
   onChange?: (value: KgNodeSearchBoxValue) => void;
-  onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
+  onSubmit?: (value: KgNodeSearchBoxValue) => void;
   value?: string;
 }> = ({
   autocompleteStyle,
@@ -88,7 +81,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
     }
 
     // Free text search update
-    onChange({__typename: "KgNodeSearchVariables", query: {text}});
+    onChange({__typename: "text", text: text});
   }, [selectedSearchResult, text]);
 
   // Query server for search results to display
@@ -170,11 +163,14 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
-    : (value: KgNodeSearchAutocompleteValue) => {
-        if (value.__typename === "string") {
-          const valueText = value.value;
+    : (value: KgNodeSearchBoxValue) => {
+        if (value === null) {
+          history.push(Hrefs.kg({id: kgId}).nodeSearch());
+        } else if (value.__typename === "text") {
+          const valueText = value.text;
 
           if (valueText.length === 0) {
+            history.push(Hrefs.kg({id: kgId}).nodeSearch());
             return;
           }
 
@@ -198,7 +194,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   // If user a search suggestion is highlighted submit Node
   // else submit search text
   const handleSubmit = () => {
-    onSubmit(selectedSearchResult || {__typename: "string", value: text ?? ""});
+    onSubmit(selectedSearchResult || {__typename: "text", text: text ?? ""});
   };
 
   return (
