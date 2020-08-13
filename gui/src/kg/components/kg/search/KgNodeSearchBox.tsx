@@ -35,23 +35,23 @@ interface KgNodeSearchTextValue {
 type KgNodeSearchAutocompleteValue = KgNodeSearchTextValue | KgNode;
 
 export const KgNodeSearchBox: React.FunctionComponent<{
-  autoFocus?: boolean;
-  sources: KgSource[];
-  placeholder?: string;
-  onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
   autocompleteStyle?: React.CSSProperties;
-  value?: string;
+  autoFocus?: boolean;
+  placeholder?: string;
   onChange?: (value: KgNodeSearchBoxValue) => void;
+  onSubmit?: (value: KgNodeSearchAutocompleteValue) => void;
+  sources: KgSource[];
   showSourcesSelect?: boolean;
+  value?: string;
 }> = ({
+  autocompleteStyle,
   autoFocus,
-  sources,
+  onChange,
   onSubmit: onSubmitUserDefined,
   placeholder,
-  autocompleteStyle,
-  value,
-  onChange,
   showSourcesSelect,
+  sources,
+  value,
 }) => {
   const history = useHistory();
 
