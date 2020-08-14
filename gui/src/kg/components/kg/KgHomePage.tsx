@@ -102,7 +102,7 @@ export const KgHomePage: React.FunctionComponent = () => {
   };
 
   return (
-    <KgFrame {...query}>
+    <KgFrame hideNavbarSearchBox={true} {...query}>
       {({data}) => {
         const sources = data.kgById.sources;
         return (
