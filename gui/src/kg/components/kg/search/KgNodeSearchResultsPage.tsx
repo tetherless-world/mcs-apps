@@ -41,6 +41,11 @@ class JsonQueryParamConfig<T> implements QueryParamConfig<T | undefined> {
     return value ? JSON.parse(value as string) : undefined;
   }
   equals(left: T | undefined, right: T | undefined) {
+    // console.info(
+    //   `Testing equality ${JSON.stringify(left)} and ${JSON.stringify(right)}: ${
+    //     JSON.stringify(left) === JSON.stringify(right)
+    //   }`
+    // );
     return JSON.stringify(left) === JSON.stringify(right);
   }
 }
@@ -347,6 +352,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     sorts.splice(sortIndex, 1, newSort);
                   }
 
+                  console.info("Changing sorts");
                   setSortsQueryParam(sorts);
                 }}
               />
@@ -354,7 +360,11 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
             <Grid item xs={2}>
               <KgNodeFacetsGrid
                 facets={data.nodeFacets}
-                onChange={(newQuery) => setQueryQueryParam(newQuery)}
+                onChange={(newQuery) => {
+                  setLimitQueryParam(0);
+                  setOffsetQueryParam(OFFSET_DEFAULT);
+                  setQueryQueryParam(newQuery);
+                }}
                 query={searchVariables.query ?? {}}
               />
             </Grid>
