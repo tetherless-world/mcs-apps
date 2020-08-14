@@ -301,9 +301,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                   let sortField: KgNodeSortableField;
 
                   switch (changedColumn) {
-                    case "id":
-                      sortField = KgNodeSortableField.Id;
-                      break;
+                    // case "id":
+                    //   sortField = KgNodeSortableField.Id;
+                    //   break;
                     case "label":
                       sortField = KgNodeSortableField.Labels;
                       break;

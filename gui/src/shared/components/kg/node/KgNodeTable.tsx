@@ -32,9 +32,8 @@ const columns: MUIDataTableColumn[] = [
   },
   {
     name: "id",
-    label: "ID",
     options: {
-      sort: true,
+      display: "false",
     },
   },
   {
