@@ -12,7 +12,6 @@ import {
   KgNodeSortableField,
   SortDirection,
 } from "kg/api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {NumberParam, QueryParamConfig, useQueryParam} from "use-query-params";
@@ -174,13 +173,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
   let [sortsQueryParam, setSortsQueryParam] = useQueryParam<
     KgNodeSort[] | undefined
   >("sorts", querySortsParamConfig);
-  const searchVariables: KgNodeSearchVariables = {
-    __typename: "KgNodeSearchVariables",
-    limit: limitQueryParam ?? LIMIT_DEFAULT,
-    offset: offsetQueryParam ?? OFFSET_DEFAULT,
-    query: queryQueryParam ?? {},
-    sorts: sortsQueryParam,
-  };
 
   const apolloClient = useApolloClient();
 
@@ -191,9 +183,9 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
     true
   );
   const [loadingNodes, setLoadingNodes] = React.useState<boolean>(true);
-  console.info(
-    `Loading: node facets: ${loadingNodeFacets}, nodes: ${loadingNodes}`
-  );
+  // console.info(
+  //   `Loading: node facets: ${loadingNodeFacets}, nodes: ${loadingNodes}`
+  // );
   const [nodeFacets, setNodeFacets] = React.useState<{
     nodeFacets: KgNodeFacetsFragment;
     nodesCount: number;
@@ -309,14 +301,19 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                   title={makeTitle({
                     count: data.nodesCount,
                     sources: data.sources,
-                    ...searchVariables,
+                    query: queryQueryParam,
                   })}
                   nodes={data.nodes}
-                  rowsPerPage={searchVariables.limit!}
+                  rowsPerPage={limitQueryParam ?? LIMIT_DEFAULT}
                   count={data.nodesCount}
-                  page={searchVariables.offset! / searchVariables.limit!}
+                  page={
+                    (offsetQueryParam ?? OFFSET_DEFAULT) /
+                    (limitQueryParam ?? LIMIT_DEFAULT)
+                  }
                   onChangePage={(newPage: number) =>
-                    setOffsetQueryParam(newPage * searchVariables.limit!)
+                    setOffsetQueryParam(
+                      newPage * (limitQueryParam ?? LIMIT_DEFAULT)
+                    )
                   }
                   onChangeRowsPerPage={(newRowsPerPage: number) => {
                     setLimitQueryParam(newRowsPerPage);
@@ -326,7 +323,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     changedColumn: string,
                     direction: string
                   ) => {
-                    const sorts = searchVariables.sorts ?? [];
+                    const sorts = sortsQueryParam?.concat() ?? [];
 
                     let sortField: KgNodeSortableField;
 
@@ -379,7 +376,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     setOffsetQueryParam(OFFSET_DEFAULT);
                     setQueryQueryParam(newQuery);
                   }}
-                  query={searchVariables.query ?? {}}
+                  query={queryQueryParam ?? {}}
                 />
               </Grid>
             </Grid>
