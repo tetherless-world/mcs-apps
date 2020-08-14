@@ -7,6 +7,7 @@ import {Footer} from "shared/components/footer/Footer";
 import * as ReactLoader from "react-loader";
 import {ApolloErrorHandler} from "shared/components/error/ApolloErrorHandler";
 import {ApolloError} from "apollo-client";
+import {KgNavbarProps} from "kg/components/navbar/KgNavbarProps";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-interface FrameProps<TData> {
+interface KgFrameProps<TData> extends KgNavbarProps {
   children: (props: {data: TData}) => React.ReactNode;
   data?: TData;
   error?: ApolloError;
@@ -40,7 +41,8 @@ export const KgFrame = <TData,>({
   data,
   error,
   loading,
-}: FrameProps<TData>) => {
+  ...navbarProps
+}: KgFrameProps<TData>) => {
   const classes = useStyles();
 
   if (error) {
@@ -61,7 +63,7 @@ export const KgFrame = <TData,>({
         spacing={0} // Adds margins to sides of pages so set to 0
       >
         <Grid item>
-          <KgNavbar />
+          <KgNavbar {...navbarProps} />
         </Grid>
         <Grid className={classes.rootContainer} item>
           <div className={classes.root} data-cy="frame-content">
