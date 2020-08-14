@@ -352,7 +352,6 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                     sorts.splice(sortIndex, 1, newSort);
                   }
 
-                  console.info("Changing sorts");
                   setSortsQueryParam(sorts);
                 }}
               />
