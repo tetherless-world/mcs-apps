@@ -3,13 +3,8 @@ import {Grid} from "@material-ui/core";
 import {KgFrame} from "kg/components/frame/KgFrame";
 import * as ReactDOM from "react-dom";
 import {useApolloClient} from "@apollo/react-hooks";
-import {
-  KgNodeSearchResultsPageInitialQuery,
-  KgNodeSearchResultsPageInitialQuery_kgById_matchingNodes as KgNode,
-  KgNodeSearchResultsPageInitialQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageInitialQuery";
-import * as KgNodeSearchResultsPageInitialQueryDocument from "kg/api/queries/KgNodeSearchResultsPageInitialQuery.graphql";
-import * as KgNodeSearchResultsPageRefinementQueryDocument from "kg/api/queries/KgNodeSearchResultsPageRefinementQuery.graphql";
+import * as KgNodeSearchResultsPageNodeFacetsQueryDocument from "kg/api/queries/KgNodeSearchResultsPageNodeFacetsQuery.graphql";
+import * as KgNodeSearchResultsPageNodesQueryDocument from "kg/api/queries/KgNodeSearchResultsPageNodesQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
 import {
   KgNodeQuery,
@@ -17,18 +12,23 @@ import {
   KgNodeSortableField,
   SortDirection,
 } from "kg/api/graphqlGlobalTypes";
-import {KgNodeSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/source/KgSource";
-import {NumberParam, QueryParamConfig, useQueryParams} from "use-query-params";
+import {NumberParam, QueryParamConfig, useQueryParam} from "use-query-params";
 import * as _ from "lodash";
 import {
-  KgNodeSearchResultsPageRefinementQuery,
-  KgNodeSearchResultsPageRefinementQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageRefinementQuery";
+  KgNodeSearchResultsPageNodesQuery,
+  KgNodeSearchResultsPageNodesQueryVariables,
+} from "kg/api/queries/types/KgNodeSearchResultsPageNodesQuery";
 import {KgNodeFacetsGrid} from "kg/components/kg/search/KgNodeFacetsGrid";
 import {KgNodeFacetsFragment} from "kg/api/queries/types/KgNodeFacetsFragment";
 import {ApolloError} from "apollo-boost";
+import {
+  KgNodeSearchResultsPageNodeFacetsQuery,
+  KgNodeSearchResultsPageNodeFacetsQueryVariables,
+} from "kg/api/queries/types/KgNodeSearchResultsPageNodeFacetsQuery";
+import {KgNode} from "shared/models/kg/node/KgNode";
+import * as ReactLoader from "react-loader";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
@@ -41,6 +41,11 @@ class JsonQueryParamConfig<T> implements QueryParamConfig<T | undefined> {
     return value ? JSON.parse(value as string) : undefined;
   }
   equals(left: T | undefined, right: T | undefined) {
+    // console.info(
+    //   `Testing equality ${JSON.stringify(left)} and ${JSON.stringify(right)}: ${
+    //     JSON.stringify(left) === JSON.stringify(right)
+    //   }`
+    // );
     return JSON.stringify(left) === JSON.stringify(right);
   }
 }
@@ -156,46 +161,52 @@ const makeTitle = (kwds: {
 };
 
 export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
-  let [queryParams, setQueryParams] = useQueryParams({
-    limit: NumberParam,
-    offset: NumberParam,
-    query: queryQueryParamConfig,
-    sorts: querySortsParamConfig,
-  });
-  const searchVariables: KgNodeSearchVariables = {
-    __typename: "KgNodeSearchVariables",
-    limit: queryParams.limit ?? LIMIT_DEFAULT,
-    offset: queryParams.offset ?? OFFSET_DEFAULT,
-    query: queryParams.query ?? {},
-    sorts: queryParams.sorts,
-  };
+  let [limitQueryParam, setLimitQueryParam] = useQueryParam<
+    number | null | undefined
+  >("limit", NumberParam);
+  let [offsetQueryParam, setOffsetQueryParam] = useQueryParam<
+    number | null | undefined
+  >("offset", NumberParam);
+  let [queryQueryParam, setQueryQueryParam] = useQueryParam<
+    KgNodeQuery | undefined
+  >("query", queryQueryParamConfig);
+  let [sortsQueryParam, setSortsQueryParam] = useQueryParam<
+    KgNodeSort[] | undefined
+  >("sorts", querySortsParamConfig);
 
   const apolloClient = useApolloClient();
 
+  // Node facets are loaded whenever "query" changes
+  // Nodes are loaded whenever "limith", "offset", "query", or "sorts" are loaded
   const [error, setError] = React.useState<ApolloError | undefined>(undefined);
-  const [data, setData] = React.useState<{
+  const [loadingNodeFacets, setLoadingNodeFacets] = React.useState<boolean>(
+    true
+  );
+  const [loadingNodes, setLoadingNodes] = React.useState<boolean>(true);
+  // console.info(
+  //   `Loading: node facets: ${loadingNodeFacets}, nodes: ${loadingNodes}`
+  // );
+  const [nodeFacets, setNodeFacets] = React.useState<{
     nodeFacets: KgNodeFacetsFragment;
-    nodes: readonly KgNode[];
     nodesCount: number;
     sources: readonly KgSource[];
   } | null>(null);
+  const [nodes, setNodes] = React.useState<readonly KgNode[]>();
 
-  const tableUpdateQuery = (newSearchVariables: KgNodeSearchVariables) => {
-    console.info("New search variables: " + JSON.stringify(newSearchVariables));
-    const limit = newSearchVariables.limit ?? LIMIT_DEFAULT;
-    const offset = newSearchVariables.offset ?? OFFSET_DEFAULT;
+  React.useEffect(() => {
+    console.info("Running node facets query");
+    setLoadingNodeFacets(true);
     apolloClient
       .query<
-        KgNodeSearchResultsPageRefinementQuery,
-        KgNodeSearchResultsPageRefinementQueryVariables
+        KgNodeSearchResultsPageNodeFacetsQuery,
+        KgNodeSearchResultsPageNodeFacetsQueryVariables
       >({
-        query: KgNodeSearchResultsPageRefinementQueryDocument,
+        fetchPolicy: "no-cache",
+        query: KgNodeSearchResultsPageNodeFacetsQueryDocument,
         variables: {
           kgId,
-          limit,
-          offset,
-          query: newSearchVariables.query ?? {},
-          sorts: newSearchVariables.sorts,
+          query: queryQueryParam ?? {},
+          queryText: queryQueryParam?.text,
         },
       })
       .then(({data, errors, loading}) => {
@@ -203,6 +214,51 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
           setError(new ApolloError({graphQLErrors: errors}));
           return;
         } else if (loading) {
+          setLoadingNodeFacets(true);
+          return;
+        } else if (!data) {
+          throw new EvalError();
+        }
+        ReactDOM.unstable_batchedUpdates(() => {
+          setLoadingNodeFacets(false);
+          setNodeFacets((prevState) =>
+            Object.assign({}, prevState, {
+              nodeFacets: data.kgById.matchingNodeFacets,
+              nodesCount: data.kgById.matchingNodesCount,
+              sources: data.kgById.sources,
+            })
+          );
+        });
+      });
+  }, [queryQueryParam]);
+
+  React.useEffect(() => {
+    console.info("Running nodes query");
+    setLoadingNodes(true);
+    const limit = limitQueryParam ?? LIMIT_DEFAULT;
+    const offset = offsetQueryParam ?? OFFSET_DEFAULT;
+    apolloClient
+      .query<
+        KgNodeSearchResultsPageNodesQuery,
+        KgNodeSearchResultsPageNodesQueryVariables
+      >({
+        fetchPolicy: "no-cache",
+        query: KgNodeSearchResultsPageNodesQueryDocument,
+        variables: {
+          kgId,
+          limit,
+          offset,
+          query: queryQueryParam ?? {},
+          sorts: sortsQueryParam,
+        },
+      })
+      .then(({data, errors, loading}) => {
+        if (errors) {
+          setError(new ApolloError({graphQLErrors: errors}));
+          return;
+        } else if (loading) {
+          setLoadingNodes(true);
+          return;
         } else if (!data) {
           throw new EvalError();
         }
@@ -211,55 +267,23 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
         // manually do it
         // Might be change in v17
         ReactDOM.unstable_batchedUpdates(() => {
-          setData((prevState) =>
-            Object.assign({}, prevState, {
-              nodes: data.kgById.matchingNodes,
-              nodesCount: data.kgById.matchingNodesCount,
-            })
-          );
-          const newSearchVariablesCopy = Object.assign({}, newSearchVariables);
-          delete newSearchVariablesCopy["__typename"];
-          setQueryParams(newSearchVariablesCopy);
+          setLoadingNodes(false);
+          setNodes((prevState) => data.kgById.matchingNodes);
         });
       });
-  };
-
-  React.useEffect(() => {
-    apolloClient
-      .query<
-        KgNodeSearchResultsPageInitialQuery,
-        KgNodeSearchResultsPageInitialQueryVariables
-      >({
-        query: KgNodeSearchResultsPageInitialQueryDocument,
-        variables: {
-          kgId,
-          limit: searchVariables.limit!,
-          offset: searchVariables.offset!,
-          query: searchVariables.query ?? {},
-          queryText: searchVariables?.query?.text,
-        },
-      })
-      .then(({data, errors, loading}) => {
-        if (errors) {
-          setError(new ApolloError({graphQLErrors: errors}));
-          return;
-        } else if (loading) {
-        } else if (!data) {
-          throw new EvalError();
-        }
-        setData((prevState) =>
-          Object.assign({}, prevState, {
-            nodeFacets: data.kgById.matchingNodeFacets,
-            nodes: data.kgById.matchingNodes,
-            nodesCount: data.kgById.matchingNodesCount,
-            sources: data.kgById.sources,
-          })
-        );
-      });
-  }, [queryParams]);
+  }, [limitQueryParam, offsetQueryParam, sortsQueryParam]);
 
   return (
-    <KgFrame data={data} error={error} loading={data === null}>
+    <KgFrame
+      data={
+        nodes && nodeFacets ? Object.assign({}, {nodes}, nodeFacets) : undefined
+      }
+      error={error}
+      // KgFrame doesn't render the table if loading is true
+      // That's fine for the initial queries, but not if the table is already rendered. It looks awkward.
+      // In that case show our own loader.
+      loading={!nodes || !nodeFacets}
+    >
       {({data}) => {
         // For the purposes of faceted search, the initial query results are considered the "universe".
         // Subsequent queries may limit results but cannot expand them.
@@ -267,93 +291,96 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
           throw new EvalError();
         }
         return (
-          <Grid container spacing={3}>
-            <Grid item xs={10}>
-              <KgNodeTable
-                title={makeTitle({
-                  count: data.nodesCount,
-                  sources: data.sources,
-                  ...searchVariables,
-                })}
-                nodes={data.nodes}
-                rowsPerPage={searchVariables.limit!}
-                count={data.nodesCount}
-                page={searchVariables.offset! / searchVariables.limit!}
-                onChangePage={(newPage: number) =>
-                  tableUpdateQuery({
-                    ...searchVariables,
-                    offset: newPage * searchVariables.limit!,
-                  })
-                }
-                onChangeRowsPerPage={(newRowsPerPage: number) =>
-                  tableUpdateQuery({
-                    ...searchVariables,
-                    limit: newRowsPerPage,
-                    offset: 0,
-                  })
-                }
-                onColumnSortChange={(
-                  changedColumn: string,
-                  direction: string
-                ) => {
-                  const sorts = searchVariables.sorts ?? [];
-
-                  let sortField: KgNodeSortableField;
-
-                  switch (changedColumn) {
-                    // case "id":
-                    //   sortField = KgNodeSortableField.Id;
-                    //   break;
-                    case "label":
-                      sortField = KgNodeSortableField.Labels;
-                      break;
-                    case "sources":
-                      sortField = KgNodeSortableField.Sources;
-                      break;
-                    case "pageRank":
-                      sortField = KgNodeSortableField.PageRank;
-                      break;
-                    default:
-                      throw new Error("Changed column not supported");
+          <>
+            {loadingNodeFacets || loadingNodes ? (
+              <ReactLoader loaded={false} />
+            ) : null}
+            <Grid container spacing={3}>
+              <Grid item xs={10}>
+                <KgNodeTable
+                  title={makeTitle({
+                    count: data.nodesCount,
+                    sources: data.sources,
+                    query: queryQueryParam,
+                  })}
+                  nodes={data.nodes}
+                  rowsPerPage={limitQueryParam ?? LIMIT_DEFAULT}
+                  count={data.nodesCount}
+                  page={
+                    (offsetQueryParam ?? OFFSET_DEFAULT) /
+                    (limitQueryParam ?? LIMIT_DEFAULT)
                   }
-
-                  // const sortIndex = sorts.findIndex(
-                  //   (sort) => sort.field === sortField
-                  // );
-                  const sortIndex = 0;
-
-                  const newSort = {
-                    field: sortField,
-                    direction:
-                      direction === "asc"
-                        ? SortDirection.Ascending
-                        : SortDirection.Descending,
-                  };
-
-                  if (sorts.length === 0) {
-                    //if (sortIndex === -1) {
-                    sorts.push(newSort);
-                  } else {
-                    sorts.splice(sortIndex, 1, newSort);
+                  onChangePage={(newPage: number) =>
+                    setOffsetQueryParam(
+                      newPage * (limitQueryParam ?? LIMIT_DEFAULT)
+                    )
                   }
+                  onChangeRowsPerPage={(newRowsPerPage: number) => {
+                    setLimitQueryParam(newRowsPerPage);
+                    setOffsetQueryParam(0);
+                  }}
+                  onColumnSortChange={(
+                    changedColumn: string,
+                    direction: string
+                  ) => {
+                    const sorts = sortsQueryParam?.concat() ?? [];
 
-                  tableUpdateQuery({
-                    ...searchVariables,
-                    sorts,
-                  });
-                }}
-              />
+                    let sortField: KgNodeSortableField;
+
+                    switch (changedColumn) {
+                      // case "id":
+                      //   sortField = KgNodeSortableField.Id;
+                      //   break;
+                      case "label":
+                        sortField = KgNodeSortableField.Labels;
+                        break;
+                      case "sources":
+                        sortField = KgNodeSortableField.Sources;
+                        break;
+                      case "pageRank":
+                        sortField = KgNodeSortableField.PageRank;
+                        break;
+                      default:
+                        throw new Error("Changed column not supported");
+                    }
+
+                    // const sortIndex = sorts.findIndex(
+                    //   (sort) => sort.field === sortField
+                    // );
+                    const sortIndex = 0;
+
+                    const newSort = {
+                      field: sortField,
+                      direction:
+                        direction === "asc"
+                          ? SortDirection.Ascending
+                          : SortDirection.Descending,
+                    };
+
+                    if (sorts.length === 0) {
+                      //if (sortIndex === -1) {
+                      sorts.push(newSort);
+                    } else {
+                      sorts.splice(sortIndex, 1, newSort);
+                    }
+
+                    setSortsQueryParam(sorts);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <KgNodeFacetsGrid
+                  facets={data.nodeFacets}
+                  onChange={(newQuery) => {
+                    setLimitQueryParam(LIMIT_DEFAULT);
+                    setOffsetQueryParam(OFFSET_DEFAULT);
+                    setQueryQueryParam(newQuery);
+                  }}
+                  query={queryQueryParam ?? {}}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <KgNodeFacetsGrid
-                facets={data.nodeFacets}
-                onChange={(newQuery) =>
-                  tableUpdateQuery({...searchVariables, query: newQuery})
-                }
-                query={searchVariables.query ?? {}}
-              />
-            </Grid>
-          </Grid>
+          </>
         );
       }}
     </KgFrame>

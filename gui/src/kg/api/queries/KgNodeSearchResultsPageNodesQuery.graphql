@@ -1,6 +1,6 @@
 #import "./KgNodeFragment.graphql"
 
-query KgNodeSearchResultsPageRefinementQuery(
+query KgNodeSearchResultsPageNodesQuery(
   $kgId: String!
   $limit: Int!
   $offset: Int!
@@ -16,6 +16,5 @@ query KgNodeSearchResultsPageRefinementQuery(
     ) {
       ...KgNodeFragment
     }
-    matchingNodesCount(query: $query)
   }
 }
