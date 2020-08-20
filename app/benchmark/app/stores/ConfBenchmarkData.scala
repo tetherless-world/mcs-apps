@@ -4,8 +4,8 @@ import io.github.tetherlessworld.mcsapps.lib.benchmark.data.{BenchmarkData, Benc
 import io.github.tetherlessworld.mcsapps.lib.kg.data.DataResource
 
 object ConfBenchmarkData extends BenchmarkData(new BenchmarkDataResources(
-  benchmarkAnswersJsonl = DataResource("/data/import/benchmark/benchmark_answers.jsonl.bz2"),
-  benchmarksJsonl = DataResource("/data/import/benchmark/benchmarks.jsonl.bz2"),
-  benchmarkQuestionsJsonl = DataResource("/data/import/benchmark/benchmark_questions.jsonl.bz2"),
-  benchmarkSubmissionsJsonl = DataResource("/data/import/benchmark/benchmark_submissions.jsonl.bz2")
+  benchmarkAnswersJsonl = DataResource("/data/benchmark_answers.jsonl.bz2"),
+  benchmarksJsonl = DataResource("/data/benchmarks.jsonl.bz2"),
+  benchmarkQuestionsJsonl = DataResource("/data/benchmark_questions.jsonl.bz2"),
+  benchmarkSubmissionsJsonl = DataResource("/data/benchmark_submissions.jsonl.bz2")
 ))
