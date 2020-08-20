@@ -1,10 +1,9 @@
-package stores
+package stores.kg
 
 import com.google.inject.AbstractModule
 import org.slf4j.LoggerFactory
 import play.api.{Configuration, Environment}
 import stores.kg.neo4j.{Neo4jKgCommandStore, Neo4jKgQueryStore}
-import stores.kg.{KgCommandStore, KgDataDirectoryLoader, KgQueryStore}
 import stores.kg.test.TestKgStore
 
 final class KgStoresModule(environment: Environment, configuration: Configuration) extends AbstractModule {
