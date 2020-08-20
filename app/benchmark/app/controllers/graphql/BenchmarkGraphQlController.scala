@@ -6,6 +6,7 @@ import io.github.tetherlessworld.twxplore.lib.base.controllers.graphql.BaseGraph
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Request
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.benchmark.BenchmarkStore
+import models.graphql.{BenchmarkGraphQlSchemaContext, BenchmarkGraphQlSchemaDefinition}
 
 @Singleton
 class BenchmarkGraphQlController @Inject()(benchmarkStore: BenchmarkStore, kgQueryStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[BenchmarkGraphQlSchemaContext](BenchmarkGraphQlSchemaDefinition.schema, system) {

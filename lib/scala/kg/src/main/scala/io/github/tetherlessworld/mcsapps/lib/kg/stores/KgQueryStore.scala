@@ -1,9 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
-import com.google.inject.ImplementedBy
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
 
-@ImplementedBy(classOf[Neo4jKgQueryStore])
 trait KgQueryStore {
   /**
    * Get all sources

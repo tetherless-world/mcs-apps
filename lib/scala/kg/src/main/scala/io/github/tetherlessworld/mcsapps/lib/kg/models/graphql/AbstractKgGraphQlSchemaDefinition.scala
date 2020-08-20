@@ -3,13 +3,11 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
-import models.kg.KgSource
-import sangria.macros.derive.{AddFields, IncludeValues, deriveEnumType, deriveInputObjectType, deriveObjectType}
+import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._
-import sangria.schema.{Argument, Field, FloatType, IntType, ListInputType, ListType, ObjectType, OptionInputType, OptionType, Schema, StringType, fields}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgNodeFacets, KgNodeFilters, KgNodeQuery, KgNodeSort, SortDirection, StringFacetFilter}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.kg.KgNodeSortableField
+import sangria.schema.{Argument, Field, FloatType, IntType, ListInputType, ListType, ObjectType, OptionInputType, OptionType, StringType, fields}
 
 abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefinition {
   // Scalar arguments

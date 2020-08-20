@@ -1,18 +1,16 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
 
-import java.io.{BufferedInputStream, FileInputStream, FileNotFoundException, InputStream, Reader}
+import java.io.{BufferedInputStream, FileInputStream, FileNotFoundException, InputStream}
 import java.nio.file.Path
 import java.util.NoSuchElementException
 
 import com.github.tototoshi.csv.{CSVReader, LineReader, MalformedCSVException, SourceLineReader, TSVFormat}
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode}
-import models.kg.KgEdge
 import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
-import scala.annotation.tailrec
 import scala.io.{Codec, Source}
 
 final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterable[KgtkEdgeWithNodes] {

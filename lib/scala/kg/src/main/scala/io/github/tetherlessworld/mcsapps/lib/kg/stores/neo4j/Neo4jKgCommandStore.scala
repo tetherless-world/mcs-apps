@@ -3,13 +3,10 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 import com.google.inject.Inject
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import io.github.tetherlessworld.twxplore.lib.base.WithResource
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, Neo4jStoreConfiguration}
 import javax.inject.Singleton
-import models.kg.KgSource
 import org.neo4j.driver._
 import org.slf4j.LoggerFactory
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, Neo4jStoreConfiguration}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.kg.KgQueryStore
 
 import scala.collection.mutable
 

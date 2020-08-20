@@ -2,11 +2,9 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 
 import com.google.inject.Inject
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
-import models.kg.KgSource
 import org.neo4j.driver._
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgNodeFacets, KgNodeQuery, KgNodeSort, KgQueryStore, Neo4jStoreConfiguration, SortDirection}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.kg.KgQueryStore
 
 import scala.collection.JavaConverters._
 import scala.util.Try

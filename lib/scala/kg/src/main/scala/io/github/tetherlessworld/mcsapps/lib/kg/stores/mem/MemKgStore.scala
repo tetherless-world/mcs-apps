@@ -2,12 +2,10 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 
 import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
-import com.outr.lucene4s.query.{Condition, FieldSort, MatchAllSearchTerm, PagedResults, SearchResult, SearchTerm, Sort}
+import com.outr.lucene4s.query._
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import models.kg.KgSource
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeFilters, KgNodePageRankCalculator, KgNodeQuery, KgNodeSort, KgNodeSortableField, KgQueryStore, SortDirection, StringFacetFilter}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.kg.KgQueryStore
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 import scala.util.Random
 

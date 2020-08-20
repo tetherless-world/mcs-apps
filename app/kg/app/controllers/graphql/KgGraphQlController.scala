@@ -5,6 +5,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.KgGraphQlSchemaCo
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.KgQueryStore
 import io.github.tetherlessworld.twxplore.lib.base.controllers.graphql.BaseGraphQlController
 import javax.inject.{Inject, Singleton}
+import models.graphql.KgGraphQlSchemaDefinition
 import play.api.mvc.Request
 
 @Singleton
