@@ -1,7 +1,7 @@
 package models.graphql
 
+import io.github.tetherlessworld.mcsapps.lib.benchmark.models.{Benchmark, BenchmarkAnswer, BenchmarkAnswerExplanation, BenchmarkDataset, BenchmarkQuestion, BenchmarkQuestionAnswerPath, BenchmarkQuestionAnswerPaths, BenchmarkQuestionChoice, BenchmarkQuestionChoiceAnalysis, BenchmarkQuestionPrompt, BenchmarkSubmission}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.AbstractKgGraphQlSchemaDefinition
-import models.benchmark._
 import sangria.macros.derive.{AddFields, deriveObjectType}
 import sangria.schema.{Field, IntType, ListType, ObjectType, OptionType, Schema, fields}
 
@@ -44,11 +44,11 @@ object BenchmarkGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinitio
     )
   )
 
-  implicit val BenchmarkQuestionChoiceTypeType = models.benchmark.BenchmarkQuestionChoiceType.sangriaType
+  implicit val BenchmarkQuestionChoiceTypeType = io.github.tetherlessworld.mcsapps.lib.benchmark.models.BenchmarkQuestionChoiceType.sangriaType
   implicit val BenchmarkQuestionChoiceType = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionChoice]()
-  implicit val BenchmarkQuestionPromptTypeType = models.benchmark.BenchmarkQuestionPromptType.sangriaType
+  implicit val BenchmarkQuestionPromptTypeType = io.github.tetherlessworld.mcsapps.lib.benchmark.models.BenchmarkQuestionPromptType.sangriaType
   implicit val BenchmarkQuestionPromptType = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionPrompt]()
-  implicit val BenchmarkQuestionTypeType = models.benchmark.BenchmarkQuestionType.sangriaType
+  implicit val BenchmarkQuestionTypeType = io.github.tetherlessworld.mcsapps.lib.benchmark.models.BenchmarkQuestionType.sangriaType
   implicit val BenchmarkQuestionType = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestion](
     AddFields(
       Field(
