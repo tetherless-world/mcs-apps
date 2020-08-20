@@ -29,7 +29,7 @@ class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
     }
 
     "skip an unparseable line" in {
-      val tsv = DataResource("/formats/kg/kgtk/unparseable_line.tsv").getAsString()
+      val tsv = DataResource("/io/github/tetherlessworld/mcsapps/lib/kg/formats/kgtk/unparseable_line.tsv").getAsString()
       withResource(new KgtkEdgesTsvReader(Source.fromString(tsv))) { reader =>
         val data = reader.iterator.toList
         data.size should be(3)  // 5 lines, two unparseable because of open quotes
