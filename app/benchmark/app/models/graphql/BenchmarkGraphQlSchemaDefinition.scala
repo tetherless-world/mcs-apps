@@ -1,5 +1,6 @@
 package models.graphql
 
+import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.AbstractKgGraphQlSchemaDefinition
 import models.benchmark._
 import sangria.macros.derive.{AddFields, deriveObjectType}
 import sangria.schema.{Field, IntType, ListType, ObjectType, OptionType, Schema, fields}

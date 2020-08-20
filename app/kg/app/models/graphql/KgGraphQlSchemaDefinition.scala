@@ -1,5 +1,6 @@
 package models.graphql
 
+import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.{AbstractKgGraphQlSchemaDefinition, KgGraphQlSchemaContext}
 import sangria.schema.{Field, ObjectType, Schema, fields}
 
 object KgGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinition {

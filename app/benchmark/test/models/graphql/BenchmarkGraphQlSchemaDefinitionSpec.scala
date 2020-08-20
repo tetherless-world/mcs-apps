@@ -1,7 +1,7 @@
 package models.graphql
 
-import data.benchmark.TestBenchmarkData
-import data.kg.TestKgData
+import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
+import io.github.tetherlessworld.mcsapps.lib.kg.data.benchmark.TestBenchmarkData
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsObject, Json}
 import play.api.test.FakeRequest
@@ -9,8 +9,8 @@ import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.macros._
 import sangria.marshalling.playJson._
-import stores.benchmark.TestBenchmarkStore
-import stores.kg.test.TestKgStore
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.benchmark.TestBenchmarkStore
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.test.TestKgStore
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global

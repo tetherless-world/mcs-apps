@@ -1,11 +1,11 @@
 package controllers.graphql
 
 import akka.actor.ActorSystem
+import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.KgGraphQlSchemaContext
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.KgQueryStore
 import io.github.tetherlessworld.twxplore.lib.base.controllers.graphql.BaseGraphQlController
 import javax.inject.{Inject, Singleton}
-import models.graphql.{KgGraphQlSchemaContext, KgGraphQlSchemaDefinition}
 import play.api.mvc.Request
-import stores.kg.KgQueryStore
 
 @Singleton
 class KgGraphQlController @Inject()(kgQueryStore: KgQueryStore, system: ActorSystem) extends BaseGraphQlController[KgGraphQlSchemaContext](KgGraphQlSchemaDefinition.schema, system) {

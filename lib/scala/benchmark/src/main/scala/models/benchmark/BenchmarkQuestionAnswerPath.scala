@@ -1,6 +1,6 @@
 package models.benchmark
 
-import models.kg.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgEdge
 
 final case class BenchmarkQuestionAnswerPath(path: List[String], score: Float) {
   def edges: List[KgEdge] = {
