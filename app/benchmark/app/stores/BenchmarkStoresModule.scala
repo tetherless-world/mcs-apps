@@ -1,21 +1,24 @@
 package stores
 
 import com.google.inject.AbstractModule
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.KgStoresModule
 import org.slf4j.LoggerFactory
-import stores.benchmark.{BenchmarkStore, ConfBenchmarkStore, TestBenchmarkStore}
-import stores.kg.neo4j.Neo4jKgQueryStore
-import stores.kg.KgQueryStore
-import stores.kg.test.TestKgStore
+import play.api.{Configuration, Environment}
 
-final class BenchmarkStoresModule extends AbstractModule {
+final class BenchmarkStoresModule(environment: Environment, configuration: Configuration) extends AbstractModule {
   private val logger = LoggerFactory.getLogger(classOf[BenchmarkStoresModule])
 
   override def configure(): Unit = {
-    val useTestStores = System.getProperty("testIntegration") != null
-    if (useTestStores) {
-      logger.info("using test stores for integration testing")
+    install(new KgStoresModule(environment, configuration))
+
+    configuration.getOptional[String]("benchmarkStore").getOrElse("conf") match {
+      case "test" => {
+        logger.info("using test stores")
+        bind(classOf[BenchmarkStore]).to(classOf[TestBenchmarkStore])
+      }
+      case _ => {
+        bind(classOf[BenchmarkStore]).to(classOf[ConfBenchmarkStore])
+      }
     }
-    bind(classOf[BenchmarkStore]).to(if (useTestStores) classOf[TestBenchmarkStore] else classOf[ConfBenchmarkStore])
-    bind(classOf[KgQueryStore]).to(if (useTestStores) classOf[TestKgStore] else classOf[Neo4jKgQueryStore])
   }
 }
