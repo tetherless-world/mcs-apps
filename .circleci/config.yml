@@ -37,8 +37,7 @@ jobs:
           name: Build and test
           command: |
             cp -p -R /tmp/workspace/dist/gui/benchmark app/benchmark/public
-            sbt "project benchmarkLib" test
-            sbt "project benchmarkApp" test playUpdateSecret dist
+            sbt "project benchmarkLib" test "project benchmarkApp" test playUpdateSecret dist
             mkdir -p test-reports/app
             mkdir -p test-reports/lib
             cp -p -R app/benchmark/target/test-reports test-reports/app/benchmark
@@ -99,8 +98,7 @@ jobs:
           name: Build and test
           command: |
             cp -p -R /tmp/workspace/dist/gui/kg app/kg/public
-            sbt "project kgLib" test
-            sbt "project kgApp" test playUpdateSecret dist
+            sbt "project kgLib" test "project kgApp" test playUpdateSecret dist
             mkdir -p test-reports/app
             mkdir -p test-reports/lib
             cp -p -R app/kg/target/test-reports test-reports/app/kg
@@ -174,6 +172,7 @@ workflows:
     jobs:
       - cypress/install:
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
+          name: "cypress/install kg-app"
           requires:
             - kg-app-scala
           working_directory: integration
@@ -183,6 +182,7 @@ workflows:
       - cypress/run:
           attach-workspace: true
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
+          name: "cypress/run kg-app"
           post-steps:
             - store_test_results:
                 path: integration/results
