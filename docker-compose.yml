@@ -3,6 +3,19 @@ networks:
   mcs:
     name: mcs
 services:
+  benchmark-app:
+    build:
+      context: .
+      dockerfile: app/benchmark/Dockerfile
+    container_name: mcs-benchmark-app
+    image: tetherlessworld/mcs-benchmark-app
+    networks:
+      - mcs
+    ports:
+      - 127.0.0.1:8080:80
+    restart: unless-stopped
+    volumes:
+      - ./data/kg:/data/kg
   kg-app:
     build:
       context: .
