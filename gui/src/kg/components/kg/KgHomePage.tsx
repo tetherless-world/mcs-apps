@@ -74,6 +74,7 @@ export const KgHomePage: React.FunctionComponent = () => {
 
   const onSearchSubmit = () => {
     if (searchBoxValue === null) {
+      history.push(KgHrefs.kg({id: kgId}).nodeSearch());
       return;
     }
 
