@@ -15,9 +15,9 @@
         "path": [
             "portal_test_data:5",
             "/r/Antonym",
-            "portal_test_data:50",
+            "portal_test_data:6",
             "/r/AtLocation",
-            "portal_test_data:0"
+            "portal_test_data:7"
         ],
         "sources": [
             "portal_test_data"
@@ -28,11 +28,11 @@
         "path": [
             "portal_test_data:10",
             "/r/Antonym",
-            "portal_test_data:100",
+            "portal_test_data:11",
             "/r/CapableOf",
-            "portal_test_data:0",
+            "portal_test_data:12",
             "/r/CausesDesire",
-            "portal_test_data:1"
+            "portal_test_data:13"
         ],
         "sources": [
             "portal_test_data"
@@ -43,13 +43,13 @@
         "path": [
             "portal_test_data:15",
             "/r/Antonym",
-            "portal_test_data:150",
+            "portal_test_data:16",
             "/r/Causes",
-            "portal_test_data:0",
+            "portal_test_data:17",
             "/r/DefinedAs",
-            "portal_test_data:1",
+            "portal_test_data:18",
             "/r/DistinctFrom",
-            "portal_test_data:10"
+            "portal_test_data:19"
         ],
         "sources": [
             "portal_test_data"
@@ -60,15 +60,15 @@
         "path": [
             "portal_test_data:20",
             "/r/Antonym",
-            "portal_test_data:200",
+            "portal_test_data:21",
             "/r/CausesDesire",
-            "portal_test_data:0",
+            "portal_test_data:22",
             "/r/Desires",
-            "portal_test_data:1",
-            "/r/CapableOf",
-            "portal_test_data:10",
-            "/r/DefinedAs",
-            "portal_test_data:100"
+            "portal_test_data:23",
+            "/r/ExternalURL",
+            "portal_test_data:24",
+            "/r/HasFirstSubevent",
+            "portal_test_data:25"
         ],
         "sources": [
             "portal_test_data"
@@ -79,17 +79,17 @@
         "path": [
             "portal_test_data:25",
             "/r/Antonym",
-            "portal_test_data:250",
+            "portal_test_data:26",
             "/r/CreatedBy",
-            "portal_test_data:0",
-            "/r/Antonym",
-            "portal_test_data:1",
-            "/r/CreatedBy",
-            "portal_test_data:10",
-            "/r/Antonym",
-            "portal_test_data:100",
-            "/r/CausesDesire",
-            "portal_test_data:0"
+            "portal_test_data:27",
+            "/r/EtymologicallyDerivedFrom",
+            "portal_test_data:28",
+            "/r/HasContext",
+            "portal_test_data:29",
+            "/r/HasSubevent",
+            "portal_test_data:30",
+            "/r/MotivatedByGoal",
+            "portal_test_data:31"
         ],
         "sources": [
             "portal_test_data"
@@ -100,19 +100,19 @@
         "path": [
             "portal_test_data:30",
             "/r/Antonym",
-            "portal_test_data:300",
+            "portal_test_data:31",
             "/r/DefinedAs",
-            "portal_test_data:0",
+            "portal_test_data:32",
             "/r/CapableOf",
-            "portal_test_data:1",
+            "portal_test_data:33",
             "/r/Desires",
-            "portal_test_data:10",
+            "portal_test_data:34",
             "/r/CausesDesire",
-            "portal_test_data:100",
-            "/r/DistinctFrom",
-            "portal_test_data:0",
-            "/r/CreatedBy",
-            "portal_test_data:1"
+            "portal_test_data:35",
+            "/r/Antonym",
+            "portal_test_data:36",
+            "/r/DefinedAs",
+            "portal_test_data:37"
         ],
         "sources": [
             "portal_test_data"
@@ -123,21 +123,21 @@
         "path": [
             "portal_test_data:35",
             "/r/Antonym",
-            "portal_test_data:350",
+            "portal_test_data:36",
             "/r/DerivedFrom",
-            "portal_test_data:0",
+            "portal_test_data:37",
             "/r/CausesDesire",
-            "portal_test_data:1",
+            "portal_test_data:38",
             "/r/AtLocation",
-            "portal_test_data:10",
+            "portal_test_data:39",
             "/r/Desires",
-            "portal_test_data:100",
-            "/r/CausesDesire",
-            "portal_test_data:0",
-            "/r/AtLocation",
-            "portal_test_data:1",
-            "/r/Desires",
-            "portal_test_data:10"
+            "portal_test_data:40",
+            "/r/CreatedBy",
+            "portal_test_data:41",
+            "/r/CapableOf",
+            "portal_test_data:42",
+            "/r/DistinctFrom",
+            "portal_test_data:43"
         ],
         "sources": [
             "portal_test_data"
@@ -148,23 +148,23 @@
         "path": [
             "portal_test_data:40",
             "/r/Antonym",
-            "portal_test_data:400",
+            "portal_test_data:41",
             "/r/Desires",
-            "portal_test_data:0",
+            "portal_test_data:42",
             "/r/DefinedAs",
-            "portal_test_data:1",
+            "portal_test_data:43",
             "/r/CausesDesire",
-            "portal_test_data:10",
+            "portal_test_data:44",
             "/r/CapableOf",
-            "portal_test_data:100",
-            "/r/DistinctFrom",
-            "portal_test_data:0",
-            "/r/DerivedFrom",
-            "portal_test_data:1",
-            "/r/CreatedBy",
-            "portal_test_data:10",
-            "/r/Causes",
-            "portal_test_data:100"
+            "portal_test_data:45",
+            "/r/Antonym",
+            "portal_test_data:46",
+            "/r/Desires",
+            "portal_test_data:47",
+            "/r/DefinedAs",
+            "portal_test_data:48",
+            "/r/CausesDesire",
+            "portal_test_data:49"
         ],
         "sources": [
             "portal_test_data"
@@ -175,25 +175,25 @@
         "path": [
             "portal_test_data:45",
             "/r/Antonym",
-            "portal_test_data:450",
+            "portal_test_data:46",
             "/r/DistinctFrom",
-            "portal_test_data:0",
+            "portal_test_data:47",
             "/r/Desires",
-            "portal_test_data:1",
+            "portal_test_data:48",
             "/r/DerivedFrom",
-            "portal_test_data:10",
+            "portal_test_data:49",
             "/r/DefinedAs",
-            "portal_test_data:100",
+            "portal_test_data:50",
+            "/r/CreatedBy",
+            "portal_test_data:51",
             "/r/CausesDesire",
-            "portal_test_data:0",
+            "portal_test_data:52",
             "/r/Causes",
-            "portal_test_data:1",
+            "portal_test_data:53",
             "/r/CapableOf",
-            "portal_test_data:10",
+            "portal_test_data:54",
             "/r/AtLocation",
-            "portal_test_data:100",
-            "/r/Antonym",
-            "portal_test_data:0"
+            "portal_test_data:55"
         ],
         "sources": [
             "portal_test_data"
