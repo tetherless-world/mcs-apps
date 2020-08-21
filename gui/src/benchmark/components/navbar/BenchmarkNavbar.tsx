@@ -68,7 +68,7 @@ export const BenchmarkNavbar: React.FunctionComponent<{}> = () => {
           to={BenchmarkHrefs.home}
           className={classes.brand}
         >
-          <Typography variant="h5">MCS Portal</Typography>
+          <Typography variant="h5">MCS</Typography>
         </Button>
         {topLevelPaths.map((tlp) => (
           <Button

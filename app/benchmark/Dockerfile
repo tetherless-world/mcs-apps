@@ -3,11 +3,11 @@ FROM hseeberger/scala-sbt:11.0.5_1.3.7_2.12.10 as build-app
 WORKDIR /build
 # The root of the repository is the context
 COPY /build.sbt .
-COPY /app/kg/app ./app/kg/app
-COPY /app/kg/conf ./app/kg/conf
+COPY /app/benchmark/app ./app/benchmark/app
+COPY /app/benchmark/conf ./app/benchmark/conf
 COPY /lib/scala ./lib/scala
 COPY /project ./project
-RUN sbt "project kgApp" playUpdateSecret dist
+RUN sbt "project benchmarkApp" playUpdateSecret dist
 
 # Build GUI
 FROM node:12 as build-gui
@@ -15,7 +15,7 @@ WORKDIR /build
 COPY /gui/package.json .
 RUN npm install
 COPY /gui .
-RUN npm run build-kg
+RUN npm run build-benchmark
 
 # Deployment
 FROM ubuntu:18.04
@@ -24,15 +24,15 @@ FROM ubuntu:18.04
 RUN apt-get update && apt-get install -y curl default-jre-headless nginx unzip
 
 # Copy in app
-COPY --from=build-app /build/app/kg/target/universal/mcs-kg-app-1.0.0-SNAPSHOT.zip /
-RUN unzip -q mcs-kg-app-1.0.0-SNAPSHOT.zip && mv /mcs-kg-app-1.0.0-SNAPSHOT /app && chmod +x /app/bin/mcs-kg-app
+COPY --from=build-app /build/app/benchmark/target/universal/mcs-benchmark-app-1.0.0-SNAPSHOT.zip /
+RUN unzip -q mcs-benchmark-app-1.0.0-SNAPSHOT.zip && mv /mcs-benchmark-app-1.0.0-SNAPSHOT /app && chmod +x /app/bin/mcs-benchmark-app
 
 # Copy in gui
 COPY /nginx.conf /etc/nginx/sites-available/default
-COPY --from=build-gui /build/dist/kg /usr/share/nginx/html
+COPY --from=build-gui /build/dist/benchmark /usr/share/nginx/html
 
 # Copy in entrypoint
-COPY /app/kg/docker-entrypoint.sh /
+COPY /app/benchmark/docker-entrypoint.sh /
 
 EXPOSE 80
 

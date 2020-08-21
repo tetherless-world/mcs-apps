@@ -21,7 +21,7 @@ import scala.concurrent.ExecutionContext
 class KgDataDirectoryLoader(dataDirectoryPath: Path, kgCommandStore: KgCommandStore, kgQueryStore: KgQueryStore)(implicit ec: ExecutionContext) extends WithIteratorProgress {
   @Inject
   def this(configuration: Configuration, kgCommandStore: KgCommandStore, kgQueryStore: KgQueryStore)(implicit ec: ExecutionContext) =
-    this(Paths.get(configuration.getOptional[String]("kgDataDirectoryPath").getOrElse("/io/github/tetherlessworld/mcsapps/lib/kg/data")), kgCommandStore, kgQueryStore)
+    this(Paths.get(configuration.getOptional[String]("kgDataDirectoryPath").getOrElse("/data/kg")), kgCommandStore, kgQueryStore)
 
   private val logger = LoggerFactory.getLogger(getClass)
 
