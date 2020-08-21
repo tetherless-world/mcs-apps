@@ -236,13 +236,13 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes grouped by label" in {
+    "get matching node labels" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
-        val actual = query.getMatchingNodesGroupedByLabel(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = None), sorts = None)
+        val actual = query.getMatchingNodeLabels(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = None), sorts = None)
         actual.size should equal(10)
-        for (nodesWithLabel <- actual) {
-          nodesWithLabel.label should not be empty
-          nodesWithLabel.nodes.size should be > 0
+        actual.toSet.size should equal(actual.size)
+        for (label <- actual) {
+          label should not be empty
         }
       }
     }
@@ -252,6 +252,14 @@ trait KgStoreBehaviors extends Matchers with WithResource {
         val expected = TestKgData.nodes(0)
         val actual = query.getNodeById(expected.id).get
         equals(actual, expected) shouldEqual true
+      }
+    }
+
+    "get nodes by label" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getNodesByLabel(expected.labels(0))
+        actual.exists(_.id == expected.id) shouldEqual true
       }
     }
 

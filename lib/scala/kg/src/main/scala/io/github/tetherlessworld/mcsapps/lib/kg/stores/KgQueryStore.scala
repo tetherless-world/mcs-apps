@@ -40,20 +40,28 @@ trait KgQueryStore {
   def getMatchingNodesCount(query: KgNodeQuery): Int;
 
   /**
-   * Search nodes and group them by label.
+   * Search all node fields and return the set of the labels in the result nodes.
    */
-  def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel]
+  def getMatchingNodeLabels(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[String]
 
   /**
-   * Search nodes and group them by label.
+   * Search all node fields and return a count of the unique labels in the result nodes.
    */
-  def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int
+  def getMatchingNodeLabelsCount(query: KgNodeQuery): Int
 
   /**
    * Get a node by ID.
    */
   def getNodeById(id: String): Option[KgNode]
 
+  /**
+   * Get nodes by label.
+   */
+  def getNodesByLabel(label: String): List[KgNode]
+
+  /**
+   * Get a path by id.
+   */
   def getPathById(id: String): Option[KgPath]
 
   /**

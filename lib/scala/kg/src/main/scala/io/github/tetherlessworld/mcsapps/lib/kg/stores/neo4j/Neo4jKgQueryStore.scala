@@ -157,6 +157,11 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       )
     }
 
+    final override def getMatchingNodeLabels(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[String] =
+      List()
+
+    final override def getMatchingNodeLabelsCount(query: KgNodeQuery): Int =
+      0
 
     final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
       val cypher = KgNodeQueryCypher(query)
@@ -184,17 +189,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       record.get("COUNT(node)").asInt()
     }
 
-    override def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel] =
-      List()
-
-    override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
-      0
-
     final override def getNodeById(id: String): Option[KgNode] =
       transaction.run(
         s"MATCH (node:${NodeLabel} {id: $$id}) RETURN ${nodePropertyNamesString};",
         toTransactionRunParameters(Map("id" -> id))
       ).toNodes.headOption
+
+    override def getNodesByLabel(label: String): List[KgNode] =
+      List()
 
     final override def getPathById(id: String): Option[KgPath] =
       transaction.run(
@@ -335,20 +337,23 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets =
     withReadTransaction { _.getMatchingNodeFacets(query) }
 
+  final override def getMatchingNodeLabels(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[String] =
+    withReadTransaction { _.getMatchingNodeLabels(limit, offset, query, sorts) }
+
+  final override def getMatchingNodeLabelsCount(query: KgNodeQuery): Int =
+    withReadTransaction { _.getMatchingNodesCount(query) }
+
   final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] =
     withReadTransaction { _.getMatchingNodes(limit, offset, query, sorts) }
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int =
     withReadTransaction { _.getMatchingNodesCount(query) }
 
-  final override def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel] =
-    withReadTransaction { _.getMatchingNodesGroupedByLabel(limit, offset, query, sorts) }
-
-  final override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
-    withReadTransaction { _.getMatchingNodesGroupedByLabelCount(query) }
-
-  override final def getNodeById(id: String): Option[KgNode] =
+  final override def getNodeById(id: String): Option[KgNode] =
     withReadTransaction { _.getNodeById(id) }
+
+  final override def getNodesByLabel(label: String): List[KgNode] =
+    withReadTransaction { _.getNodesByLabel(label) }
 
   //  override def getPaths: List[KgPath] =
   //    withSession { session =>
