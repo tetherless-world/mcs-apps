@@ -24,6 +24,39 @@ jobs:
           name: Push to DockerHub
           command: |
             docker login -u $DOCKER_ID -p $DOCKER_PASSWORD && docker-compose push benchmark-app
+  benchmark-app-scala:
+    docker:
+      - image: circleci/openjdk:11
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - checkout
+      - restore_cache:
+          key: sbt-cache-v1
+      - run:
+          name: Build and test
+          command: |
+            cp -p -R /tmp/workspace/dist/gui/benchmark app/benchmark/public
+            sbt "project benchmarkLib" test
+            sbt "project benchmarkApp" test playUpdateSecret dist
+            mkdir -p test-reports/app
+            mkdir -p test-reports/lib
+            cp -p -R app/benchmark/target/test-reports test-reports/app/benchmark
+            cp -p -R lib/scala/benchmark/target/test-reports test-reports/lib/benchmark
+            mkdir -p ~/dist/app
+            cd app/benchmark/target/universal && unzip -qq mcs-benchmark-app*.zip && rm mcs-benchmark-app*.zip && mv mcs-benchmark-app-*-SNAPSHOT ~/dist/app/benchmark
+      - store_test_results:
+          path: test-reports
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - dist/app
+      - save_cache:
+          key: sbt-cache-v1
+          paths:
+            - "~/.ivy2/cache"
+            - "~/.m2"
+            - "~/.sbt"
   kg-app-docker:
     docker:
       - image: circleci/python:3.8
@@ -48,7 +81,7 @@ jobs:
           name: Push to DockerHub
           command: |
             docker login -u $DOCKER_ID -p $DOCKER_PASSWORD && docker-compose push kg-app
-  scala:
+  kg-app-scala:
     docker:
       - image: circleci/openjdk:11
       - image: neo4j:4.0.4
@@ -65,18 +98,15 @@ jobs:
       - run:
           name: Build and test
           command: |
-            cp -p -R /tmp/workspace/dist/gui/benchmark app/benchmark/public
             cp -p -R /tmp/workspace/dist/gui/kg app/kg/public
-            sbt test playUpdateSecret dist
+            sbt "project kgLib" test
+            sbt "project kgApp" test playUpdateSecret dist
             mkdir -p test-reports/app
             mkdir -p test-reports/lib
-            cp -p -R app/benchmark/target/test-reports test-reports/app/benchmark
             cp -p -R app/kg/target/test-reports test-reports/app/kg
-            cp -p -R lib/scala/benchmark/target/test-reports test-reports/lib/benchmark
             cp -p -R lib/scala/kg/target/test-reports test-reports/lib/kg
             mkdir -p ~/dist/app
-            cd app/benchmark/target/universal && unzip -qq mcs-benchmark-app*.zip && rm mcs-benchmark-app*.zip && mv mcs-benchmark-app-*-SNAPSHOT ~/dist/app/benchmark
-            cd ~/project/app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mv mcs-kg-app-*-SNAPSHOT ~/dist/app/kg
+            cd app/kg/target/universal && unzip -qq mcs-kg-app*.zip && rm mcs-kg-app*.zip && mv mcs-kg-app-*-SNAPSHOT ~/dist/app/kg
       - store_test_results:
           path: test-reports
       - persist_to_workspace:
@@ -131,12 +161,11 @@ workflows:
               only: master
           post-steps:
             - slack/status
-      - scala:
+      - benchmark-app-scala:
           requires:
             - ts
           post-steps:
-            - slack/status:
-                fail_only: true
+            - slack/status
       - ts:
           post-steps:
             - slack/status:
@@ -146,7 +175,7 @@ workflows:
       - cypress/install:
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
           requires:
-            - scala
+            - kg-app-scala
           working_directory: integration
           post-steps:
             - slack/status:
@@ -179,7 +208,7 @@ workflows:
               only: master
           post-steps:
             - slack/status
-      - scala:
+      - kg-app-scala:
           requires:
             - ts
           post-steps:
