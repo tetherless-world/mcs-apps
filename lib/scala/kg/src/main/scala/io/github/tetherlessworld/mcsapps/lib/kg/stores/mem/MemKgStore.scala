@@ -162,9 +162,11 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       }
     }
     val nodes =  resultsToNodes(List(), lucene.query().filter(toSearchTerms(query):_*).sort(toFieldSorts(sorts):_*).search())
-    val nodesLabelPairs = nodes.flatMap(node => node.labels.map((_, node)))
-    val nodesGroupedByLabel = nodesLabelPairs.groupBy(_._1)
-    nodesGroupedByLabel.map({ case (label, nodes) => KgNodesWithLabel(label, nodes.map(_._2))}).toList
+    nodes
+      .flatMap(node => node.labels.map((_, node))) // (label, node) pairs
+      .groupBy(_._1) // Group the pairs by label
+      .map({ case (label, nodes) => KgNodesWithLabel(label, nodes.map(_._2))}).toList // Map to KgNodesWithLabel instances
+      .drop(offset).take(limit) // Apply limit and offset
   }
 
   override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
