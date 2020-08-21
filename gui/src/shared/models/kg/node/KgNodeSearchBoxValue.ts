@@ -1,3 +1,6 @@
-import {KgNode} from "./KgNode";
 import {KgNodeSearchBoxTextValue} from "shared/models/kg/node/KgNodeSearchBoxTextValue";
-export type KgNodeSearchBoxValue = KgNodeSearchBoxTextValue | KgNode | null;
+import {KgNodeSearchBoxNodeLabelValue} from "shared/models/kg/node/KgNodeSearchBoxNodeLabelValue";
+export type KgNodeSearchBoxValue =
+  | KgNodeSearchBoxNodeLabelValue
+  | KgNodeSearchBoxTextValue
+  | null;

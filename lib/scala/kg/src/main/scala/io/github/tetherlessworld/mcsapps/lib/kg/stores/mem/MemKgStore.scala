@@ -130,41 +130,40 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets = {
-    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).facet(LuceneFields.nodeSource, limit = 100).search()
-    // The facet result also has a count per value, which we're ignoring
-    KgNodeFacets(
-      sources = results.facet(LuceneFields.nodeSource).map(_.values.map(_.value).map(sourceId => sourcesById(sourceId)).toList).getOrElse(List())
-    )
-  }
+  final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = {
+    // Previous node-only search:
+//    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).sort(toLuceneFieldSorts(sorts):_*).limit(limit).offset(offset).search()
+//    results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
 
-  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
-    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).sort(toLuceneFieldSorts(sorts):_*).limit(limit).offset(offset).search()
-    results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
-  }
-
-  final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
-    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).search()
-    results.total.intValue
-  }
-
-  final override def getMatchingNodeLabels(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[String] = {
     // TODO: use result grouping
     // Need to build convert the lucene4s QueryBuilder to a Lucene Query (see QueryBuilder.scala) and then add a grouping on label
     // This has to be done before limit + offset so that a single group of nodes only counts as one toward the limit
 
     // For the time being just collect everything and fill the output until we reach the limit.
     val nodes = luceneResultsToNodes(lucene.query().filter(toLuceneSearchTerms(query):_*).sort(toLuceneFieldSorts(sorts):_*).search())
-    nodes
+    val nodeLabels = nodes
       .flatMap(node => node.labels)
       .toSet
       .toList
       .drop(offset).take(limit)
+
+    nodeLabels.map(KgNodeLabelSearchResult(_))
+
+    // TODO: return other search result types e.g., fulltext on source labels, for example
+    // This will require reworking the Lucene index to allow documents to represent nodes, edges, sources, and labels
   }
 
-  final override def getMatchingNodeLabelsCount(query: KgNodeQuery): Int = {
-    val nodes = luceneResultsToNodes(lucene.query().filter(toLuceneSearchTerms(query):_*).search())
-    nodes.flatMap(node => node.labels).toSet.size
+  final override def searchCount(query: KgSearchQuery): Int = {
+    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).search()
+    results.total.intValue
+  }
+
+  final override def searchFacets(query: KgSearchQuery): KgSearchFacets = {
+    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).facet(LuceneFields.nodeSource, limit = 100).search()
+    // The facet result also has a count per value, which we're ignoring
+    KgSearchFacets(
+      sourceIds = results.facet(LuceneFields.nodeSource).map(_.values.map(value => StringFacetValue(count = value.count, value = value.value)).toList).getOrElse(List())
+    )
   }
 
   final override def getNodesByLabel(label: String): List[KgNode] =
@@ -208,10 +207,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     }
   }
 
-  private def toLuceneFieldSorts(sorts: Option[List[KgNodeSort]]) =
+  private def toLuceneFieldSorts(sorts: Option[List[KgSearchSort]]) =
     sorts.getOrElse(List()).map(sort => FieldSort(getLuceneField(sort.field), sort.direction == SortDirection.Descending))
 
-  private def toLuceneSearchTerms(query: KgNodeQuery): List[SearchTerm] = {
+  private def toLuceneSearchTerms(query: KgSearchQuery): List[SearchTerm] = {
     val textSearchTerm = query.text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
     if (query.filters.isDefined) {
       val filterSearchTerms = toLuceneSearchTerms(query.filters.get)
@@ -225,7 +224,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     }
   }
 
-  private def toLuceneSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
+  private def toLuceneSearchTerms(nodeFilters: KgSearchFilters): List[(SearchTerm, Condition)] = {
     nodeFilters.sourceIds.map(source => toLuceneSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
   }
 

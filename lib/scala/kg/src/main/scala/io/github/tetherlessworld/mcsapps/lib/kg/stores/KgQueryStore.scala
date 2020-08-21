@@ -25,31 +25,6 @@ trait KgQueryStore {
   def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
 
   /**
-   * Search nodes and return facets.
-   */
-  def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets
-
-  /**
-   * Search nodes.
-   */
-  def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode]
-
-  /**
-   * Get count of fulltext search results.
-   */
-  def getMatchingNodesCount(query: KgNodeQuery): Int;
-
-  /**
-   * Search all node fields and return the set of the labels in the result nodes.
-   */
-  def getMatchingNodeLabels(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[String]
-
-  /**
-   * Search all node fields and return a count of the unique labels in the result nodes.
-   */
-  def getMatchingNodeLabelsCount(query: KgNodeQuery): Int
-
-  /**
    * Get a node by ID.
    */
   def getNodeById(id: String): Option[KgNode]
@@ -90,4 +65,21 @@ trait KgQueryStore {
   def getTotalNodesCount: Int;
 
   def isEmpty: Boolean
+
+  /**
+   * Search the store.
+   */
+  def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult]
+
+  /**
+   * Search the store and return the total number of results.
+   */
+  def searchCount(query: KgSearchQuery): Int
+
+  /**
+   * Search the store and return facets of the results.
+   *
+   * This could be folded into search, but it's cleaner to do it this way.
+   */
+  def searchFacets(query: KgSearchQuery): KgSearchFacets
 }
