@@ -172,7 +172,7 @@ workflows:
     jobs:
       - cypress/install:
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
-          name: "cypress/install kg-app"
+          name: cypress/install-kg-app
           requires:
             - kg-app-scala
           working_directory: integration
@@ -182,7 +182,7 @@ workflows:
       - cypress/run:
           attach-workspace: true
           cache-key: 'npm-packages-v2-{{ arch }}-{{ checksum "integration/package.json" }}'
-          name: "cypress/run kg-app"
+          name: "cypress/run-kg-app"
           post-steps:
             - store_test_results:
                 path: integration/results
@@ -192,7 +192,7 @@ workflows:
                 path: integration/cypress/videos
             - slack/status
           requires:
-            - cypress/install
+            - cypress/install-kg-app
           spec: "cypress/integration/kg/*.spec.ts"
           start: |
             pwd
