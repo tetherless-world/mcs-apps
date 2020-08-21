@@ -1,5 +1,29 @@
 version: 2.1
 jobs:
+  benchmark-app-docker:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build
+          command: |
+            docker-compose build benchmark-app neo4j
+      - run:
+          name: Run
+          background: true
+          command: |
+            docker-compose up --abort-on-container-exit benchmark-app neo4j
+      - run:
+          name: Wait for the server to start
+          command: |
+            sleep 90
+            docker exec mcs-benchmark-app curl --retry 10 --retry-connrefused -s http://localhost
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_ID -p $DOCKER_PASSWORD && docker-compose push benchmark-app
   kg-app-docker:
     docker:
       - image: circleci/python:3.8
@@ -99,6 +123,24 @@ orbs:
   slack: circleci/slack@3.4.2
 workflows:
   version: 2
+  benchmark-app:
+    jobs:
+      - benchmark-app-docker:
+          filters:
+            branches:
+              only: master
+          post-steps:
+            - slack/status
+      - scala:
+          requires:
+            - ts
+          post-steps:
+            - slack/status:
+                fail_only: true
+      - ts:
+          post-steps:
+            - slack/status:
+                fail_only: true
   kg-app:
     jobs:
       - cypress/install:
