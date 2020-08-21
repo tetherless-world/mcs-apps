@@ -40,6 +40,16 @@ trait KgQueryStore {
   def getMatchingNodesCount(query: KgNodeQuery): Int;
 
   /**
+   * Search nodes and group them by label.
+   */
+  def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel]
+
+  /**
+   * Search nodes and group them by label.
+   */
+  def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int
+
+  /**
    * Get a node by ID.
    */
   def getNodeById(id: String): Option[KgNode]

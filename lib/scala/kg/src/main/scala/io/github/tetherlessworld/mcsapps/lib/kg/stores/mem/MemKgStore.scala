@@ -7,6 +7,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
+import scala.annotation.tailrec
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
@@ -135,8 +136,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   }
 
   final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
-    val querySorts = sorts.getOrElse(List()).map(sort => FieldSort(getLuceneField(sort.field), sort.direction == SortDirection.Descending))
-    val results: PagedResults[SearchResult] = lucene.query().filter(toSearchTerms(query):_*).sort(querySorts:_*).limit(limit).offset(offset).search()
+    val results = lucene.query().filter(toSearchTerms(query):_*).sort(toFieldSorts(sorts):_*).limit(limit).offset(offset).search()
     results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
   }
 
@@ -144,6 +144,32 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     val results = lucene.query().filter(toSearchTerms(query):_*).search()
     results.total.intValue
   }
+
+  override def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel] = {
+    // TODO: use result grouping
+    // Need to build convert the lucene4s QueryBuilder to a Lucene Query (see QueryBuilder.scala) and then add a grouping on label
+    // This has to be done before limit + offset so that a single group of nodes only counts as one toward the limit
+
+    // For the time being just collect everything and fill the output until we reach the limit.
+    @tailrec
+    def resultsToNodes(accumulatedNodes: List[KgNode], results: PagedResults[SearchResult]): List[KgNode] = {
+      val resultsNodes = results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
+      val nextPage = results.nextPage()
+      if (nextPage.isDefined) {
+        resultsToNodes(accumulatedNodes ++ resultsNodes, nextPage.get)
+      } else {
+        accumulatedNodes ++ resultsNodes
+      }
+    }
+    val nodes =  resultsToNodes(List(), lucene.query().filter(toSearchTerms(query):_*).sort(toFieldSorts(sorts):_*).search())
+    val nodesLabelPairs = nodes.flatMap(node => node.labels.map((_, node)))
+    val nodesGroupedByLabel = nodesLabelPairs.groupBy(_._1)
+    nodesGroupedByLabel.map({ case (label, nodes) => KgNodesWithLabel(label, nodes.map(_._2))}).toList
+  }
+
+  override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
+    getMatchingNodesGroupedByLabel(limit=0, offset=0, query=query, sorts=None).size
+
 
   override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
@@ -169,6 +195,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   override def isEmpty: Boolean =
     edges.isEmpty && nodes.isEmpty && paths.isEmpty
 
+  private def toFieldSorts(sorts: Option[List[KgNodeSort]]) =
+    sorts.getOrElse(List()).map(sort => FieldSort(getLuceneField(sort.field), sort.direction == SortDirection.Descending))
 
   private def toSearchTerms(query: KgNodeQuery): List[SearchTerm] = {
     val textSearchTerm = query.text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)

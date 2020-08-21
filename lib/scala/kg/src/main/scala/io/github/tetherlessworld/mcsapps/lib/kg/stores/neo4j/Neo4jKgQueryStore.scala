@@ -184,6 +184,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       record.get("COUNT(node)").asInt()
     }
 
+    override def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel] =
+      List()
+
+    override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
+      0
+
     final override def getNodeById(id: String): Option[KgNode] =
       transaction.run(
         s"MATCH (node:${NodeLabel} {id: $$id}) RETURN ${nodePropertyNamesString};",
@@ -334,6 +340,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
   final override def getMatchingNodesCount(query: KgNodeQuery): Int =
     withReadTransaction { _.getMatchingNodesCount(query) }
+
+  final override def getMatchingNodesGroupedByLabel(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNodesWithLabel] =
+    withReadTransaction { _.getMatchingNodesGroupedByLabel(limit, offset, query, sorts) }
+
+  final override def getMatchingNodesGroupedByLabelCount(query: KgNodeQuery): Int =
+    withReadTransaction { _.getMatchingNodesGroupedByLabelCount(query) }
 
   override final def getNodeById(id: String): Option[KgNode] =
     withReadTransaction { _.getNodeById(id) }

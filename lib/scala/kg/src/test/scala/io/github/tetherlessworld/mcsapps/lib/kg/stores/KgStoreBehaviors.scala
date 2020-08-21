@@ -118,7 +118,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get count of matching nodes by label" in {
+    "get count of matching nodes with a label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodesCount(query = KgNodeQuery(filters = None, text = Some(expected.labels(0))))
@@ -126,7 +126,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by source" in {
+    "get matching nodes with a source" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = None)
@@ -155,7 +155,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by source and label" in {
+    "get matching nodes with a given source and label" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""sources:${expected.sourceIds(0)} labels:"${expected.labels(0)}"""")), sorts = None)
@@ -164,7 +164,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by id" in {
+    "get matching nodes with a given id" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"""id:"${expected.id}"""")), sorts = None)
@@ -173,7 +173,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by source sorted by pageRank descending" in {
+    "get matching nodes with a given source sorted by pageRank descending" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
@@ -184,7 +184,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by source sorted by pageRank ascending" in {
+    "get matching nodes with a given source sorted by pageRank ascending" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
 
@@ -196,7 +196,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get matching nodes by source sorted by pageRank descending with offset" in {
+    "get matching nodes with a given source sorted by pageRank descending with offset" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.getMatchingNodes(limit = 10, offset = 5, query = KgNodeQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgNodeSort(KgNodeSortableField.PageRank, SortDirection.Descending))))
@@ -233,6 +233,17 @@ trait KgStoreBehaviors extends Matchers with WithResource {
         val facets = query.getMatchingNodeFacets(query = KgNodeQuery(filters = Some(KgNodeFilters(sourceIds = Some(StringFacetFilter(include = Some(expected.sourceIds), exclude = None)))), text = None))
         facets.sources.size should be < TestKgData.sources.size
         facets.sources.sortBy(_.id).map(_.id) should equal(expected.sourceIds.sortBy(sourceId => sourceId))
+      }
+    }
+
+    "get matching nodes grouped by label" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val actual = query.getMatchingNodesGroupedByLabel(limit = 10, offset = 0, query = KgNodeQuery(filters = None, text = None), sorts = None)
+        actual.size should equal(10)
+        for (nodesWithLabel <- actual) {
+          nodesWithLabel.label should not be empty
+          nodesWithLabel.nodes.size should be > 0
+        }
       }
     }
 
