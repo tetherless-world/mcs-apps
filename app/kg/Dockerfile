@@ -3,13 +3,11 @@ FROM hseeberger/scala-sbt:11.0.5_1.3.7_2.12.10 as build-app
 WORKDIR /build
 # The root of the repository is the context
 COPY /build.sbt .
-COPY /app/benchmark/app ./app/benchmark/app
-COPY /app/benchmark/conf ./app/benchmark/conf
 COPY /app/kg/app ./app/kg/app
 COPY /app/kg/conf ./app/kg/conf
 COPY /lib/scala ./lib/scala
 COPY /project ./project
-RUN sbt playUpdateSecret dist
+RUN sbt "project kgApp" playUpdateSecret dist
 
 # Build GUI
 FROM node:12 as build-gui
