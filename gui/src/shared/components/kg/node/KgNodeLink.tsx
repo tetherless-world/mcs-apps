@@ -3,22 +3,31 @@ import {Hrefs} from "shared/Hrefs";
 import {Link} from "react-router-dom";
 import {kgId} from "shared/api/kgId";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {KgSourcePill} from "../source/KgSourcePill";
+import {KgNodePosBadge} from "./KgNodePosBadge";
 
 export const KgNodeLink: React.FunctionComponent<{
   node: {id: string; label: string | null; pos: string | null};
   sources?: KgSource[];
 }> = ({node, sources}) => {
+  const label = node.label ?? node.id;
   return (
     <Link
       data-cy="node-link"
       title={node.id}
       to={Hrefs.kg({id: kgId}).node({id: node.id})}
     >
-      {(node.label ? node.label : node.id) +
-        (node.pos ? " (" + node.pos + ")" : "") +
-        (sources && sources.length > 0
-          ? " - " + sources.map((source) => source.label).join(" | ")
-          : "")}
+      <span style={{marginRight: "5px"}}>
+        {node.pos ? (
+          <KgNodePosBadge badgeContent={node.pos} color="primary">
+            {label}
+          </KgNodePosBadge>
+        ) : (
+          label
+        )}
+      </span>
+      {sources &&
+        sources.map((source) => <KgSourcePill source={source} size="small" />)}
     </Link>
   );
 };
