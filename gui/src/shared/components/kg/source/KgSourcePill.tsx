@@ -1,6 +1,6 @@
 import * as React from "react";
 import {KgSource} from "shared/models/kg/source/KgSource";
-import {Chip} from "@material-ui/core";
+import {Chip, ChipProps} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
@@ -8,9 +8,9 @@ import * as d3 from "d3";
 
 const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
-export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
-  source,
-}) => {
+export const KgSourcePill: React.FunctionComponent<
+  {source: KgSource} & ChipProps
+> = ({source, ...chipProps}) => {
   const history = useHistory();
 
   const color = colors(source.id);
@@ -33,6 +33,7 @@ export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
         );
       }}
       style={{color, borderColor: color, margin: "2px"}}
+      {...chipProps}
     />
   );
 };
