@@ -10,6 +10,15 @@ query KgSearchBoxAutocompleteQuery(
       offset: 0
       query: $query
     ) {
+      ... on KgEdgeLabelSearchResult {
+        edgeLabel
+      }
+      ... on KgEdgeSearchResult {
+        edge {
+          id
+          label
+        }
+      }
       ... on KgNodeLabelSearchResult {
         nodeLabel
       }
@@ -17,11 +26,15 @@ query KgSearchBoxAutocompleteQuery(
         node {
           id
           label
+          pos
+          sources {
+            ... KgSourceFragment
+          }
         }
       }
-    }
-    sources {
-      ... KgSourceFragment
+      ... on KgSourceSearchResult {
+        sourceId
+      }
     }
   }
 }

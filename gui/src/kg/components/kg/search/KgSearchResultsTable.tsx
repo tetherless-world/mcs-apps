@@ -115,7 +115,7 @@ const getPropertyColumnIndex = (
   );
 };
 
-export const KgNodeTable: React.FunctionComponent<{
+export const KgSearchResultsTable: React.FunctionComponent<{
   count: number;
   nodes: readonly KgNode[];
   onChangePage: (newPage: number) => void;

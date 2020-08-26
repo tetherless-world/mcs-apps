@@ -1,7 +1,7 @@
 #import "./KgSearchFacetsFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
-query KgNodeSearchResultsPageFacetsQuery(
+query KgSearchResultsPageFacetsQuery(
   $kgId: String!
   $query: KgSearchQuery!
   $queryText: String

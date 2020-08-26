@@ -1,6 +1,31 @@
-import {KgSearchBoxTextValue} from "shared/models/kg/search/KgSearchBoxTextValue";
-import {KgSearchBoxNodeLabelValue} from "shared/models/kg/search/KgSearchBoxNodeLabelValue";
+import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
+
 export type KgSearchBoxValue =
-  | KgSearchBoxNodeLabelValue
-  | KgSearchBoxTextValue
+  | {
+      __typename: "KgEdgeLabelSearchResult";
+      edgeLabel: string;
+    }
+  | {
+      __typename: "KgEdgeSearchResult";
+      edge: {
+        id: string;
+        label: string | null;
+      };
+    }
+  | {
+      __typename: "KgNodeLabelSearchResult";
+      nodeLabel: string;
+    }
+  | {
+      __typename: "KgNodeSearchResult";
+      node: {
+        id: string;
+        label: string | null;
+      };
+    }
+  | {
+      __typename: "KgSourceSearchResult";
+      sourceId: string;
+    }
+  | {__typename: "text"; filters?: KgSearchFilters; text: string}
   | null;

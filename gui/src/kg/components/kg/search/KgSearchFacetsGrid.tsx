@@ -7,12 +7,14 @@ import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 import {KgSearchQuery} from "kg/api/graphqlGlobalTypes";
 import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
 import {FacetExpansionPanel} from "kg/components/kg/search/FacetExpansionPanel";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgSearchFacetsGrid: React.FunctionComponent<{
   facets: KgSearchFacetsFragment;
   onChange: (query: KgSearchQuery) => void;
   query: KgSearchQuery;
-}> = ({facets, onChange, query}) => {
+  sources: readonly KgSource[];
+}> = ({facets, onChange, query, sources}) => {
   const isStringFacetFilterEmpty = (
     filter: StringFacetFilter | null | undefined
   ): boolean => {
@@ -63,9 +65,16 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
               : undefined
           }
           onChange={onChangeSourceIds}
-          valueUniverse={facets.sources.reduce(
-            (map: {[index: string]: string}, source) => {
-              map[source.id] = source.label;
+          valueUniverse={facets.sourceIds.reduce(
+            (map: {[index: string]: string}, sourceId) => {
+              const source = sources.find(
+                (source) => source.id === sourceId.value
+              );
+              if (source) {
+                map[sourceId.value] = source.label;
+              } else {
+                map[sourceId.value] = sourceId.value;
+              }
               return map;
             },
             {}

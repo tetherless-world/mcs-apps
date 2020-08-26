@@ -8,8 +8,20 @@ import { KgSearchQuery } from "./../../graphqlGlobalTypes";
 // GraphQL query operation: KgSearchBoxAutocompleteQuery
 // ====================================================
 
+export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeLabelSearchResult {
+  __typename: "KgEdgeLabelSearchResult";
+  edgeLabel: string;
+}
+
+export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult_edge {
+  __typename: "KgEdge";
+  id: string;
+  label: string | null;
+}
+
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult {
-  __typename: "KgEdgeSearchResult" | "KgEdgeLabelSearchResult" | "KgSourceSearchResult";
+  __typename: "KgEdgeSearchResult";
+  edge: KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult_edge;
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchResult {
@@ -17,10 +29,18 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchRes
   nodeLabel: string;
 }
 
+export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
+}
+
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
   id: string;
   label: string | null;
+  pos: string | null;
+  sources: KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node_sources[];
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult {
@@ -28,18 +48,16 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult {
   node: KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node;
 }
 
-export type KgSearchBoxAutocompleteQuery_kgById_search = KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult;
-
-export interface KgSearchBoxAutocompleteQuery_kgById_sources {
-  __typename: "KgSource";
-  id: string;
-  label: string;
+export interface KgSearchBoxAutocompleteQuery_kgById_search_KgSourceSearchResult {
+  __typename: "KgSourceSearchResult";
+  sourceId: string;
 }
+
+export type KgSearchBoxAutocompleteQuery_kgById_search = KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeLabelSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult | KgSearchBoxAutocompleteQuery_kgById_search_KgSourceSearchResult;
 
 export interface KgSearchBoxAutocompleteQuery_kgById {
   __typename: "Kg";
   search: KgSearchBoxAutocompleteQuery_kgById_search[];
-  sources: KgSearchBoxAutocompleteQuery_kgById_sources[];
 }
 
 export interface KgSearchBoxAutocompleteQuery {

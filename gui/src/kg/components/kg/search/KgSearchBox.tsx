@@ -5,20 +5,20 @@ import {IconButton, InputAdornment, InputBase, Paper} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {useHistory} from "react-router-dom";
-import {Hrefs} from "shared/Hrefs";
 import {GraphQLError} from "graphql";
 import {
-  KgSearchBoxQuery,
-  KgSearchBoxQueryVariables,
-} from "kg/api/queries/types/KgSearchBoxQuery";
+  KgSearchBoxAutocompleteQuery,
+  KgSearchBoxAutocompleteQuery_kgById_search,
+  KgSearchBoxAutocompleteQueryVariables,
+} from "kg/api/queries/types/KgSearchBoxAutocompleteQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgSearchBoxQueryDocument from "kg/api/queries/KgSearchBoxQuery.graphql";
+import * as KgSearchBoxAutocompleteQueryDocument from "kg/api/queries/KgSearchBoxAutocompleteQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {KgNode} from "shared/models/kg/node/KgNode";
 import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
+import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -30,16 +30,8 @@ export const KgSearchBox: React.FunctionComponent<{
   filters?: KgSearchFilters;
   placeholder?: string;
   onChange?: (value: KgSearchBoxValue) => void;
-  onSubmit?: (value: KgSearchBoxValue) => void;
   value?: string;
-}> = ({
-  autocompleteStyle,
-  autoFocus,
-  filters,
-  onChange,
-  onSubmit: onSubmitUserDefined,
-  placeholder,
-}) => {
+}> = ({autocompleteStyle, autoFocus, filters, onChange, placeholder}) => {
   const history = useHistory();
 
   const apolloClient = useApolloClient();
@@ -51,9 +43,11 @@ export const KgSearchBox: React.FunctionComponent<{
   const [
     selectedAutocompleteResult,
     setSelectedAutocompleteResult,
-  ] = React.useState<KgNode | null>(null);
+  ] = React.useState<KgSearchBoxAutocompleteQuery_kgById_search | null>(null);
 
-  const [searchResults, setSearchResults] = React.useState<KgNode[]>([]);
+  const [autocompleteResults, setAutocompleteResults] = React.useState<
+    KgSearchBoxAutocompleteQuery_kgById_search[]
+  >([]);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -81,7 +75,7 @@ export const KgSearchBox: React.FunctionComponent<{
     }
 
     // Free text search update
-    onChange({__typename: "text", text: text});
+    onChange({__typename: "text", filters, text: text});
   }, [selectedAutocompleteResult, text]);
 
   // Query server for search results to display
@@ -92,9 +86,9 @@ export const KgSearchBox: React.FunctionComponent<{
   const throttledQuery = React.useRef(
     _.throttle(
       (
-        variables: KgSearchBoxQueryVariables,
+        variables: KgSearchBoxAutocompleteQueryVariables,
         callback: (
-          data: KgSearchBoxQuery,
+          data: KgSearchBoxAutocompleteQuery,
           errors: readonly GraphQLError[] | undefined
         ) => void
       ) => {
@@ -107,8 +101,11 @@ export const KgSearchBox: React.FunctionComponent<{
         setIsLoading(true);
 
         apolloClient
-          .query<KgSearchBoxQuery, KgSearchBoxQueryVariables>({
-            query: KgSearchBoxQueryDocument,
+          .query<
+            KgSearchBoxAutocompleteQuery,
+            KgSearchBoxAutocompleteQueryVariables
+          >({
+            query: KgSearchBoxAutocompleteQueryDocument,
             variables,
           })
           .then(({data, errors}) => {
@@ -147,7 +144,7 @@ export const KgSearchBox: React.FunctionComponent<{
           setSearchErrors(errors);
         }
 
-        setSearchResults(kgById.matchingNodes);
+        setAutocompleteResults(kgById.search);
       }
     );
 
@@ -156,47 +153,17 @@ export const KgSearchBox: React.FunctionComponent<{
     };
   }, [text, throttledQuery]);
 
-  // The user can submit either
-  // 1) a free text label search
-  //    -> redirect to NodeSearchResultsPage
-  // 2) a Node from the autcomplete search suggestions
-  //    -> redirect to NodePage
-  const onSubmit = onSubmitUserDefined
-    ? onSubmitUserDefined
-    : (value: KgSearchBoxValue) => {
-        if (value === null) {
-          history.push(Hrefs.kg({id: kgId}).nodeSearch());
-        } else if (value.__typename === "text") {
-          const valueText = value.text;
+  const onSubmit = (value: KgSearchBoxValue) =>
+    redirectToKgSearchBoxValue(history, value);
 
-          if (valueText.length === 0) {
-            history.push(Hrefs.kg({id: kgId}).nodeSearch());
-            return;
-          }
-
-          history.push(
-            Hrefs.kg({id: kgId}).nodeSearch({
-              __typename: "KgSearchVariables",
-              query: {
-                filters,
-                text: valueText,
-              },
-            })
-          );
-        } else if (value.__typename === "KgNode") {
-          history.push(Hrefs.kg({id: kgId}).node({id: value.id}));
-        } else {
-          const _exhaustiveCheck: never = value;
-          _exhaustiveCheck;
-        }
-      };
-
-  // If user a search suggestion is highlighted submit Node
-  // else submit search text
   const handleSubmit = () => {
-    onSubmit(
-      selectedAutocompleteResult || {__typename: "text", text: text ?? ""}
-    );
+    if (selectedAutocompleteResult) {
+      onSubmit(selectedAutocompleteResult);
+    } else if (text) {
+      onSubmit({__typename: "text", text});
+    } else {
+      onSubmit(null);
+    }
   };
 
   return (
@@ -210,10 +177,20 @@ export const KgSearchBox: React.FunctionComponent<{
     >
       <Autocomplete
         style={{verticalAlign: "top", ...autocompleteStyle}}
-        getOptionLabel={(option: KgNode | string) =>
-          typeof option === "string" ? option : option.label!
-        }
-        options={searchResults}
+        getOptionLabel={(
+          option: KgSearchBoxAutocompleteQuery_kgById_search
+        ) => {
+          if (typeof option === "string") {
+            return option;
+          }
+          switch (option.__typename) {
+            case "KgNodeSearchResult":
+              return option.node.label ?? option.node.id;
+            default:
+              throw new EvalError();
+          }
+        }}
+        options={autocompleteResults}
         freeSolo
         disablePortal
         includeInputInList
@@ -221,7 +198,10 @@ export const KgSearchBox: React.FunctionComponent<{
         noOptionsText="No results"
         inputValue={text}
         onInputChange={(_, newInputValue: string) => setText(newInputValue)}
-        onHighlightChange={(_, option: KgNode | null) => {
+        onHighlightChange={(
+          _,
+          option: KgSearchBoxAutocompleteQuery_kgById_search | null
+        ) => {
           setSelectedAutocompleteResult(option);
         }}
         renderInput={(params) => (
@@ -251,9 +231,16 @@ export const KgSearchBox: React.FunctionComponent<{
             ></InputBase>
           </Paper>
         )}
-        renderOption={(node) => (
-          <KgNodeLink node={node} sources={node.sources} />
-        )}
+        renderOption={(option) => {
+          switch (option.__typename) {
+            case "KgNodeSearchResult": {
+              const node = option.node;
+              return <KgNodeLink node={node} sources={node.sources} />;
+            }
+            default:
+              throw new EvalError();
+          }
+        }}
       ></Autocomplete>
     </form>
   );
