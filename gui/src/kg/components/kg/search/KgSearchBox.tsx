@@ -14,7 +14,6 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgSearchBoxAutocompleteQueryDocument from "kg/api/queries/KgSearchBoxAutocompleteQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
-import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";

@@ -17,7 +17,6 @@ import {NumberParam, QueryParamConfig, useQueryParam} from "use-query-params";
 import * as _ from "lodash";
 import {
   KgSearchResultsPageResultsQuery,
-  KgSearchResultsPageResultsQuery_kgById_search,
   KgSearchResultsPageResultsQueryVariables,
 } from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
 import {KgSearchFacetsGrid} from "kg/components/kg/search/KgSearchFacetsGrid";
@@ -376,6 +375,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
 
                     setSortsQueryParam(sorts);
                   }}
+                  sources={data.kgById.sources}
                 />
               </Grid>
               <Grid item xs={2}>

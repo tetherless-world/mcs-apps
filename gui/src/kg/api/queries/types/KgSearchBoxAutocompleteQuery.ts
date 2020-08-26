@@ -31,9 +31,11 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchRes
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
+  aliases: string[] | null;
   id: string;
   label: string | null;
   pos: string | null;
+  pageRank: number;
   sourceIds: string[];
 }
 

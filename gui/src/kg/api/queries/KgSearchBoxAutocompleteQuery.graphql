@@ -1,3 +1,5 @@
+#import "./KgNodeFragment.graphql"
+
 query KgSearchBoxAutocompleteQuery(
   $kgId: String!
   $query: KgSearchQuery!
@@ -22,10 +24,7 @@ query KgSearchBoxAutocompleteQuery(
       }
       ... on KgNodeSearchResult {
         node {
-          id
-          label
-          pos
-          sourceIds
+          ... KgNodeFragment
         }
       }
       ... on KgSourceSearchResult {

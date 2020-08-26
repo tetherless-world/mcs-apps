@@ -1,22 +1,24 @@
 import * as React from "react";
 
-import {KgNode} from "shared/models/kg/node/KgNode";
-import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
-import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
+import MUIDataTable, {
+  MUIDataTableColumn,
+  MUIDataTableMeta,
+} from "mui-datatables";
 import {Typography} from "@material-ui/core";
 import {KgSource} from "shared/models/kg/source/KgSource";
-import {KgSearchResultsPageResultsQuery_kgById_search} from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
+import {KgSearchResultLink} from "shared/components/kg/search/KgSearchResultLink";
+import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
 
-const showListAsColumn = (list: string[]) =>
-  list.map((item) => (
-    <React.Fragment key={item}>
-      {item}
-      <br />
-    </React.Fragment>
-  ));
+// const showListAsColumn = (list: string[]) =>
+//   list.map((item) => (
+//     <React.Fragment key={item}>
+//       {item}
+//       <br />
+//     </React.Fragment>
+//   ));
 
 const columns: MUIDataTableColumn[] = [
   {
@@ -33,43 +35,28 @@ const columns: MUIDataTableColumn[] = [
     },
   },
   {
-    name: "id",
-    options: {
-      display: "false",
-    },
-  },
-  {
     name: "label",
     label: "Label",
     options: {
       sort: true,
       customBodyRender(_, tableMeta) {
-        const nodeRowData = (tableMeta.tableData[
-          tableMeta.rowIndex
-        ] as unknown) as (string | undefined)[];
-
+        const data = getTableRowData(tableMeta);
         return (
-          <KgNodeLink
-            node={{
-              id: nodeRowData[getPropertyColumnIndex("id")]!,
-              label: nodeRowData[getPropertyColumnIndex("label")] || null,
-              pos: nodeRowData[getPropertyColumnIndex("pos")] || null,
-            }}
-          />
+          <KgSearchResultLink result={data.result} sources={data.sources} />
         );
       },
     },
   },
-  {
-    name: "aliases",
-    label: "Aliases",
-    options: {
-      sort: false,
-      customBodyRender(aliases) {
-        return aliases ? showListAsColumn(aliases as string[]) : null;
-      },
-    },
-  },
+  // {
+  //   name: "aliases",
+  //   label: "Aliases",
+  //   options: {
+  //     sort: false,
+  //     customBodyRender(aliases) {
+  //       return aliases ? showListAsColumn(aliases as string[]) : null;
+  //     },
+  //   },
+  // },
   {
     name: "sources",
     label: "Sources",
@@ -107,20 +94,34 @@ const columns: MUIDataTableColumn[] = [
   //     },
   //   },
   // },
+  {
+    name: "result",
+    options: {
+      display: "false",
+    },
+  },
 ];
 
-const getPropertyColumnIndex = (
-  property: Exclude<keyof KgNode, "__typename">
-) => {
-  return columns.findIndex(
-    (col) => typeof col !== "string" && col.name === property
-  );
+const getTableRowData = (
+  tableMeta: MUIDataTableMeta
+): KgSearchResultsTableRowData => {
+  const rowData = tableMeta.rowData;
+  const getColumnData = (name: string): any =>
+    rowData[
+      columns.findIndex((col) => typeof col !== "string" && col.name === name)
+    ];
+  return {
+    label: getColumnData("label"),
+    result: getColumnData("result"),
+    sources: getColumnData("sources"),
+  };
 };
 
 interface KgSearchResultsTableRowData {
-  href: string;
+  // aliases?: readonly string[];
   label: string;
   result: KgSearchResult;
+  sources: readonly KgSource[];
 }
 
 export const KgSearchResultsTable: React.FunctionComponent<{
@@ -128,9 +129,10 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
   onColumnSortChange: (columnName: string, direction: string) => void;
+  page: number;
   results: readonly KgSearchResult[];
   rowsPerPage: number;
-  page: number;
+  sources: readonly KgSource[];
   title: React.ReactNode;
 }> = ({
   count,
@@ -140,6 +142,7 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   page,
   results,
   rowsPerPage,
+  sources,
   title,
 }) => {
   // https://github.com/gregnb/mui-datatables/issues/756
@@ -162,6 +165,18 @@ export const KgSearchResultsTable: React.FunctionComponent<{
       table.changePage(page);
     }
   };
+
+  const data = React.useMemo(() => {
+    const rows: KgSearchResultsTableRowData[] = [];
+    for (const result of results) {
+      rows.push({
+        label: getKgSearchResultLabel({result, sources}),
+        result,
+        sources,
+      });
+    }
+    return rows;
+  }, [results, sources]);
 
   return (
     <div data-cy="matchingNodesTable">
