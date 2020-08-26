@@ -68,7 +68,7 @@ export const BenchmarkRoutes: React.FunctionComponent = () => (
       {/* KG Routes */}
       <Route
         exact
-        path={BenchmarkHrefs.kg({id: kgId}).nodeSearch()}
+        path={BenchmarkHrefs.kg({id: kgId}).search()}
         component={KgSearchResultsPage}
       />
       <Route

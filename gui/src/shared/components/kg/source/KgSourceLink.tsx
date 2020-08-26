@@ -12,7 +12,7 @@ export const KgSourceLink: React.FunctionComponent<{
   <Link
     data-cy="source-link"
     style={style}
-    to={Hrefs.kg({id: kgId}).nodeSearch({
+    to={Hrefs.kg({id: kgId}).search({
       query: {
         filters: {
           sourceIds: {include: [source.id]},

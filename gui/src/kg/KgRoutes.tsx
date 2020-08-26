@@ -16,18 +16,25 @@ export const KgRoutes: React.FunctionComponent = () => (
         <Route exact path={KgHrefs.home} component={KgHomePage} />
 
         <Route
-          exact
-          path={KgHrefs.kg({id: kgId}).nodeSearch()}
-          component={KgSearchResultsPage}
+          path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
+          component={KgNodePage}
         />
         <Route
-          path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
+          path={KgHrefs.kg({id: kgId}).nodeLabel({
+            label: ":nodeLabel",
+            labelEncoded: true,
+          })}
           component={KgNodePage}
         />
         <Route
           exact
           path={KgHrefs.kg({id: kgId}).randomNode}
           component={RandomKgNodePage}
+        />
+        <Route
+          exact
+          path={KgHrefs.kg({id: kgId}).search()}
+          component={KgSearchResultsPage}
         />
 
         <Route component={KgNoRoute} />

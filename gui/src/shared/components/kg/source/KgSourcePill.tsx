@@ -22,7 +22,7 @@ export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
       variant="outlined"
       onClick={() => {
         history.push(
-          Hrefs.kg({id: kgId}).nodeSearch({
+          Hrefs.kg({id: kgId}).search({
             query: {
               filters: {
                 sourceIds: {include: [source.id]},

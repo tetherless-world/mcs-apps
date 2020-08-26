@@ -7,21 +7,36 @@ export class Hrefs {
   static readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
   static readonly home = "/";
   static kg(kwds: {id: string; idEncoded?: boolean}) {
-    const kgId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
-    const kgPrefix = `/kg/${kgId}/`;
+    const kgPrefix = `/kg/${
+      kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id)
+    }/`;
     return {
       get home() {
         return kgPrefix;
       },
 
       node(kwds: {id: string; idEncoded?: boolean}) {
-        const nodeId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
-        return kgPrefix + `node/${nodeId}`;
+        return (
+          kgPrefix +
+          `node/${kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id)}`
+        );
       },
 
-      nodeSearch(kwds?: KgSearchVariables) {
+      nodeLabel(kwds: {label: string; labelEncoded?: boolean}) {
+        return (
+          kgPrefix +
+          `nodeLabel/${
+            kwds.labelEncoded ? kwds.label : encodeURIComponent(kwds.label)
+          }`
+        );
+      },
+
+      randomNode: kgPrefix + "randomNode",
+
+      search(kwds?: KgSearchVariables) {
+        const href = kgPrefix + "/search";
         if (!kwds) {
-          return kgPrefix + "node/search";
+          return href;
         }
 
         const {__typename, ...searchVariables} = kwds;
@@ -32,8 +47,7 @@ export class Hrefs {
         }
 
         return (
-          kgPrefix +
-          "node/search" +
+          href +
           qs.stringify(
             {
               limit: searchVariables.limit,
@@ -44,8 +58,6 @@ export class Hrefs {
           )
         );
       },
-
-      randomNode: kgPrefix + "randomNode",
     };
   }
 }

@@ -1,0 +1,16 @@
+#import "./KgNodeFragment.graphql"
+#import "./KgSourceFragment.graphql"
+
+query KgNodeLabelPageQuery(
+  $kgId: String!,
+  $nodeLabel: String!
+) {
+  kgById(id: $kgId) {
+    nodesByLabel(label: $nodeLabel) {
+      ... KgNodeFragment
+    }
+    sources {
+      ... KgSourceFragment
+    }
+  }
+}

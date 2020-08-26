@@ -7,7 +7,7 @@ export const redirectToKgSearchBoxValue = (
   value: KgSearchBoxValue
 ) => {
   if (value === null) {
-    history.push(Hrefs.kg({id: kgId}).nodeSearch());
+    history.push(Hrefs.kg({id: kgId}).search());
     return;
   }
 
@@ -25,12 +25,12 @@ export const redirectToKgSearchBoxValue = (
       const valueText = value.text;
 
       if (valueText.length === 0) {
-        history.push(Hrefs.kg({id: kgId}).nodeSearch());
+        history.push(Hrefs.kg({id: kgId}).search());
         return;
       }
 
       history.push(
-        Hrefs.kg({id: kgId}).nodeSearch({
+        Hrefs.kg({id: kgId}).search({
           __typename: "KgSearchVariables",
           query: {
             filters: value.filters,

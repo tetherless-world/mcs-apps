@@ -12,7 +12,7 @@ export const KgSearchLink: React.FunctionComponent<React.PropsWithChildren<{
   <Link
     data-cy="search-link"
     style={style}
-    to={Hrefs.kg({id: kgId}).nodeSearch({
+    to={Hrefs.kg({id: kgId}).search({
       __typename: "KgSearchVariables",
       query,
     })}
