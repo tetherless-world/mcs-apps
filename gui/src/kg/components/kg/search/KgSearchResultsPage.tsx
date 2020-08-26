@@ -18,7 +18,6 @@ import * as _ from "lodash";
 import {
   KgSearchResultsPageResultsQuery,
   KgSearchResultsPageResultsQuery_kgById_search,
-  KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult,
   KgSearchResultsPageResultsQueryVariables,
 } from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
 import {KgSearchFacetsGrid} from "kg/components/kg/search/KgSearchFacetsGrid";
@@ -274,10 +273,21 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
       });
   }, [limitQueryParam, offsetQueryParam, sortsQueryParam]);
 
+  type KgFrameData = {
+    facets: KgSearchFacetsFragment;
+    kgById: {
+      sources: readonly KgSource[];
+    };
+    results: KgSearchResultsPageResultsQuery_kgById_search[];
+    resultsCount: number;
+  };
+
   return (
-    <KgFrame
+    <KgFrame<KgFrameData>
       data={
-        results && facets ? Object.assign({}, {results}, facets) : undefined
+        results && facets
+          ? {kgById: {sources: facets.sources}, results, ...facets}
+          : undefined
       }
       error={error}
       // KgFrame doesn't render the table if loading is true
@@ -301,18 +311,10 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
                 <KgSearchResultsTable
                   title={makeTitle({
                     count: data.resultsCount,
-                    sources: data.sources,
+                    sources: data.kgById.sources,
                     query: queryQueryParam,
                   })}
-                  nodes={data.results
-                    .filter(
-                      (result) => result.__typename == "KgNodeSearchResult"
-                    )
-                    .map(
-                      (result) =>
-                        (result as KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult)
-                          .node
-                    )}
+                  results={data.results}
                   rowsPerPage={limitQueryParam ?? LIMIT_DEFAULT}
                   count={data.resultsCount}
                   page={
@@ -386,7 +388,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
                     setQueryQueryParam(newQuery);
                   }}
                   query={queryQueryParam ?? {}}
-                  sources={data.sources}
+                  sources={data.kgById.sources}
                 />
               </Grid>
             </Grid>

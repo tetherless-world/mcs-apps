@@ -1,4 +1,5 @@
 #import "./KgNodeFragment.graphql"
+#import "./KgSourceFragment.graphql"
 
 query KgNodePageQuery(
   $kgId: String!,
@@ -16,6 +17,9 @@ query KgNodePageQuery(
         }
         predicate
       }
+    }
+    sources {
+      ... KgSourceFragment
     }
   }
 }

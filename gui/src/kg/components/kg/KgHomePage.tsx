@@ -94,6 +94,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                         filters={{sourceIds: sourcesFilter}}
                         placeholder="Search a word or try a query"
                         onChange={setSearchBoxValue}
+                        sources={data.kgById.sources}
                       />
                     </Grid>
                     <Grid item>

@@ -7,6 +7,10 @@ import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {
+  KgSearchResultsPageResultsQuery_kgById_search,
+  KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult,
+} from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
@@ -117,23 +121,31 @@ const getPropertyColumnIndex = (
 
 export const KgSearchResultsTable: React.FunctionComponent<{
   count: number;
-  nodes: readonly KgNode[];
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
   onColumnSortChange: (columnName: string, direction: string) => void;
+  results: readonly KgSearchResultsPageResultsQuery_kgById_search[];
   rowsPerPage: number;
   page: number;
   title: React.ReactNode;
 }> = ({
   count,
-  nodes,
   onChangePage,
   onChangeRowsPerPage,
   onColumnSortChange,
   page,
+  results,
   rowsPerPage,
   title,
 }) => {
+  const nodes = results
+    .filter((result) => result.__typename == "KgNodeSearchResult")
+    .map(
+      (result) =>
+        (result as KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult)
+          .node
+    );
+
   // https://github.com/gregnb/mui-datatables/issues/756
   // Since the MUIDataTable has its own state, it ignores passed in values
   // for page and rowsPerPage

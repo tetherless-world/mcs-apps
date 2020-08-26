@@ -6,12 +6,6 @@
 // GraphQL query operation: KgNodePageQuery
 // ====================================================
 
-export interface KgNodePageQuery_kgById_nodeById_sources {
-  __typename: "KgSource";
-  id: string;
-  label: string;
-}
-
 export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges_objectNode {
   __typename: "KgNode";
   id: string;
@@ -31,15 +25,22 @@ export interface KgNodePageQuery_kgById_nodeById {
   aliases: string[] | null;
   id: string;
   label: string | null;
-  sources: KgNodePageQuery_kgById_nodeById_sources[];
   pos: string | null;
   pageRank: number;
+  sourceIds: string[];
   topSubjectOfEdges: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges[];
+}
+
+export interface KgNodePageQuery_kgById_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
 }
 
 export interface KgNodePageQuery_kgById {
   __typename: "Kg";
   nodeById: KgNodePageQuery_kgById_nodeById | null;
+  sources: KgNodePageQuery_kgById_sources[];
 }
 
 export interface KgNodePageQuery {

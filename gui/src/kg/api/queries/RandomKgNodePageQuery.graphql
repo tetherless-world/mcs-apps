@@ -1,7 +1,12 @@
+#import "./KgSourceFragment.graphql"
+
 query RandomKgNodePageQuery($kgId: String!) {
   kgById(id: $kgId) {
     randomNode {
       id
+    }
+    sources {
+      ... KgSourceFragment
     }
   }
 }

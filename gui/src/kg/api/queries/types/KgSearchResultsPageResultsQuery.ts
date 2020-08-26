@@ -29,20 +29,14 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearch
   nodeLabel: string;
 }
 
-export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult_node_sources {
-  __typename: "KgSource";
-  id: string;
-  label: string;
-}
-
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
   aliases: string[] | null;
   id: string;
   label: string | null;
-  sources: KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult_node_sources[];
   pos: string | null;
   pageRank: number;
+  sourceIds: string[];
 }
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult {

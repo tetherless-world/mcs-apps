@@ -19,6 +19,7 @@ import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -30,8 +31,16 @@ export const KgSearchBox: React.FunctionComponent<{
   filters?: KgSearchFilters;
   placeholder?: string;
   onChange?: (value: KgSearchBoxValue) => void;
+  sources: readonly KgSource[];
   value?: string;
-}> = ({autocompleteStyle, autoFocus, filters, onChange, placeholder}) => {
+}> = ({
+  autocompleteStyle,
+  autoFocus,
+  filters,
+  onChange,
+  placeholder,
+  sources,
+}) => {
   const history = useHistory();
 
   const apolloClient = useApolloClient();
@@ -153,8 +162,31 @@ export const KgSearchBox: React.FunctionComponent<{
     };
   }, [text, throttledQuery]);
 
-  const onSubmit = (value: KgSearchBoxValue) =>
-    redirectToKgSearchBoxValue(history, value);
+  const getOptionLabel = (
+    option: KgSearchBoxAutocompleteQuery_kgById_search
+  ) => {
+    if (typeof option === "string") {
+      return option;
+    }
+    switch (option.__typename) {
+      case "KgEdgeLabelSearchResult":
+        return option.edgeLabel;
+      case "KgEdgeSearchResult":
+        return option.edge.label ?? option.edge.id;
+      case "KgNodeLabelSearchResult":
+        return option.nodeLabel;
+      case "KgNodeSearchResult":
+        return option.node.label ?? option.node.id;
+      case "KgSourceSearchResult": {
+        const source = sources.find((source) => source.id === option.sourceId);
+        return source ? source.label : option.sourceId;
+      }
+      default:
+        throw new EvalError();
+      // const _exhaustiveCheck: never = value;
+      // _exhaustiveCheck;
+    }
+  };
 
   const handleSubmit = () => {
     if (selectedAutocompleteResult) {
@@ -166,6 +198,9 @@ export const KgSearchBox: React.FunctionComponent<{
     }
   };
 
+  const onSubmit = (value: KgSearchBoxValue) =>
+    redirectToKgSearchBoxValue(history, value);
+
   return (
     <form
       data-cy="nodeSearchBox"
@@ -176,27 +211,13 @@ export const KgSearchBox: React.FunctionComponent<{
       }}
     >
       <Autocomplete
-        style={{verticalAlign: "top", ...autocompleteStyle}}
-        getOptionLabel={(
-          option: KgSearchBoxAutocompleteQuery_kgById_search
-        ) => {
-          if (typeof option === "string") {
-            return option;
-          }
-          switch (option.__typename) {
-            case "KgNodeSearchResult":
-              return option.node.label ?? option.node.id;
-            default:
-              throw new EvalError();
-          }
-        }}
-        options={autocompleteResults}
-        freeSolo
         disablePortal
+        freeSolo
+        getOptionLabel={getOptionLabel}
         includeInputInList
+        inputValue={text}
         loading={isLoading}
         noOptionsText="No results"
-        inputValue={text}
         onInputChange={(_, newInputValue: string) => setText(newInputValue)}
         onHighlightChange={(
           _,
@@ -204,6 +225,7 @@ export const KgSearchBox: React.FunctionComponent<{
         ) => {
           setSelectedAutocompleteResult(option);
         }}
+        options={autocompleteResults}
         renderInput={(params) => (
           <Paper variant="outlined" square>
             <InputBase
@@ -238,9 +260,13 @@ export const KgSearchBox: React.FunctionComponent<{
               return <KgNodeLink node={node} sources={node.sources} />;
             }
             default:
-              throw new EvalError();
+              return getOptionLabel(option);
+            // default:
+            //   const _exhaustiveCheck: never = value;
+            //   _exhaustiveCheck;
           }
         }}
+        style={{verticalAlign: "top", ...autocompleteStyle}}
       ></Autocomplete>
     </form>
   );
