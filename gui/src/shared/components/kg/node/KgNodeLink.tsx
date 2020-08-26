@@ -6,7 +6,7 @@ import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgNodeLink: React.FunctionComponent<{
   node: {id: string; label: string | null; pos: string | null};
-  sources?: KgSource[];
+  sources?: readonly KgSource[];
 }> = ({node, sources}) => {
   return (
     <Link

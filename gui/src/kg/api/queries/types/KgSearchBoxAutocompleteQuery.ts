@@ -29,18 +29,12 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchRes
   nodeLabel: string;
 }
 
-export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node_sources {
-  __typename: "KgSource";
-  id: string;
-  label: string;
-}
-
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
   id: string;
   label: string | null;
   pos: string | null;
-  sources: KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node_sources[];
+  sourceIds: string[];
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult {

@@ -45,7 +45,8 @@ export const KgSearchBox: React.FunctionComponent<{
 
   const apolloClient = useApolloClient();
 
-  const [text, setText] = React.useState<string | undefined>(undefined);
+  // text being null or undefined causes the Autocomplete control to change its mode.
+  const [text, setText] = React.useState<string>("");
 
   // selectedAutocompleteResult represents the autocomplete search
   // suggestion that the user is currently highlighting
@@ -78,7 +79,7 @@ export const KgSearchBox: React.FunctionComponent<{
     }
 
     // Empty text search update
-    if (!text || text.length === 0) {
+    if (text.length === 0) {
       onChange(null);
       return;
     }
@@ -132,7 +133,7 @@ export const KgSearchBox: React.FunctionComponent<{
     let active = true;
 
     // If text input is empty, skip query
-    if (!text || text.length === 0) {
+    if (text.length === 0) {
       return;
     }
 
@@ -191,7 +192,7 @@ export const KgSearchBox: React.FunctionComponent<{
   const handleSubmit = () => {
     if (selectedAutocompleteResult) {
       onSubmit(selectedAutocompleteResult);
-    } else if (text) {
+    } else if (text.length > 0) {
       onSubmit({__typename: "text", text});
     } else {
       onSubmit(null);
@@ -257,7 +258,12 @@ export const KgSearchBox: React.FunctionComponent<{
           switch (option.__typename) {
             case "KgNodeSearchResult": {
               const node = option.node;
-              return <KgNodeLink node={node} sources={node.sources} />;
+              const nodeSources: KgSource[] = [];
+              for (const sourceId of node.sourceIds) {
+                const source = sources.find((source) => source.id === sourceId);
+                nodeSources.push(source ?? {id: sourceId, label: sourceId});
+              }
+              return <KgNodeLink node={node} sources={nodeSources} />;
             }
             default:
               return getOptionLabel(option);
