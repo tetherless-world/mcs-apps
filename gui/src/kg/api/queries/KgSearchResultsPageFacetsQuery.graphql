@@ -1,14 +1,14 @@
-#import "./KgNodeFacetsFragment.graphql"
+#import "./KgSearchFacetsFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
 query KgNodeSearchResultsPageFacetsQuery(
   $kgId: String!
-  $query: KgNodeQuery!
+  $query: KgSearchQuery!
   $queryText: String
 ) {
   kgById(id: $kgId) {
     searchFacets(query: {text: $queryText}) {
-      ... KgNodeFacetsFragment
+      ... KgSearchFacetsFragment
     }
     searchCount(query: $query)
     sources {

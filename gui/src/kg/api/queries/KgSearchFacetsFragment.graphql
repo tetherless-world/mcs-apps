@@ -1,7 +1,8 @@
 #import "./KgSourceFragment.graphql"
 
 fragment KgSearchFacetsFragment on KgSearchFacets {
-  sources {
-    ... KgSourceFragment
+  sourceIds {
+    count
+    value
   }
 }
