@@ -8,7 +8,6 @@ import {useHistory} from "react-router-dom";
 import {GraphQLError} from "graphql";
 import {
   KgSearchBoxAutocompleteQuery,
-  KgSearchBoxAutocompleteQuery_kgById_search,
   KgSearchBoxAutocompleteQueryVariables,
 } from "kg/api/queries/types/KgSearchBoxAutocompleteQuery";
 import {useApolloClient} from "@apollo/react-hooks";
@@ -20,6 +19,9 @@ import {kgId} from "shared/api/kgId";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
+import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
+import {KgSearchResultLink} from "shared/components/kg/search/KgSearchResultLink";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
@@ -53,10 +55,10 @@ export const KgSearchBox: React.FunctionComponent<{
   const [
     selectedAutocompleteResult,
     setSelectedAutocompleteResult,
-  ] = React.useState<KgSearchBoxAutocompleteQuery_kgById_search | null>(null);
+  ] = React.useState<KgSearchResult | null>(null);
 
   const [autocompleteResults, setAutocompleteResults] = React.useState<
-    KgSearchBoxAutocompleteQuery_kgById_search[]
+    KgSearchResult[]
   >([]);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -163,30 +165,11 @@ export const KgSearchBox: React.FunctionComponent<{
     };
   }, [text, throttledQuery]);
 
-  const getOptionLabel = (
-    option: KgSearchBoxAutocompleteQuery_kgById_search
-  ) => {
+  const getOptionLabel = (option: KgSearchResult | string) => {
     if (typeof option === "string") {
       return option;
     }
-    switch (option.__typename) {
-      case "KgEdgeLabelSearchResult":
-        return option.edgeLabel;
-      case "KgEdgeSearchResult":
-        return option.edge.label ?? option.edge.id;
-      case "KgNodeLabelSearchResult":
-        return option.nodeLabel;
-      case "KgNodeSearchResult":
-        return option.node.label ?? option.node.id;
-      case "KgSourceSearchResult": {
-        const source = sources.find((source) => source.id === option.sourceId);
-        return source ? source.label : option.sourceId;
-      }
-      default:
-        throw new EvalError();
-      // const _exhaustiveCheck: never = value;
-      // _exhaustiveCheck;
-    }
+    return getKgSearchResultLabel({result: option, sources});
   };
 
   const handleSubmit = () => {
@@ -220,10 +203,7 @@ export const KgSearchBox: React.FunctionComponent<{
         loading={isLoading}
         noOptionsText="No results"
         onInputChange={(_, newInputValue: string) => setText(newInputValue)}
-        onHighlightChange={(
-          _,
-          option: KgSearchBoxAutocompleteQuery_kgById_search | null
-        ) => {
+        onHighlightChange={(_, option: KgSearchResult | null) => {
           setSelectedAutocompleteResult(option);
         }}
         options={autocompleteResults}
@@ -254,24 +234,9 @@ export const KgSearchBox: React.FunctionComponent<{
             ></InputBase>
           </Paper>
         )}
-        renderOption={(option) => {
-          switch (option.__typename) {
-            case "KgNodeSearchResult": {
-              const node = option.node;
-              const nodeSources: KgSource[] = [];
-              for (const sourceId of node.sourceIds) {
-                const source = sources.find((source) => source.id === sourceId);
-                nodeSources.push(source ?? {id: sourceId, label: sourceId});
-              }
-              return <KgNodeLink node={node} sources={nodeSources} />;
-            }
-            default:
-              return getOptionLabel(option);
-            // default:
-            //   const _exhaustiveCheck: never = value;
-            //   _exhaustiveCheck;
-          }
-        }}
+        renderOption={(option) => (
+          <KgSearchResultLink result={option} sources={sources} />
+        )}
         style={{verticalAlign: "top", ...autocompleteStyle}}
       ></Autocomplete>
     </form>

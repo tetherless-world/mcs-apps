@@ -7,10 +7,8 @@ import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
 import {KgSource} from "shared/models/kg/source/KgSource";
-import {
-  KgSearchResultsPageResultsQuery_kgById_search,
-  KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult,
-} from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
+import {KgSearchResultsPageResultsQuery_kgById_search} from "kg/api/queries/types/KgSearchResultsPageResultsQuery";
+import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 
 const showListAsColumn = (list: string[]) =>
   list.map((item) => (
@@ -89,26 +87,26 @@ const columns: MUIDataTableColumn[] = [
       },
     },
   },
-  {
-    name: "pos",
-    label: "Pos",
-    options: {
-      sort: false,
-      customBodyRender(pos) {
-        return pos ? showListAsColumn((pos as string).split(",")) : null;
-      },
-    },
-  },
-  {
-    name: "pageRank",
-    label: "PageRank",
-    options: {
-      sort: true,
-      customBodyRender(pageRank) {
-        return (pageRank as number).toFixed(3);
-      },
-    },
-  },
+  // {
+  //   name: "pos",
+  //   label: "Pos",
+  //   options: {
+  //     sort: false,
+  //     customBodyRender(pos) {
+  //       return pos ? showListAsColumn((pos as string).split(",")) : null;
+  //     },
+  //   },
+  // },
+  // {
+  //   name: "pageRank",
+  //   label: "PageRank",
+  //   options: {
+  //     sort: true,
+  //     customBodyRender(pageRank) {
+  //       return (pageRank as number).toFixed(3);
+  //     },
+  //   },
+  // },
 ];
 
 const getPropertyColumnIndex = (
@@ -119,12 +117,18 @@ const getPropertyColumnIndex = (
   );
 };
 
+interface KgSearchResultsTableRowData {
+  href: string;
+  label: string;
+  result: KgSearchResult;
+}
+
 export const KgSearchResultsTable: React.FunctionComponent<{
   count: number;
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
   onColumnSortChange: (columnName: string, direction: string) => void;
-  results: readonly KgSearchResultsPageResultsQuery_kgById_search[];
+  results: readonly KgSearchResult[];
   rowsPerPage: number;
   page: number;
   title: React.ReactNode;
@@ -138,14 +142,6 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   rowsPerPage,
   title,
 }) => {
-  const nodes = results
-    .filter((result) => result.__typename == "KgNodeSearchResult")
-    .map(
-      (result) =>
-        (result as KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult)
-          .node
-    );
-
   // https://github.com/gregnb/mui-datatables/issues/756
   // Since the MUIDataTable has its own state, it ignores passed in values
   // for page and rowsPerPage
@@ -179,7 +175,7 @@ export const KgSearchResultsTable: React.FunctionComponent<{
             {title}
           </Typography>
         }
-        data={nodes.concat()}
+        data={data}
         columns={columns}
         options={{
           count,

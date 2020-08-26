@@ -29,6 +29,7 @@ import {
 } from "kg/api/queries/types/KgSearchResultsPageFacetsQuery";
 import * as ReactLoader from "react-loader";
 import {KgSearchResultsTable} from "kg/components/kg/search/KgSearchResultsTable";
+import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
@@ -189,9 +190,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     resultsCount: number;
     sources: readonly KgSource[];
   } | null>(null);
-  const [results, setResults] = React.useState<
-    KgSearchResultsPageResultsQuery_kgById_search[]
-  >();
+  const [results, setResults] = React.useState<KgSearchResult[]>();
 
   React.useEffect(() => {
     console.info("Running facets query");
@@ -278,7 +277,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     kgById: {
       sources: readonly KgSource[];
     };
-    results: KgSearchResultsPageResultsQuery_kgById_search[];
+    results: KgSearchResult[];
     resultsCount: number;
   };
 
