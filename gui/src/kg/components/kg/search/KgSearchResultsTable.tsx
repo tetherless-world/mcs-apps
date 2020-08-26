@@ -42,7 +42,10 @@ const columns: MUIDataTableColumn[] = [
       customBodyRender(_, tableMeta) {
         const data = getTableRowData(tableMeta);
         return (
-          <KgSearchResultLink result={data.result} sources={data.sources} />
+          <KgSearchResultLink
+            result={data.result}
+            allSources={data.allSources}
+          />
         );
       },
     },
@@ -111,20 +114,21 @@ const getTableRowData = (
       columns.findIndex((col) => typeof col !== "string" && col.name === name)
     ];
   return {
+    allSources: getColumnData("allSources"),
     label: getColumnData("label"),
     result: getColumnData("result"),
-    sources: getColumnData("sources"),
   };
 };
 
 interface KgSearchResultsTableRowData {
   // aliases?: readonly string[];
+  allSources: readonly KgSource[];
   label: string;
   result: KgSearchResult;
-  sources: readonly KgSource[];
 }
 
 export const KgSearchResultsTable: React.FunctionComponent<{
+  allSources: readonly KgSource[];
   count: number;
   onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (newRowsPerPage: number) => void;
@@ -132,9 +136,9 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   page: number;
   results: readonly KgSearchResult[];
   rowsPerPage: number;
-  sources: readonly KgSource[];
   title: React.ReactNode;
 }> = ({
+  allSources,
   count,
   onChangePage,
   onChangeRowsPerPage,
@@ -142,7 +146,6 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   page,
   results,
   rowsPerPage,
-  sources,
   title,
 }) => {
   // https://github.com/gregnb/mui-datatables/issues/756
@@ -170,13 +173,13 @@ export const KgSearchResultsTable: React.FunctionComponent<{
     const rows: KgSearchResultsTableRowData[] = [];
     for (const result of results) {
       rows.push({
-        label: getKgSearchResultLabel({result, sources}),
+        allSources,
+        label: getKgSearchResultLabel({allSources, result}),
         result,
-        sources,
       });
     }
     return rows;
-  }, [results, sources]);
+  }, [allSources, results]);
 
   return (
     <div data-cy="matchingNodesTable">

@@ -90,11 +90,11 @@ export const KgHomePage: React.FunctionComponent = () => {
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <KgSearchBox
+                        allSources={data.kgById.sources}
                         autoFocus
                         filters={{sourceIds: sourcesFilter}}
                         placeholder="Search a word or try a query"
                         onChange={setSearchBoxValue}
-                        sources={data.kgById.sources}
                       />
                     </Grid>
                     <Grid item>

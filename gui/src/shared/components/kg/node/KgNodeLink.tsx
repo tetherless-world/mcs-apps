@@ -7,9 +7,13 @@ import {KgSourcePill} from "../source/KgSourcePill";
 import {KgNodePosBadge} from "./KgNodePosBadge";
 
 export const KgNodeLink: React.FunctionComponent<{
-  node: {id: string; label: string | null; pos: string | null};
-  sources?: readonly KgSource[];
-}> = ({node, sources}) => {
+  node: {
+    id: string;
+    label: string | null;
+    pos: string | null;
+    sources?: readonly KgSource[];
+  };
+}> = ({node}) => {
   const label = node.label ?? node.id;
   return (
     <Link
@@ -26,8 +30,11 @@ export const KgNodeLink: React.FunctionComponent<{
           label
         )}
       </span>
-      {sources &&
-        sources.map((source) => <KgSourcePill source={source} size="small" />)}
+      {node.sources
+        ? node.sources.map((source) => (
+            <KgSourcePill source={source} size="small" />
+          ))
+        : null}
     </Link>
   );
 };

@@ -27,20 +27,20 @@ import {KgSearchResultLink} from "shared/components/kg/search/KgSearchResultLink
 const THROTTLE_WAIT_DURATION = 500;
 
 export const KgSearchBox: React.FunctionComponent<{
+  allSources: readonly KgSource[];
   autocompleteStyle?: React.CSSProperties;
   autoFocus?: boolean;
   filters?: KgSearchFilters;
   placeholder?: string;
   onChange?: (value: KgSearchBoxValue) => void;
-  sources: readonly KgSource[];
   value?: string;
 }> = ({
+  allSources,
   autocompleteStyle,
   autoFocus,
   filters,
   onChange,
   placeholder,
-  sources,
 }) => {
   const history = useHistory();
 
@@ -168,7 +168,7 @@ export const KgSearchBox: React.FunctionComponent<{
     if (typeof option === "string") {
       return option;
     }
-    return getKgSearchResultLabel({result: option, sources});
+    return getKgSearchResultLabel({result: option, allSources});
   };
 
   const handleSubmit = () => {
@@ -234,7 +234,7 @@ export const KgSearchBox: React.FunctionComponent<{
           </Paper>
         )}
         renderOption={(option) => (
-          <KgSearchResultLink result={option} sources={sources} />
+          <KgSearchResultLink result={option} allSources={allSources} />
         )}
         style={{verticalAlign: "top", ...autocompleteStyle}}
       ></Autocomplete>

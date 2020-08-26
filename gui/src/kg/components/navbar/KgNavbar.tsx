@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) =>
 );
 
 export const KgNavbar: React.FunctionComponent<{
+  allSources: readonly KgSource[];
   hideNavbarSearchBox?: boolean;
-  sources: readonly KgSource[];
-}> = ({hideNavbarSearchBox, sources}) => {
+}> = ({allSources, hideNavbarSearchBox}) => {
   const classes = useStyles();
 
   return (
@@ -46,9 +46,9 @@ export const KgNavbar: React.FunctionComponent<{
         </Button>
         {!hideNavbarSearchBox ? (
           <KgSearchBox
+            allSources={allSources}
             autocompleteStyle={{display: "inline-block"}}
             placeholder="Search a word"
-            sources={sources}
           />
         ) : null}
       </Toolbar>

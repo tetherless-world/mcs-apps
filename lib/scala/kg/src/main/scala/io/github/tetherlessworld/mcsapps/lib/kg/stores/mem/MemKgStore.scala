@@ -146,8 +146,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       .toSet
       .toList
       .drop(offset).take(limit)
-
-    nodeLabels.map(KgNodeLabelSearchResult(_))
+    // Just use all source id's for now
+    nodeLabels.map(KgNodeLabelSearchResult(_, sourceIds = getSources.map(_.id)))
 
     // TODO: return other search result types e.g., fulltext on source labels, for example
     // This will require reworking the Lucene index to allow documents to represent nodes, edges, sources, and labels

@@ -2,10 +2,10 @@ import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const getKgSearchResultLabel = (kwds: {
+  allSources: readonly KgSource[];
   result: KgSearchResult;
-  sources: readonly KgSource[];
 }): string => {
-  const {result, sources} = kwds;
+  const {allSources, result} = kwds;
   switch (result.__typename) {
     case "KgEdgeLabelSearchResult":
       return result.edgeLabel;
@@ -16,7 +16,7 @@ export const getKgSearchResultLabel = (kwds: {
     case "KgNodeSearchResult":
       return result.node.label ?? result.node.id;
     case "KgSourceSearchResult": {
-      const source = sources.find((source) => source.id === result.sourceId);
+      const source = allSources.find((source) => source.id === result.sourceId);
       return source ? source.label : result.sourceId;
     }
     default:

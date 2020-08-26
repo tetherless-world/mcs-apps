@@ -59,11 +59,11 @@ const querySortsParamConfig: QueryParamConfig<
 > = new JsonQueryParamConfig<KgSearchSort[]>();
 
 const makeTitle = (kwds: {
+  allSources: readonly KgSource[];
   count: number;
   query?: KgSearchQuery;
-  sources: readonly KgSource[];
 }): React.ReactNode => {
-  const {count, query, sources} = kwds;
+  const {allSources, count, query} = kwds;
 
   let title: React.ReactNode[] = [];
 
@@ -98,7 +98,7 @@ const makeTitle = (kwds: {
       const sourceLabels = (sourceIds: readonly string[]) => {
         const sourceLabels = [];
         for (const sourceId of sourceIds) {
-          const source = sources.find((source) => source.id === sourceId);
+          const source = allSources.find((source) => source.id === sourceId);
           sourceLabels.push(source ? source.label : sourceId);
         }
         return sourceLabels;
@@ -185,9 +185,9 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
   //   `Loading: node facets: ${loadingFacets}, results: ${loadingResults}`
   // );
   const [facets, setFacets] = React.useState<{
+    allSources: readonly KgSource[];
     facets: KgSearchFacetsFragment;
     resultsCount: number;
-    sources: readonly KgSource[];
   } | null>(null);
   const [results, setResults] = React.useState<KgSearchResult[]>();
 
@@ -221,9 +221,9 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
           setLoadingFacets(false);
           setFacets((prevState) =>
             Object.assign({}, prevState, {
+              allSources: data.kgById.sources,
               facets: data.kgById.searchFacets,
               resultsCount: data.kgById.searchCount,
-              sources: data.kgById.sources,
             })
           );
         });
@@ -284,7 +284,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     <KgFrame<KgFrameData>
       data={
         results && facets
-          ? {kgById: {sources: facets.sources}, results, ...facets}
+          ? {kgById: {sources: facets.allSources}, results, ...facets}
           : undefined
       }
       error={error}
@@ -307,18 +307,8 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
             <Grid container spacing={3}>
               <Grid item xs={10}>
                 <KgSearchResultsTable
-                  title={makeTitle({
-                    count: data.resultsCount,
-                    sources: data.kgById.sources,
-                    query: queryQueryParam,
-                  })}
-                  results={data.results}
-                  rowsPerPage={limitQueryParam ?? LIMIT_DEFAULT}
+                  allSources={data.kgById.sources}
                   count={data.resultsCount}
-                  page={
-                    (offsetQueryParam ?? OFFSET_DEFAULT) /
-                    (limitQueryParam ?? LIMIT_DEFAULT)
-                  }
                   onChangePage={(newPage: number) =>
                     setOffsetQueryParam(
                       newPage * (limitQueryParam ?? LIMIT_DEFAULT)
@@ -375,11 +365,22 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
 
                     setSortsQueryParam(sorts);
                   }}
-                  sources={data.kgById.sources}
+                  page={
+                    (offsetQueryParam ?? OFFSET_DEFAULT) /
+                    (limitQueryParam ?? LIMIT_DEFAULT)
+                  }
+                  results={data.results}
+                  rowsPerPage={limitQueryParam ?? LIMIT_DEFAULT}
+                  title={makeTitle({
+                    allSources: data.kgById.sources,
+                    count: data.resultsCount,
+                    query: queryQueryParam,
+                  })}
                 />
               </Grid>
               <Grid item xs={2}>
                 <KgSearchFacetsGrid
+                  allSources={data.kgById.sources}
                   facets={data.facets}
                   onChange={(newQuery) => {
                     setLimitQueryParam(LIMIT_DEFAULT);
@@ -387,7 +388,6 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
                     setQueryQueryParam(newQuery);
                   }}
                   query={queryQueryParam ?? {}}
-                  sources={data.kgById.sources}
                 />
               </Grid>
             </Grid>

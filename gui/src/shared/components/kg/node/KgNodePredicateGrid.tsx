@@ -27,7 +27,7 @@ const EdgeList: React.FunctionComponent<{
         <List>
           {edges.map((edge) => (
             <ListItem data-cy="edge" key={edge.object}>
-              <KgNodeLink node={edge.objectNode!} sources={sources} />
+              <KgNodeLink node={{...edge.objectNode!, sources}} />
             </ListItem>
           ))}
         </List>

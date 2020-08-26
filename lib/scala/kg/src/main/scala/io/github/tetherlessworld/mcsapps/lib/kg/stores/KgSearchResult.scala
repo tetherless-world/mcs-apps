@@ -6,9 +6,9 @@ sealed trait KgSearchResult
 
 final case class KgEdgeSearchResult(edge: KgEdge) extends KgSearchResult
 
-final case class KgEdgeLabelSearchResult(edgeLabel: String) extends KgSearchResult
+final case class KgEdgeLabelSearchResult(edgeLabel: String, sourceIds: List[String]) extends KgSearchResult
 
-final case class KgNodeLabelSearchResult(nodeLabel: String) extends KgSearchResult
+final case class KgNodeLabelSearchResult(nodeLabel: String, sourceIds: List[String]) extends KgSearchResult
 
 final case class KgNodeSearchResult(node: KgNode) extends KgSearchResult
 

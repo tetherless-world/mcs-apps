@@ -71,8 +71,8 @@ export const KgFrame = <TData extends KgFrameData>({
       >
         <Grid item>
           <KgNavbar
+            allSources={data ? data.kgById.sources : []}
             hideNavbarSearchBox={hideNavbarSearchBox}
-            sources={data ? data.kgById.sources : []}
           />
         </Grid>
         <Grid className={classes.rootContainer} item>

@@ -29,7 +29,7 @@ export const KgNodeLabelPage: React.FunctionComponent = () => {
             {nodes.map((node) => (
               <ListItem key={node.id}>
                 <ListItemText>
-                  <KgNodeLink node={node} sources={[]} />
+                  <KgNodeLink node={{...node, sources: data.kgById.sources}} />
                 </ListItemText>
               </ListItem>
             ))}

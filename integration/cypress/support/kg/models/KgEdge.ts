@@ -1,7 +1,7 @@
 export type KgEdge = {
-  readonly subject: string;
-  readonly predicate: string;
   readonly object: string;
-  readonly sources: string[];
-  readonly weight: Number;
+  readonly predicate: string;
+  readonly sourceIds: string[];
+  readonly subject: string;
+  readonly weight: number;
 };
