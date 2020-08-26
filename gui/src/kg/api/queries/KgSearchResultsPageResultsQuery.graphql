@@ -1,14 +1,14 @@
 #import "./KgNodeFragment.graphql"
 
-query KgNodeSearchResultsPageNodesQuery(
+query KgNodeSearchResultsPageResultsQuery(
   $kgId: String!
   $limit: Int!
   $offset: Int!
-  $query: KgNodeQuery!
-  $sorts: [KgNodeSort!]
+  $query: KgSearchQuery!
+  $sorts: [KgSearchSort!]
 ) {
   kgById(id: $kgId) {
-    matchingNodes(
+    search(
       limit: $limit
       offset: $offset
       query: $query

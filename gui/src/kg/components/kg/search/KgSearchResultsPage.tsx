@@ -20,7 +20,7 @@ import {
   KgNodeSearchResultsPageNodesQuery,
   KgNodeSearchResultsPageNodesQueryVariables,
 } from "kg/api/queries/types/KgNodeSearchResultsPageNodesQuery";
-import {KgNodeFacetsGrid} from "kg/components/kg/search/KgNodeFacetsGrid";
+import {KgSearchFacetsGrid} from "kg/components/kg/search/KgNodeFacetsGrid";
 import {KgNodeFacetsFragment} from "kg/api/queries/types/KgNodeFacetsFragment";
 import {ApolloError} from "apollo-boost";
 import {
@@ -160,7 +160,7 @@ const makeTitle = (kwds: {
   );
 };
 
-export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
+export const KgSearchResultsPage: React.FunctionComponent = () => {
   let [limitQueryParam, setLimitQueryParam] = useQueryParam<
     number | null | undefined
   >("limit", NumberParam);
@@ -369,7 +369,7 @@ export const KgNodeSearchResultsPage: React.FunctionComponent = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <KgNodeFacetsGrid
+                <KgSearchFacetsGrid
                   facets={data.nodeFacets}
                   onChange={(newQuery) => {
                     setLimitQueryParam(LIMIT_DEFAULT);

@@ -3,12 +3,12 @@ import * as _ from "lodash";
 import {Grid} from "@material-ui/core";
 import {StringFacetFilter} from "shared/models/StringFacetFilter";
 import {KgNodeFacetsFragment} from "kg/api/queries/types/KgNodeFacetsFragment";
-import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
+import {KgSearchFilters} from "shared/models/kg/node/KgNodeFilters";
 import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
 import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
 import {FacetExpansionPanel} from "kg/components/kg/search/FacetExpansionPanel";
 
-export const KgNodeFacetsGrid: React.FunctionComponent<{
+export const KgSearchFacetsGrid: React.FunctionComponent<{
   facets: KgNodeFacetsFragment;
   onChange: (query: KgNodeQuery) => void;
   query: KgNodeQuery;
@@ -28,7 +28,7 @@ export const KgNodeFacetsGrid: React.FunctionComponent<{
     return true;
   };
 
-  const isFiltersEmpty = (filters: KgNodeFilters): boolean => {
+  const isFiltersEmpty = (filters: KgSearchFilters): boolean => {
     if (!isStringFacetFilterEmpty(filters.sourceIds)) {
       return false;
     }
@@ -36,7 +36,7 @@ export const KgNodeFacetsGrid: React.FunctionComponent<{
   };
 
   const onChangeStringFacetFilter = (
-    attribute: keyof KgNodeFilters,
+    attribute: keyof KgSearchFilters,
     newState?: StringFacetFilter
   ) => {
     const newQuery: KgNodeQuery = _.cloneDeep(query);

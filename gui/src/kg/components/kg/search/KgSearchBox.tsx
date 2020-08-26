@@ -15,22 +15,22 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgNodeSearchBoxQueryDocument from "kg/api/queries/KgNodeSearchBoxQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "shared/models/kg/node/KgNode";
-import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
+import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
 import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import {kgId} from "shared/api/kgId";
-import {KgNodeFilters} from "shared/models/kg/node/KgNodeFilters";
+import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 
 // Throttle wait duration in milliseconds
 // Minimum time between requests
 const THROTTLE_WAIT_DURATION = 500;
 
-export const KgNodeSearchBox: React.FunctionComponent<{
+export const KgSearchBox: React.FunctionComponent<{
   autocompleteStyle?: React.CSSProperties;
   autoFocus?: boolean;
-  filters?: KgNodeFilters;
+  filters?: KgSearchFilters;
   placeholder?: string;
-  onChange?: (value: KgNodeSearchBoxValue) => void;
-  onSubmit?: (value: KgNodeSearchBoxValue) => void;
+  onChange?: (value: KgSearchBoxValue) => void;
+  onSubmit?: (value: KgSearchBoxValue) => void;
   value?: string;
 }> = ({
   autocompleteStyle,
@@ -46,11 +46,11 @@ export const KgNodeSearchBox: React.FunctionComponent<{
 
   const [text, setText] = React.useState<string | undefined>(undefined);
 
-  // selectedSearchResult represents the autocomplete search
+  // selectedAutocompleteResult represents the autocomplete search
   // suggestion that the user is currently highlighting
   const [
-    selectedSearchResult,
-    setSelectedSearchResult,
+    selectedAutocompleteResult,
+    setSelectedAutocompleteResult,
   ] = React.useState<KgNode | null>(null);
 
   const [searchResults, setSearchResults] = React.useState<KgNode[]>([]);
@@ -62,15 +62,15 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   >(undefined);
 
   // If onChange is provided, call with updates
-  // to `search` and `selectedSearchResult`
+  // to `search` and `selectedAutocompleteResult`
   React.useEffect(() => {
     if (!onChange) {
       return;
     }
 
     // User highlight new autocomplete suggestion
-    if (selectedSearchResult) {
-      onChange(selectedSearchResult);
+    if (selectedAutocompleteResult) {
+      onChange(selectedAutocompleteResult);
       return;
     }
 
@@ -82,7 +82,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
 
     // Free text search update
     onChange({__typename: "text", text: text});
-  }, [selectedSearchResult, text]);
+  }, [selectedAutocompleteResult, text]);
 
   // Query server for search results to display
   // Is throttled so server request is only sent
@@ -163,7 +163,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   //    -> redirect to NodePage
   const onSubmit = onSubmitUserDefined
     ? onSubmitUserDefined
-    : (value: KgNodeSearchBoxValue) => {
+    : (value: KgSearchBoxValue) => {
         if (value === null) {
           history.push(Hrefs.kg({id: kgId}).nodeSearch());
         } else if (value.__typename === "text") {
@@ -194,7 +194,9 @@ export const KgNodeSearchBox: React.FunctionComponent<{
   // If user a search suggestion is highlighted submit Node
   // else submit search text
   const handleSubmit = () => {
-    onSubmit(selectedSearchResult || {__typename: "text", text: text ?? ""});
+    onSubmit(
+      selectedAutocompleteResult || {__typename: "text", text: text ?? ""}
+    );
   };
 
   return (
@@ -220,7 +222,7 @@ export const KgNodeSearchBox: React.FunctionComponent<{
         inputValue={text}
         onInputChange={(_, newInputValue: string) => setText(newInputValue)}
         onHighlightChange={(_, option: KgNode | null) => {
-          setSelectedSearchResult(option);
+          setSelectedAutocompleteResult(option);
         }}
         renderInput={(params) => (
           <Paper variant="outlined" square>

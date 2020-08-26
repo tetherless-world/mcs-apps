@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {KgNodeSearchBox} from "kg/components/kg/search/KgNodeSearchBox";
+import {KgSearchBox} from "kg/components/kg/search/KgNodeSearchBox";
 import {KgFrame} from "kg/components/frame/KgFrame";
 
 import {
@@ -18,7 +18,7 @@ import {
 import {Link, useHistory} from "react-router-dom";
 
 import {KgHrefs} from "kg/KgHrefs";
-import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
+import {KgSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
 import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
@@ -68,9 +68,9 @@ export const KgHomePage: React.FunctionComponent = () => {
     sourcesFilter,
     setSourcesFilter,
   ] = React.useState<StringFacetFilter | null>(null);
-  const [searchBoxValue, setSearchBoxValue] = React.useState<
-    KgNodeSearchBoxValue
-  >(null);
+  const [searchBoxValue, setSearchBoxValue] = React.useState<KgSearchBoxValue>(
+    null
+  );
 
   const onSearchSubmit = () => {
     if (searchBoxValue === null) {
@@ -118,7 +118,7 @@ export const KgHomePage: React.FunctionComponent = () => {
                 {data && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
-                      <KgNodeSearchBox
+                      <KgSearchBox
                         autoFocus
                         placeholder="Search a word or try a query"
                         onChange={setSearchBoxValue}

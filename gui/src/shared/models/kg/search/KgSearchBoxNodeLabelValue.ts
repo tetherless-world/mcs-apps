@@ -1,4 +1,4 @@
-export interface KgNodeSearchBoxNodeLabelValue {
+export interface KgSearchBoxNodeLabelValue {
   __typename: "nodeLabel";
   nodeLabel: string;
 }

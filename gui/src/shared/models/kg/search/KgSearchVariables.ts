@@ -1,6 +1,6 @@
 import {KgNodeQuery, KgNodeSort} from "kg/api/graphqlGlobalTypes";
 
-export interface KgNodeSearchVariables {
+export interface KgSearchVariables {
   __typename: "KgNodeSearchVariables";
   limit?: number;
   offset?: number;

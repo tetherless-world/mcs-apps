@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {KgNoRoute} from "kg/components/error/KgNoRoute";
@@ -18,7 +18,7 @@ export const KgRoutes: React.FunctionComponent = () => (
         <Route
           exact
           path={KgHrefs.kg({id: kgId}).nodeSearch()}
-          component={KgNodeSearchResultsPage}
+          component={KgSearchResultsPage}
         />
         <Route
           path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}

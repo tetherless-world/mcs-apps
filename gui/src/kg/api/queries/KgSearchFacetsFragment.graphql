@@ -1,6 +1,6 @@
 #import "./KgSourceFragment.graphql"
 
-fragment KgNodeFacetsFragment on KgNodeFacets {
+fragment KgSearchFacetsFragment on KgSearchFacets {
   sources {
     ... KgSourceFragment
   }

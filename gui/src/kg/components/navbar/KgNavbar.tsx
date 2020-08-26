@@ -11,7 +11,7 @@ import {
 
 import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
-import {KgNodeSearchBox} from "../kg/search/KgNodeSearchBox";
+import {KgSearchBox} from "../kg/search/KgNodeSearchBox";
 import {KgNavbarProps} from "kg/components/navbar/KgNavbarProps";
 
 const useStyles = makeStyles((theme) =>
@@ -44,7 +44,7 @@ export const KgNavbar: React.FunctionComponent<KgNavbarProps> = ({
           <Typography variant="h5">CSKG</Typography>
         </Button>
         {!hideNavbarSearchBox ? (
-          <KgNodeSearchBox
+          <KgSearchBox
             autocompleteStyle={{display: "inline-block"}}
             placeholder="Search a word"
           />
