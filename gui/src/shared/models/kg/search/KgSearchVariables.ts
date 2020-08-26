@@ -1,9 +1,9 @@
-import {KgNodeQuery, KgNodeSort} from "kg/api/graphqlGlobalTypes";
+import {KgSearchQuery, KgNodeSort} from "kg/api/graphqlGlobalTypes";
 
 export interface KgSearchVariables {
-  __typename: "KgNodeSearchVariables";
+  __typename: "KgSearchVariables";
   limit?: number;
   offset?: number;
-  query?: KgNodeQuery;
+  query?: KgSearchQuery;
   sorts?: KgNodeSort[];
 }

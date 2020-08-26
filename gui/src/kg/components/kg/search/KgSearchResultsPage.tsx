@@ -3,11 +3,11 @@ import {Grid} from "@material-ui/core";
 import {KgFrame} from "kg/components/frame/KgFrame";
 import * as ReactDOM from "react-dom";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgNodeSearchResultsPageNodeFacetsQueryDocument from "kg/api/queries/KgNodeSearchResultsPageNodeFacetsQuery.graphql";
-import * as KgNodeSearchResultsPageNodesQueryDocument from "kg/api/queries/KgNodeSearchResultsPageNodesQuery.graphql";
+import * as KgSearchResultsPageNodeFacetsQueryDocument from "kg/api/queries/KgSearchResultsPageNodeFacetsQuery.graphql";
+import * as KgSearchResultsPageNodesQueryDocument from "kg/api/queries/KgSearchResultsPageNodesQuery.graphql";
 import {KgNodeTable} from "shared/components/kg/node/KgNodeTable";
 import {
-  KgNodeQuery,
+  KgSearchQuery,
   KgNodeSort,
   KgNodeSortableField,
   SortDirection,
@@ -17,16 +17,16 @@ import {KgSource} from "shared/models/kg/source/KgSource";
 import {NumberParam, QueryParamConfig, useQueryParam} from "use-query-params";
 import * as _ from "lodash";
 import {
-  KgNodeSearchResultsPageNodesQuery,
-  KgNodeSearchResultsPageNodesQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageNodesQuery";
+  KgSearchResultsPageNodesQuery,
+  KgSearchResultsPageNodesQueryVariables,
+} from "kg/api/queries/types/KgSearchResultsPageNodesQuery";
 import {KgSearchFacetsGrid} from "kg/components/kg/search/KgNodeFacetsGrid";
-import {KgNodeFacetsFragment} from "kg/api/queries/types/KgNodeFacetsFragment";
+import {KgSearchFacetsFragment} from "kg/api/queries/types/KgSearchFacetsFragment";
 import {ApolloError} from "apollo-boost";
 import {
-  KgNodeSearchResultsPageNodeFacetsQuery,
-  KgNodeSearchResultsPageNodeFacetsQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchResultsPageNodeFacetsQuery";
+  KgSearchResultsPageNodeFacetsQuery,
+  KgSearchResultsPageNodeFacetsQueryVariables,
+} from "kg/api/queries/types/KgSearchResultsPageNodeFacetsQuery";
 import {KgNode} from "shared/models/kg/node/KgNode";
 import * as ReactLoader from "react-loader";
 
@@ -51,8 +51,8 @@ class JsonQueryParamConfig<T> implements QueryParamConfig<T | undefined> {
 }
 
 const queryQueryParamConfig: QueryParamConfig<
-  KgNodeQuery | undefined
-> = new JsonQueryParamConfig<KgNodeQuery>();
+  KgSearchQuery | undefined
+> = new JsonQueryParamConfig<KgSearchQuery>();
 
 const querySortsParamConfig: QueryParamConfig<
   KgNodeSort[] | undefined
@@ -60,7 +60,7 @@ const querySortsParamConfig: QueryParamConfig<
 
 const makeTitle = (kwds: {
   count: number;
-  query?: KgNodeQuery;
+  query?: KgSearchQuery;
   sources: readonly KgSource[];
 }): React.ReactNode => {
   const {count, query, sources} = kwds;
@@ -168,7 +168,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     number | null | undefined
   >("offset", NumberParam);
   let [queryQueryParam, setQueryQueryParam] = useQueryParam<
-    KgNodeQuery | undefined
+    KgSearchQuery | undefined
   >("query", queryQueryParamConfig);
   let [sortsQueryParam, setSortsQueryParam] = useQueryParam<
     KgNodeSort[] | undefined
@@ -187,7 +187,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
   //   `Loading: node facets: ${loadingNodeFacets}, nodes: ${loadingNodes}`
   // );
   const [nodeFacets, setNodeFacets] = React.useState<{
-    nodeFacets: KgNodeFacetsFragment;
+    nodeFacets: KgSearchFacetsFragment;
     nodesCount: number;
     sources: readonly KgSource[];
   } | null>(null);
@@ -198,11 +198,11 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     setLoadingNodeFacets(true);
     apolloClient
       .query<
-        KgNodeSearchResultsPageNodeFacetsQuery,
-        KgNodeSearchResultsPageNodeFacetsQueryVariables
+        KgSearchResultsPageNodeFacetsQuery,
+        KgSearchResultsPageNodeFacetsQueryVariables
       >({
         fetchPolicy: "no-cache",
-        query: KgNodeSearchResultsPageNodeFacetsQueryDocument,
+        query: KgSearchResultsPageNodeFacetsQueryDocument,
         variables: {
           kgId,
           query: queryQueryParam ?? {},
@@ -239,11 +239,11 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
     const offset = offsetQueryParam ?? OFFSET_DEFAULT;
     apolloClient
       .query<
-        KgNodeSearchResultsPageNodesQuery,
-        KgNodeSearchResultsPageNodesQueryVariables
+        KgSearchResultsPageNodesQuery,
+        KgSearchResultsPageNodesQueryVariables
       >({
         fetchPolicy: "no-cache",
-        query: KgNodeSearchResultsPageNodesQueryDocument,
+        query: KgSearchResultsPageNodesQueryDocument,
         variables: {
           kgId,
           limit,

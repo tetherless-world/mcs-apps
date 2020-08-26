@@ -1,5 +1,5 @@
 import * as qs from "qs";
-import {KgSearchVariables} from "shared/models/kg/node/KgNodeSearchVariables";
+import {KgSearchVariables} from "shared/models/kg/node/KgSearchVariables";
 import * as _ from "lodash";
 
 export class Hrefs {

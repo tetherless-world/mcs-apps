@@ -8,11 +8,11 @@ import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {GraphQLError} from "graphql";
 import {
-  KgNodeSearchBoxQuery,
-  KgNodeSearchBoxQueryVariables,
-} from "kg/api/queries/types/KgNodeSearchBoxQuery";
+  KgSearchBoxQuery,
+  KgSearchBoxQueryVariables,
+} from "kg/api/queries/types/KgSearchBoxQuery";
 import {useApolloClient} from "@apollo/react-hooks";
-import * as KgNodeSearchBoxQueryDocument from "kg/api/queries/KgNodeSearchBoxQuery.graphql";
+import * as KgSearchBoxQueryDocument from "kg/api/queries/KgSearchBoxQuery.graphql";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgNode} from "shared/models/kg/node/KgNode";
 import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
@@ -92,9 +92,9 @@ export const KgSearchBox: React.FunctionComponent<{
   const throttledQuery = React.useRef(
     _.throttle(
       (
-        variables: KgNodeSearchBoxQueryVariables,
+        variables: KgSearchBoxQueryVariables,
         callback: (
-          data: KgNodeSearchBoxQuery,
+          data: KgSearchBoxQuery,
           errors: readonly GraphQLError[] | undefined
         ) => void
       ) => {
@@ -107,8 +107,8 @@ export const KgSearchBox: React.FunctionComponent<{
         setIsLoading(true);
 
         apolloClient
-          .query<KgNodeSearchBoxQuery, KgNodeSearchBoxQueryVariables>({
-            query: KgNodeSearchBoxQueryDocument,
+          .query<KgSearchBoxQuery, KgSearchBoxQueryVariables>({
+            query: KgSearchBoxQueryDocument,
             variables,
           })
           .then(({data, errors}) => {
@@ -176,7 +176,7 @@ export const KgSearchBox: React.FunctionComponent<{
 
           history.push(
             Hrefs.kg({id: kgId}).nodeSearch({
-              __typename: "KgNodeSearchVariables",
+              __typename: "KgSearchVariables",
               query: {
                 filters,
                 text: valueText,

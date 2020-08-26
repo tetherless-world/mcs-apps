@@ -1,10 +1,10 @@
-import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "../../support/kg/pages/KgSearchResultsPage";
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 
-context("KgNodeSearchResultsPage", () => {
-  let page: KgNodeSearchResultsPage;
+context("KgSearchResultsPage", () => {
+  let page: KgSearchResultsPage;
   let node: KgNode;
   let source: {id: string; label: string};
   let totalNodes: number;
@@ -13,7 +13,7 @@ context("KgNodeSearchResultsPage", () => {
   before(() => {
     KgTestData.kgNodes.then((kgNodes) => {
       node = kgNodes[0];
-      page = new KgNodeSearchResultsPage(node.labels[0]);
+      page = new KgSearchResultsPage(node.labels[0]);
       source = KgTestData.kgSources[0];
       assert(source.id === node.sources[0]);
       totalNodes = kgNodes.length;

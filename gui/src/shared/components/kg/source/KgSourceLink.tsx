@@ -18,7 +18,7 @@ export const KgSourceLink: React.FunctionComponent<{
           sourceIds: {include: [source.id]},
         },
       },
-      __typename: "KgNodeSearchVariables",
+      __typename: "KgSearchVariables",
     })}
   >
     {source.label}

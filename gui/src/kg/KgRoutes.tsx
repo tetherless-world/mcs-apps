@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {KgSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "kg/components/kg/search/KgSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {KgNoRoute} from "kg/components/error/KgNoRoute";

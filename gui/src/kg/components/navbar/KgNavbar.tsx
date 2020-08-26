@@ -11,7 +11,7 @@ import {
 
 import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
-import {KgSearchBox} from "../kg/search/KgNodeSearchBox";
+import {KgSearchBox} from "../kg/search/KgSearchBox";
 import {KgNavbarProps} from "kg/components/navbar/KgNavbarProps";
 
 const useStyles = makeStyles((theme) =>

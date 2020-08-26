@@ -9,13 +9,12 @@ class NodeSearchSuggestionLink {
   }
 }
 
-export class KgNodeSearchBox {
+export class KgSearchBox {
   static readonly componentSelector = "[data-cy=searchTextInput]";
   public readonly selector: string;
 
   constructor(private readonly parentSelector: string) {
-    this.selector =
-      this.parentSelector + " " + KgNodeSearchBox.componentSelector;
+    this.selector = this.parentSelector + " " + KgSearchBox.componentSelector;
   }
 
   get() {

@@ -28,7 +28,7 @@ export const KgSourcePill: React.FunctionComponent<{source: KgSource}> = ({
                 sourceIds: {include: [source.id]},
               },
             },
-            __typename: "KgNodeSearchVariables",
+            __typename: "KgSearchVariables",
           })
         );
       }}

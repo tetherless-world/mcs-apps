@@ -2,16 +2,16 @@ import * as React from "react";
 import * as _ from "lodash";
 import {Grid} from "@material-ui/core";
 import {StringFacetFilter} from "shared/models/StringFacetFilter";
-import {KgNodeFacetsFragment} from "kg/api/queries/types/KgNodeFacetsFragment";
-import {KgSearchFilters} from "shared/models/kg/node/KgNodeFilters";
-import {KgNodeQuery} from "kg/api/graphqlGlobalTypes";
+import {KgSearchFacetsFragment} from "kg/api/queries/types/KgSearchFacetsFragment";
+import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
+import {KgSearchQuery} from "kg/api/graphqlGlobalTypes";
 import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
 import {FacetExpansionPanel} from "kg/components/kg/search/FacetExpansionPanel";
 
 export const KgSearchFacetsGrid: React.FunctionComponent<{
-  facets: KgNodeFacetsFragment;
-  onChange: (query: KgNodeQuery) => void;
-  query: KgNodeQuery;
+  facets: KgSearchFacetsFragment;
+  onChange: (query: KgSearchQuery) => void;
+  query: KgSearchQuery;
 }> = ({facets, onChange, query}) => {
   const isStringFacetFilterEmpty = (
     filter: StringFacetFilter | null | undefined
@@ -39,7 +39,7 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
     attribute: keyof KgSearchFilters,
     newState?: StringFacetFilter
   ) => {
-    const newQuery: KgNodeQuery = _.cloneDeep(query);
+    const newQuery: KgSearchQuery = _.cloneDeep(query);
     if (!newQuery.filters) {
       newQuery.filters = {};
     }

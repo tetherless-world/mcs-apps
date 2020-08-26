@@ -2,7 +2,7 @@ import {KgHomePage} from "../../support/kg/pages/KgHomePage";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 import {KgNode} from "../../support/kg/models/KgNode";
-import {KgNodeSearchResultsPage} from "../../support/kg/pages/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "../../support/kg/pages/KgSearchResultsPage";
 
 context("KG Home Page", () => {
   const page = new KgHomePage();
@@ -49,7 +49,7 @@ context("KG Home Page", () => {
 
     page.search.enter();
 
-    const nodeSearchResultsPage = new KgNodeSearchResultsPage(node.labels[0]);
+    const nodeSearchResultsPage = new KgSearchResultsPage(node.labels[0]);
 
     nodeSearchResultsPage.assertLoaded();
   });

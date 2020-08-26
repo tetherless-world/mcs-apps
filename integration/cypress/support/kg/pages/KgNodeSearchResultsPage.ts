@@ -115,7 +115,7 @@ class KgNodeResultsNodeTableRowKgNodeLink {
   }
 }
 
-export class KgNodeSearchResultsPage extends Page {
+export class KgSearchResultsPage extends Page {
   constructor(private readonly search: string) {
     super();
   }
