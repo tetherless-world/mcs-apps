@@ -34,7 +34,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit = {
       MemKgStore.this.edges = edges.toList
-      putSourceIds(MemKgStore.this.edges.flatMap(_.sources).distinct)
+      putSourceIds(MemKgStore.this.edges.flatMap(_.sourceIds).distinct)
     }
 
     final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {

@@ -6,6 +6,6 @@ final case class KgEdge(
                          `object`: String,
                          predicate: String,
                          sentences: List[String],
-                         sources: List[String],
+                         sourceIds: List[String],
                          subject: String
                        )

@@ -106,7 +106,7 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
                   `object` = node2,
                   predicate = relation,
                   sentences = csvRowMap.getList("sentence"),
-                  sources = sources,
+                  sourceIds = sources,
                   subject = node1
                 ),
                 node1 = KgNode(

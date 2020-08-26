@@ -26,6 +26,7 @@ import * as KgHomePageQueryDocument from "kg/api/queries/KgHomePageQuery.graphql
 import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
 import {KgSearchQuery, StringFacetFilter} from "kg/api/graphqlGlobalTypes";
 import {KgSearchLink} from "shared/components/kg/search/KgSearchLink";
+import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 
 // Constants
 const CONCEPT_NET_SOURCE_ID = "CN";
@@ -72,36 +73,6 @@ export const KgHomePage: React.FunctionComponent = () => {
     null
   );
 
-  const onSearchSubmit = () => {
-    if (searchBoxValue === null) {
-      history.push(KgHrefs.kg({id: kgId}).nodeSearch());
-      return;
-    }
-
-    switch (searchBoxValue.__typename) {
-      case "KgNode":
-        history.push(KgHrefs.kg({id: kgId}).node({id: searchBoxValue.id}));
-        break;
-      case "text":
-        const query: KgSearchQuery = {};
-        query.text = searchBoxValue.text;
-        if (sourcesFilter) {
-          query.filters = {sourceIds: sourcesFilter};
-        }
-
-        history.push(
-          KgHrefs.kg({id: kgId}).nodeSearch({
-            __typename: "KgSearchVariables",
-            query,
-          })
-        );
-        break;
-      default:
-        const _exhaustiveCheck: never = searchBoxValue;
-        _exhaustiveCheck;
-    }
-  };
-
   return (
     <KgFrame hideNavbarSearchBox={true} {...query}>
       {({data}) => {
@@ -120,9 +91,9 @@ export const KgHomePage: React.FunctionComponent = () => {
                     <Grid item>
                       <KgSearchBox
                         autoFocus
+                        filters={{sourceIds: sourcesFilter}}
                         placeholder="Search a word or try a query"
                         onChange={setSearchBoxValue}
-                        onSubmit={onSearchSubmit}
                       />
                     </Grid>
                     <Grid item>
@@ -139,7 +110,12 @@ export const KgHomePage: React.FunctionComponent = () => {
                           <Button
                             color="primary"
                             variant="contained"
-                            onClick={onSearchSubmit}
+                            onClick={() =>
+                              redirectToKgSearchBoxValue(
+                                history,
+                                searchBoxValue
+                              )
+                            }
                           >
                             Search
                           </Button>

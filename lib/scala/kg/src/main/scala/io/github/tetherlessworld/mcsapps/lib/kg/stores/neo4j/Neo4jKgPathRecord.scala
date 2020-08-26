@@ -16,7 +16,7 @@ final case class Neo4jKgPathRecord(
       labels = List(), `object` = objectNodeId,
       predicate = pathEdgePredicate,
       sentences = List(),
-      sources = sources,
+      sourceIds = sources,
       subject = subjectNodeId
     )
 }

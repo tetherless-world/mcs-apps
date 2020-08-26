@@ -28,7 +28,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         `object` = recordMap("object.id").asInstanceOf[String],
         predicate = recordMap("type(edge)").asInstanceOf[String],
         sentences = toList(recordMap("edge.sentences").asInstanceOf[String]),
-        sources = toList(recordMap("edge.sources").asInstanceOf[String]),
+        sourceIds = toList(recordMap("edge.sources").asInstanceOf[String]),
         subject = recordMap("subject.id").asInstanceOf[String]
       )
     }

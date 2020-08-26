@@ -40,7 +40,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               "object" -> edge.`object`,
               "predicate" -> edge.predicate,
               "sentences" -> edge.sentences.mkString(ListDelimString),
-              "sources" -> edge.sources.mkString(ListDelimString),
+              "sources" -> edge.sourceIds.mkString(ListDelimString),
               "subject" -> edge.subject,
             ))
           )
@@ -49,7 +49,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           // The putEdges, putNodes, et al. methods assume that the iterator is small enough to buffer.
           // We buffer here, but the transaction also buffers.
           val edgesList = edges.toList
-          putSources(edgesList.flatMap(_.sources).distinct.map(KgSource(_)))
+          putSources(edgesList.flatMap(_.sourceIds).distinct.map(KgSource(_)))
           for (edge <- edgesList) {
             putEdge(edge)
           }

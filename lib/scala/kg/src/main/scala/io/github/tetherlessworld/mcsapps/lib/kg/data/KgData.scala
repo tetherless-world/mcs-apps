@@ -14,7 +14,7 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
   val edgesBySubjectId = edges.groupBy(edge => edge.subject)
   val edgesByObjectId = edges.groupBy(edge => edge.`object`)
   val paths = validatePaths(edges, nodesByIdUnranked, pathsUnsorted)
-  val sourcesById = (nodesByIdUnranked.flatMap(_._2.sourceIds) ++ edges.flatMap(_.sources)).map(KgSource(_)).map(source => (source.id, source)).toMap
+  val sourcesById = (nodesByIdUnranked.flatMap(_._2.sourceIds) ++ edges.flatMap(_.sourceIds)).map(KgSource(_)).map(source => (source.id, source)).toMap
   val sources = sourcesById.values.toList
   val nodes = KgNodePageRankCalculator(nodesByIdUnranked.values.toList, edges)
   val nodesById = nodes.map{node => (node.id, node)}.toMap

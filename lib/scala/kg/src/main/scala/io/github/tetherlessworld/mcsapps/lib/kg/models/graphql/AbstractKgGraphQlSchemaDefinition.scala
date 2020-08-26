@@ -24,23 +24,25 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   // Can't use deriveObjectType for KgEdge and KgNode because we need to define them recursively
   // https://github.com/sangria-graphql/sangria/issues/54
   implicit lazy val KgEdgeType: ObjectType[KgGraphQlSchemaContext, KgEdge] = ObjectType("KgEdge", () => fields[KgGraphQlSchemaContext, KgEdge](
+    Field("id", StringType, resolve = _.value.id),
+    Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("object", StringType, resolve = _.value.`object`),
-    // Assume the edge is not dangling
     Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.`object`)),
     Field("predicate", StringType, resolve = _.value.predicate),
-    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sources, ctx.ctx.kgQueryStore.getSourcesById)),
+    Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
+    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("subject", StringType, resolve = _.value.subject),
-    // Assume the edge is not dangling
     Field("subjectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.subject)),
   ))
   implicit lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
     Field("aliases", OptionType(ListType(StringType)), resolve = ctx => if (ctx.value.labels.size > 1) Some(ctx.value.labels.slice(1, ctx.value.labels.size)) else None),
-    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("objectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getEdgesByObject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), objectNodeId = ctx.value.id)),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("pos", OptionType(StringType), resolve = _.value.pos),
+    Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
+    Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("subjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: OffsetArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getEdgesBySubject(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), subjectNodeId = ctx.value.id)),
     Field("topObjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdgesByObject(limit = ctx.args.arg(LimitArgument), objectNodeId = ctx.value.id)),
     Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdgesBySubject(limit = ctx.args.arg(LimitArgument), subjectNodeId = ctx.value.id))

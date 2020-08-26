@@ -13,7 +13,7 @@ final case class KgPath(id: String, path: List[String], sources: List[String]) {
         `object` = path(pathI + 2),
         predicate = path(pathI + 1),
         sentences = List(),
-        sources = sources,
+        sourceIds = sources,
         subject = path(pathI)
       )
     ).toList

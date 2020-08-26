@@ -11,7 +11,7 @@ final case class BenchmarkQuestionAnswerPath(path: List[String], score: Float) {
         `object` = path(pathI + 2),
         predicate = path(pathI + 1),
         sentences = List(),
-        sources = List(),
+        sourceIds = List(),
         subject = path(pathI)
       )
     ).toList
