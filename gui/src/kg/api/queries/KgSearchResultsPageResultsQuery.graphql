@@ -18,13 +18,16 @@ query KgSearchResultsPageResultsQuery(
         edge {
           id
           label
+          sourceIds
         }
       }
       ... on KgEdgeLabelSearchResult {
         edgeLabel
+        sourceIds
       }
       ... on KgNodeLabelSearchResult {
         nodeLabel
+        sourceIds
       }
       ... on KgNodeSearchResult {
         node {

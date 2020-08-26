@@ -11,14 +11,19 @@ export const redirectToKgSearchBoxValue = (
     return;
   }
 
+  const kgHrefs = Hrefs.kg({id: kgId});
+
   switch (value.__typename) {
     case "KgEdgeLabelSearchResult":
     case "KgEdgeSearchResult":
-    case "KgNodeLabelSearchResult":
     case "KgSourceSearchResult":
       throw new EvalError();
+    case "KgNodeLabelSearchResult": {
+      history.push(kgHrefs.nodeLabel({label: value.nodeLabel}));
+      break;
+    }
     case "KgNodeSearchResult": {
-      history.push(Hrefs.kg({id: kgId}).node({id: value.node.id}));
+      history.push(kgHrefs.node({id: value.node.id}));
       break;
     }
     case "text": {

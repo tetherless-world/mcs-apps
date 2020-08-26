@@ -2,15 +2,14 @@ import * as React from "react";
 
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
-import MUIDataTable, {
-  MUIDataTableColumn,
-  MUIDataTableMeta,
-} from "mui-datatables";
+import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {Typography} from "@material-ui/core";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {KgSearchResultLink} from "shared/components/kg/search/KgSearchResultLink";
 import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
+import {getKgSearchResultSourceIds} from "shared/models/kg/search/getKgSearchResultSourceIds";
+import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 
 // const showListAsColumn = (list: string[]) =>
 //   list.map((item) => (
@@ -19,113 +18,6 @@ import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultL
 //       <br />
 //     </React.Fragment>
 //   ));
-
-const columns: MUIDataTableColumn[] = [
-  {
-    name: "#",
-    options: {
-      sort: false,
-      customBodyRender(_, tableMeta) {
-        return (
-          tableMeta.tableState.page * tableMeta.tableState.rowsPerPage +
-          tableMeta.rowIndex +
-          1
-        );
-      },
-    },
-  },
-  {
-    name: "label",
-    label: "Label",
-    options: {
-      sort: true,
-      customBodyRender(_, tableMeta) {
-        const data = getTableRowData(tableMeta);
-        return (
-          <KgSearchResultLink
-            result={data.result}
-            allSources={data.allSources}
-          />
-        );
-      },
-    },
-  },
-  // {
-  //   name: "aliases",
-  //   label: "Aliases",
-  //   options: {
-  //     sort: false,
-  //     customBodyRender(aliases) {
-  //       return aliases ? showListAsColumn(aliases as string[]) : null;
-  //     },
-  //   },
-  // },
-  {
-    name: "sources",
-    label: "Sources",
-    options: {
-      sort: true,
-      customBodyRender(sources) {
-        return sources
-          ? (sources as KgSource[]).map((source) => (
-              <React.Fragment key={source.id}>
-                <KgSourcePill source={source} />
-                <br />
-              </React.Fragment>
-            ))
-          : null;
-      },
-    },
-  },
-  // {
-  //   name: "pos",
-  //   label: "Pos",
-  //   options: {
-  //     sort: false,
-  //     customBodyRender(pos) {
-  //       return pos ? showListAsColumn((pos as string).split(",")) : null;
-  //     },
-  //   },
-  // },
-  // {
-  //   name: "pageRank",
-  //   label: "PageRank",
-  //   options: {
-  //     sort: true,
-  //     customBodyRender(pageRank) {
-  //       return (pageRank as number).toFixed(3);
-  //     },
-  //   },
-  // },
-  {
-    name: "result",
-    options: {
-      display: "false",
-    },
-  },
-];
-
-const getTableRowData = (
-  tableMeta: MUIDataTableMeta
-): KgSearchResultsTableRowData => {
-  const rowData = tableMeta.rowData;
-  const getColumnData = (name: string): any =>
-    rowData[
-      columns.findIndex((col) => typeof col !== "string" && col.name === name)
-    ];
-  return {
-    allSources: getColumnData("allSources"),
-    label: getColumnData("label"),
-    result: getColumnData("result"),
-  };
-};
-
-interface KgSearchResultsTableRowData {
-  // aliases?: readonly string[];
-  allSources: readonly KgSource[];
-  label: string;
-  result: KgSearchResult;
-}
 
 export const KgSearchResultsTable: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -169,17 +61,105 @@ export const KgSearchResultsTable: React.FunctionComponent<{
     }
   };
 
+  interface KgSearchResultsTableRowData {
+    // aliases?: readonly string[];
+    label: string;
+    sourceIds: readonly string[];
+  }
+
   const data = React.useMemo(() => {
     const rows: KgSearchResultsTableRowData[] = [];
     for (const result of results) {
       rows.push({
-        allSources,
         label: getKgSearchResultLabel({allSources, result}),
-        result,
+        sourceIds: getKgSearchResultSourceIds({result}),
       });
     }
     return rows;
   }, [allSources, results]);
+
+  const columns: MUIDataTableColumn[] = React.useMemo(
+    () => [
+      {
+        name: "#",
+        options: {
+          sort: false,
+          customBodyRender(_, tableMeta) {
+            return (
+              tableMeta.tableState.page * tableMeta.tableState.rowsPerPage +
+              tableMeta.rowIndex +
+              1
+            );
+          },
+        },
+      },
+      {
+        name: "label",
+        label: "Label",
+        options: {
+          sort: true,
+          customBodyRender(_, tableMeta) {
+            return (
+              <KgSearchResultLink
+                result={results[tableMeta.rowIndex]}
+                allSources={allSources}
+              />
+            );
+          },
+        },
+      },
+      // {
+      //   name: "aliases",
+      //   label: "Aliases",
+      //   options: {
+      //     sort: false,
+      //     customBodyRender(aliases) {
+      //       return aliases ? showListAsColumn(aliases as string[]) : null;
+      //     },
+      //   },
+      // },
+      {
+        name: "sourceIds",
+        label: "Sources",
+        options: {
+          sort: true,
+          customBodyRender(sourceIds, tableMeta) {
+            return sourceIds
+              ? (sourceIds as string[])
+                  .map((sourceId) => resolveSourceId({allSources, sourceId}))
+                  .map((source) => (
+                    <React.Fragment key={source.id}>
+                      <KgSourcePill source={source} />
+                      <br />
+                    </React.Fragment>
+                  ))
+              : null;
+          },
+        },
+      },
+      // {
+      //   name: "pos",
+      //   label: "Pos",
+      //   options: {
+      //     sort: false,
+      //     customBodyRender(pos) {
+      //       return pos ? showListAsColumn((pos as string).split(",")) : null;
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "pageRank",
+      //   label: "PageRank",
+      //   options: {
+      //     sort: true,
+      //     customBodyRender(pageRank) {
+      //       return (pageRank as number).toFixed(3);
+      //     },
+      //   },
+      // },
+    ],
+    [allSources, data, results]
+  );
 
   return (
     <div data-cy="matchingNodesTable">
@@ -188,13 +168,8 @@ export const KgSearchResultsTable: React.FunctionComponent<{
         // but missing in types
         // @ts-ignore
         innerRef={tableCallbackRef}
-        title={
-          <Typography variant="h6" data-cy="title">
-            {title}
-          </Typography>
-        }
-        data={data}
         columns={columns}
+        data={data}
         options={{
           count,
           serverSide: true,
@@ -207,6 +182,11 @@ export const KgSearchResultsTable: React.FunctionComponent<{
             return {"data-cy": "node-" + rowIndex};
           },
         }}
+        title={
+          <Typography variant="h6" data-cy="title">
+            {title}
+          </Typography>
+        }
       />
     </div>
   );

@@ -29,6 +29,7 @@ import {
 import * as ReactLoader from "react-loader";
 import {KgSearchResultsTable} from "kg/components/kg/search/KgSearchResultsTable";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
+import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
@@ -95,14 +96,10 @@ const makeTitle = (kwds: {
         include: includeSourceIds,
       } = query.filters.sourceIds;
 
-      const sourceLabels = (sourceIds: readonly string[]) => {
-        const sourceLabels = [];
-        for (const sourceId of sourceIds) {
-          const source = allSources.find((source) => source.id === sourceId);
-          sourceLabels.push(source ? source.label : sourceId);
-        }
-        return sourceLabels;
-      };
+      const sourceLabels = (sourceIds: readonly string[]) =>
+        sourceIds.map(
+          (sourceId) => resolveSourceId({allSources, sourceId}).label
+        );
 
       if (excludeSourceIds) {
         filterRepresentations.push(

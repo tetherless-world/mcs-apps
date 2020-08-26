@@ -17,7 +17,9 @@ export const KgNodeLabelLink: React.FunctionComponent<{
     >
       <span style={{marginRight: "5px"}}>{nodeLabel}</span>
       {sources &&
-        sources.map((source) => <KgSourcePill source={source} size="small" />)}
+        sources.map((source) => (
+          <KgSourcePill key={source.id} source={source} size="small" />
+        ))}
     </Link>
   );
 };

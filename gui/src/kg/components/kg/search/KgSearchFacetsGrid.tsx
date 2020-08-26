@@ -8,6 +8,7 @@ import {KgSearchQuery} from "kg/api/graphqlGlobalTypes";
 import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
 import {FacetExpansionPanel} from "kg/components/kg/search/FacetExpansionPanel";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 
 export const KgSearchFacetsGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -67,14 +68,10 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
           onChange={onChangeSourceIds}
           valueUniverse={facets.sourceIds.reduce(
             (map: {[index: string]: string}, sourceId) => {
-              const source = allSources.find(
-                (source) => source.id === sourceId.value
-              );
-              if (source) {
-                map[sourceId.value] = source.label;
-              } else {
-                map[sourceId.value] = sourceId.value;
-              }
+              map[sourceId.value] = resolveSourceId({
+                allSources,
+                sourceId: sourceId.value,
+              }).label;
               return map;
             },
             {}

@@ -12,15 +12,18 @@ query KgSearchBoxAutocompleteQuery(
     ) {
       ... on KgEdgeLabelSearchResult {
         edgeLabel
+        sourceIds
       }
       ... on KgEdgeSearchResult {
         edge {
           id
           label
+          sourceIds
         }
       }
       ... on KgNodeLabelSearchResult {
         nodeLabel
+        sourceIds
       }
       ... on KgNodeSearchResult {
         node {

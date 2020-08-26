@@ -1,5 +1,6 @@
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 
 export const getKgSearchResultLabel = (kwds: {
   allSources: readonly KgSource[];
@@ -15,10 +16,8 @@ export const getKgSearchResultLabel = (kwds: {
       return result.nodeLabel;
     case "KgNodeSearchResult":
       return result.node.label ?? result.node.id;
-    case "KgSourceSearchResult": {
-      const source = allSources.find((source) => source.id === result.sourceId);
-      return source ? source.label : result.sourceId;
-    }
+    case "KgSourceSearchResult":
+      return resolveSourceId({allSources, sourceId: result.sourceId}).label;
     default:
       throw new EvalError();
     // const _exhaustiveCheck: never = value;

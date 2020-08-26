@@ -32,7 +32,7 @@ export const KgNodeLink: React.FunctionComponent<{
       </span>
       {node.sources
         ? node.sources.map((source) => (
-            <KgSourcePill source={source} size="small" />
+            <KgSourcePill key={source.id} source={source} size="small" />
           ))
         : null}
     </Link>

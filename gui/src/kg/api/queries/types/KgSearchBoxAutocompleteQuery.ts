@@ -11,12 +11,14 @@ import { KgSearchQuery } from "./../../graphqlGlobalTypes";
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeLabelSearchResult {
   __typename: "KgEdgeLabelSearchResult";
   edgeLabel: string;
+  sourceIds: string[];
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult_edge {
   __typename: "KgEdge";
   id: string;
   label: string | null;
+  sourceIds: string[];
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult {
@@ -27,6 +29,7 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult {
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchResult {
   __typename: "KgNodeLabelSearchResult";
   nodeLabel: string;
+  sourceIds: string[];
 }
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node {

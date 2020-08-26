@@ -12,6 +12,7 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResul
   __typename: "KgEdge";
   id: string;
   label: string | null;
+  sourceIds: string[];
 }
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult {
@@ -22,11 +23,13 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResul
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeLabelSearchResult {
   __typename: "KgEdgeLabelSearchResult";
   edgeLabel: string;
+  sourceIds: string[];
 }
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearchResult {
   __typename: "KgNodeLabelSearchResult";
   nodeLabel: string;
+  sourceIds: string[];
 }
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult_node {
