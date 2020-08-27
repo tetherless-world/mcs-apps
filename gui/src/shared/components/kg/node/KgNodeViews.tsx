@@ -16,6 +16,7 @@ import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
 import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
+import {indexKgEdgeObjectsByPredicate} from "shared/models/kg/node/indexKgEdgeObjectsByPredicate";
 
 export const KgNodeViews: React.FunctionComponent<{
   node: {
@@ -36,19 +37,9 @@ export const KgNodeViews: React.FunctionComponent<{
     title += " (" + node.pos + ")";
   }
 
-  const edgeObjectsByPredicate: {
-    [index: string]: KgEdgeObject[];
-  } = {};
-  for (const edge of node.topSubjectOfEdges) {
-    if (!edge.objectNode) {
-      continue;
-    } else if (!edge.predicate) {
-      continue;
-    }
-    const edges = (edgeObjectsByPredicate[edge.predicate] =
-      edgeObjectsByPredicate[edge.predicate] ?? []);
-    edges.push(edge);
-  }
+  const edgeObjectsByPredicate = indexKgEdgeObjectsByPredicate(
+    node.topSubjectOfEdges
+  );
 
   const tabRoutes = {
     grid: new TabRoute({
