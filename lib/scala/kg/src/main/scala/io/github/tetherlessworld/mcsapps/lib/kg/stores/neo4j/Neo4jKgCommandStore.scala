@@ -176,7 +176,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             s"""
                |CALL gds.pageRank.write({
                |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
-               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(r)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(r)<>"${PathRelationshipType}" AND TYPE(r)<>"${LabelRelationshipType}" RETURN id(source) as source, id(target) as target',
                |writeProperty: 'pageRank'
                |})
                |""".stripMargin
