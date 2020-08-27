@@ -130,6 +130,57 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
+  final override def getNodesByLabel(label: String): List[KgNode] =
+    nodes.filter(node => node.labels.exists(_ == label))
+
+  final override def getPathById(id: String): Option[KgPath] =
+    pathsById.get(id)
+
+  final override def getSourcesById: Map[String, KgSource] =
+    sourcesById
+
+  final override def getRandomNode: KgNode =
+    nodes(random.nextInt(nodes.size))
+
+  final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] =
+    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+
+  final override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] = {
+    val nodeIdSet = getNodesByLabel(objectNodeLabel).map(_.id).toSet
+    edges.filter(edge => nodeIdSet.contains(edge.`object`)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+  }
+
+  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
+    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+
+  final override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] = {
+    val nodeIdSet = getNodesByLabel(subjectNodeLabel).map(_.id).toSet
+    edges.filter(edge => nodeIdSet.contains(edge.subject)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+  }
+
+  final override def getTotalEdgesCount: Int =
+    edges.size
+
+  final override def getTotalNodesCount: Int =
+    nodes.size
+
+  override def isEmpty: Boolean =
+    edges.isEmpty && nodes.isEmpty && paths.isEmpty
+
+  private def luceneResultsToNodes(results: PagedResults[SearchResult]): List[KgNode] =
+    luceneResultsToNodes(List(), results)
+
+  @tailrec
+  private def luceneResultsToNodes(accumulatedNodes: List[KgNode], results: PagedResults[SearchResult]): List[KgNode] = {
+    val resultsNodes = results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
+    val nextPage = results.nextPage()
+    if (nextPage.isDefined) {
+      luceneResultsToNodes(accumulatedNodes ++ resultsNodes, nextPage.get)
+    } else {
+      accumulatedNodes ++ resultsNodes
+    }
+  }
+
   final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = {
     // Previous node-only search:
 //    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).sort(toLuceneFieldSorts(sorts):_*).limit(limit).offset(offset).search()
@@ -164,47 +215,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     KgSearchFacets(
       sourceIds = results.facet(LuceneFields.nodeSource).map(_.values.map(value => StringFacetValue(count = value.count, value = value.value)).toList).getOrElse(List())
     )
-  }
-
-  final override def getNodesByLabel(label: String): List[KgNode] =
-    nodes.filter(node => node.labels.exists(_ == label))
-
-  final override def getPathById(id: String): Option[KgPath] =
-    pathsById.get(id)
-
-  final override def getSourcesById: Map[String, KgSource] =
-    sourcesById
-
-  final override def getRandomNode: KgNode =
-    nodes(random.nextInt(nodes.size))
-
-  final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] =
-    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-
-  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-
-  final override def getTotalEdgesCount: Int =
-    edges.size
-
-  final override def getTotalNodesCount: Int =
-    nodes.size
-
-  override def isEmpty: Boolean =
-    edges.isEmpty && nodes.isEmpty && paths.isEmpty
-
-  private def luceneResultsToNodes(results: PagedResults[SearchResult]): List[KgNode] =
-    luceneResultsToNodes(List(), results)
-
-  @tailrec
-  private def luceneResultsToNodes(accumulatedNodes: List[KgNode], results: PagedResults[SearchResult]): List[KgNode] = {
-    val resultsNodes = results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
-    val nextPage = results.nextPage()
-    if (nextPage.isDefined) {
-      luceneResultsToNodes(accumulatedNodes ++ resultsNodes, nextPage.get)
-    } else {
-      accumulatedNodes ++ resultsNodes
-    }
   }
 
   private def toLuceneFieldSorts(sorts: Option[List[KgSearchSort]]) =
