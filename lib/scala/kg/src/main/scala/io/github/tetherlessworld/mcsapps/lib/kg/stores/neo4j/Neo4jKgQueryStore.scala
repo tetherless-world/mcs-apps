@@ -191,7 +191,13 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       ).toNodes.headOption
 
     override def getNodesByLabel(label: String): List[KgNode] =
-      List()
+      transaction.run(
+        s"""
+           |MATCH (label:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
+           |RETURN ${nodePropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map("label" -> label))
+      ).toNodes
 
     final override def getPathById(id: String): Option[KgPath] =
       transaction.run(
