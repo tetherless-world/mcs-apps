@@ -103,8 +103,8 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           for (label <- node.labels) {
             transaction.run(
               s"""
-                 |MATCH (label:${LabelLabel} {id:$$labelId})
                  |MATCH (node:${NodeLabel} {id:$$nodeId})
+                 |MERGE (label:${LabelLabel} {id:$$labelId})
                  |MERGE (node)-[:${LabelRelationshipType}]->(label)
                  |""".stripMargin,
               toTransactionRunParameters(Map(
