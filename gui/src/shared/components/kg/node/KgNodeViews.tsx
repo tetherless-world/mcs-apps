@@ -16,8 +16,8 @@ import {
   Tab,
   Tabs,
 } from "@material-ui/core";
-import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
-import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
+import {KgEdgeObjectsGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
+import {KgEdgeObjectsLists} from "shared/components/kg/node/KgEdgeObjectsLists";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
@@ -42,7 +42,7 @@ export const KgNodeViews: React.FunctionComponent<{
     title += " (" + node.pos + ")";
   }
 
-  const predicateSubjects: {
+  const edgeObjectsByPredicate: {
     [index: string]: KgEdgeObject[];
   } = {};
   for (const edge of node.topSubjectOfEdges) {
@@ -51,8 +51,8 @@ export const KgNodeViews: React.FunctionComponent<{
     } else if (!edge.predicate) {
       continue;
     }
-    const edges = (predicateSubjects[edge.predicate] =
-      predicateSubjects[edge.predicate] ?? []);
+    const edges = (edgeObjectsByPredicate[edge.predicate] =
+      edgeObjectsByPredicate[edge.predicate] ?? []);
     edges.push(edge);
   }
 
@@ -97,14 +97,14 @@ export const KgNodeViews: React.FunctionComponent<{
           <h1 data-cy="node-title">{title}</h1>
           <Switch>
             <Route exact path={tabRoutes.grid.path}>
-              <KgNodePredicateGrid
-                predicateSubjects={predicateSubjects}
+              <KgEdgeObjectsGrid
+                edgeObjectsByPredicate={edgeObjectsByPredicate}
                 sources={node.sources}
               />
             </Route>
             <Route path={tabRoutes.list.path}>
-              <KgNodePredicateList
-                predicateSubjects={predicateSubjects}
+              <KgEdgeObjectsLists
+                edgeObjectsByPredicate={edgeObjectsByPredicate}
                 sources={node.sources}
               />
             </Route>
