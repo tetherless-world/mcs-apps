@@ -19,7 +19,7 @@ import {
 import {KgNodePredicateGrid} from "shared/components/kg/node/KgNodePredicateGrid";
 import {KgNodePredicateList} from "shared/components/kg/node/KgNodePredicateList";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
-import {KgNodeSubjectOfEdge} from "shared/models/kg/node/KgNodeSubjectOfEdge";
+import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgNodeViews: React.FunctionComponent<{
@@ -29,7 +29,7 @@ export const KgNodeViews: React.FunctionComponent<{
     label: string | null;
     pos: string | null;
     sources: KgSource[];
-    topSubjectOfEdges: KgNodeSubjectOfEdge[];
+    topSubjectOfEdges: KgEdgeObject[];
   };
 }> = ({node}) => {
   const location = useLocation();
@@ -43,7 +43,7 @@ export const KgNodeViews: React.FunctionComponent<{
   }
 
   const predicateSubjects: {
-    [index: string]: KgNodeSubjectOfEdge[];
+    [index: string]: KgEdgeObject[];
   } = {};
   for (const edge of node.topSubjectOfEdges) {
     if (!edge.objectNode) {

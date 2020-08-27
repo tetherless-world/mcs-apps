@@ -1,4 +1,4 @@
-export interface KgNodeSubjectOfEdge {
+export interface KgEdgeObject {
   object: string;
   objectNode: {
     id: string;

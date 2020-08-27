@@ -8,11 +8,11 @@ import {
 } from "@material-ui/core";
 import * as React from "react";
 import {KgNodeLink} from "./KgNodeLink";
-import {KgNodeSubjectOfEdge} from "shared/models/kg/node/KgNodeSubjectOfEdge";
+import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 const EdgeList: React.FunctionComponent<{
-  edges: KgNodeSubjectOfEdge[];
+  edges: KgEdgeObject[];
   predicate: string;
   sources: KgSource[];
 }> = ({edges, predicate, sources}) => {
@@ -38,7 +38,7 @@ const EdgeList: React.FunctionComponent<{
 
 export const KgNodePredicateGrid: React.FunctionComponent<{
   predicateSubjects: {
-    [predicate: string]: KgNodeSubjectOfEdge[];
+    [predicate: string]: KgEdgeObject[];
   };
   sources: KgSource[];
 }> = ({predicateSubjects, sources}) => {

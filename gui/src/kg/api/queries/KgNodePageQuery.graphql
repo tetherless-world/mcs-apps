@@ -1,3 +1,4 @@
+#import "./KgEdgeObjectFragment.graphql"
 #import "./KgNodeFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
@@ -9,13 +10,7 @@ query KgNodePageQuery(
     nodeById(id: $nodeId) {
       ...KgNodeFragment
       topSubjectOfEdges(limit: 100) {
-        object
-        objectNode {
-          id
-          label
-          pos
-        }
-        predicate
+        ... KgEdgeObjectFragment
       }
     }
     sources {
