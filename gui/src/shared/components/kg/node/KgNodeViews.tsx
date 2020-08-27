@@ -10,12 +10,12 @@ import {
 } from "@material-ui/core";
 import {KgEdgeObjectsGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
 import {KgEdgeObjectsLists} from "shared/components/kg/node/KgEdgeObjectsLists";
-import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
 import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
+import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
 
 export const KgNodeViews: React.FunctionComponent<{
   node: {
@@ -90,18 +90,7 @@ export const KgNodeViews: React.FunctionComponent<{
         <Grid item xs={2}>
           <Grid container direction="column" spacing={6}>
             <Grid item>
-              <Card>
-                <CardHeader title="Source(s)"></CardHeader>
-                <CardContent>
-                  <List>
-                    {node.sources.map((source) => (
-                      <ListItemText data-cy="node-source">
-                        <KgSourcePill source={source} />
-                      </ListItemText>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
+              <KgNodeSourcesCard nodeSources={node.sources} />
             </Grid>
             {node.aliases ? (
               <Grid item>
