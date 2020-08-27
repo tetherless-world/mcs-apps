@@ -188,7 +188,22 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     }
 
     override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] =
-      List()
+      transaction.run(
+        s"""
+           |MATCH (label:${LabelLabel} {id: $$objectNodeLabel})<-[:${LabelRelationshipType}]-(object:${NodeLabel})
+           |MATCH (subject:${NodeLabel})-[edge]->(object)
+           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+           |WITH edge, subject, object
+           |ORDER BY subject.pageRank DESC
+           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+           |UNWIND groupByRelation as group
+           |WITH group[0] as edge, group[1] as subject, group[2] as object
+           |RETURN edge
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "objectNodeLabel" -> objectNodeLabel
+        ))
+      ).toEdges
 
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as a subject
@@ -211,8 +226,23 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       ).toEdges
     }
 
-    override def getTopEdgesBySubjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] =
-      List()
+    override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] =
+      transaction.run(
+        s"""
+           |MATCH (label:${LabelLabel} {id: $$subjectNodeLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})
+           |MATCH (subject)-[edge]->(object:${NodeLabel})
+           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+           |WITH edge, subject, object
+           |ORDER BY object.pageRank DESC
+           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+           |UNWIND groupByRelation as group
+           |WITH group[0] as edge, group[1] as subject, group[2] as object
+           |RETURN edge
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "subjectNodeLabel" -> subjectNodeLabel
+        ))
+      ).toEdges
 
     final override def getTotalEdgesCount: Int =
       transaction.run(
