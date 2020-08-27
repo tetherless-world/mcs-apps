@@ -198,7 +198,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
            |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
            |UNWIND groupByRelation as group
            |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN edge
+           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
            |""".stripMargin,
         toTransactionRunParameters(Map(
           "objectNodeLabel" -> objectNodeLabel
@@ -237,7 +237,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
            |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
            |UNWIND groupByRelation as group
            |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN edge
+           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
            |""".stripMargin,
         toTransactionRunParameters(Map(
           "subjectNodeLabel" -> subjectNodeLabel
