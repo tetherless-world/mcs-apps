@@ -79,7 +79,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get top edges by object" in {
+    "get top edges by object node id" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val objectNodeId = TestKgData.nodes(0).id
@@ -98,13 +98,53 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       }
     }
 
-    "get top edges by subject" in {
+    "get top edges by subject node id" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeId = TestKgData.nodes(0).id
         val actual = query.getTopEdgesBySubjectNodeId(limit, subjectNodeId)
 
         val subjectEdges = TestKgData.edges.filter(_.subject == subjectNodeId)
+        var partitionStart = 0
+        for (partitionEnd <- 1 until actual.size + 1) {
+          if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
+            partitionEnd - partitionStart should be <= limit
+            actual.slice(partitionStart, partitionEnd) should equal(subjectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit))
+
+            partitionStart = partitionEnd
+          }
+        }
+      }
+    }
+
+    "get top edges by object node label" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val limit = 3
+        val objectNodeLabel = TestKgData.nodes(0).labels(0)
+        val actual = query.getTopEdgesByObjectNodeLabel(limit, objectNodeLabel)
+
+        val objectNodes = TestKgData.nodes.filter(_.labels.contains(objectNodeLabel))
+        val objectEdges = TestKgData.edges.filter(edge => objectNodes.contains(TestKgData.nodesById(edge.`object`)))
+        var partitionStart = 0
+        for (partitionEnd <- 1 until actual.size + 1) {
+          if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
+            partitionEnd - partitionStart should be <= limit
+            actual.slice(partitionStart, partitionEnd) should equal(objectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit))
+
+            partitionStart = partitionEnd
+          }
+        }
+      }
+    }
+
+    "get top edges by subject node label" in {
+      storeFactory(TestMode.ReadOnly) { case (command, query) =>
+        val limit = 3
+        val subjectNodeLabels = TestKgData.nodes(0).labels(0)
+        val actual = query.getTopEdgesBySubjectNodeLabel(limit, subjectNodeLabels)
+
+        val subjectNodes = TestKgData.nodes.filter(_.labels.contains(subjectNodeLabels))
+        val subjectEdges = TestKgData.edges.filter(edge => subjectNodes.contains(TestKgData.nodesById(edge.subject)))
         var partitionStart = 0
         for (partitionEnd <- 1 until actual.size + 1) {
           if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
