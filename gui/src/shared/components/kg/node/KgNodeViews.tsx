@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useRouteMatch,
-} from "react-router-dom";
+import {useRouteMatch} from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -13,14 +7,15 @@ import {
   Grid,
   List,
   ListItemText,
-  Tab,
-  Tabs,
 } from "@material-ui/core";
 import {KgEdgeObjectsGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
 import {KgEdgeObjectsLists} from "shared/components/kg/node/KgEdgeObjectsLists";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {TabRoute} from "shared/components/route/TabRoute";
+import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
+import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 
 export const KgNodeViews: React.FunctionComponent<{
   node: {
@@ -32,8 +27,7 @@ export const KgNodeViews: React.FunctionComponent<{
     topSubjectOfEdges: KgEdgeObject[];
   };
 }> = ({node}) => {
-  const location = useLocation();
-  const {path, url} = useRouteMatch();
+  const routeMatch = useRouteMatch();
 
   const nodeLabel = node.label ? node.label : node.id;
 
@@ -56,59 +50,42 @@ export const KgNodeViews: React.FunctionComponent<{
     edges.push(edge);
   }
 
-  class TabRoute {
-    constructor(
-      private relPath: string,
-      readonly label: string,
-      readonly dataCy: string
-    ) {}
-
-    get url() {
-      return url + this.relPath;
-    }
-
-    get path() {
-      return path + this.relPath;
-    }
-  }
-
   const tabRoutes = {
-    grid: new TabRoute("", "Predicate Grid", "predicate-grid"),
-    list: new TabRoute("/list", "Predicate List", "predicate-list"),
+    grid: new TabRoute({
+      content: (
+        <KgEdgeObjectsGrid
+          edgeObjectsByPredicate={edgeObjectsByPredicate}
+          sources={node.sources}
+        />
+      ),
+      relPath: "",
+      label: "Predicate Grid",
+      dataCy: "predicate-grid",
+      routeMatch,
+    }),
+    list: new TabRoute({
+      content: (
+        <KgEdgeObjectsLists
+          edgeObjectsByPredicate={edgeObjectsByPredicate}
+          sources={node.sources}
+        />
+      ),
+      relPath: "/list",
+      label: "Predicate List",
+      dataCy: "predicate-list",
+      routeMatch,
+    }),
   };
 
   return (
     <Grid container direction="column">
-      <Tabs value={location.pathname}>
-        {Object.values(tabRoutes).map((tabRoute) => (
-          <Tab
-            component={Link}
-            value={tabRoute.url}
-            to={tabRoute.url}
-            key={tabRoute.url}
-            label={tabRoute.label}
-            data-cy={`${tabRoute.dataCy}`}
-          />
-        ))}
-      </Tabs>
-
+      <Grid item>
+        <TabRouteTabs tabRoutes={Object.values(tabRoutes)} />
+      </Grid>
       <Grid item container>
         <Grid item xs={10}>
           <h1 data-cy="node-title">{title}</h1>
-          <Switch>
-            <Route exact path={tabRoutes.grid.path}>
-              <KgEdgeObjectsGrid
-                edgeObjectsByPredicate={edgeObjectsByPredicate}
-                sources={node.sources}
-              />
-            </Route>
-            <Route path={tabRoutes.list.path}>
-              <KgEdgeObjectsLists
-                edgeObjectsByPredicate={edgeObjectsByPredicate}
-                sources={node.sources}
-              />
-            </Route>
-          </Switch>
+          <TabRouteSwitch tabRoutes={Object.values(tabRoutes)} />
         </Grid>
         <Grid item xs={2}>
           <Grid container direction="column" spacing={6}>
