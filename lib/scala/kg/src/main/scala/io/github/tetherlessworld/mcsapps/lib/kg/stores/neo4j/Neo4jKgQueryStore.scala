@@ -173,7 +173,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
-           |WHERE type(edge)<>"${PathRelationshipType}"
+           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
            |WITH edge, subject, object
            |ORDER BY subject.pageRank DESC
            |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
@@ -197,7 +197,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
-           |WHERE type(edge)<>"${PathRelationshipType}"
+           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
            |WITH edge, subject, object
            |ORDER BY object.pageRank DESC
            |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
