@@ -32,7 +32,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
     "get edges by object" in {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         for (node <- TestKgData.nodes) {
-          val edges = query.getEdgesByObject(limit = 1, offset = 0, objectNodeId = node.id)
+          val edges = query.getEdgesByObjectNodeId(limit = 1, offset = 0, objectNodeId = node.id)
           edges.size should be(1)
           val edge = edges(0)
           edge.`object` should equal(node.id)
@@ -45,7 +45,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
         val node = TestKgData.nodes(0)
         val expected = TestKgData.edges.filter(edge => edge.`object` == node.id).sortBy(edge => (edge.subject, edge.predicate))
         expected.size should be > 1
-        val actual = (0 until expected.size).flatMap(offset => query.getEdgesByObject(limit = 1, offset = offset, objectNodeId = node.id)).sortBy(edge => (edge.subject, edge.predicate)).toList
+        val actual = (0 until expected.size).flatMap(offset => query.getEdgesByObjectNodeId(limit = 1, offset = offset, objectNodeId = node.id)).sortBy(edge => (edge.subject, edge.predicate)).toList
         actual should equal(expected)
       }
     }
@@ -53,7 +53,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
     "get edges by subject" in {
       val sut = storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val node = TestKgData.nodes(0)
-        val edges = query.getEdgesBySubject(limit = 1, offset = 0, subjectNodeId = node.id)
+        val edges = query.getEdgesBySubjectNodeId(limit = 1, offset = 0, subjectNodeId = node.id)
         edges.size should be(1)
         val edge = edges(0)
         edge.subject should equal(node.id)
@@ -65,7 +65,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
         val node = TestKgData.nodes(0)
         val expected = TestKgData.edges.filter(edge => edge.subject == node.id).sortBy(edge => (edge.predicate, edge.`object`))
         expected.size should be > 1
-        val actual = (0 until expected.size).flatMap(offset => query.getEdgesBySubject(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
+        val actual = (0 until expected.size).flatMap(offset => query.getEdgesBySubjectNodeId(limit = 1, offset = offset, subjectNodeId = node.id)).sortBy(edge => (edge.predicate, edge.`object`)).toList
         actual should equal(expected)
       }
     }
@@ -83,7 +83,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val objectNodeId = TestKgData.nodes(0).id
-        val actual = query.getTopEdgesByObject(limit, objectNodeId)
+        val actual = query.getTopEdgesByObjectNodeId(limit, objectNodeId)
 
         val objectEdges = TestKgData.edges.filter(_.`object` == objectNodeId)
         var partitionStart = 0
@@ -102,7 +102,7 @@ trait KgStoreBehaviors extends Matchers with WithResource {
       storeFactory(TestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeId = TestKgData.nodes(0).id
-        val actual = query.getTopEdgesBySubject(limit, subjectNodeId)
+        val actual = query.getTopEdgesBySubjectNodeId(limit, subjectNodeId)
 
         val subjectEdges = TestKgData.edges.filter(_.subject == subjectNodeId)
         var partitionStart = 0

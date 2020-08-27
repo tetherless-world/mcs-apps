@@ -109,7 +109,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         )
       ).map(source => (source.id, source)).toMap
 
-    final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
+    final override def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
@@ -123,7 +123,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         ))
       ).toEdges
 
-    final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
+    final override def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
@@ -215,7 +215,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as an object
      */
-    final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = {
+    final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] = {
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
@@ -236,7 +236,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as a subject
      */
-    final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = {
+    final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] = {
       transaction.run(
         s"""
            |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
@@ -329,11 +329,11 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getSourcesById: Map[String, KgSource] =
     withReadTransaction { _.getSourcesById }
 
-  override final def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    withReadTransaction { _.getEdgesByObject(limit, objectNodeId, offset) }
+  override final def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
+    withReadTransaction { _.getEdgesByObjectNodeId(limit, objectNodeId, offset) }
 
-  override final def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction { _.getEdgesBySubject(limit, offset, subjectNodeId) }
+  override final def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
+    withReadTransaction { _.getEdgesBySubjectNodeId(limit, offset, subjectNodeId) }
 
   final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] =
     withReadTransaction { _.search(limit, offset, query, sorts) }
@@ -367,11 +367,11 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getRandomNode: KgNode =
     withReadTransaction { _.getRandomNode }
 
-  final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] =
-    withReadTransaction { _.getTopEdgesByObject(limit, objectNodeId) }
+  final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] =
+    withReadTransaction { _.getTopEdgesByObjectNodeId(limit, objectNodeId) }
 
-  final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction { _.getTopEdgesBySubject(limit, subjectNodeId) }
+  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
+    withReadTransaction { _.getTopEdgesBySubjectNodeId(limit, subjectNodeId) }
 
   final override def getTotalEdgesCount: Int =
     withReadTransaction { _.getTotalEdgesCount }

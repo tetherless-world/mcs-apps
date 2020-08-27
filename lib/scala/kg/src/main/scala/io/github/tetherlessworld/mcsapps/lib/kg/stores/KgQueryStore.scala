@@ -17,12 +17,12 @@ trait KgQueryStore {
   /**
    * Get edges that have the given node ID as an object.
    */
-  def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge]
+  def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge]
 
   /**
    * Get edges that have the given node ID as a subject.
    */
-  def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
+  def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
 
   /**
    * Get a node by ID.
@@ -47,12 +47,22 @@ trait KgQueryStore {
   /**
    * Get top edges using pageRank grouped by relation that have the given node ID as an object
    */
-  def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge]
+  def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge]
+
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node label as an object
+   */
+  def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge]
 
   /**
    * Get top edges using pageRank grouped by relation that have the given node ID as a subject
    */
-  def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge]
+  def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge]
+
+  /**
+   * Get top edges using pageRank grouped by relation that have the given node label as a subject
+   */
+  def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge]
 
   /**
    * Get total number of edges.
