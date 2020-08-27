@@ -99,6 +99,20 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               ))
             )
           }
+
+          for (label <- node.labels) {
+            transaction.run(
+              s"""
+                 |MATCH (label:${LabelLabel} {id:$$labelId})
+                 |MATCH (node:${NodeLabel} {id:$$nodeId})
+                 |MERGE (node)-[:${LabelRelationshipType}]->(label)
+                 |""".stripMargin,
+              toTransactionRunParameters(Map(
+                "labelId" -> label,
+                "nodeId" -> node.id
+              ))
+            )
+          }
         }
 
         final override def putNodes(nodes: Iterator[KgNode]): Unit = {
@@ -294,7 +308,8 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         val bootstrapCypherStatements = List(
           s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}"],["id", "labels", "sources"]);""",
           s"""CREATE CONSTRAINT node_id_constraint ON (node:${NodeLabel}) ASSERT node.id IS UNIQUE;""",
-          s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;"""
+          s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;""",
+          s"""CREATE CONSTRAINT label_id_constraint ON (label:${LabelLabel}) ASSERT label.id IS UNIQUE;"""
         )
 
         session.writeTransaction { transaction =>
