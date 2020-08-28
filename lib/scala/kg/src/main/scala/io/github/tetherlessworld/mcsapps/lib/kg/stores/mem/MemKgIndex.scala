@@ -81,7 +81,6 @@ final class MemKgIndex {
 
   private val lucene = new DirectLucene(List("id"), autoCommit = false)
   private var nodesById: Map[String, KgNode] = Map()
-  private var sourcesById: Map[String, KgSource] = Map()
 
   final def clear(): Unit = {
     lucene.deleteAll()
@@ -97,7 +96,6 @@ final class MemKgIndex {
 
   final def index(nodesById: Map[String, KgNode], nodesByLabel: Map[String, List[KgNode]], sourcesById: Map[String, KgSource]): Unit = {
     this.nodesById = nodesById
-    this.sourcesById = sourcesById
 
     def index(document: KgDocument) =
       lucene.doc().facets(document.facets: _*).fields(document.fields: _*).index()
