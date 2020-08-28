@@ -23,7 +23,8 @@ export const KgNodeLabelPage: React.FunctionComponent = () => {
   return (
     <KgFrame<KgNodeLabelPageQuery> {...query}>
       {({data}) => {
-        const nodes = data.kgById.nodesByLabel;
+        const nodes = data.kgById.nodesByLabel.nodes;
+        // const edgeObjects = data.kgById.nodesByLabel.topSubjectOfEdges;
         return (
           <List>
             {nodes.map((node) => (
