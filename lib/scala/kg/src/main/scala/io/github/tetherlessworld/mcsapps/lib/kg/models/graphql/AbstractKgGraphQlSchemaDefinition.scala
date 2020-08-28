@@ -45,12 +45,12 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("pos", OptionType(StringType), resolve = _.value.pos),
     Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
-    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectId = Some(ctx.value.id)), limit = ctx.args.arg(LimitArgument), sort = KgEdgeSortField.ObjectPageRank))
+    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectId = Some(ctx.value.id)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending)))
   ))
   val KgNodesByLabelType = deriveObjectType[KgGraphQlSchemaContext, AbstractKgGraphQlSchemaDefinition.KgNodesByLabel](
     AddFields(
       Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds)),
-      Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(ctx.value.nodeLabel)), limit = ctx.args.arg(LimitArgument), sort = KgEdgeSortField.ObjectLabelPageRank))
+      Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(ctx.value.nodeLabel)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)))
     )
   )
 
