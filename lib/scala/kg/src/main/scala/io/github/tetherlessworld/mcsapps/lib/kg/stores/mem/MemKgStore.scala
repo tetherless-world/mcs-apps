@@ -93,6 +93,35 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def beginTransaction: KgCommandStoreTransaction =
     new MemKgCommandStoreTransaction
 
+  private def filterEdges(filters: KgEdgeFilters): List[KgEdge] = {
+    var edges = this.edges
+    if (filters.objectId.isDefined) {
+      edges = edges.filter(_.`object` == filters.objectId.get)
+    }
+    if (filters.objectLabel.isDefined) {
+      edges = edges.filter(edge => nodesById(edge.`object`).labels.contains(filters.objectLabel.get))
+    }
+    if (filters.subjectId.isDefined) {
+      edges = edges.filter(_.subject == filters.subjectId.get)
+    }
+    if (filters.subjectLabel.isDefined) {
+      edges = edges.filter(edge => nodesById(edge.subject).labels.contains(filters.subjectLabel.get))
+    }
+    edges
+  }
+
+  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] = {
+    val unsortedEdges = filterEdges(filters)
+    val sortedEdges: List[KgEdge] = sort.field match {
+      case KgEdgesSortField.Id =>
+        unsortedEdges.sortBy(edge => edge.id)(if (sort.direction == SortDirection.Ascending) Ordering.String else Ordering[String].reverse).toList
+      case KgEdgesSortField.ObjectPageRank =>
+        unsortedEdges.sortBy(edge => nodesById(edge.`object`).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).toList
+      case _ => throw new UnsupportedOperationException
+    }
+    sortedEdges.drop(offset).take(limit)
+  }
+
   private def getLuceneField(sortableField: KgSearchSortField) =
     sortableField match {
       case KgSearchSortField.PageRank => LuceneFields.nodePageRank
@@ -101,19 +130,28 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       case KgSearchSortField.Id => LuceneFields.nodeId
     }
 
-  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] = {
-    var edges = this.edges
-    if (filters.subjectId.isDefined) {
-      edges = edges.filter(_.subject == filters.subjectId.get)
-    }
-    if (filters.subjectLabel.isDefined) {
-      edges = edges.filter(edge => nodesById(edge.subject).labels.contains(filters.subjectLabel.get))
-    }
-    sort match {
-      case KgEdgeSortField.ObjectPageRank =>
+  final override def getNodeById(id: String): Option[KgNode] =
+    nodesById.get(id)
+
+  final override def getNodesByLabel(label: String): List[KgNode] =
+    nodes.filter(node => node.labels.contains(label))
+
+  final override def getPathById(id: String): Option[KgPath] =
+    pathsById.get(id)
+
+  final override def getSourcesById: Map[String, KgSource] =
+    sourcesById
+
+  final override def getRandomNode: KgNode =
+    nodes(random.nextInt(nodes.size))
+
+  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+    val edges = filterEdges(filters)
+    sort.field match {
+      case KgTopEdgesSortField.ObjectPageRank =>
         // Group edges by predicate and take the top <limit> edges within each predicate group
-        edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-      case KgEdgeSortField.ObjectLabelPageRank => {
+        edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit)).values.flatten.toList
+      case KgTopEdgesSortField.ObjectLabelPageRank => {
         // Group edges by predicate
         edges.groupBy(_.predicate).mapValues(edgesWithPredicate => {
           // Group edges by object label
@@ -131,26 +169,11 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
             // Label page rank = max of the constituent node page ranks
             val objectLabelPageRank = edgesById.values.map(edge => nodesById(edge.`object`).pageRank.get).max(Ordering[Double])
             (edgesById.values, objectLabelPageRank)
-          }).toList.sortBy(_._2).take(limit).map(_._1).flatten
+          }).toList.sortBy(_._2)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).map(_._1).flatten
         }).values.flatten.toList
       }
     }
   }
-
-  final override def getNodeById(id: String): Option[KgNode] =
-    nodesById.get(id)
-
-  final override def getNodesByLabel(label: String): List[KgNode] =
-    nodes.filter(node => node.labels.contains(label))
-
-  final override def getPathById(id: String): Option[KgPath] =
-    pathsById.get(id)
-
-  final override def getSourcesById: Map[String, KgSource] =
-    sourcesById
-
-  final override def getRandomNode: KgNode =
-    nodes(random.nextInt(nodes.size))
 
   final override def getTotalEdgesCount: Int =
     edges.size

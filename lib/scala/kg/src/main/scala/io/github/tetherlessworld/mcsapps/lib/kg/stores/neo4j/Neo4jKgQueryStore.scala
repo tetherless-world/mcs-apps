@@ -102,6 +102,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           |RETURN batches, total
           |""".stripMargin)
 
+    final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort) =
+      List()
+
     final override def getSourcesById: Map[String, KgSource] =
       transaction.run(s"MATCH (source:${SourceLabel}) RETURN source.id, source.label").asScala.map(record =>
         KgSource(
@@ -166,7 +169,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
-    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] =
+    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
       List()
 
     /**
@@ -368,9 +371,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
   }
 
-  final override def getSourcesById: Map[String, KgSource] =
+  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] =
     withReadTransaction {
-      _.getSourcesById
+      _.getEdges(filters, limit, offset, sort)
     }
 
   final override def getNodeById(id: String): Option[KgNode] =
@@ -404,7 +407,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       _.getRandomNode
     }
 
-  override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] =
+  final override def getSourcesById: Map[String, KgSource] =
+    withReadTransaction {
+      _.getSourcesById
+    }
+
+  override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
     withReadTransaction {
       _.getTopEdges(filters, limit, sort)
     }
