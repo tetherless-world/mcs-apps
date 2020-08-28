@@ -131,7 +131,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     nodesById.get(id)
 
   final override def getNodesByLabel(label: String): List[KgNode] =
-    nodes.filter(node => node.labels.exists(_ == label))
+    nodes.filter(node => node.labels.contains(label))
 
   final override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
@@ -147,7 +147,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] = {
     val nodeIdSet = getNodesByLabel(objectNodeLabel).map(_.id).toSet
-    edges.filter(edge => nodeIdSet.contains(edge.`object`)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+    edges.filter(edge => nodeIdSet.contains(edge.`object`)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
   }
 
   final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
