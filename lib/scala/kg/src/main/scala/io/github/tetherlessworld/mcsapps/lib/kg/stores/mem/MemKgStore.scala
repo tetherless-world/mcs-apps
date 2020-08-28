@@ -92,12 +92,12 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def beginTransaction: KgCommandStoreTransaction =
     new MemKgCommandStoreTransaction
 
-  private def getLuceneField(sortableField: KgNodeSortableField) =
+  private def getLuceneField(sortableField: KgSearchSortField) =
     sortableField match {
-      case KgNodeSortableField.PageRank => LuceneFields.nodePageRank
-      case KgNodeSortableField.Sources => LuceneFields.nodeSources
-      case KgNodeSortableField.Labels => LuceneFields.nodeLabels
-      case KgNodeSortableField.Id => LuceneFields.nodeId
+      case KgSearchSortField.PageRank => LuceneFields.nodePageRank
+      case KgSearchSortField.Sources => LuceneFields.nodeSources
+      case KgSearchSortField.Labels => LuceneFields.nodeLabels
+      case KgSearchSortField.Id => LuceneFields.nodeId
     }
 //  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
 //    if (filters.isDefined) {

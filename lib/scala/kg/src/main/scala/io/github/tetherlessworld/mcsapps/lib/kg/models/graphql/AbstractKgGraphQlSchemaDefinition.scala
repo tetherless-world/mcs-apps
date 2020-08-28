@@ -74,7 +74,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   val KgSearchResultType = UnionType("KgSearchResult", types = List(KgEdgeSearchResultType, KgEdgeLabelSearchResultType, KgNodeLabelSearchResultType, KgNodeSearchResultType, KgSourceSearchResultType))
 
   // Input enum types
-  implicit val KgNodeSortableFieldType = KgNodeSortableField.sangriaType
+  implicit val KgNodeSortableFieldType = KgSearchSortField.sangriaType
   implicit val SortDirectionType = SortDirection.sangriaType
 
   // Input object decoders
