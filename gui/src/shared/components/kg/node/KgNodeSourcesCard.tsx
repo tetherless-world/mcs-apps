@@ -10,7 +10,7 @@ import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import * as React from "react";
 
 export const KgNodeSourcesCard: React.FunctionComponent<{
-  nodeSources: KgSource[];
+  nodeSources: readonly KgSource[];
 }> = ({nodeSources}) => (
   <Card>
     <CardHeader title="Source(s)"></CardHeader>
