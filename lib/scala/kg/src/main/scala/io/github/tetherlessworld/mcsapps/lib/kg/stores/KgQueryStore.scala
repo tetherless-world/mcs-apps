@@ -3,6 +3,8 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
 
 trait KgQueryStore {
+//  def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int)
+
   /**
    * Get a node by ID.
    */
@@ -23,8 +25,6 @@ trait KgQueryStore {
    */
   def getRandomNode: KgNode
 
-  def getEdges(filters: KgEdgeFilters, groupBy: Option[KgEdgeGroupByField], limit: Int, offset: Int, sort: Option[KgEdgeSortField]): List[KgEdge]
-
   /**
    * Get all sources
    */
@@ -35,6 +35,8 @@ trait KgQueryStore {
    * Get sources mapped by id
    */
   def getSourcesById: Map[String, KgSource]
+
+  def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge]
 
   /**
    * Get total number of edges.

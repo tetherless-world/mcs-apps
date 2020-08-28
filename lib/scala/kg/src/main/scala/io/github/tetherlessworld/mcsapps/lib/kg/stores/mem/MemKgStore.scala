@@ -121,7 +121,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 //      !excluded && (!filters.include.isDefined || included)
 //    })
 
-  final override def getEdges(filters: KgEdgeFilters, groupBy: Option[KgEdgeGroupByField], limit: Int, offset: Int, sort: Option[KgEdgeSortField]): List[KgEdge] = {
+  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] = {
     var edges = this.edges
     if (filters.subjectId.isDefined) {
       edges = edges.filter(_.subject == filters.subjectId.get)
@@ -129,28 +129,16 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     if (filters.subjectLabel.isDefined) {
       edges = edges.filter(edge => nodesById(edge.subject).labels.contains(filters.subjectLabel.get))
     }
-    if (sort.isDefined) {
-      if (!groupBy.isDefined) {
-        throw new UnsupportedOperationException
+    sort match {
+      case KgEdgeSortField.ObjectPageRank =>
+        edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+      case KgEdgeSortField.ObjectLabelPageRank => {
+        // group edges by object predicate and object label
+        // calculate the page rank for each group
+        // take the top limit + offset groups
+        edges
       }
-      edges =
-        sort.get match {
-          case KgEdgeSortField.ObjectPageRank =>
-            edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).drop(offset).take(limit)).values.flatten.toList
-          case KgEdgeSortField.ObjectLabelPageRank => {
-            // group edges by object predicate and object label
-            // calculate the page rank for each group
-            // take the top limit + offset groups
-            edges
-          }
-        }
-    } else if (groupBy.isDefined) {
-      // Apply limit and offset at the group level and not the edge level
-      edges = edges.groupBy(_.predicate).drop(offset).take(limit).values.flatten.toList
-    } else {
-      edges = edges.drop(offset).take(limit)
     }
-    edges
   }
 
   final override def getNodeById(id: String): Option[KgNode] =
