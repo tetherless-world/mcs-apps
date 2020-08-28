@@ -4,27 +4,6 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPat
 
 trait KgQueryStore {
   /**
-   * Get all sources
-   */
-  final def getSources: List[KgSource] =
-    getSourcesById.values.toList
-
-  /**
-   * Get sources mapped by id
-   */
-  def getSourcesById: Map[String, KgSource]
-
-  /**
-   * Get edges that have the given node ID as an object.
-   */
-  def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge]
-
-  /**
-   * Get edges that have the given node ID as a subject.
-   */
-  def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
-
-  /**
    * Get a node by ID.
    */
   def getNodeById(id: String): Option[KgNode]
@@ -44,25 +23,18 @@ trait KgQueryStore {
    */
   def getRandomNode: KgNode
 
-  /**
-   * Get top edges using pageRank grouped by relation that have the given node ID as an object
-   */
-  def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge]
+  def getEdges(filters: KgEdgeFilters, groupBy: Option[KgEdgeGroupByField], limit: Int, offset: Int, sort: Option[KgEdgeSortField]): List[KgEdge]
 
   /**
-   * Get top edges using pageRank grouped by relation that have the given node label as an object
+   * Get all sources
    */
-  def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge]
+  final def getSources: List[KgSource] =
+    getSourcesById.values.toList
 
   /**
-   * Get top edges using pageRank grouped by relation that have the given node ID as a subject
+   * Get sources mapped by id
    */
-  def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge]
-
-  /**
-   * Get top edges using pageRank grouped by relation that have the given node label as a subject
-   */
-  def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge]
+  def getSourcesById: Map[String, KgSource]
 
   /**
    * Get total number of edges.

@@ -121,11 +121,37 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 //      !excluded && (!filters.include.isDefined || included)
 //    })
 
-  final override def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    edges.filter(edge => edge.`object` == objectNodeId).sortBy(edge => nodesById(edge.subject).pageRank.get).drop(offset).take(limit)
-
-  final override def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(edge => edge.subject == subjectNodeId).sortBy(edge => nodesById(edge.`object`).pageRank.get).drop(offset).take(limit)
+  final override def getEdges(filters: KgEdgeFilters, groupBy: Option[KgEdgeGroupByField], limit: Int, offset: Int, sort: Option[KgEdgeSortField]): List[KgEdge] = {
+    var edges = this.edges
+    if (filters.subjectId.isDefined) {
+      edges = edges.filter(_.subject == filters.subjectId.get)
+    }
+    if (filters.subjectLabel.isDefined) {
+      edges = edges.filter(edge => nodesById(edge.subject).labels.contains(filters.subjectLabel.get))
+    }
+    if (sort.isDefined) {
+      if (!groupBy.isDefined) {
+        throw new UnsupportedOperationException
+      }
+      edges =
+        sort.get match {
+          case KgEdgeSortField.ObjectPageRank =>
+            edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).drop(offset).take(limit)).values.flatten.toList
+          case KgEdgeSortField.ObjectLabelPageRank => {
+            // group edges by object predicate and object label
+            // calculate the page rank for each group
+            // take the top limit + offset groups
+            edges
+          }
+        }
+    } else if (groupBy.isDefined) {
+      // Apply limit and offset at the group level and not the edge level
+      edges = edges.groupBy(_.predicate).drop(offset).take(limit).values.flatten.toList
+    } else {
+      edges = edges.drop(offset).take(limit)
+    }
+    edges
+  }
 
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
@@ -142,21 +168,13 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getRandomNode: KgNode =
     nodes(random.nextInt(nodes.size))
 
-  final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] =
-    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-
-  final override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] = {
-    val nodeIdSet = getNodesByLabel(objectNodeLabel).map(_.id).toSet
-    edges.filter(edge => nodeIdSet.contains(edge.`object`)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-  }
-
-  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-
-  final override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] = {
-    val nodeIdSet = getNodesByLabel(subjectNodeLabel).map(_.id).toSet
-    edges.filter(edge => nodeIdSet.contains(edge.subject)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-  }
+//  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
+//    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+//
+//  final override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] = {
+//    val nodeIdSet = getNodesByLabel(subjectNodeLabel).map(_.id).toSet
+//    edges.filter(edge => nodeIdSet.contains(edge.subject)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+//  }
 
   final override def getTotalEdgesCount: Int =
     edges.size
