@@ -50,7 +50,7 @@ export const KgNodeViews: React.FunctionComponent<{
         />
       ),
       relPath: "",
-      label: "Predicate Grid",
+      label: "Grid",
       dataCy: "predicate-grid",
       routeMatch,
     }),
@@ -62,7 +62,7 @@ export const KgNodeViews: React.FunctionComponent<{
         />
       ),
       relPath: "/list",
-      label: "Predicate List",
+      label: "List",
       dataCy: "predicate-list",
       routeMatch,
     }),
