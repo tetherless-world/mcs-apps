@@ -110,33 +110,33 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         )
       ).map(source => (source.id, source)).toMap
 
-    final override def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-      transaction.run(
-        s"""
-           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
-           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-           |ORDER BY type(edge), subject.pageRank, edge
-           |SKIP ${offset}
-           |LIMIT ${limit}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "objectNodeId" -> objectNodeId
-        ))
-      ).toEdges
+//    final override def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
+//      transaction.run(
+//        s"""
+//           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
+//           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+//           |ORDER BY type(edge), subject.pageRank, edge
+//           |SKIP ${offset}
+//           |LIMIT ${limit}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "objectNodeId" -> objectNodeId
+//        ))
+//      ).toEdges
 
-    final override def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-      transaction.run(
-        s"""
-           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
-           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
-           |ORDER BY type(edge), object.pageRank, edge
-           |SKIP ${offset}
-           |LIMIT ${limit}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "subjectNodeId" -> subjectNodeId
-        ))
-      ).toEdges
+//    final override def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
+//      transaction.run(
+//        s"""
+//           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
+//           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+//           |ORDER BY type(edge), object.pageRank, edge
+//           |SKIP ${offset}
+//           |LIMIT ${limit}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "subjectNodeId" -> subjectNodeId
+//        ))
+//      ).toEdges
 
     final override def getNodeById(id: String): Option[KgNode] =
       transaction.run(
@@ -166,83 +166,86 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
+    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] =
+      List()
+
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as an object
      */
-    final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] = {
-      transaction.run(
-        s"""
-           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
-           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
-           |WITH edge, subject, object
-           |ORDER BY subject.pageRank DESC
-           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-           |UNWIND groupByRelation as group
-           |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "objectNodeId" -> objectNodeId
-        ))
-      ).toEdges
-    }
+//    final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] = {
+//      transaction.run(
+//        s"""
+//           |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectNodeId})
+//           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+//           |WITH edge, subject, object
+//           |ORDER BY subject.pageRank DESC
+//           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+//           |UNWIND groupByRelation as group
+//           |WITH group[0] as edge, group[1] as subject, group[2] as object
+//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "objectNodeId" -> objectNodeId
+//        ))
+//      ).toEdges
+//    }
 
-    override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] =
-      transaction.run(
-        s"""
-           |MATCH (label:${LabelLabel} {id: $$objectNodeLabel})<-[:${LabelRelationshipType}]-(object:${NodeLabel})
-           |MATCH (subject:${NodeLabel})-[edge]->(object)
-           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
-           |WITH edge, subject, object
-           |ORDER BY subject.pageRank DESC
-           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-           |UNWIND groupByRelation as group
-           |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "objectNodeLabel" -> objectNodeLabel
-        ))
-      ).toEdges
+//    override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] =
+//      transaction.run(
+//        s"""
+//           |MATCH (label:${LabelLabel} {id: $$objectNodeLabel})<-[:${LabelRelationshipType}]-(object:${NodeLabel})
+//           |MATCH (subject:${NodeLabel})-[edge]->(object)
+//           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+//           |WITH edge, subject, object
+//           |ORDER BY subject.pageRank DESC
+//           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+//           |UNWIND groupByRelation as group
+//           |WITH group[0] as edge, group[1] as subject, group[2] as object
+//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "objectNodeLabel" -> objectNodeLabel
+//        ))
+//      ).toEdges
 
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as a subject
      */
-    final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] = {
-      transaction.run(
-        s"""
-           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
-           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
-           |WITH edge, subject, object
-           |ORDER BY object.pageRank DESC
-           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-           |UNWIND groupByRelation as group
-           |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "subjectNodeId" -> subjectNodeId
-        ))
-      ).toEdges
-    }
+//    final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] = {
+//      transaction.run(
+//        s"""
+//           |MATCH (subject:${NodeLabel} {id: $$subjectNodeId})-[edge]->(object:${NodeLabel})
+//           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+//           |WITH edge, subject, object
+//           |ORDER BY object.pageRank DESC
+//           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+//           |UNWIND groupByRelation as group
+//           |WITH group[0] as edge, group[1] as subject, group[2] as object
+//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "subjectNodeId" -> subjectNodeId
+//        ))
+//      ).toEdges
+//    }
 
-    override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] =
-      transaction.run(
-        s"""
-           |MATCH (label:${LabelLabel} {id: $$subjectNodeLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})
-           |MATCH (subject)-[edge]->(object:${NodeLabel})
-           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
-           |WITH edge, subject, object
-           |ORDER BY object.pageRank DESC
-           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-           |UNWIND groupByRelation as group
-           |WITH group[0] as edge, group[1] as subject, group[2] as object
-           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map(
-          "subjectNodeLabel" -> subjectNodeLabel
-        ))
-      ).toEdges
+//    override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] =
+//      transaction.run(
+//        s"""
+//           |MATCH (label:${LabelLabel} {id: $$subjectNodeLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})
+//           |MATCH (subject)-[edge]->(object:${NodeLabel})
+//           |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
+//           |WITH edge, subject, object
+//           |ORDER BY object.pageRank DESC
+//           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+//           |UNWIND groupByRelation as group
+//           |WITH group[0] as edge, group[1] as subject, group[2] as object
+//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+//           |""".stripMargin,
+//        toTransactionRunParameters(Map(
+//          "subjectNodeLabel" -> subjectNodeLabel
+//        ))
+//      ).toEdges
 
     final override def getTotalEdgesCount: Int =
       transaction.run(
@@ -361,21 +364,13 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     private def toTransactionRunParameters(map: Map[String, Any]) =
       map.asJava.asInstanceOf[java.util.Map[String, Object]]
+
+
   }
 
   final override def getSourcesById: Map[String, KgSource] =
     withReadTransaction {
       _.getSourcesById
-    }
-
-  override final def getEdgesByObjectNodeId(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    withReadTransaction {
-      _.getEdgesByObjectNodeId(limit, objectNodeId, offset)
-    }
-
-  override final def getEdgesBySubjectNodeId(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction {
-      _.getEdgesBySubjectNodeId(limit, offset, subjectNodeId)
     }
 
   final override def getNodeById(id: String): Option[KgNode] =
@@ -409,24 +404,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       _.getRandomNode
     }
 
-  final override def getTopEdgesByObjectNodeId(limit: Int, objectNodeId: String): List[KgEdge] =
+  override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] =
     withReadTransaction {
-      _.getTopEdgesByObjectNodeId(limit, objectNodeId)
-    }
-
-  final override def getTopEdgesByObjectNodeLabel(limit: Int, objectNodeLabel: String): List[KgEdge] =
-    withReadTransaction {
-      _.getTopEdgesByObjectNodeLabel(limit, objectNodeLabel)
-    }
-
-  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
-    withReadTransaction {
-      _.getTopEdgesBySubjectNodeId(limit, subjectNodeId)
-    }
-
-  final override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] =
-    withReadTransaction {
-      _.getTopEdgesBySubjectNodeLabel(limit, subjectNodeLabel)
+      _.getTopEdges(filters, limit, sort)
     }
 
   final override def getTotalEdgesCount: Int =
