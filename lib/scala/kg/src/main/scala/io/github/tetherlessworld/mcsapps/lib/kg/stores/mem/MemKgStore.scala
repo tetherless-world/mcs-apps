@@ -8,6 +8,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPat
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
@@ -131,12 +132,28 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     }
     sort match {
       case KgEdgeSortField.ObjectPageRank =>
+        // Group edges by predicate and take the top <limit> edges within each predicate group
         edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
       case KgEdgeSortField.ObjectLabelPageRank => {
-        // group edges by object predicate and object label
-        // calculate the page rank for each group
-        // take the top limit + offset groups
-        edges
+        // Group edges by predicate
+        edges.groupBy(_.predicate).mapValues(edgesWithPredicate => {
+          // Group edges by object label
+          // Since a node can have multiple labels, the same edge can be in multiple groups
+          // Each group should only have one reference to a unique edge, however, so we use a map.
+          val edgesByObjectLabels = new mutable.HashMap[String, mutable.HashMap[String, KgEdge]]
+          for (edge <- edgesWithPredicate) {
+            for (objectLabel <- nodesById(edge.`object`).labels) {
+              edgesByObjectLabels.getOrElseUpdate(objectLabel, new mutable.HashMap[String, KgEdge])(edge.id) = edge
+            }
+          }
+          // Calculate the PageRank of each object label group
+          // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
+          edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
+            // Label page rank = max of the constituent node page ranks
+            val objectLabelPageRank = edgesById.values.map(edge => nodesById(edge.`object`).pageRank.get).max(Ordering[Double])
+            (edgesById.values, objectLabelPageRank)
+          }).toList.sortBy(_._2).take(limit).map(_._1).flatten
+        }).values.flatten.toList
       }
     }
   }
