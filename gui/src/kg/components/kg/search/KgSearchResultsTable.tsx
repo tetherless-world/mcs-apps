@@ -65,14 +65,33 @@ export const KgSearchResultsTable: React.FunctionComponent<{
     // aliases?: readonly string[];
     label: string;
     sourceIds: readonly string[];
+    typeLabel: string;
   }
 
   const data = React.useMemo(() => {
+    const getResultTypeLabel = (result: KgSearchResult): string => {
+      switch (result.__typename) {
+        case "KgEdgeLabelSearchResult":
+          return "Edge label";
+        case "KgEdgeSearchResult":
+          return "Edge";
+        case "KgNodeSearchResult":
+          return "Node";
+        case "KgNodeLabelSearchResult":
+          return "Node label";
+        case "KgSourceSearchResult":
+          return "Source";
+        default:
+          throw new EvalError();
+      }
+    };
+
     const rows: KgSearchResultsTableRowData[] = [];
     for (const result of results) {
       rows.push({
         label: getKgSearchResultLabel({allSources, result}),
         sourceIds: getKgSearchResultSourceIds({result}),
+        typeLabel: getResultTypeLabel(result),
       });
     }
     return rows;
@@ -101,8 +120,8 @@ export const KgSearchResultsTable: React.FunctionComponent<{
           customBodyRender(_, tableMeta) {
             return (
               <KgSearchResultLink
-                result={results[tableMeta.rowIndex]}
                 allSources={allSources}
+                result={results[tableMeta.rowIndex]}
               />
             );
           },
@@ -118,6 +137,13 @@ export const KgSearchResultsTable: React.FunctionComponent<{
       //     },
       //   },
       // },
+      {
+        name: "typeLabel",
+        label: "Type",
+        options: {
+          sort: false,
+        },
+      },
       {
         name: "sourceIds",
         label: "Sources",

@@ -8,16 +8,21 @@ import {KgNodeLabelLink} from "shared/components/kg/node/KgNodeLabelLink";
 
 export const KgSearchResultLink: React.FunctionComponent<{
   allSources: readonly KgSource[];
+  includeSources?: boolean;
   result: KgSearchResult;
-}> = ({allSources, result}) => {
+}> = ({allSources, includeSources, result}) => {
   switch (result.__typename) {
     case "KgNodeLabelSearchResult": {
       return (
         <KgNodeLabelLink
           nodeLabel={result.nodeLabel}
-          sources={result.sourceIds.map((sourceId) =>
-            resolveSourceId({allSources, sourceId})
-          )}
+          sources={
+            includeSources
+              ? result.sourceIds.map((sourceId) =>
+                  resolveSourceId({allSources, sourceId})
+                )
+              : undefined
+          }
         />
       );
     }
@@ -26,9 +31,11 @@ export const KgSearchResultLink: React.FunctionComponent<{
         <KgNodeLink
           node={{
             ...result.node,
-            sources: result.node.sourceIds.map((sourceId) =>
-              resolveSourceId({allSources, sourceId})
-            ),
+            sources: includeSources
+              ? result.node.sourceIds.map((sourceId) =>
+                  resolveSourceId({allSources, sourceId})
+                )
+              : undefined,
           }}
         />
       );
