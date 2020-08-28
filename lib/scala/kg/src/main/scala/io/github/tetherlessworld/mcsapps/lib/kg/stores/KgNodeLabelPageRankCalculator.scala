@@ -7,6 +7,8 @@ import scala.collection.GenSeq
 import scala.math.sqrt
 
 object KgNodeLabelPageRankCalculator {
-  def apply(nodes: Iterable[KgNode]): Double =
-    nodes.flatMap(node => node.pageRank).max(Ordering.Double)
+  def apply(nodes: Iterable[KgNode]): Double = {
+    val pageRanks = nodes.flatMap(node => node.pageRank)
+    if (pageRanks.nonEmpty) pageRanks.max(Ordering.Double) else 0.0
+  }
 }
