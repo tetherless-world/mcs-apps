@@ -100,27 +100,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       case KgSearchSortField.Labels => LuceneFields.nodeLabels
       case KgSearchSortField.Id => LuceneFields.nodeId
     }
-//  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
-//    if (filters.isDefined) {
-//      filterNodes(filters.get, nodes)
-//    } else {
-//      nodes
-//    }
-//
-//  private def filterNodes(filters: NodeFilters, nodes: List[Node]): List[Node] =
-//    if (filters.datasource.isDefined) {
-//      filterNodes(filters.datasource.get, nodes, node => node.datasource)
-//    } else {
-//      nodes
-//    }
-//
-//  private def filterNodes(filters: StringFacetFilter, nodes: List[Node], nodePropertyGetter: (Node) => String): List[Node] =
-//    nodes.filter(node => {
-//      val nodeProperty = nodePropertyGetter(node)
-//      val excluded = filters.exclude.getOrElse(List()).exists(exclude => exclude == nodeProperty)
-//      val included = filters.include.getOrElse(List()).exists(include => include == nodeProperty)
-//      !excluded && (!filters.include.isDefined || included)
-//    })
 
   final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgEdgeSortField): List[KgEdge] = {
     var edges = this.edges
@@ -172,14 +151,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getRandomNode: KgNode =
     nodes(random.nextInt(nodes.size))
-
-//  final override def getTopEdgesBySubjectNodeId(limit: Int, subjectNodeId: String): List[KgEdge] =
-//    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-//
-//  final override def getTopEdgesBySubjectNodeLabel(limit: Int, subjectNodeLabel: String): List[KgEdge] = {
-//    val nodeIdSet = getNodesByLabel(subjectNodeLabel).map(_.id).toSet
-//    edges.filter(edge => nodeIdSet.contains(edge.subject)).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
-//  }
 
   final override def getTotalEdgesCount: Int =
     edges.size
