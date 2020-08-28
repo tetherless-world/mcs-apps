@@ -52,6 +52,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   ))
   val KgNodesByLabelType = deriveObjectType[KgGraphQlSchemaContext, AbstractKgGraphQlSchemaDefinition.KgNodesByLabel](
     AddFields(
+      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds)),
       Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdgesBySubjectNodeLabel(limit = ctx.args.arg(LimitArgument), subjectNodeLabel = ctx.value.nodeLabel))
     )
   )
