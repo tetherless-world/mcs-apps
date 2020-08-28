@@ -30,9 +30,7 @@ export const KgNodeViews: React.FunctionComponent<{
 }> = ({node}) => {
   const routeMatch = useRouteMatch();
 
-  const nodeLabel = node.label ? node.label : node.id;
-
-  let title = nodeLabel;
+  let title = node.label ? node.label : node.id;
   if (node.pos) {
     title += " (" + node.pos + ")";
   }
@@ -75,7 +73,7 @@ export const KgNodeViews: React.FunctionComponent<{
       </Grid>
       <Grid item container>
         <Grid item xs={10}>
-          <h1 data-cy="node-title">{title}</h1>
+          <h1 data-cy="node-title">Node: {title}</h1>
           <TabRouteSwitch tabRoutes={Object.values(tabRoutes)} />
         </Grid>
         <Grid item xs={2}>

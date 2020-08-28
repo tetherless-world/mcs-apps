@@ -62,7 +62,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       </Grid>
       <Grid item container>
         <Grid item xs={10}>
-          <h1 data-cy="node-title">{nodeLabel}</h1>
+          <h1 data-cy="node-title">Node label: {nodeLabel}</h1>
           <TabRouteSwitch tabRoutes={Object.values(tabRoutes)} />
         </Grid>
         <Grid item xs={2}>
