@@ -11,6 +11,7 @@ query KgNodeLabelPageQuery(
       nodes {
         ... KgNodeFragment
       }
+      sourceIds
       topSubjectOfEdges(limit: 100) {
         ... KgEdgeObjectFragment
       }

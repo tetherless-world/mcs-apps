@@ -33,6 +33,7 @@ export interface KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges {
 export interface KgNodeLabelPageQuery_kgById_nodesByLabel {
   __typename: "KgNodesByLabel";
   nodes: KgNodeLabelPageQuery_kgById_nodesByLabel_nodes[];
+  sourceIds: string[];
   topSubjectOfEdges: KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges[];
 }
 

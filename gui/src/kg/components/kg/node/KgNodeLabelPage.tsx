@@ -8,8 +8,7 @@ import {
 import {useQuery} from "@apollo/react-hooks";
 import {KgFrame} from "kg/components/frame/KgFrame";
 import {kgId} from "shared/api/kgId";
-import {List, ListItem, ListItemText} from "@material-ui/core";
-import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
+import {KgNodeLabelViews} from "shared/components/kg/node/KgNodeLabelViews";
 
 export const KgNodeLabelPage: React.FunctionComponent = () => {
   let {nodeLabel} = useParams<{nodeLabel: string}>();
@@ -23,18 +22,13 @@ export const KgNodeLabelPage: React.FunctionComponent = () => {
   return (
     <KgFrame<KgNodeLabelPageQuery> {...query}>
       {({data}) => {
-        const nodes = data.kgById.nodesByLabel.nodes;
-        // const edgeObjects = data.kgById.nodesByLabel.topSubjectOfEdges;
         return (
-          <List>
-            {nodes.map((node) => (
-              <ListItem key={node.id}>
-                <ListItemText>
-                  <KgNodeLink node={{...node, sources: data.kgById.sources}} />
-                </ListItemText>
-              </ListItem>
-            ))}
-          </List>
+          <KgNodeLabelViews
+            allSources={data.kgById.sources}
+            nodeLabel={nodeLabel}
+            sourceIds={data.kgById.nodesByLabel.sourceIds}
+            topSubjectOfEdges={data.kgById.nodesByLabel.topSubjectOfEdges}
+          />
         );
       }}
     </KgFrame>
