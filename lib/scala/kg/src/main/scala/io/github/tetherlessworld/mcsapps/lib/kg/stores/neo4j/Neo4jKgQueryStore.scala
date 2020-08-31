@@ -115,7 +115,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
            |ORDER BY ${sortFieldCypher} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}
            |SKIP ${offset}
            |LIMIT ${limit}
-           |""".stripMargin
+           |""".stripMargin,
+        toTransactionRunParameters(caseClassToMap(filters))
       ).toEdges
     }
 
@@ -208,7 +209,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
            |${edgeCypher}
            |${cypher}
            |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin
+           |""".stripMargin,
+        toTransactionRunParameters(caseClassToMap(filters))
       ).toEdges
     }
 
@@ -351,6 +353,10 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         sourceIds = sourceIds.map(sourceId => StringFacetValue(count = 1, value = sourceId))
       )
     }
+
+    // https://stackoverflow.com/questions/1226555/case-class-to-map-in-scala
+    // filters out None values and calls get on Some values
+    private def caseClassToMap(cc: Product) = cc.getClass.getDeclaredFields.map( _.getName ).zip( cc.productIterator.to ).filter((mapping) => !mapping._2.isInstanceOf[Option[Any]] || mapping._2.asInstanceOf[Option[Any]].isDefined).map(mapping => if (mapping._2.isInstanceOf[Option[Any]]) (mapping._1, mapping._2.asInstanceOf[Option[Any]].get) else mapping).toMap
 
     private def filterEdgesCypher(filters: KgEdgeFilters): String = {
       var matchCypher: String = ""
