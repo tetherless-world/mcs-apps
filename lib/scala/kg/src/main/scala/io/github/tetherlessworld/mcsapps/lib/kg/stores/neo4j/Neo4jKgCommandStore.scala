@@ -113,6 +113,17 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               ))
             )
           }
+
+          transaction.run(
+            s"""
+               |MATCH (node:${NodeLabel} {id:$$nodeId})
+               |MATCH (s:${LabelLabel})<-[:${LabelRelationshipType}]-(node)-[:${LabelRelationshipType}]->(t:${LabelLabel})
+               |MERGE (s)-[:${LabelEdgeRelationshipType}]-(t)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "nodeId" -> node.id
+            ))
+          )
         }
 
         final override def putNodes(nodes: Iterator[KgNode]): Unit = {
@@ -167,6 +178,31 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             //      }
           }
 
+        final def writeLabelPageRanks: Unit = {
+          if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          // Match memkg implementation
+          transaction.run(
+            s"""
+               |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
+               |WITH label, max(node.pageRank) as maxNodePageRank
+               |SET label.pageRank = maxNodePageRank
+               |""".stripMargin
+          )
+
+//          transaction.run(
+//            s"""
+//               |CALL gds.pageRank.write({
+//               |nodeQuery: 'MATCH (n: ${LabelLabel}) RETURN id(n) as id',
+//               |relationshipQuery: 'MATCH (s: ${LabelLabel})-[:${LabelEdgeRelationshipType}]->(t: ${LabelLabel}) RETURN id(s) as source, id(t) as target',
+//               |writeProperty: 'pageRank'
+//               |})
+//               |""".stripMargin
+//          )
+        }
+
         final def writeNodePageRanks: Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
@@ -199,8 +235,10 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
       }
     }
 
-    final override def close(): Unit =
+    final override def close(): Unit = {
       writeNodePageRanks
+      writeLabelPageRanks
+    }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
       putModelsBatched(edges) { (edges, transaction) => {
@@ -272,6 +310,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         transaction.putSources(sources)
         transaction.commit()
       }
+
+    private def writeLabelPageRanks: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeLabelPageRanks
+        transaction.commit()
+      }
+    }
 
     private def writeNodePageRanks: Unit = {
       withWriteTransaction { transaction =>
