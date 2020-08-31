@@ -102,8 +102,15 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           |RETURN batches, total
           |""".stripMargin)
 
-    final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort) =
-      List()
+    final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort) = {
+      val cypher = filterEdgesCypher(filters)
+      transaction.run(
+        s"""
+           |${cypher}
+           |RETURN 
+           |""".stripMargin
+      )
+    }
 
     final override def getSourcesById: Map[String, KgSource] =
       transaction.run(s"MATCH (source:${SourceLabel}) RETURN source.id, source.label").asScala.map(record =>
