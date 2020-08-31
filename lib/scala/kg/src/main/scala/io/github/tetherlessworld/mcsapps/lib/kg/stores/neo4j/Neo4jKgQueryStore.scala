@@ -312,6 +312,27 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       )
     }
 
+    private def filterEdgesCypher(filters: KgEdgeFilters): String = {
+      var matchCypher: String = ""
+      if (filters.objectId.isDefined) {
+        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
+      } else if (filters.objectLabel.isDefined) {
+        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel}"
+      } else if (filters.subjectId.isDefined) {
+        matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
+      } else if (filters.subjectLabel.isDefined) {
+        matchCypher = s"MATCH (label:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})"
+      } else {
+        throw new UnsupportedOperationException
+      }
+
+      s"""
+         |${matchCypher}
+         |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}
+         |WITH edge, subject, object
+         |""".stripMargin
+    }
+
     private final case class KgNodeQueryCypher(
                                                 bindings: Map[String, Any],
                                                 fulltextCall: Option[String],
