@@ -104,12 +104,19 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort) = {
       val cypher = filterEdgesCypher(filters)
+      val sortFieldCypher = sort.field match {
+        case KgEdgesSortField.Id => "edge.id"
+        case KgEdgesSortField.ObjectPageRank => "object.pageRank"
+      }
       transaction.run(
         s"""
            |${cypher}
-           |RETURN 
+           |RETURN type(edge), object.id, subject.id, ${edgePropertyNamesString}
+           |ORDER BY ${sortFieldCypher} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}
+           |SKIP ${offset}
+           |LIMIT ${limit}
            |""".stripMargin
-      )
+      ).toEdges
     }
 
     final override def getSourcesById: Map[String, KgSource] =
@@ -176,8 +183,34 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
-    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
-      List()
+    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+      val edgeCypher = filterEdgesCypher(filters)
+
+      val cypher = sort.field match {
+          // TODO implement label group and sort by label pageRank
+        case KgTopEdgesSortField.ObjectLabelPageRank =>
+          s"""
+             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+             |UNWIND groupByRelation as group
+             |WITH group[0] as edge, group[1] as subject, group[2] as object
+             |""".stripMargin
+        case KgTopEdgesSortField.ObjectPageRank =>
+          s"""
+             |ORDER BY object.pageRank DESC
+             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+             |UNWIND groupByRelation as group
+             |WITH group[0] as edge, group[1] as subject, group[2] as object
+             |""".stripMargin
+      }
+
+      transaction.run(
+        s"""
+           |${edgeCypher}
+           |${cypher}
+           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+           |""".stripMargin
+      ).toEdges
+    }
 
     /**
      * Get top edges using pageRank grouped by relation that have the given node ID as an object
