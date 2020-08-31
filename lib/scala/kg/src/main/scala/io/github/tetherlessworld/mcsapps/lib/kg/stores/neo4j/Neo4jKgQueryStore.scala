@@ -108,6 +108,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         case KgEdgesSortField.Id => "edge.id"
         case KgEdgesSortField.ObjectPageRank => "object.pageRank"
       }
+
       transaction.run(
         s"""
            |${cypher}
@@ -257,7 +258,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       if (filters.objectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
       } else if (filters.objectLabel.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel}"
+        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel})"
       } else if (filters.subjectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
       } else if (filters.subjectLabel.isDefined) {
@@ -268,7 +269,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
       s"""
          |${matchCypher}
-         |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}
+         |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
          |WITH edge, subject, object
          |""".stripMargin
     }
