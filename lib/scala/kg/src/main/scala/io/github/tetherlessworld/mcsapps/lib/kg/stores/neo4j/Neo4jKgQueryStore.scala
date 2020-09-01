@@ -161,12 +161,21 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       val edgeCypher = filterEdgesCypher(filters)
 
       val cypher = sort.field match {
-          // TODO implement label group and sort by label pageRank
         case KgTopEdgesSortField.ObjectLabelPageRank =>
+          // first group edges by predicate and collect object labels
+          // then flatten, sort by label pageRank, and get distinct labels
+          // finally, use initial edge query to find the edges that correspond to the labels
           s"""
-             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-             |UNWIND groupByRelation as group
-             |WITH group[0] as edge, group[1] as subject, group[2] as object
+             |WITH type(edge) as relation, collect([(object)-[:${LabelRelationshipType}]-(l:${LabelLabel}) | l]) as groupObjectLabelsByRelation
+             |WITH relation, reduce(objectLabels = [], label in groupObjectLabelsByRelation | objectLabels + label) as objectLabels
+             |UNWIND objectLabels as objectLabel
+             |WITH relation, objectLabel
+             |ORDER BY objectLabel.pageRank DESC
+             |WITH relation, collect(distinct objectLabel)[0 .. ${limit}] as objectLabels
+             |UNWIND objectLabels as objectLabel
+             |WITH relation, objectLabel
+             |${edgeCypher}, relation, objectLabel
+             |WHERE type(edge) = relation
              |""".stripMargin
         case KgTopEdgesSortField.ObjectPageRank =>
           s"""
