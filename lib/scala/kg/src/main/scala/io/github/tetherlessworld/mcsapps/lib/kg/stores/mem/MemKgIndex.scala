@@ -24,7 +24,7 @@ final class MemKgIndex {
     val `type` = lucene.create.facet("type")
   }
 
-  private trait KgDocument {
+  private sealed trait KgDocument {
     def facets: List[FacetValue]
     def fields: List[FieldAndValue[_]]
   }
@@ -138,7 +138,7 @@ final class MemKgIndex {
     documentType match {
       case KgNodeDocument.Type => {
         val nodeId = luceneResult(LuceneFields.id)
-        nodesById(nodeId)
+        KgNodeSearchResult(nodesById(nodeId))
       }
       case KgNodeLabelDocument.Type => {
         val nodeLabel = luceneResult(LuceneFields.label)
@@ -151,7 +151,6 @@ final class MemKgIndex {
         KgSourceSearchResult(sourceId)
       }
     }
-    null
   }
 
   private def toKgSearchResults(results: PagedResults[SearchResult]): List[KgSearchResult] =
