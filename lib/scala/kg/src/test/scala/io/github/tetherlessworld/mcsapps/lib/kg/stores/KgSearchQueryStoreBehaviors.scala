@@ -10,6 +10,10 @@ import scala.math.abs
 trait KgSearchQueryStoreBehaviors extends Matchers {
   this: WordSpec =>
 
+  private val nodesCount = TestKgData.nodes.size
+  private val nodeLabelsCount = TestKgData.nodes.flatMap(_.labels).toSet.size
+  private val sourcesCount = TestKgData.sources.size
+
   private def equals(left: KgNode, right: KgNode) =
     left.id == right.id && abs(left.pageRank.getOrElse(-1.0) - right.pageRank.getOrElse(-1.0)) < 0.1 && left.sourceIds == right.sourceIds && left.labels == right.labels && left.pos == right.pos
 
@@ -95,10 +99,10 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
 
     "get matching node labels" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = None), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeLabelSearchResult].nodeLabel)
-        actual.size should equal(10)
-        actual.toSet.size should equal(actual.size)
-        for (label <- actual) {
+        val actual = query.search(limit = 1000, offset = 0, query = KgSearchQuery(filters = None, text = None), sorts = None)
+        val nodeLabelResults = actual.filter(_.isInstanceOf[KgNodeLabelSearchResult]).map(_.asInstanceOf[KgNodeLabelSearchResult].nodeLabel)
+        nodeLabelResults.toSet.size should equal(nodeLabelsCount)
+        for (label <- nodeLabelResults) {
           label should not be empty
         }
       }
@@ -114,16 +118,21 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
       }
     }
 
-    "search nodes count with no text search and no filters" in {
+    "search results count with no text search and no filters" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = None, text = None)) should equal(TestKgData.nodes.size)
+        query.searchCount(query = KgSearchQuery(filters = None, text = None)) should equal(nodeLabelsCount + nodesCount + sourcesCount)
       }
     }
 
-    "search nodes count with no text search but with filters" in {
+    "search results count with no text search but with include filters" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(TestKgData.nodes.size)
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(0)
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(nodeLabelsCount + nodesCount + sourcesCount - 3)
+      }
+    }
+
+    "search results count with no text search but with exclude filters" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(sourcesCount - 1)
       }
     }
 
@@ -136,7 +145,7 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
           filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))), include = None)))),
           text = Some("Test")
         ))
-        actualCount should equal(0)
+        actualCount should equal(sourcesCount - 1)
       }
     }
   }
@@ -145,16 +154,27 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
     "get search result facets for all nodes" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val allFacets = query.searchFacets(KgSearchQuery(filters = None, text = None))
-        allFacets.sourceIds.sortBy(_.value) should equal(TestKgData.sources.sortBy(_.id).map(_.id))
+        allFacets.sourceIds.map(_.value).sorted should equal(TestKgData.sources.map(_.id).sorted)
       }
     }
 
-    "get search result facets for filtered nodes" in {
+    "get search result facets after an exclude filter" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val facets = query.searchFacets(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(include = Some(expected.sourceIds), exclude = None)))), text = None))
+        // Only include the "secondary" source of the node
+        val facets = query.searchFacets(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(expected.sourceIds(1))), include = None)))), text = None))
         facets.sourceIds.size should be < TestKgData.sources.size
-        facets.sourceIds.sortBy(_.value).map(_.value) should equal(expected.sourceIds.sortBy(sourceId => sourceId))
+        facets.sourceIds.map(_.value) should not contain(expected.sourceIds(1))
+      }
+    }
+
+    "get search result facets after an include filter" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        // Only include the "secondary" source of the node
+        val facets = query.searchFacets(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(include = Some(List(expected.sourceIds(1))), exclude = None)))), text = None))
+        facets.sourceIds.size should be < TestKgData.sources.size
+        facets.sourceIds.map(_.value).sorted should equal(expected.sourceIds.sorted)
       }
     }
   }
