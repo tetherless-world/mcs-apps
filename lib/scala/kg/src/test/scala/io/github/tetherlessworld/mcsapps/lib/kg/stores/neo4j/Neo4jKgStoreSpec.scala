@@ -5,7 +5,7 @@ import java.net.InetAddress
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
 import org.slf4j.LoggerFactory
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgQueryStore, KgStoreBehaviors, Neo4jStoreConfiguration}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgQueryStore, KgStoreBehaviors, Neo4jStoreConfiguration, StoreTestMode}
 
 class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
   val logger = LoggerFactory.getLogger(getClass)
@@ -30,11 +30,11 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
   }
 
   private object Neo4jKgStoreFactory extends KgStoreFactory {
-    override def apply(testMode: TestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
+    override def apply(testMode: StoreTestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
       try {
         f(command, query)
       } finally {
-        if (testMode == TestMode.ReadWrite) {
+        if (testMode == StoreTestMode.ReadWrite) {
           resetSut()
         }
       }
