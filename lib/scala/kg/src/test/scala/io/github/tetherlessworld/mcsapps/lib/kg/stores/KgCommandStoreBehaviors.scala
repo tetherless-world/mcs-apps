@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.math.abs
 
-trait KgCommandStoreBehaviors extends Matchers with WithResource {
+trait KgCommandStoreBehaviors extends Matchers {
   this: WordSpec =>
 
   def commandStore(storeFactory: KgStoreFactory) {
