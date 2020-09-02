@@ -15,7 +15,7 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
 
   private val KgEdgesSortByIdAsc = KgEdgesSort(KgEdgesSortField.Id, SortDirection.Ascending)
 
-  def queryStore(storeFactory: KgStoreFactory) {
+  private def testGetEdges(storeFactory: KgStoreFactory): Unit = {
     "get edges by object" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         for (node <- TestKgData.nodes) {
@@ -56,7 +56,64 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
         actual should equal(expected)
       }
     }
+  }
 
+  private def testGetNodeById(storeFactory: KgStoreFactory): Unit = {
+    "get node by id" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getNodeById(expected.id).get
+        equals(actual, expected) shouldEqual true
+      }
+    }
+  }
+
+  private def testGetNodesByLabel(storeFactory: KgStoreFactory): Unit = {
+    "get nodes by label" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.getNodesByLabel(expected.labels(0))
+        actual.exists(_.id == expected.id) shouldEqual true
+      }
+    }
+  }
+
+  private def testGetPathById(storeFactory: KgStoreFactory): Unit = {
+    "get a path by id" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.paths(0)
+        query.getPathById(expected.id) should equal(Some(expected))
+      }
+    }
+
+    "return None for a non-extant path" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        query.getPathById("nonextant") should equal(None)
+      }
+    }
+  }
+
+  private def testGetRandomNode(storeFactory: KgStoreFactory): Unit = {
+    "get a random node" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = query.getRandomNode
+        val actual = query.getNodeById(expected.id).get
+        equals(actual, expected) shouldEqual true
+      }
+    }
+  }
+
+  private def testGetSources(storeFactory: KgStoreFactory): Unit = {
+    "get sources" in {
+      storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
+        val expected = TestKgData.sources.sortBy(_.id)
+        val actual = query.getSources.sortBy(_.id)
+        actual should equal(expected)
+      }
+    }
+  }
+
+  private def testGetTopEdges(storeFactory: KgStoreFactory): Unit = {
     "get top edges by object node id" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
@@ -134,21 +191,47 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
         }
       }
     }
+  }
 
-    "get count of search results with a label" in {
+  private def testGetTotalEdgesCount(storeFactory: KgStoreFactory): Unit = {
+    "get total edges count" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.nodes(0)
-        val actual = query.searchCount(query = KgSearchQuery(filters = None, text = Some(expected.labels(0))))
-        actual should be >= 1
+        val expected = TestKgData.edges.size
+        val actual = query.getTotalEdgesCount
+        actual should equal(expected)
       }
     }
+  }
 
+  private def testGetTotalNodesCount(storeFactory: KgStoreFactory): Unit = {
+    "get total nodes count" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes.size
+        val actual = query.getTotalNodesCount
+        actual should equal(expected)
+      }
+    }
+  }
+
+  private def testIsEmpty(storeFactory: KgStoreFactory): Unit = {
+    "check if is empty" in {
+      storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
+        query.isEmpty should be(false)
+        command.withTransaction {
+          _.clear()
+        }
+        query.isEmpty should be(true)
+      }
+    }
+  }
+
+  private def testSearch(storeFactory: KgStoreFactory): Unit = {
     "search fulltext for a label" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(expected.labels(0))), sorts = None)
         actual should not be empty
-//        equals(actual(0), expected) shouldEqual true
+        //        equals(actual(0), expected) shouldEqual true
       }
     }
 
@@ -165,19 +248,6 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"sources:nonextant")), sorts = None)
         actual.size should be(0)
-      }
-    }
-
-    "search nodes count with no text search and no filters" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = None, text = None)) should equal(TestKgData.nodes.size)
-      }
-    }
-
-    "search nodes count with no text search but with filters" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(TestKgData.nodes.size)
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(0)
       }
     }
 
@@ -233,6 +303,40 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
       }
     }
 
+    "get matching node labels" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = None), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeLabelSearchResult].nodeLabel)
+        actual.size should equal(10)
+        actual.toSet.size should equal(actual.size)
+        for (label <- actual) {
+          label should not be empty
+        }
+      }
+    }
+  }
+
+  private def testSearchCount(storeFactory: KgStoreFactory): Unit = {
+    "get count of search results with a label" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        val expected = TestKgData.nodes(0)
+        val actual = query.searchCount(query = KgSearchQuery(filters = None, text = Some(expected.labels(0))))
+        actual should be >= 1
+      }
+    }
+
+    "search nodes count with no text search and no filters" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        query.searchCount(query = KgSearchQuery(filters = None, text = None)) should equal(TestKgData.nodes.size)
+      }
+    }
+
+    "search nodes count with no text search but with filters" in {
+      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(TestKgData.nodes.size)
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(0)
+      }
+    }
+
     "filter out search results" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val text = "Test"
@@ -245,7 +349,9 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
         actualCount should equal(0)
       }
     }
+  }
 
+  private def testSearchFacets(storeFactory: KgStoreFactory): Unit = {
     "get search result facets for all nodes" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val allFacets = query.searchFacets(KgSearchQuery(filters = None, text = None))
@@ -261,87 +367,21 @@ trait KgQueryStoreBehaviors extends Matchers with WithResource {
         facets.sourceIds.sortBy(_.value).map(_.value) should equal(expected.sourceIds.sortBy(sourceId => sourceId))
       }
     }
+  }
 
-    "get matching node labels" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = None), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeLabelSearchResult].nodeLabel)
-        actual.size should equal(10)
-        actual.toSet.size should equal(actual.size)
-        for (label <- actual) {
-          label should not be empty
-        }
-      }
-    }
-
-    "get node by id" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.nodes(0)
-        val actual = query.getNodeById(expected.id).get
-        equals(actual, expected) shouldEqual true
-      }
-    }
-
-    "get nodes by label" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.nodes(0)
-        val actual = query.getNodesByLabel(expected.labels(0))
-        actual.exists(_.id == expected.id) shouldEqual true
-      }
-    }
-
-    "get a random node" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = query.getRandomNode
-        val actual = query.getNodeById(expected.id).get
-        equals(actual, expected) shouldEqual true
-      }
-    }
-
-    "get total edges count" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.edges.size
-        val actual = query.getTotalEdgesCount
-        actual should equal(expected)
-      }
-    }
-
-    "get total nodes count" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.nodes.size
-        val actual = query.getTotalNodesCount
-        actual should equal(expected)
-      }
-    }
-
-    "get a path by id" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.paths(0)
-        query.getPathById(expected.id) should equal(Some(expected))
-      }
-    }
-
-    "return None for a non-extant path" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.getPathById("nonextant") should equal(None)
-      }
-    }
-
-    "check if is empty" in {
-      storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
-        query.isEmpty should be(false)
-        command.withTransaction {
-          _.clear()
-        }
-        query.isEmpty should be(true)
-      }
-    }
-
-    "get sources" in {
-      storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
-        val expected = TestKgData.sources.sortBy(_.id)
-        val actual = query.getSources.sortBy(_.id)
-        actual should equal(expected)
-      }
-    }
+  def queryStore(storeFactory: KgStoreFactory) {
+    behave like testGetEdges(storeFactory)
+    behave like testGetNodeById(storeFactory)
+    behave like testGetNodesByLabel(storeFactory)
+    behave like testGetPathById(storeFactory)
+    behave like testGetRandomNode(storeFactory)
+    behave like testGetSources(storeFactory)
+    behave like testGetTopEdges(storeFactory)
+    behave like testGetTotalEdgesCount(storeFactory)
+    behave like testGetTotalNodesCount(storeFactory)
+    behave like testIsEmpty(storeFactory)
+    behave like testSearch(storeFactory)
+    behave like testSearchCount(storeFactory)
+    behave like testSearchFacets(storeFactory)
   }
 }
