@@ -7,19 +7,15 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.math.abs
 
-trait KgStoreBehaviors extends Matchers with WithResource {
+trait KgQueryStoreBehaviors extends Matchers with WithResource {
   this: WordSpec =>
-
-  trait KgStoreFactory {
-    def apply(testMode: StoreTestMode)(f: (KgCommandStore, KgQueryStore) => Unit)
-  }
 
   private def equals(left: KgNode, right: KgNode) =
     left.id == right.id && abs(left.pageRank.getOrElse(-1.0) - right.pageRank.getOrElse(-1.0)) < 0.1 && left.sourceIds == right.sourceIds && left.labels == right.labels && left.pos == right.pos
 
   private val KgEdgesSortByIdAsc = KgEdgesSort(KgEdgesSortField.Id, SortDirection.Ascending)
 
-  def store(storeFactory: KgStoreFactory) {
+  def queryStore(storeFactory: KgStoreFactory) {
     "get edges by object" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         for (node <- TestKgData.nodes) {
@@ -345,19 +341,6 @@ trait KgStoreBehaviors extends Matchers with WithResource {
         val expected = TestKgData.sources.sortBy(_.id)
         val actual = query.getSources.sortBy(_.id)
         actual should equal(expected)
-      }
-    }
-
-    "put and get sources" in {
-      storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
-        command.withTransaction {
-          _.clear()
-        }
-        query.isEmpty should be(true)
-        command.withTransaction {
-          _.putSources(TestKgData.sources)
-        }
-        query.getSources.sortBy(_.id) should equal(TestKgData.sources.sortBy(_.id))
       }
     }
   }

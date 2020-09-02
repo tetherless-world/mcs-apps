@@ -1,10 +1,10 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgQueryStore, KgStoreBehaviors, StoreTestMode}
-import org.scalatest.WordSpec
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.test.TestKgStore
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
+import org.scalatest.WordSpec
 
-class MemKgStoreSpec extends WordSpec with KgStoreBehaviors {
+class MemKgStoreSpec extends WordSpec with KgCommandStoreBehaviors with KgQueryStoreBehaviors {
   private object MemKgStoreFactory extends KgStoreFactory {
     override def apply(testMode: StoreTestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
       val store = new TestKgStore
@@ -12,5 +12,6 @@ class MemKgStoreSpec extends WordSpec with KgStoreBehaviors {
     }
   }
 
-  behave like store(MemKgStoreFactory)
+  behave like commandStore(MemKgStoreFactory)
+  behave like queryStore(MemKgStoreFactory)
 }
