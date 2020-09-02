@@ -137,7 +137,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeId = TestKgData.nodes(0).id
-        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectId = Some(subjectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending))
+        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectId = Some(subjectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))
 
         val subjectEdges = TestKgData.edges.filter(_.subject == subjectNodeId)
         var partitionStart = 0
