@@ -185,7 +185,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |WITH group[0] as edge, group[1] as subject, group[2] as object
              |""".stripMargin
       }
-
+      
       transaction.run(
         s"""
            |${edgeCypher}
@@ -267,7 +267,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       if (filters.objectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
       } else if (filters.objectLabel.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel})"
+        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel})"
       } else if (filters.subjectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
       } else if (filters.subjectLabel.isDefined) {
