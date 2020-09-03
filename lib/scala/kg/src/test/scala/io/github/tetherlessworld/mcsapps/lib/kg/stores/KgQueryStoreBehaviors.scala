@@ -156,15 +156,22 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val objectNodeLabel = TestKgData.nodes(0).labels(0)
-        val actual = query.getTopEdges(filters = KgEdgeFilters(objectLabel = Some(objectNodeLabel)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending))
+
+        val sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)
+        val actual = query.getTopEdges(filters = KgEdgeFilters(objectLabel = Some(objectNodeLabel)), limit = limit, sort = sort)
 
         val objectNodes = TestKgData.nodes.filter(_.labels.contains(objectNodeLabel))
         val objectEdges = TestKgData.edges.filter(edge => objectNodes.contains(TestKgData.nodesById(edge.`object`)))
+        val predicateGroups = objectEdges.groupBy(_.predicate).mapValues(edgesByPredicate => {
+          val labels = edgesByPredicate.flatMap(edge => TestKgData.nodesById(edge.`object`).labels).distinct
+          val edgesByLabel = labels.map(label => edgesByPredicate.map(_.`object`).distinct.map(objectNodeId => TestKgData.nodesById(objectNodeId)).filter(_.labels.contains(label)).flatMap(node => edgesByPredicate.filter(_.`object` == node.id)))
+          edgesByLabel.sortBy(edges => KgNodeLabelPageRankCalculator(edges.map(edge => TestKgData.nodesById(edge.`object`))))(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).flatten
+        })
+
         var partitionStart = 0
         for (partitionEnd <- 1 until actual.size + 1) {
           if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
-            partitionEnd - partitionStart should be <= limit
-            actual.slice(partitionStart, partitionEnd) should equal(objectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit))
+            actual.slice(partitionStart, partitionEnd) should equal(predicateGroups(actual(partitionStart).predicate))
 
             partitionStart = partitionEnd
           }
@@ -176,15 +183,20 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeLabel = TestKgData.nodes(0).labels(0)
-        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(subjectNodeLabel)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending))
+        val sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)
+        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(subjectNodeLabel)), limit = limit, sort = sort)
 
         val subjectNodes = TestKgData.nodes.filter(_.labels.contains(subjectNodeLabel))
         val subjectEdges = TestKgData.edges.filter(edge => subjectNodes.contains(TestKgData.nodesById(edge.subject)))
+        val predicateGroups = subjectEdges.groupBy(_.predicate).mapValues(edgesByPredicate => {
+          val labels = edgesByPredicate.flatMap(edge => TestKgData.nodesById(edge.subject).labels).distinct
+          labels.map(label => edgesByPredicate.map(_.subject).distinct.map(subject => TestKgData.nodesById(subject)).filter(_.labels.contains(label)).flatMap(node => edgesByPredicate.filter(_.subject == node.id))).sortBy(edges => KgNodeLabelPageRankCalculator(edges.map(edge => TestKgData.nodesById(edge.`object`))))(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).flatten
+        })
+
         var partitionStart = 0
         for (partitionEnd <- 1 until actual.size + 1) {
           if (partitionEnd == actual.size || actual(partitionEnd).predicate != actual(partitionStart).predicate) {
-            partitionEnd - partitionStart should be <= limit
-            actual.slice(partitionStart, partitionEnd) should equal(subjectEdges.filter(_.predicate == actual(partitionStart).predicate).sortBy(edge => TestKgData.nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit))
+            actual.slice(partitionStart, partitionEnd) should equal(predicateGroups(actual(partitionStart).predicate))
 
             partitionStart = partitionEnd
           }
