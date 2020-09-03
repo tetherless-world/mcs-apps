@@ -3,7 +3,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 import com.outr.lucene4s.facet.{FacetField, FacetValue}
 import com.outr.lucene4s.field.value.FieldAndValue
 import com.outr.lucene4s.query._
-import com.outr.lucene4s.{DirectLucene, drillDown, grouped, string2ParsableSearchTerm}
+import com.outr.lucene4s.{DirectLucene, any, drillDown, grouped, string2ParsableSearchTerm}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgNode, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
@@ -24,7 +24,7 @@ final class MemKgIndex {
     val `type` = lucene.create.facet("type")
   }
 
-  private trait KgDocument {
+  private sealed trait KgDocument {
     def facets: List[FacetValue]
     def fields: List[FieldAndValue[_]]
   }
@@ -82,6 +82,22 @@ final class MemKgIndex {
   private val lucene = new DirectLucene(List("id"), autoCommit = false)
   private var nodesById: Map[String, KgNode] = Map()
 
+  private def addLuceneSearchFacets(filters: Option[KgSearchFilters], queryBuilder: QueryBuilder[SearchResult]): QueryBuilder[SearchResult] =
+    // "Include" filtering on facets apparently requires adding a .facet to the QueryBuilder
+    // "Exclude" filtering on facets works with .filter SearchTerm's
+    filters.foldLeft(queryBuilder)((queryBuilder, filters) => addLuceneSearchFacets(filters, queryBuilder))
+
+  private def addLuceneSearchFacets(filters: KgSearchFilters, queryBuilder: QueryBuilder[SearchResult]): QueryBuilder[SearchResult] = {
+    if (filters.sourceIds.isDefined) {
+      addLuceneSearchFacets(LuceneFacets.source, queryBuilder, filters.sourceIds.get)
+    } else {
+      queryBuilder
+    }
+  }
+
+  private def addLuceneSearchFacets(field: FacetField, queryBuilder: QueryBuilder[SearchResult], stringFilter: StringFacetFilter): QueryBuilder[SearchResult] =
+    stringFilter.include.getOrElse(List()).foldLeft(queryBuilder)((queryBuilder, include) => queryBuilder.facet(field, path = List(include)))
+
   final def clear(): Unit = {
     lucene.deleteAll()
   }
@@ -126,7 +142,7 @@ final class MemKgIndex {
   }
 
   final def searchFacets(query: KgSearchQuery): KgSearchFacets = {
-    val results = lucene.query().filter(toLuceneSearchTerms(query):_*).facet(LuceneFacets.source, limit = 100).search()
+    val results = addLuceneSearchFacets(query.filters, lucene.query()).filter(toLuceneSearchTerms(query):_*).facet(LuceneFacets.source, limit = 100).search()
     // The facet result also has a count per value, which we're ignoring
     KgSearchFacets(
       sourceIds = results.facet(LuceneFacets.source).map(_.values.map(value => StringFacetValue(count = value.count, value = value.value)).toList).getOrElse(List())
@@ -138,7 +154,7 @@ final class MemKgIndex {
     documentType match {
       case KgNodeDocument.Type => {
         val nodeId = luceneResult(LuceneFields.id)
-        nodesById(nodeId)
+        KgNodeSearchResult(nodesById(nodeId))
       }
       case KgNodeLabelDocument.Type => {
         val nodeLabel = luceneResult(LuceneFields.label)
@@ -151,7 +167,6 @@ final class MemKgIndex {
         KgSourceSearchResult(sourceId)
       }
     }
-    null
   }
 
   private def toKgSearchResults(results: PagedResults[SearchResult]): List[KgSearchResult] =
@@ -172,21 +187,22 @@ final class MemKgIndex {
     sorts.getOrElse(List()).map(sort => FieldSort(getLuceneField(sort.field), sort.direction == SortDirection.Descending))
 
   private def toLuceneSearchTerms(query: KgSearchQuery): List[SearchTerm] = {
-    val textSearchTerm = query.text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
+    var searchTerms: List[SearchTerm] = List()
+
+    searchTerms ++= query.text.map(text => string2ParsableSearchTerm(text)).toList
+
     if (query.filters.isDefined) {
       val filterSearchTerms = toLuceneSearchTerms(query.filters.get)
       if (!filterSearchTerms.isEmpty) {
-        List(textSearchTerm, grouped(filterSearchTerms:_*))
-      } else {
-        List(textSearchTerm)
+        searchTerms ++= List(grouped(filterSearchTerms: _*))
       }
-    }  else {
-      List(textSearchTerm)
     }
+
+    searchTerms
   }
 
-  private def toLuceneSearchTerms(nodeFilters: KgSearchFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sourceIds.map(source => toLuceneSearchTerms(LuceneFacets.source, source)).getOrElse(List())
+  private def toLuceneSearchTerms(filters: KgSearchFilters): List[(SearchTerm, Condition)] = {
+    filters.sourceIds.map(source => toLuceneSearchTerms(LuceneFacets.source, source)).getOrElse(List())
   }
 
   private def toLuceneSearchTerms(field: FacetField, stringFilter: StringFacetFilter): List[(SearchTerm, Condition)] = {
