@@ -12,6 +12,7 @@ import scala.collection.mutable
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
+
   private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
     final override def clear(): Unit = {
       edges = List()
@@ -30,9 +31,9 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       index.index(nodesById = nodesById, nodesByLabel = nodesByLabel, sourcesById = sourcesById)
     }
 
-    final override def putEdges(edges: Iterator[KgEdge]): Unit = {
-      MemKgStore.this.edges = edges.toList
-      putSourceIds(MemKgStore.this.edges.flatMap(_.sourceIds).distinct)
+    final override def putEdges(edgesIterator: Iterator[KgEdge]): Unit = {
+      edges ++= edgesIterator.toList
+      putSourceIds(edges.flatMap(_.sourceIds).distinct)
     }
 
     final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -43,24 +44,14 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       putEdges(uniqueEdges)
     }
 
-    final override def putNodes(nodes: Iterator[KgNode]): Unit = {
-      MemKgStore.this.nodes = nodes.toList
-      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
-
-      val nodesByLabel = new mutable.HashMap[String, mutable.HashMap[String, KgNode]]
-      for (node <- MemKgStore.this.nodes) {
-        for (label <- node.labels) {
-          nodesByLabel.getOrElseUpdate(label, new mutable.HashMap)(node.id) = node
-        }
-      }
-      MemKgStore.this.nodesByLabel = nodesByLabel.map(entry => (entry._1, entry._2.values.toList)).toMap
-
-      putSourceIds(MemKgStore.this.nodes.flatMap(_.sourceIds).distinct)
+    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit = {
+      nodes ++= nodesIterator.toList
+      updateNodesBy
     }
 
-    final override def putPaths(paths: Iterator[KgPath]): Unit = {
-      MemKgStore.this.paths = paths.toList
-      MemKgStore.this.pathsById = MemKgStore.this.paths.map(path => (path.id, path)).toMap
+    final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
+      paths = pathsIterator.toList
+      pathsById = paths.map(path => (path.id, path)).toMap
     }
 
     private def putSourceIds(sourceIds: List[String]): Unit =
@@ -74,9 +65,21 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       }
     }
 
+    private def updateNodesBy: Unit = {
+      nodesById = nodes.map(node => (node.id, node)).toMap
+
+      val nodesByLabel = new mutable.HashMap[String, mutable.HashMap[String, KgNode]]
+      for (node <- nodes) {
+        for (label <- node.labels) {
+          nodesByLabel.getOrElseUpdate(label, new mutable.HashMap)(node.id) = node
+        }
+      }
+      MemKgStore.this.nodesByLabel = nodesByLabel.map(entry => (entry._1, entry._2.values.toList)).toMap
+    }
+
     private def writeNodePageRanks: Unit = {
-      MemKgStore.this.nodes = KgNodePageRankCalculator(MemKgStore.this.nodes, MemKgStore.this.edges)
-      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
+      nodes = KgNodePageRankCalculator(nodes, edges)
+      updateNodesBy
     }
   }
 
