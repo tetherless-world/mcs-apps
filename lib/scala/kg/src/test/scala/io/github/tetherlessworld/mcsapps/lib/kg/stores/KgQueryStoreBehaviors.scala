@@ -2,7 +2,6 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgNode
-import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.math.abs
@@ -168,7 +167,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
             val objectNodesByPredicate = edgesByPredicate.map(_.`object`).distinct.map(objectNodeId => TestKgData.nodesById(objectNodeId))
             val objectNodesByLabel = objectNodesByPredicate.filter(_.labels.contains(label))
             val edges = objectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.`object` == node.id))
-            val pageRank = KgNodeLabelPageRankCalculator(TestKgData.nodes.filter(_.labels.contains(label)))
+            val pageRank = TestKgData.nodeLabelsByLabel(label).pageRank.get
             (label, edges, pageRank)
           })
 
@@ -202,7 +201,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
             val subjectNodesByPredicate = edgesByPredicate.map(_.subject).distinct.map(subject => TestKgData.nodesById(subject))
             val subjectNodesByLabel = subjectNodesByPredicate.filter(_.labels.contains(label))
             val edges = subjectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.subject == node.id)).sortBy(_.id)
-            val pageRank = KgNodeLabelPageRankCalculator(TestKgData.nodes.filter(_.labels.contains(label)))
+            val pageRank = TestKgData.nodeLabelsByLabel(label).pageRank.get
             (label, edges, pageRank)
           })
 
