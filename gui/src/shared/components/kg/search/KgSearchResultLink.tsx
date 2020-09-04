@@ -14,30 +14,36 @@ export const KgSearchResultLink: React.FunctionComponent<{
   switch (result.__typename) {
     case "KgNodeLabelSearchResult": {
       return (
-        <KgNodeLabelLink
-          nodeLabel={result.nodeLabel}
-          sources={
-            includeSources
-              ? result.sourceIds.map((sourceId) =>
-                  resolveSourceId({allSources, sourceId})
-                )
-              : undefined
-          }
-        />
+        <>
+          Node label:&nbsp;
+          <KgNodeLabelLink
+            nodeLabel={result.nodeLabel}
+            sources={
+              includeSources
+                ? result.sourceIds.map((sourceId) =>
+                    resolveSourceId({allSources, sourceId})
+                  )
+                : undefined
+            }
+          />
+        </>
       );
     }
     case "KgNodeSearchResult": {
       return (
-        <KgNodeLink
-          node={{
-            ...result.node,
-            sources: includeSources
-              ? result.node.sourceIds.map((sourceId) =>
-                  resolveSourceId({allSources, sourceId})
-                )
-              : undefined,
-          }}
-        />
+        <>
+          Node:&nbsp;
+          <KgNodeLink
+            node={{
+              ...result.node,
+              sources: includeSources
+                ? result.node.sourceIds.map((sourceId) =>
+                    resolveSourceId({allSources, sourceId})
+                  )
+                : undefined,
+            }}
+          />
+        </>
       );
     }
     default:
