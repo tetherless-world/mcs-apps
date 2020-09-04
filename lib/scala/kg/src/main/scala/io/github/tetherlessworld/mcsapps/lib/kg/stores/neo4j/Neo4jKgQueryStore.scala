@@ -170,12 +170,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |WITH relation, reduce(objectLabels = [], label in groupObjectLabelsByRelation | objectLabels + label) as objectLabels
              |UNWIND objectLabels as objectLabel
              |WITH relation, objectLabel
-             |ORDER BY objectLabel.pageRank DESC
+             |ORDER BY objectLabel.pageRank DESC, relation, objectLabel.id
              |WITH relation, collect(distinct objectLabel)[0 .. ${limit}] as objectLabels
              |UNWIND objectLabels as objectLabel
              |WITH relation, objectLabel
-             |${edgeCypher}, relation, objectLabel
-             |WHERE type(edge) = relation
+             |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
+             |WHERE type(edge)<>"PATH" AND type(edge)<>"LABEL" AND type(edge) = relation
              |""".stripMargin
         case KgTopEdgesSortField.ObjectPageRank =>
           s"""
