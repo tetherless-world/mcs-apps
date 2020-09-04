@@ -212,7 +212,7 @@ export const KgSearchBox: React.FunctionComponent<{
               autoFocus={autoFocus}
               inputProps={{
                 "data-cy": "searchTextInput",
-                style: {paddingLeft: "5px"},
+                style: {paddingLeft: "5px", width: "32em"},
                 ...params.inputProps,
               }}
               ref={params.InputProps.ref}
