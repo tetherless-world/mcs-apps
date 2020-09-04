@@ -6,9 +6,16 @@ import org.scalatest.WordSpec
 
 class MemKgStoreSpec extends WordSpec with KgCommandStoreBehaviors with KgQueryStoreBehaviors {
   private object MemKgStoreFactory extends KgStoreFactory {
+    private var store = new TestKgStore
+
     override def apply(testMode: StoreTestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
-      val store = new TestKgStore
-      f(store, store)
+      try {
+        f(store, store)
+      } finally {
+        if (testMode == StoreTestMode.ReadWrite) {
+          store = new TestKgStore
+        }
+      }
     }
   }
 

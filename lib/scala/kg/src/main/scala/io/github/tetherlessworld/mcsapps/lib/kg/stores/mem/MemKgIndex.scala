@@ -4,7 +4,7 @@ import com.outr.lucene4s.facet.{FacetField, FacetValue}
 import com.outr.lucene4s.field.value.FieldAndValue
 import com.outr.lucene4s.query._
 import com.outr.lucene4s.{DirectLucene, any, drillDown, grouped, string2ParsableSearchTerm}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgNode, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgNode, KgNodeLabel, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 import scala.annotation.tailrec
@@ -45,16 +45,15 @@ final class MemKgIndex {
     val Type = "node"
   }
 
-  private final class KgNodeLabelDocument(nodeLabel: String, nodes: List[KgNode]) extends KgDocument {
-    private val pageRank = KgNodeLabelPageRankCalculator(nodes)
-    private val sourceIds = nodes.flatMap(_.sourceIds).toSet
+  private final class KgNodeLabelDocument(nodeLabel: KgNodeLabel) extends KgDocument {
+    private val sourceIds = nodeLabel.nodes.flatMap(_.sourceIds).toSet
 
     final override def facets: List[FacetValue] = List(LuceneFacets.`type`(KgNodeLabelDocument.Type)) ++ sourceIds.map(LuceneFacets.source(_))
     final override def fields: List[FieldAndValue[_]] =
       List(
-        LuceneFields.label(nodeLabel),
-        LuceneFields.labels(nodeLabel),
-        LuceneFields.pageRank(pageRank),
+        LuceneFields.label(nodeLabel.nodeLabel),
+        LuceneFields.labels(nodeLabel.nodeLabel),
+        LuceneFields.pageRank(nodeLabel.pageRank.get),
         LuceneFields.sources(sourceIds.mkString(" ")),
         LuceneFields.`type`(KgNodeLabelDocument.Type)
       )
@@ -110,7 +109,7 @@ final class MemKgIndex {
       case KgSearchSortField.Id => LuceneFields.id
     }
 
-  final def index(nodesById: Map[String, KgNode], nodesByLabel: Map[String, List[KgNode]], sourcesById: Map[String, KgSource]): Unit = {
+  final def index(nodesById: Map[String, KgNode], nodeLabelsByLabel: Map[String, KgNodeLabel], sourcesById: Map[String, KgSource]): Unit = {
     this.nodesById = nodesById
 
     def index(document: KgDocument) =
@@ -120,8 +119,8 @@ final class MemKgIndex {
       index(node)
     }
 
-    for (nodesByLabelEntry <- nodesByLabel) {
-      index(new KgNodeLabelDocument(nodeLabel = nodesByLabelEntry._1, nodes = nodesByLabelEntry._2))
+    for (nodeLabel <- nodeLabelsByLabel.values) {
+      nodeLabelsByLabel.values.foreach(nodeLabel => index(new KgNodeLabelDocument(nodeLabel)))
     }
 
     for (source <- sourcesById.values) {

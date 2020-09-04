@@ -3,12 +3,14 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.query._
+import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
@@ -16,11 +18,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
     final override def clear(): Unit = {
       edges = List()
-      labelPageRanks = Map()
-      nodes = List()
+      nodeLabelsByLabel = Map()
       nodesById = Map()
-      nodesByLabel = Map()
-      paths = List()
       pathsById = Map()
       sourcesById = Map()
 
@@ -28,9 +27,12 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     }
 
     override def close(): Unit = {
-      writeNodePageRanks
-      writeLabelPageRanks
-      index.index(nodesById = nodesById, nodesByLabel = nodesByLabel, sourcesById = sourcesById)
+      nodesById = PageRank.calculateNodePageRanks(nodesById.values.toList, edges).map(node => (node.id, node)).toMap
+
+      val nodeLabels = PageRank.calculateNodeLabelPageRanks(nodesById = nodesById, edges = edges)
+      nodeLabelsByLabel = nodeLabels.map(nodeLabel => (nodeLabel.nodeLabel, nodeLabel)).toMap
+
+      index.index(nodesById = nodesById, nodeLabelsByLabel = nodeLabelsByLabel, sourcesById = sourcesById)
     }
 
     final override def putEdges(edgesIterator: Iterator[KgEdge]): Unit = {
@@ -47,13 +49,11 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     }
 
     final override def putNodes(nodesIterator: Iterator[KgNode]): Unit = {
-      nodes ++= nodesIterator.toList
-      updateNodesBy
+      nodesById ++= nodesIterator.map(node => (node.id, node)).toList
     }
 
     final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
-      paths = pathsIterator.toList
-      pathsById = paths.map(path => (path.id, path)).toMap
+      pathsById ++= pathsIterator.map(path => (path.id, path)).toMap
     }
 
     private def putSourceIds(sourceIds: List[String]): Unit =
@@ -66,38 +66,13 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
         }
       }
     }
-
-    private def updateNodesBy: Unit = {
-      nodesById = nodes.map(node => (node.id, node)).toMap
-
-      val nodesByLabel = new mutable.HashMap[String, mutable.HashMap[String, KgNode]]
-      for (node <- nodes) {
-        for (label <- node.labels) {
-          nodesByLabel.getOrElseUpdate(label, new mutable.HashMap)(node.id) = node
-        }
-      }
-      MemKgStore.this.nodesByLabel = nodesByLabel.map(entry => (entry._1, entry._2.values.toList)).toMap
-    }
-
-    private def writeLabelPageRanks: Unit = {
-      if (nodesByLabel.size == 0) return
-
-      labelPageRanks = nodesByLabel.mapValues(nodes => KgNodeLabelPageRankCalculator(nodes))
-    }
-
-    private def writeNodePageRanks: Unit = {
-      nodes = KgNodePageRankCalculator(nodes, edges)
-      updateNodesBy
-    }
   }
 
+  // Don't store redundant data structures e.g., nodes + nodesById
   private var edges: List[KgEdge] = List()
   private val index = new MemKgIndex()
-  private var labelPageRanks: Map[String, Double] = Map()
-  private var nodes: List[KgNode] = List()
+  private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private var nodesByLabel: Map[String, List[KgNode]] = Map()
-  private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
@@ -137,8 +112,9 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getNodesByLabel(label: String): List[KgNode] =
-    nodesByLabel.getOrElse(label, List())
+  final override def getNodesByLabel(label: String): List[KgNode] = {
+    nodeLabelsByLabel.get(label).map(nodeLabel => nodeLabel.nodes).getOrElse(List())
+  }
 
   final override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
@@ -147,7 +123,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     sourcesById
 
   final override def getRandomNode: KgNode =
-    nodes(random.nextInt(nodes.size))
+    nodesById.values.toList(random.nextInt(nodesById.size))
 
   final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
     val edges = filterEdges(filters)
@@ -171,8 +147,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
           // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
           edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
             // Label page rank = max of the constituent node page ranks
-//            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
-            val objectLabelPageRank = labelPageRanks(objectLabel)
+            //            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
+            val objectLabelPageRank = nodeLabelsByLabel(objectLabel).pageRank.get
 
             (objectLabel, edgesById.values.toList.sortBy(_.id), objectLabelPageRank)
           }).toList.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).map(_._2).take(limit).flatten
@@ -185,10 +161,10 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     edges.size
 
   final override def getTotalNodesCount: Int =
-    nodes.size
+    nodesById.size
 
   override def isEmpty: Boolean =
-    edges.isEmpty && nodes.isEmpty && paths.isEmpty
+    edges.isEmpty && nodesById.isEmpty && pathsById.isEmpty
 
   final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] =
     index.search(limit = limit, offset = offset, query = query, sorts = sorts)
