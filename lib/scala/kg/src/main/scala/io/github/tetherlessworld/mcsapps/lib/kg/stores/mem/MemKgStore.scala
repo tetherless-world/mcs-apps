@@ -32,7 +32,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       val nodeLabels = PageRank.calculateNodeLabelPageRanks(nodesById = nodesById, edges = edges)
       nodeLabelsByLabel = nodeLabels.map(nodeLabel => (nodeLabel.nodeLabel, nodeLabel)).toMap
 
-      index.clear()
       index.index(nodesById = nodesById, nodeLabelsByLabel = nodeLabelsByLabel, sourcesById = sourcesById)
     }
 

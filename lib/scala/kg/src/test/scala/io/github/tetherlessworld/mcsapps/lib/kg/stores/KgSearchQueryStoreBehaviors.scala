@@ -32,7 +32,7 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
     "search nodes with a source" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeSearchResult].node)
+        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"sources:${expected.sourceIds(1)}")), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeSearchResult].node)
         actual should not be empty
         actual(0).sourceIds should equal(expected.sourceIds)
       }
@@ -50,7 +50,7 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
         val expected = TestKgData.nodes(0)
         val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"""sources:${expected.sourceIds(0)} labels:"${expected.labels(0)}"""")), sorts = None).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeSearchResult].node)
         actual should not be empty
-        equals(actual(0), expected) shouldEqual true
+        actual.exists(node => equals(node, expected)) shouldEqual true
       }
     }
 
@@ -66,10 +66,11 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
     "search nodes with a given source sorted by pageRank descending" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.search(limit = 10, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"sources:${expected.sourceIds}")), sorts = Some(List(KgSearchSort(KgSearchSortField.PageRank, SortDirection.Descending)))).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeSearchResult].node)
+        val sourceId = expected.sourceIds(1)
+        val actual = query.search(limit = 1000, offset = 0, query = KgSearchQuery(filters = None, text = Some(s"sources:${sourceId}")), sorts = Some(List(KgSearchSort(KgSearchSortField.PageRank, SortDirection.Descending)))).filter(_.isInstanceOf[KgNodeSearchResult]).map(_.asInstanceOf[KgNodeSearchResult].node).take(10)
         actual should not be empty
 
-        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.intersect(expected.sourceIds).size > 0).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
+        val expectedNodes = TestKgData.nodes.filter(_.sourceIds.contains(sourceId)).sortBy(_.pageRank.get)(Ordering[Double].reverse).take(10)
         actual.zip(expectedNodes).forall((nodes) => equals(nodes._1, nodes._2)) shouldEqual true
       }
     }
