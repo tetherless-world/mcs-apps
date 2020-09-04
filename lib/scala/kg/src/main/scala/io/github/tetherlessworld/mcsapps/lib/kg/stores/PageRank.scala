@@ -79,7 +79,7 @@ object PageRank {
         ))
     }).toList
 
-    val nodeLabels = KgNodeLabel.fromNodes(nodesById.values)
+    val nodeLabels = KgNodeLabel.fromNodes(nodesById.values).sortBy(_.nodeLabel)
 
     val nodeLabelNodes = nodeLabels.map(nodeLabel =>
       KgNode(
