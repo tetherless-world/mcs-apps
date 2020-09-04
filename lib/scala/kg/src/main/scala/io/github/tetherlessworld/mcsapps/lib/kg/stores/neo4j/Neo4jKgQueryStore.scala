@@ -175,7 +175,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |UNWIND objectLabels as objectLabel
              |WITH relation, objectLabel
              |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
-             |WHERE type(edge)<>"PATH" AND type(edge)<>"LABEL" AND type(edge) = relation
+             |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}" AND type(edge) = relation
              |""".stripMargin
         case KgTopEdgesSortField.ObjectPageRank =>
           s"""
