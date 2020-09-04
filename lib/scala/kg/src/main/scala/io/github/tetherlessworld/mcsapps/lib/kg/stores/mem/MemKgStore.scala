@@ -16,6 +16,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
     final override def clear(): Unit = {
       edges = List()
+      labelPageRanks = Map()
       nodes = List()
       nodesById = Map()
       nodesByLabel = Map()
@@ -28,6 +29,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
     override def close(): Unit = {
       writeNodePageRanks
+      writeLabelPageRanks
       index.index(nodesById = nodesById, nodesByLabel = nodesByLabel, sourcesById = sourcesById)
     }
 
@@ -77,6 +79,12 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       MemKgStore.this.nodesByLabel = nodesByLabel.map(entry => (entry._1, entry._2.values.toList)).toMap
     }
 
+    private def writeLabelPageRanks: Unit = {
+      if (nodesByLabel.size == 0) return
+
+      labelPageRanks = nodesByLabel.mapValues(nodes => KgNodeLabelPageRankCalculator(nodes))
+    }
+
     private def writeNodePageRanks: Unit = {
       nodes = KgNodePageRankCalculator(nodes, edges)
       updateNodesBy
@@ -85,6 +93,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   private var edges: List[KgEdge] = List()
   private val index = new MemKgIndex()
+  private var labelPageRanks: Map[String, Double] = Map()
   private var nodes: List[KgNode] = List()
   private var nodesById: Map[String, KgNode] = Map()
   private var nodesByLabel: Map[String, List[KgNode]] = Map()
@@ -162,9 +171,11 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
           // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
           edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
             // Label page rank = max of the constituent node page ranks
-            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
-            (edgesById.values, objectLabelPageRank)
-          }).toList.sortBy(_._2)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).map(_._1).flatten
+//            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
+            val objectLabelPageRank = labelPageRanks(objectLabel)
+
+            (objectLabel, edgesById.values, objectLabelPageRank)
+          }).toList.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).map(_._2).take(limit).flatten
         }).values.flatten.toList
       }
     }
