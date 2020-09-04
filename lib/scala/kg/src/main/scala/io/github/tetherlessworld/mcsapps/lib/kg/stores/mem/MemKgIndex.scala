@@ -120,7 +120,7 @@ final class MemKgIndex {
     }
 
     for (nodeLabel <- nodeLabelsByLabel.values) {
-      nodeLabelsByLabel.values.foreach(nodeLabel => index(new KgNodeLabelDocument(nodeLabel)))
+      index(new KgNodeLabelDocument(nodeLabel))
     }
 
     for (source <- sourcesById.values) {
