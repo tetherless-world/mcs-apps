@@ -201,7 +201,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
           val edgesByLabel = labels.map(label => {
             val subjectNodesByPredicate = edgesByPredicate.map(_.subject).distinct.map(subject => TestKgData.nodesById(subject))
             val subjectNodesByLabel = subjectNodesByPredicate.filter(_.labels.contains(label))
-            val edges = subjectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.subject == node.id))
+            val edges = subjectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.subject == node.id)).sortBy(_.id)
             val pageRank = KgNodeLabelPageRankCalculator(TestKgData.nodes.filter(_.labels.contains(label)))
             (label, edges, pageRank)
           })

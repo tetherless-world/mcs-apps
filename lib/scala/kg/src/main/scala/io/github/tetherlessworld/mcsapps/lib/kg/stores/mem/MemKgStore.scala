@@ -174,7 +174,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 //            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
             val objectLabelPageRank = labelPageRanks(objectLabel)
 
-            (objectLabel, edgesById.values, objectLabelPageRank)
+            (objectLabel, edgesById.values.toList.sortBy(_.id), objectLabelPageRank)
           }).toList.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).map(_._2).take(limit).flatten
         }).values.flatten.toList
       }
