@@ -213,6 +213,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = {
       val cypher = KgNodeQueryCypher(query)
+
       val nodes = transaction.run(
         s"""${cypher}
            |RETURN ${nodePropertyNamesString}
@@ -222,7 +223,19 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
            |""".stripMargin,
         toTransactionRunParameters(cypher.bindings)
       ).toNodes
-      nodes.map(KgNodeSearchResult(_))
+
+      val nodeLabelSearchResults = transaction.run(
+        s"""${cypher}
+           |MATCH (node)-[:${LabelRelationshipType}]->(label:${LabelLabel})
+           |MATCH (source:${SourceLabel})<-[:${SourceRelationshipType}]-(node)-[:${LabelRelationshipType}]->(label)
+           |WITH distinct label as label, collect(distinct source) as sourcesByLabel
+           |UNWIND sourcesByLabel as source
+           |RETURN label.id, source.id
+           |""".stripMargin,
+        toTransactionRunParameters(cypher.bindings)
+      ).asScala.toList.groupBy(_.get("label.id").asString).mapValues(_.map(_.get("source.id").asString)).map(pair => KgNodeLabelSearchResult(nodeLabel = pair._1, sourceIds = pair._2))
+
+      nodes.map(KgNodeSearchResult(_)) ++ nodeLabelSearchResults
     }
 
     final override def searchCount(query: KgSearchQuery): Int = {
