@@ -163,9 +163,17 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
         val objectNodes = TestKgData.nodes.filter(_.labels.contains(objectNodeLabel))
         val objectEdges = TestKgData.edges.filter(edge => objectNodes.contains(TestKgData.nodesById(edge.`object`)))
         val predicateGroups = objectEdges.groupBy(_.predicate).mapValues(edgesByPredicate => {
-          val labels = edgesByPredicate.flatMap(edge => TestKgData.nodesById(edge.`object`).labels).distinct
-          val edgesByLabel = labels.map(label => edgesByPredicate.map(_.`object`).distinct.map(objectNodeId => TestKgData.nodesById(objectNodeId)).filter(_.labels.contains(label)).flatMap(node => edgesByPredicate.filter(_.`object` == node.id)))
-          edgesByLabel.sortBy(edges => KgNodeLabelPageRankCalculator(edges.map(edge => TestKgData.nodesById(edge.`object`))))(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).flatten
+          val labels = edgesByPredicate.flatMap(edge => TestKgData.nodesById(edge.`object`).labels).distinct.sorted
+          val edgesByLabel = labels.map(label => {
+            val objectNodesByPredicate = edgesByPredicate.map(_.`object`).distinct.map(objectNodeId => TestKgData.nodesById(objectNodeId))
+            val objectNodesByLabel = objectNodesByPredicate.filter(_.labels.contains(label))
+            val edges = objectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.`object` == node.id))
+            val pageRank = KgNodeLabelPageRankCalculator(TestKgData.nodes.filter(_.labels.contains(label)))
+            (label, edges, pageRank)
+          })
+
+          val sortedEdges = edgesByLabel.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse)
+          sortedEdges.map(_._2).take(limit).flatten
         })
 
         var partitionStart = 0
@@ -190,7 +198,16 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
         val subjectEdges = TestKgData.edges.filter(edge => subjectNodes.contains(TestKgData.nodesById(edge.subject)))
         val predicateGroups = subjectEdges.groupBy(_.predicate).mapValues(edgesByPredicate => {
           val labels = edgesByPredicate.flatMap(edge => TestKgData.nodesById(edge.subject).labels).distinct
-          labels.map(label => edgesByPredicate.map(_.subject).distinct.map(subject => TestKgData.nodesById(subject)).filter(_.labels.contains(label)).flatMap(node => edgesByPredicate.filter(_.subject == node.id))).sortBy(edges => KgNodeLabelPageRankCalculator(edges.map(edge => TestKgData.nodesById(edge.`object`))))(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit).flatten
+          val edgesByLabel = labels.map(label => {
+            val subjectNodesByPredicate = edgesByPredicate.map(_.subject).distinct.map(subject => TestKgData.nodesById(subject))
+            val subjectNodesByLabel = subjectNodesByPredicate.filter(_.labels.contains(label))
+            val edges = subjectNodesByLabel.flatMap(node => edgesByPredicate.filter(_.subject == node.id))
+            val pageRank = KgNodeLabelPageRankCalculator(TestKgData.nodes.filter(_.labels.contains(label)))
+            (label, edges, pageRank)
+          })
+
+           val sortedEdges = edgesByLabel.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse)
+          sortedEdges.map(_._2).take(limit).flatten
         })
 
         var partitionStart = 0

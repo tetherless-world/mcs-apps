@@ -185,7 +185,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |WITH group[0] as edge, group[1] as subject, group[2] as object
              |""".stripMargin
       }
-      
+
       transaction.run(
         s"""
            |${edgeCypher}
