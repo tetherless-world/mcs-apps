@@ -183,24 +183,15 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             return
           }
 
-          // Match memkg implementation
           transaction.run(
             s"""
-               |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
-               |WITH label, max(node.pageRank) as maxNodePageRank
-               |SET label.pageRank = maxNodePageRank
+               |CALL gds.pageRank.write({
+               |nodeQuery: 'MATCH (n: ${LabelLabel}) RETURN id(n) as id',
+               |relationshipQuery: 'MATCH (s: ${LabelLabel})-[:${LabelEdgeRelationshipType}]-(t: ${LabelLabel}) RETURN id(s) as source, id(t) as target',
+               |writeProperty: 'pageRank'
+               |})
                |""".stripMargin
           )
-
-//          transaction.run(
-//            s"""
-//               |CALL gds.pageRank.write({
-//               |nodeQuery: 'MATCH (n: ${LabelLabel}) RETURN id(n) as id',
-//               |relationshipQuery: 'MATCH (s: ${LabelLabel})-[:${LabelEdgeRelationshipType}]->(t: ${LabelLabel}) RETURN id(s) as source, id(t) as target',
-//               |writeProperty: 'pageRank'
-//               |})
-//               |""".stripMargin
-//          )
         }
 
         final def writeNodePageRanks: Unit = {
