@@ -217,7 +217,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       val nodes = transaction.run(
         s"""${cypher}
            |RETURN ${nodePropertyNamesString}
-           |${sorts.map(sorts => s"ORDER by ${sorts.map(sort => s"node.${if (sort.field == KgSearchSortField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}").getOrElse("")}
+           |ORDER by ${(sorts.getOrElse(List()) ++ List(KgSearchSort(KgSearchSortField.Id, SortDirection.Ascending))).map(sort => s"node.${if (sort.field == KgSearchSortField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
