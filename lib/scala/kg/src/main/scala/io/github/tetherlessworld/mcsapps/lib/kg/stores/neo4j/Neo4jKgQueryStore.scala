@@ -170,12 +170,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |WITH relation, reduce(objectLabels = [], label in groupObjectLabelsByRelation | objectLabels + label) as objectLabels
              |UNWIND objectLabels as objectLabel
              |WITH relation, objectLabel
-             |ORDER BY objectLabel.pageRank DESC, relation, objectLabel.id
+             |ORDER BY objectLabel.pageRank desc, objectLabel.id
              |WITH relation, collect(distinct objectLabel)[0 .. ${limit}] as objectLabels
              |UNWIND objectLabels as objectLabel
              |WITH relation, objectLabel
              |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
              |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}" AND type(edge) = relation
+             |WITH objectLabel, subject, edge, object
+             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
              |""".stripMargin
         case KgTopEdgesSortField.ObjectPageRank =>
           s"""
@@ -185,7 +187,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |WITH group[0] as edge, group[1] as subject, group[2] as object
              |""".stripMargin
       }
-
+      
       transaction.run(
         s"""
            |${edgeCypher}
@@ -195,6 +197,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         toTransactionRunParameters(caseClassToMap(filters))
       ).toEdges
     }
+
 
     final override def getTotalEdgesCount: Int =
       transaction.run(
