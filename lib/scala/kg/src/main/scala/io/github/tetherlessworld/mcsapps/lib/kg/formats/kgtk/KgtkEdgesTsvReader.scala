@@ -4,7 +4,6 @@ import java.io.{BufferedInputStream, FileInputStream, FileNotFoundException, Inp
 import java.nio.file.Path
 import java.util.NoSuchElementException
 
-import com.github.tototoshi.csv.{CSVReader, LineReader, MalformedCSVException, SourceLineReader, TSVFormat}
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode}
 import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
@@ -14,32 +13,12 @@ import org.slf4j.LoggerFactory
 import scala.io.{Codec, Source}
 
 final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterable[KgtkEdgeWithNodes] {
-  private val Format = new TSVFormat {
-    override val escapeChar: Char = 0
-  }
-
-  // Have to inherit CSVReader since its constructor is protected
-  private final class KgtkEdgesCSVReader(lineReader: LineReader) extends CSVReader(lineReader)(Format) {
-  }
-
-  // On encountering an unclosed open quote the CSVReader will continue reading lines from the LineReader
-  // until a closing quote is found (on the assumption that there are newlines in quoted strings) or the
-  // LineReader is exhausted.
-  // We don't allow newlines in quoted strings, so we want the LineReader to exhaust after each line
-  // rather than returning the next line.
-  // This prevents the CSVReader from "eating" many lines in search of a closing quote.
-  private final class SingleLineReader(line: String) extends LineReader {
-    private[this] var nextLine = line;
-
-    final override def readLineWithTerminator(): String = {
-      val result = nextLine
-      nextLine = null
-      return result
-    }
-
-    override def close(): Unit = {}
-  }
-
+  // Multiple values in a column are separated by |
+  // Per #220, we assume that columns do not contain \t and that individual values do not contain | or \t, so
+  // we can do a two-level split of a TSV line: \t to get columns from a line and then | to get values from a column.
+  // Values may contain internal quotes ("). Since we are using | as the internal delimiter, it is enough to look for the next |
+  // (or \t) for the end of a value. So values do not to be outer-quoted and escaped (e.g., this value "with quotes" is OK|othervalue
+  // and not "this value \"with quotes\" is OK"|othervalue.
   private final val ValueDelimiter = '|';
 
   private implicit class RowWrapper(row: Map[String, String]) {
@@ -56,12 +35,14 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
     source.close()
 
   final def iterator: Iterator[KgtkEdgeWithNodes] = {
-    val sourceLineReader = new SourceLineReader(source)
-    val csvHeader = new KgtkEdgesCSVReader(new SingleLineReader(sourceLineReader.readLineWithTerminator())).readNext()
-    if (!csvHeader.isDefined) {
-      logger.error("KGTK TSV file is empty or has no valid header")
+    val lineWithIndexIterator = source.getLines().zipWithIndex
+
+    if (!lineWithIndexIterator.hasNext) {
+      logger.error("KGTK TSV file is empty")
       return List().iterator
     }
+    val headerLine = lineWithIndexIterator.next()
+    val headerLineSplit = headerLine._1.split('\t')
 
     new Iterator[KgtkEdgeWithNodes] {
       private[this] var _next: Option[KgtkEdgeWithNodes] = None
@@ -85,54 +66,47 @@ final class KgtkEdgesTsvReader(source: Source) extends AutoCloseable with Iterab
       }
 
       private def readNext(): Option[KgtkEdgeWithNodes] = {
-        try {
-          // #191: create a new CSVReader for every line
-          // The previous approach of catching and ignoring MalformedCSVRowException's from the CSVReader leaves the CSVReader in an inconsistent internal state. For example, on an unclosed quote it keeps reading lines until it reaches the next quote, and skips all those lines. This is dropping quite a few lines.
-          // Prior to that we did not catch MalformedCSVRowException at all, so any malformed line would stop iteration.
-          // Our format doesn't allow newlines within quotes, so the only newline in a row should be the EOL terminator.
-          Option(sourceLineReader.readLineWithTerminator()).flatMap(line => {
-            new KgtkEdgesCSVReader(new SingleLineReader(line)).readNext().map(csvRowList => {
-              val csvRowMap: Map[String, String] = csvHeader.get.zip(csvRowList).toMap
-
-              val sources = csvRowMap.getList("source")
-              val node1 = csvRowMap("node1")
-              val node2 = csvRowMap("node2")
-              val relation = csvRowMap("relation")
-
-              kgtk.KgtkEdgeWithNodes(
-                edge = KgEdge(
-                  id = csvRowMap.get("id").getOrElse(s"${node1}-${relation}-${node2}"),
-                  labels = csvRowMap.getList("relation;label"),
-                  `object` = node2,
-                  predicate = relation,
-                  sentences = csvRowMap.getList("sentence"),
-                  sources = sources,
-                  subject = node1
-                ),
-                node1 = KgNode(
-                  id = csvRowMap("node1"),
-                  labels = csvRowMap.getList("node1;label"),
-                  pos = None,
-                  sourceIds = sources,
-                  pageRank = None
-                ),
-                node2 = KgNode(
-                  id = csvRowMap("node2"),
-                  labels = csvRowMap.getList("node2;label"),
-                  pos = None,
-                  sourceIds = sources,
-                  pageRank = None
-                ),
-                sources = sources
-              )
-            })
-          })
-        } catch {
-          case e: MalformedCSVException => {
-            logger.warn("skipping malformed CSV line: {}", e.getMessage)
-            readNext()
+        while (lineWithIndexIterator.hasNext) {
+          val (line, lineIndex) = lineWithIndexIterator.next
+          var lineSplit = line.split('\t')
+          while (lineSplit.length < headerLineSplit.length) {
+            lineSplit :+= ""
           }
+          val row = headerLineSplit.zip(lineSplit).toMap
+
+          val sources = row.getList("source")
+          val node1 = row("node1")
+          val node2 = row("node2")
+          val relation = row("relation")
+
+          return Some(kgtk.KgtkEdgeWithNodes(
+            edge = KgEdge(
+              id = row.get("id").getOrElse(s"${node1}-${relation}-${node2}"),
+              labels = row.getList("relation;label"),
+              `object` = node2,
+              predicate = relation,
+              sentences = row.getList("sentence"),
+              sources = sources,
+              subject = node1
+            ),
+            node1 = KgNode(
+              id = row("node1"),
+              labels = row.getList("node1;label"),
+              pos = None,
+              sourceIds = sources,
+              pageRank = None
+            ),
+            node2 = KgNode(
+              id = row("node2"),
+              labels = row.getList("node2;label"),
+              pos = None,
+              sourceIds = sources,
+              pageRank = None
+            ),
+            sources = sources
+          ))
         }
+        None
       }
     }
   }
