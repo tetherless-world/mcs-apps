@@ -1,0 +1,1000 @@
+id	node1	relation	node2	node1;label	node2;label	relation;label	relation;dimension	source	sentence
+/c/en/0.22_inch_calibre-/r/IsA-/c/en/5.6_millimetres-0000	/c/en/0.22_inch_calibre	/r/IsA	/c/en/5.6_millimetres	0.22 inch calibre	5.6 millimetres	is a		CN	[[0.22 inch calibre]] is [[5.6 millimetres]]
+/c/en/0/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/0/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	0	cardinal	similar to		CN	[[0]] is similar to [[cardinal]]
+/c/en/0/n/wn/quantity-/r/Synonym-/c/en/zero/n/wn/quantity-0000	/c/en/0/n/wn/quantity	/r/Synonym	/c/en/zero/n/wn/quantity	0	zero	synonym		CN	[[0]] is a synonym of [[zero]]
+/c/en/0/n/wp/number-/r/Synonym-/c/en/0/n/wp/number-0000	/c/en/0/n/wp/number	/r/Synonym	/c/en/0/n/wp/number	0	0	synonym		CN	
+/c/en/0/n-/r/Antonym-/c/en/1-0000	/c/en/0/n	/r/Antonym	/c/en/1	0	1	antonym		CN	
+/c/en/0/n-/r/HasContext-/c/en/electrical_engineering-0000	/c/en/0/n	/r/HasContext	/c/en/electrical_engineering	0	electrical engineering	has context		CN	
+/c/en/0/n-/r/RelatedTo-/c/en/low-0000	/c/en/0/n	/r/RelatedTo	/c/en/low	0	low	related to		CN	
+/c/en/000/n-/r/RelatedTo-/c/en/emergency_service-0000	/c/en/000/n	/r/RelatedTo	/c/en/emergency_service	000	emergency service	related to		CN	
+/c/en/000-/r/RelatedTo-/c/en/112-0000	/c/en/000	/r/RelatedTo	/c/en/112	000	112	related to		CN	
+/c/en/000-/r/RelatedTo-/c/en/911-0000	/c/en/000	/r/RelatedTo	/c/en/911	000	911	related to		CN	
+/c/en/000-/r/RelatedTo-/c/en/999-0000	/c/en/000	/r/RelatedTo	/c/en/999	000	999	related to		CN	
+/c/en/000-/r/RelatedTo-/c/en/triple_o-0000	/c/en/000	/r/RelatedTo	/c/en/triple_o	000	triple o	related to		CN	
+/c/en/007/n-/r/RelatedTo-/c/en/james_bond-0000	/c/en/007/n	/r/RelatedTo	/c/en/james_bond	007	james bond	related to		CN	
+/c/en/007/n-/r/RelatedTo-/c/en/mi6-0000	/c/en/007/n	/r/RelatedTo	/c/en/mi6	007	mi6	related to		CN	
+/c/en/007/n-/r/RelatedTo-/c/en/special_agent-0000	/c/en/007/n	/r/RelatedTo	/c/en/special_agent	007	special agent	related to		CN	
+/c/en/007/n-/r/Synonym-/c/en/james_bond-0000	/c/en/007/n	/r/Synonym	/c/en/james_bond	007	james bond	synonym		CN	
+/c/en/007s/n-/r/FormOf-/c/en/007-0000	/c/en/007s/n	/r/FormOf	/c/en/007	007s	007	form of		CN	
+/c/en/00_s/n-/r/FormOf-/c/en/00s-0000	/c/en/00_s/n	/r/FormOf	/c/en/00s	00 s	00s	form of		CN	
+/c/en/00s/n-/r/RelatedTo-/c/en/1900s-0000	/c/en/00s/n	/r/RelatedTo	/c/en/1900s	00s	1900s	related to		CN	
+/c/en/00s/n-/r/RelatedTo-/c/en/2000s-0000	/c/en/00s/n	/r/RelatedTo	/c/en/2000s	00s	2000s	related to		CN	
+/c/en/00s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/00s/n	/r/RelatedTo	/c/en/decade	00s	decade	related to		CN	
+/c/en/00t_shirts-/r/AtLocation-/c/en/drawer-0000	/c/en/00t_shirts	/r/AtLocation	/c/en/drawer	00t shirts	drawer	at location		CN	*Something you find in [[a drawer]] is [[00t-shirts]]
+/c/en/0800_number/n-/r/HasContext-/c/en/nz-0000	/c/en/0800_number/n	/r/HasContext	/c/en/nz	0800 number	nz	has context		CN	
+/c/en/0800_number/n-/r/HasContext-/c/en/uk-0000	/c/en/0800_number/n	/r/HasContext	/c/en/uk	0800 number	uk	has context		CN	
+/c/en/0800_number/n-/r/RelatedTo-/c/en/free-0000	/c/en/0800_number/n	/r/RelatedTo	/c/en/free	0800 number	free	related to		CN	
+/c/en/0800_number/n-/r/RelatedTo-/c/en/telephone_number-0000	/c/en/0800_number/n	/r/RelatedTo	/c/en/telephone_number	0800 number	telephone number	related to		CN	
+/c/en/0800_numbers/n-/r/FormOf-/c/en/0800_number-0000	/c/en/0800_numbers/n	/r/FormOf	/c/en/0800_number	0800 numbers	0800 number	form of		CN	
+/c/en/0_0/a-/r/HasContext-/c/en/aviation-0000	/c/en/0_0/a	/r/HasContext	/c/en/aviation	0 0	aviation	has context		CN	
+/c/en/0_100/n-/r/HasContext-/c/en/australia-0000	/c/en/0_100/n	/r/HasContext	/c/en/australia	0 100	australia	has context		CN	
+/c/en/0_100/n-/r/HasContext-/c/en/automotive-0000	/c/en/0_100/n	/r/HasContext	/c/en/automotive	0 100	automotive	has context		CN	
+/c/en/0_100/n-/r/HasContext-/c/en/us-0000	/c/en/0_100/n	/r/HasContext	/c/en/us	0 100	us	has context		CN	
+/c/en/0_100/n-/r/RelatedTo-/c/en/km_h-0000	/c/en/0_100/n	/r/RelatedTo	/c/en/km_h	0 100	km h	related to		CN	
+/c/en/0_100/n-/r/RelatedTo-/c/en/mph-0000	/c/en/0_100/n	/r/RelatedTo	/c/en/mph	0 100	mph	related to		CN	
+/c/en/0_100/n-/r/RelatedTo-/c/en/standing_start-0000	/c/en/0_100/n	/r/RelatedTo	/c/en/standing_start	0 100	standing start	related to		CN	
+/c/en/0_100/n-/r/Synonym-/c/en/0_60-0000	/c/en/0_100/n	/r/Synonym	/c/en/0_60	0 100	0 60	synonym		CN	
+/c/en/0_100-/r/DerivedFrom-/c/en/0-0000	/c/en/0_100	/r/DerivedFrom	/c/en/0	0 100	0	derived from		CN	
+/c/en/0_100-/r/DerivedFrom-/c/en/100-0000	/c/en/0_100	/r/DerivedFrom	/c/en/100	0 100	100	derived from		CN	
+/c/en/0_10_0/n-/r/IsA-/c/en/decapod-0000	/c/en/0_10_0/n	/r/IsA	/c/en/decapod	0 10 0	decapod	is a		CN	
+/c/en/0_10_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_10_0/n	/r/RelatedTo	/c/en/driving_wheel	0 10 0	driving wheel	related to		CN	
+/c/en/0_10_0/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_10_0/n	/r/RelatedTo	/c/en/leading_wheel	0 10 0	leading wheel	related to		CN	
+/c/en/0_10_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_10_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 10 0	steam locomotive	related to		CN	
+/c/en/0_10_0/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_10_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 10 0	trailing wheel	related to		CN	
+/c/en/0_10_0s/n-/r/FormOf-/c/en/0_10_0-0000	/c/en/0_10_0s/n	/r/FormOf	/c/en/0_10_0	0 10 0s	0 10 0	form of		CN	
+/c/en/0_10_0s/n-/r/RelatedTo-/c/en/0_10_0-0000	/c/en/0_10_0s/n	/r/RelatedTo	/c/en/0_10_0	0 10 0s	0 10 0	related to		CN	
+/c/en/0_10_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_10_2/n	/r/RelatedTo	/c/en/driving_wheel	0 10 2	driving wheel	related to		CN	
+/c/en/0_10_2/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_10_2/n	/r/RelatedTo	/c/en/leading_wheel	0 10 2	leading wheel	related to		CN	
+/c/en/0_10_2/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_10_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 10 2	steam locomotive	related to		CN	
+/c/en/0_10_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_10_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 10 2	trailing wheel	related to		CN	
+/c/en/0_10_2/n-/r/Synonym-/c/en/union-0000	/c/en/0_10_2/n	/r/Synonym	/c/en/union	0 10 2	union	synonym		CN	
+/c/en/0_10_2s/n-/r/FormOf-/c/en/0_10_2-0000	/c/en/0_10_2s/n	/r/FormOf	/c/en/0_10_2	0 10 2s	0 10 2	form of		CN	
+/c/en/0_10_2s/n-/r/RelatedTo-/c/en/0_10_2-0000	/c/en/0_10_2s/n	/r/RelatedTo	/c/en/0_10_2	0 10 2s	0 10 2	related to		CN	
+/c/en/0_12_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_12_0/n	/r/RelatedTo	/c/en/driving_wheel	0 12 0	driving wheel	related to		CN	
+/c/en/0_12_0/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_12_0/n	/r/RelatedTo	/c/en/leading_wheel	0 12 0	leading wheel	related to		CN	
+/c/en/0_12_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_12_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 12 0	steam locomotive	related to		CN	
+/c/en/0_12_0/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_12_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 12 0	trailing wheel	related to		CN	
+/c/en/0_12_0s/n-/r/FormOf-/c/en/0_12_0-0000	/c/en/0_12_0s/n	/r/FormOf	/c/en/0_12_0	0 12 0s	0 12 0	form of		CN	
+/c/en/0_12_0s/n-/r/RelatedTo-/c/en/0_12_0-0000	/c/en/0_12_0s/n	/r/RelatedTo	/c/en/0_12_0	0 12 0s	0 12 0	related to		CN	
+/c/en/0_2_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_2_2/n	/r/RelatedTo	/c/en/driving_wheel	0 2 2	driving wheel	related to		CN	
+/c/en/0_2_2/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_2_2/n	/r/RelatedTo	/c/en/leading_wheel	0 2 2	leading wheel	related to		CN	
+/c/en/0_2_2/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_2_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 2 2	steam locomotive	related to		CN	
+/c/en/0_2_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_2_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 2 2	trailing wheel	related to		CN	
+/c/en/0_2_2/n-/r/Synonym-/c/en/a1-0000	/c/en/0_2_2/n	/r/Synonym	/c/en/a1	0 2 2	a1	synonym		CN	
+/c/en/0_2_2s/n-/r/FormOf-/c/en/0_2_2-0000	/c/en/0_2_2s/n	/r/FormOf	/c/en/0_2_2	0 2 2s	0 2 2	form of		CN	
+/c/en/0_2_2s/n-/r/RelatedTo-/c/en/0_2_2-0000	/c/en/0_2_2s/n	/r/RelatedTo	/c/en/0_2_2	0 2 2s	0 2 2	related to		CN	
+/c/en/0_4_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_4_0/n	/r/RelatedTo	/c/en/driving_wheel	0 4 0	driving wheel	related to		CN	
+/c/en/0_4_0/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_4_0/n	/r/RelatedTo	/c/en/leading_wheel	0 4 0	leading wheel	related to		CN	
+/c/en/0_4_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_4_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 0	steam locomotive	related to		CN	
+/c/en/0_4_0/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_4_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 0	trailing wheel	related to		CN	
+/c/en/0_4_0_0_4_0/n-/r/IsA-/c/en/garratt-0000	/c/en/0_4_0_0_4_0/n	/r/IsA	/c/en/garratt	0 4 0 0 4 0	garratt	is a		CN	
+/c/en/0_4_0_0_4_0/n-/r/RelatedTo-/c/en/0_4_0-0000	/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/0_4_0	0 4 0 0 4 0	0 4 0	related to		CN	
+/c/en/0_4_0_0_4_0/n-/r/RelatedTo-/c/en/boiler-0000	/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/boiler	0 4 0 0 4 0	boiler	related to		CN	
+/c/en/0_4_0_0_4_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_4_0_0_4_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 0 0 4 0	steam locomotive	related to		CN	
+/c/en/0_4_0_0_4_0s/n-/r/FormOf-/c/en/0_4_0_0_4_0-0000	/c/en/0_4_0_0_4_0s/n	/r/FormOf	/c/en/0_4_0_0_4_0	0 4 0 0 4 0s	0 4 0 0 4 0	form of		CN	
+/c/en/0_4_0_0_4_0-/r/IsA-/c/en/garratt/n-0000	/c/en/0_4_0_0_4_0	/r/IsA	/c/en/garratt/n	0 4 0 0 4 0	garratt	is a		CN	
+/c/en/0_4_0s/n-/r/FormOf-/c/en/0_4_0-0000	/c/en/0_4_0s/n	/r/FormOf	/c/en/0_4_0	0 4 0s	0 4 0	form of		CN	
+/c/en/0_4_0s/n-/r/RelatedTo-/c/en/0_4_0-0000	/c/en/0_4_0s/n	/r/RelatedTo	/c/en/0_4_0	0 4 0s	0 4 0	related to		CN	
+/c/en/0_4_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_4_2/n	/r/RelatedTo	/c/en/driving_wheel	0 4 2	driving wheel	related to		CN	
+/c/en/0_4_2/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_4_2/n	/r/RelatedTo	/c/en/leading_wheel	0 4 2	leading wheel	related to		CN	
+/c/en/0_4_2/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_4_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 2	steam locomotive	related to		CN	
+/c/en/0_4_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_4_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 2	trailing wheel	related to		CN	
+/c/en/0_4_2s/n-/r/FormOf-/c/en/0_4_2-0000	/c/en/0_4_2s/n	/r/FormOf	/c/en/0_4_2	0 4 2s	0 4 2	form of		CN	
+/c/en/0_4_2s/n-/r/RelatedTo-/c/en/0_4_2-0000	/c/en/0_4_2s/n	/r/RelatedTo	/c/en/0_4_2	0 4 2s	0 4 2	related to		CN	
+/c/en/0_4_4/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_4_4/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4	driving wheel	related to		CN	
+/c/en/0_4_4/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_4_4/n	/r/RelatedTo	/c/en/leading_wheel	0 4 4	leading wheel	related to		CN	
+/c/en/0_4_4/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_4_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 4 4	steam locomotive	related to		CN	
+/c/en/0_4_4/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_4_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 4	trailing wheel	related to		CN	
+/c/en/0_4_4_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4 0	driving wheel	related to		CN	
+/c/en/0_4_4_0/n-/r/RelatedTo-/c/en/leading_truck-0000	/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/leading_truck	0 4 4 0	leading truck	related to		CN	
+/c/en/0_4_4_0/n-/r/RelatedTo-/c/en/locomotive-0000	/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/locomotive	0 4 4 0	locomotive	related to		CN	
+/c/en/0_4_4_0/n-/r/RelatedTo-/c/en/mallet-0000	/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/mallet	0 4 4 0	mallet	related to		CN	
+/c/en/0_4_4_0/n-/r/RelatedTo-/c/en/trailing_truck-0000	/c/en/0_4_4_0/n	/r/RelatedTo	/c/en/trailing_truck	0 4 4 0	trailing truck	related to		CN	
+/c/en/0_4_4_0s/n-/r/FormOf-/c/en/0_4_4_0-0000	/c/en/0_4_4_0s/n	/r/FormOf	/c/en/0_4_4_0	0 4 4 0s	0 4 4 0	form of		CN	
+/c/en/0_4_4_0s/n-/r/RelatedTo-/c/en/0_4_4_0-0000	/c/en/0_4_4_0s/n	/r/RelatedTo	/c/en/0_4_4_0	0 4 4 0s	0 4 4 0	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/driving_wheel	0 4 4 2	driving wheel	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/leading_truck-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/leading_truck	0 4 4 2	leading truck	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/locomotive-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/locomotive	0 4 4 2	locomotive	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/mallet-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/mallet	0 4 4 2	mallet	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/trailing_truck-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/trailing_truck	0 4 4 2	trailing truck	related to		CN	
+/c/en/0_4_4_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_4_4_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 4 4 2	trailing wheel	related to		CN	
+/c/en/0_4_4_2s/n-/r/FormOf-/c/en/0_4_4_2-0000	/c/en/0_4_4_2s/n	/r/FormOf	/c/en/0_4_4_2	0 4 4 2s	0 4 4 2	form of		CN	
+/c/en/0_4_4_2s/n-/r/RelatedTo-/c/en/0_4_4_2-0000	/c/en/0_4_4_2s/n	/r/RelatedTo	/c/en/0_4_4_2	0 4 4 2s	0 4 4 2	related to		CN	
+/c/en/0_4_4s/n-/r/FormOf-/c/en/0_4_4-0000	/c/en/0_4_4s/n	/r/FormOf	/c/en/0_4_4	0 4 4s	0 4 4	form of		CN	
+/c/en/0_4_4s/n-/r/RelatedTo-/c/en/0_4_4-0000	/c/en/0_4_4s/n	/r/RelatedTo	/c/en/0_4_4	0 4 4s	0 4 4	related to		CN	
+/c/en/0_60/n-/r/HasContext-/c/en/automotive-0000	/c/en/0_60/n	/r/HasContext	/c/en/automotive	0 60	automotive	has context		CN	
+/c/en/0_60/n-/r/RelatedTo-/c/en/km_h-0000	/c/en/0_60/n	/r/RelatedTo	/c/en/km_h	0 60	km h	related to		CN	
+/c/en/0_60/n-/r/RelatedTo-/c/en/standing_start-0000	/c/en/0_60/n	/r/RelatedTo	/c/en/standing_start	0 60	standing start	related to		CN	
+/c/en/0_60/n-/r/SimilarTo-/c/en/0_60_0-0000	/c/en/0_60/n	/r/SimilarTo	/c/en/0_60_0	0 60	0 60 0	similar to		CN	
+/c/en/0_60/n-/r/SimilarTo-/c/en/60_0-0000	/c/en/0_60/n	/r/SimilarTo	/c/en/60_0	0 60	60 0	similar to		CN	
+/c/en/0_60_0/n-/r/HasContext-/c/en/automotive-0000	/c/en/0_60_0/n	/r/HasContext	/c/en/automotive	0 60 0	automotive	has context		CN	
+/c/en/0_60_0/n-/r/RelatedTo-/c/en/km_h-0000	/c/en/0_60_0/n	/r/RelatedTo	/c/en/km_h	0 60 0	km h	related to		CN	
+/c/en/0_60_0/n-/r/RelatedTo-/c/en/mph-0000	/c/en/0_60_0/n	/r/RelatedTo	/c/en/mph	0 60 0	mph	related to		CN	
+/c/en/0_60_0/n-/r/RelatedTo-/c/en/standing_start-0000	/c/en/0_60_0/n	/r/RelatedTo	/c/en/standing_start	0 60 0	standing start	related to		CN	
+/c/en/0_60_0/n-/r/SimilarTo-/c/en/0_60-0000	/c/en/0_60_0/n	/r/SimilarTo	/c/en/0_60	0 60 0	0 60	similar to		CN	
+/c/en/0_60_0/n-/r/SimilarTo-/c/en/60_0-0000	/c/en/0_60_0/n	/r/SimilarTo	/c/en/60_0	0 60 0	60 0	similar to		CN	
+/c/en/0_60_0-/r/DerivedFrom-/c/en/0_60-0000	/c/en/0_60_0	/r/DerivedFrom	/c/en/0_60	0 60 0	0 60	derived from		CN	
+/c/en/0_60_0-/r/DerivedFrom-/c/en/60_0-0000	/c/en/0_60_0	/r/DerivedFrom	/c/en/60_0	0 60 0	60 0	derived from		CN	
+/c/en/0_60-/r/DerivedFrom-/c/en/0-0000	/c/en/0_60	/r/DerivedFrom	/c/en/0	0 60	0	derived from		CN	
+/c/en/0_60-/r/DerivedFrom-/c/en/60-0000	/c/en/0_60	/r/DerivedFrom	/c/en/60	0 60	60	derived from		CN	
+/c/en/0_6_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_6_0/n	/r/RelatedTo	/c/en/driving_wheel	0 6 0	driving wheel	related to		CN	
+/c/en/0_6_0/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_6_0/n	/r/RelatedTo	/c/en/leading_wheel	0 6 0	leading wheel	related to		CN	
+/c/en/0_6_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_6_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 0	steam locomotive	related to		CN	
+/c/en/0_6_0/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_6_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 0	trailing wheel	related to		CN	
+/c/en/0_6_0s/n-/r/FormOf-/c/en/0_6_0-0000	/c/en/0_6_0s/n	/r/FormOf	/c/en/0_6_0	0 6 0s	0 6 0	form of		CN	
+/c/en/0_6_0s/n-/r/RelatedTo-/c/en/0_6_0-0000	/c/en/0_6_0s/n	/r/RelatedTo	/c/en/0_6_0	0 6 0s	0 6 0	related to		CN	
+/c/en/0_6_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_6_2/n	/r/RelatedTo	/c/en/driving_wheel	0 6 2	driving wheel	related to		CN	
+/c/en/0_6_2/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_6_2/n	/r/RelatedTo	/c/en/leading_wheel	0 6 2	leading wheel	related to		CN	
+/c/en/0_6_2/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_6_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 2	steam locomotive	related to		CN	
+/c/en/0_6_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_6_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 2	trailing wheel	related to		CN	
+/c/en/0_6_2s/n-/r/FormOf-/c/en/0_6_2-0000	/c/en/0_6_2s/n	/r/FormOf	/c/en/0_6_2	0 6 2s	0 6 2	form of		CN	
+/c/en/0_6_2s/n-/r/RelatedTo-/c/en/0_6_2-0000	/c/en/0_6_2s/n	/r/RelatedTo	/c/en/0_6_2	0 6 2s	0 6 2	related to		CN	
+/c/en/0_6_4/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_6_4/n	/r/RelatedTo	/c/en/driving_wheel	0 6 4	driving wheel	related to		CN	
+/c/en/0_6_4/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_6_4/n	/r/RelatedTo	/c/en/leading_wheel	0 6 4	leading wheel	related to		CN	
+/c/en/0_6_4/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_6_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 6 4	steam locomotive	related to		CN	
+/c/en/0_6_4/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_6_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 6 4	trailing wheel	related to		CN	
+/c/en/0_6_4s/n-/r/FormOf-/c/en/0_6_4-0000	/c/en/0_6_4s/n	/r/FormOf	/c/en/0_6_4	0 6 4s	0 6 4	form of		CN	
+/c/en/0_6_4s/n-/r/RelatedTo-/c/en/0_6_4-0000	/c/en/0_6_4s/n	/r/RelatedTo	/c/en/0_6_4	0 6 4s	0 6 4	related to		CN	
+/c/en/0_6_6_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/driving_wheel	0 6 6 0	driving wheel	related to		CN	
+/c/en/0_6_6_0/n-/r/RelatedTo-/c/en/leading_truck-0000	/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/leading_truck	0 6 6 0	leading truck	related to		CN	
+/c/en/0_6_6_0/n-/r/RelatedTo-/c/en/locomotive-0000	/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/locomotive	0 6 6 0	locomotive	related to		CN	
+/c/en/0_6_6_0/n-/r/RelatedTo-/c/en/mallet-0000	/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/mallet	0 6 6 0	mallet	related to		CN	
+/c/en/0_6_6_0/n-/r/RelatedTo-/c/en/trailing_truck-0000	/c/en/0_6_6_0/n	/r/RelatedTo	/c/en/trailing_truck	0 6 6 0	trailing truck	related to		CN	
+/c/en/0_6_6_0s/n-/r/FormOf-/c/en/0_6_6_0-0000	/c/en/0_6_6_0s/n	/r/FormOf	/c/en/0_6_6_0	0 6 6 0s	0 6 6 0	form of		CN	
+/c/en/0_6_6_0s/n-/r/RelatedTo-/c/en/0_6_6_0-0000	/c/en/0_6_6_0s/n	/r/RelatedTo	/c/en/0_6_6_0	0 6 6 0s	0 6 6 0	related to		CN	
+/c/en/0_80_screws-/r/HasProperty-/c/en/very_small-0000	/c/en/0_80_screws	/r/HasProperty	/c/en/very_small	0 80 screws	very small	has property		CN	[[0-80 screws]] are [[very small]]
+/c/en/0_8_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_8_0/n	/r/RelatedTo	/c/en/driving_wheel	0 8 0	driving wheel	related to		CN	
+/c/en/0_8_0/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_8_0/n	/r/RelatedTo	/c/en/leading_wheel	0 8 0	leading wheel	related to		CN	
+/c/en/0_8_0/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_8_0/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 0	steam locomotive	related to		CN	
+/c/en/0_8_0/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_8_0/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 0	trailing wheel	related to		CN	
+/c/en/0_8_0s/n-/r/FormOf-/c/en/0_8_0-0000	/c/en/0_8_0s/n	/r/FormOf	/c/en/0_8_0	0 8 0s	0 8 0	form of		CN	
+/c/en/0_8_0s/n-/r/RelatedTo-/c/en/0_8_0-0000	/c/en/0_8_0s/n	/r/RelatedTo	/c/en/0_8_0	0 8 0s	0 8 0	related to		CN	
+/c/en/0_8_2/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_8_2/n	/r/RelatedTo	/c/en/driving_wheel	0 8 2	driving wheel	related to		CN	
+/c/en/0_8_2/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_8_2/n	/r/RelatedTo	/c/en/leading_wheel	0 8 2	leading wheel	related to		CN	
+/c/en/0_8_2/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_8_2/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 2	steam locomotive	related to		CN	
+/c/en/0_8_2/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_8_2/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 2	trailing wheel	related to		CN	
+/c/en/0_8_2s/n-/r/FormOf-/c/en/0_8_2-0000	/c/en/0_8_2s/n	/r/FormOf	/c/en/0_8_2	0 8 2s	0 8 2	form of		CN	
+/c/en/0_8_2s/n-/r/RelatedTo-/c/en/0_8_2-0000	/c/en/0_8_2s/n	/r/RelatedTo	/c/en/0_8_2	0 8 2s	0 8 2	related to		CN	
+/c/en/0_8_4/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_8_4/n	/r/RelatedTo	/c/en/driving_wheel	0 8 4	driving wheel	related to		CN	
+/c/en/0_8_4/n-/r/RelatedTo-/c/en/leading_wheel-0000	/c/en/0_8_4/n	/r/RelatedTo	/c/en/leading_wheel	0 8 4	leading wheel	related to		CN	
+/c/en/0_8_4/n-/r/RelatedTo-/c/en/steam_locomotive-0000	/c/en/0_8_4/n	/r/RelatedTo	/c/en/steam_locomotive	0 8 4	steam locomotive	related to		CN	
+/c/en/0_8_4/n-/r/RelatedTo-/c/en/trailing_wheel-0000	/c/en/0_8_4/n	/r/RelatedTo	/c/en/trailing_wheel	0 8 4	trailing wheel	related to		CN	
+/c/en/0_8_4s/n-/r/FormOf-/c/en/0_8_4-0000	/c/en/0_8_4s/n	/r/FormOf	/c/en/0_8_4	0 8 4s	0 8 4	form of		CN	
+/c/en/0_8_4s/n-/r/RelatedTo-/c/en/0_8_4-0000	/c/en/0_8_4s/n	/r/RelatedTo	/c/en/0_8_4	0 8 4s	0 8 4	related to		CN	
+/c/en/0_8_8_0/n-/r/RelatedTo-/c/en/driving_wheel-0000	/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/driving_wheel	0 8 8 0	driving wheel	related to		CN	
+/c/en/0_8_8_0/n-/r/RelatedTo-/c/en/leading_truck-0000	/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/leading_truck	0 8 8 0	leading truck	related to		CN	
+/c/en/0_8_8_0/n-/r/RelatedTo-/c/en/locomotive-0000	/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/locomotive	0 8 8 0	locomotive	related to		CN	
+/c/en/0_8_8_0/n-/r/RelatedTo-/c/en/mallet-0000	/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/mallet	0 8 8 0	mallet	related to		CN	
+/c/en/0_8_8_0/n-/r/RelatedTo-/c/en/trailing_truck-0000	/c/en/0_8_8_0/n	/r/RelatedTo	/c/en/trailing_truck	0 8 8 0	trailing truck	related to		CN	
+/c/en/0_8_8_0s/n-/r/FormOf-/c/en/0_8_8_0-0000	/c/en/0_8_8_0s/n	/r/FormOf	/c/en/0_8_8_0	0 8 8 0s	0 8 8 0	form of		CN	
+/c/en/0_8_8_0s/n-/r/RelatedTo-/c/en/0_8_8_0-0000	/c/en/0_8_8_0s/n	/r/RelatedTo	/c/en/0_8_8_0	0 8 8 0s	0 8 8 0	related to		CN	
+/c/en/0_8_8_0-/r/RelatedTo-/c/en/angus-0000	/c/en/0_8_8_0	/r/RelatedTo	/c/en/angus	0 8 8 0	angus	related to		CN	
+/c/en/0_dark_hundred/n-/r/HasContext-/c/en/military_slang-0000	/c/en/0_dark_hundred/n	/r/HasContext	/c/en/military_slang	0 dark hundred	military slang	has context		CN	
+/c/en/0_dark_hundred/n-/r/HasContext-/c/en/us-0000	/c/en/0_dark_hundred/n	/r/HasContext	/c/en/us	0 dark hundred	us	has context		CN	
+/c/en/0_dark_hundred/n-/r/RelatedTo-/c/en/0_dark_thirty-0000	/c/en/0_dark_hundred/n	/r/RelatedTo	/c/en/0_dark_thirty	0 dark hundred	0 dark thirty	related to		CN	
+/c/en/0_dark_hundred-/r/RelatedTo-/c/en/beer_o'clock-0000	/c/en/0_dark_hundred	/r/RelatedTo	/c/en/beer_o'clock	0 dark hundred	beer o'clock	related to		CN	
+/c/en/0_dark_thirty/n-/r/HasContext-/c/en/military_slang-0000	/c/en/0_dark_thirty/n	/r/HasContext	/c/en/military_slang	0 dark thirty	military slang	has context		CN	
+/c/en/0_dark_thirty/n-/r/HasContext-/c/en/us-0000	/c/en/0_dark_thirty/n	/r/HasContext	/c/en/us	0 dark thirty	us	has context		CN	
+/c/en/0_dark_thirty/n-/r/RelatedTo-/c/en/0_dark_hundred-0000	/c/en/0_dark_thirty/n	/r/RelatedTo	/c/en/0_dark_hundred	0 dark thirty	0 dark hundred	related to		CN	
+/c/en/0_dark_thirty-/r/RelatedTo-/c/en/beer_o'clock-0000	/c/en/0_dark_thirty	/r/RelatedTo	/c/en/beer_o'clock	0 dark thirty	beer o'clock	related to		CN	
+/c/en/0_day/a-/r/FormOf-/c/en/zero_day-0000	/c/en/0_day/a	/r/FormOf	/c/en/zero_day	0 day	zero day	form of		CN	
+/c/en/0_day/a-/r/HasContext-/c/en/computing-0000	/c/en/0_day/a	/r/HasContext	/c/en/computing	0 day	computing	has context		CN	
+/c/en/0_day/n-/r/FormOf-/c/en/zero_day-0000	/c/en/0_day/n	/r/FormOf	/c/en/zero_day	0 day	zero day	form of		CN	
+/c/en/0_day/n-/r/HasContext-/c/en/computing-0000	/c/en/0_day/n	/r/HasContext	/c/en/computing	0 day	computing	has context		CN	
+/c/en/0_days/n-/r/FormOf-/c/en/0_day-0000	/c/en/0_days/n	/r/FormOf	/c/en/0_day	0 days	0 day	form of		CN	
+/c/en/0_deg_lat/n-/r/RelatedTo-/c/en/equator-0000	/c/en/0_deg_lat/n	/r/RelatedTo	/c/en/equator	0 deg lat	equator	related to		CN	
+/c/en/0_degrees_celcius-/r/DefinedAs-/c/en/point_at_which_water_freezes-0000	/c/en/0_degrees_celcius	/r/DefinedAs	/c/en/point_at_which_water_freezes	0 degrees celcius	point at which water freezes	defined as		CN	[[0 degrees celcius]] is the [[point at which water freezes]]
+/c/en/0_degrees_celcius-/r/DefinedAs-/c/en/temperature_at_which_water_freezes-0000	/c/en/0_degrees_celcius	/r/DefinedAs	/c/en/temperature_at_which_water_freezes	0 degrees celcius	temperature at which water freezes	defined as		CN	[[0 degrees Celcius]] is the [[temperature at which water freezes]]
+/c/en/0_degress_farenheit-/r/HasProperty-/c/en/very_cold-0000	/c/en/0_degress_farenheit	/r/HasProperty	/c/en/very_cold	0 degress farenheit	very cold	has property		CN	[[0 degress farenheit]] is [[very cold]]
+/c/en/0r-/r/EtymologicallyRelatedTo-/c/en/er-0000	/c/en/0r	/r/EtymologicallyRelatedTo	/c/en/er	0r	er	etymologically related to		CN	
+/c/en/0r-/r/EtymologicallyRelatedTo-/c/en/or-0000	/c/en/0r	/r/EtymologicallyRelatedTo	/c/en/or	0r	or	etymologically related to		CN	
+/c/en/0r-/r/HasContext-/c/en/internet_slang-0000	/c/en/0r	/r/HasContext	/c/en/internet_slang	0r	internet slang	has context		CN	
+/c/en/0r-/r/HasContext-/c/en/leet-0000	/c/en/0r	/r/HasContext	/c/en/leet	0r	leet	has context		CN	
+/c/en/0r-/r/HasContext-/c/en/nonstandard-0000	/c/en/0r	/r/HasContext	/c/en/nonstandard	0r	nonstandard	has context		CN	
+/c/en/0s/n-/r/FormOf-/c/en/0-0000	/c/en/0s/n	/r/FormOf	/c/en/0	0s	0	form of		CN	
+/c/en/0s/n-/r/RelatedTo-/c/en/0-0000	/c/en/0s/n	/r/RelatedTo	/c/en/0	0s	0	related to		CN	
+/c/en/0th-/r/DerivedFrom-/c/en/0/n-0000	/c/en/0th	/r/DerivedFrom	/c/en/0/n	0th	0	derived from		CN	
+/c/en/0tlps/n-/r/FormOf-/c/en/0tlp-0000	/c/en/0tlps/n	/r/FormOf	/c/en/0tlp	0tlps	0tlp	form of		CN	
+/c/en/0-/r/DefinedAs-/c/en/empty_set-0000	/c/en/0	/r/DefinedAs	/c/en/empty_set	0	empty set	defined as		CN	[[0]] is the [[empty set]].
+/c/en/0-/r/DefinedAs-/c/en/first_limit_ordinal-0000	/c/en/0	/r/DefinedAs	/c/en/first_limit_ordinal	0	first limit ordinal	defined as		CN	[[0]] is the [[first limit ordinal]].
+/c/en/0-/r/DefinedAs-/c/en/number_zero-0000	/c/en/0	/r/DefinedAs	/c/en/number_zero	0	number zero	defined as		CN	[[0]] is the [[number zero]].
+/c/en/0-/r/HasContext-/c/en/internet_slang-0000	/c/en/0	/r/HasContext	/c/en/internet_slang	0	internet slang	has context		CN	
+/c/en/0-/r/HasProperty-/c/en/pronounced_zero-0000	/c/en/0	/r/HasProperty	/c/en/pronounced_zero	0	pronounced zero	has property		CN	[["0"]] is [[pronounced zero]]
+/c/en/0-/r/IsA-/c/en/set_containing_one_element-0000	/c/en/0	/r/IsA	/c/en/set_containing_one_element	0	set containing one element	is a		CN	[[{0}]] is a type of [[set containing one element]].
+/c/en/0-/r/RelatedTo-/c/en/1-0000	/c/en/0	/r/RelatedTo	/c/en/1	0	1	related to		CN	
+/c/en/0-/r/RelatedTo-/c/en/2-0000	/c/en/0	/r/RelatedTo	/c/en/2	0	2	related to		CN	
+/c/en/1,000_megawatt_plutonium_reactor/n-/r/IsA-/c/en/tangible_thing/n-0000	/c/en/1,000_megawatt_plutonium_reactor/n	/r/IsA	/c/en/tangible_thing/n	1,000 megawatt plutonium reactor	tangible thing	is a		CN	
+/c/en/1,000_meter/a-/r/FormOf-/c/en/1000_metre-0000	/c/en/1,000_meter/a	/r/FormOf	/c/en/1000_metre	1,000 meter	1000 metre	form of		CN	
+/c/en/1,000_metre/a-/r/FormOf-/c/en/1000_metre-0000	/c/en/1,000_metre/a	/r/FormOf	/c/en/1000_metre	1,000 metre	1000 metre	form of		CN	
+/c/en/1,1,1_trichloro_2,2_bis_4_chlorophenyl_ethane/n-/r/RelatedTo-/c/en/dichlorodiphenyltrichloroethane-0000	/c/en/1,1,1_trichloro_2,2_bis_4_chlorophenyl_ethane/n	/r/RelatedTo	/c/en/dichlorodiphenyltrichloroethane	1,1,1 trichloro 2,2 bis 4 chlorophenyl ethane	dichlorodiphenyltrichloroethane	related to		CN	
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane/n-/r/IsA-/c/en/cfc/n-0000	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane/n	/r/IsA	/c/en/cfc/n	1,1,2 trichloro 1,2,2 trifluoroethane	cfc	is a		CN	
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	/r/IsA	/c/en/chemical_compound/n	1,1,2 trichloro 1,2,2 trifluoroethane	chemical compound	is a		CN	
+/c/en/1,1,2_trichloro_1,2,2_trifluoroethane-/r/Synonym-/c/en/1,1,2_trichloro_1,2,2_trifluoroethane-0000	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	/r/Synonym	/c/en/1,1,2_trichloro_1,2,2_trifluoroethane	1,1,2 trichloro 1,2,2 trifluoroethane	1,1,2 trichloro 1,2,2 trifluoroethane	synonym		CN	
+/c/en/1,1_dimethylhydrazine/n-/r/RelatedTo-/c/en/unsymmetrical_dimethylhydrazine-0000	/c/en/1,1_dimethylhydrazine/n	/r/RelatedTo	/c/en/unsymmetrical_dimethylhydrazine	1,1 dimethylhydrazine	unsymmetrical dimethylhydrazine	related to		CN	
+/c/en/1,1_dimethylhydrazine-/r/IsA-/c/en/dimethylhydrazine/n-0000	/c/en/1,1_dimethylhydrazine	/r/IsA	/c/en/dimethylhydrazine/n	1,1 dimethylhydrazine	dimethylhydrazine	is a		CN	
+/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-/c/en/2,3_bis_nitrooxy_propyl_nitrate-0000	/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/2,3_bis_nitrooxy_propyl_nitrate	1,2,3 trinitrooxypropane	2,3 bis nitrooxy propyl nitrate	synonym		CN	
+/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-/c/en/glyceryl_trinitrate-0000	/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/glyceryl_trinitrate	1,2,3 trinitrooxypropane	glyceryl trinitrate	synonym		CN	
+/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-/c/en/nitroglycerin-0000	/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/nitroglycerin	1,2,3 trinitrooxypropane	nitroglycerin	synonym		CN	
+/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-/c/en/nitro-0000	/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/nitro	1,2,3 trinitrooxypropane	nitro	synonym		CN	
+/c/en/1,2,3_trinitrooxypropane/n-/r/Synonym-/c/en/trinitroglycerin-0000	/c/en/1,2,3_trinitrooxypropane/n	/r/Synonym	/c/en/trinitroglycerin	1,2,3 trinitrooxypropane	trinitroglycerin	synonym		CN	
+/c/en/1,2,4_trioxane/n-/r/IsA-/c/en/ether/n-0000	/c/en/1,2,4_trioxane/n	/r/IsA	/c/en/ether/n	1,2,4 trioxane	ether	is a		CN	
+/c/en/1,2_diazole-/r/DerivedFrom-/c/en/diazole/n-0000	/c/en/1,2_diazole	/r/DerivedFrom	/c/en/diazole/n	1,2 diazole	diazole	derived from		CN	
+/c/en/1,2_dibromoethane/n-/r/IsA-/c/en/tangible_thing/n-0000	/c/en/1,2_dibromoethane/n	/r/IsA	/c/en/tangible_thing/n	1,2 dibromoethane	tangible thing	is a		CN	
+/c/en/1,2_dibromoethane-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,2_dibromoethane	/r/IsA	/c/en/chemical_compound/n	1,2 dibromoethane	chemical compound	is a		CN	
+/c/en/1,2_dibromoethane-/r/Synonym-/c/en/1,2_dibromoethane-0000	/c/en/1,2_dibromoethane	/r/Synonym	/c/en/1,2_dibromoethane	1,2 dibromoethane	1,2 dibromoethane	synonym		CN	
+/c/en/1,2_dichlorotetrafluoroethane/n-/r/IsA-/c/en/cfc/n-0000	/c/en/1,2_dichlorotetrafluoroethane/n	/r/IsA	/c/en/cfc/n	1,2 dichlorotetrafluoroethane	cfc	is a		CN	
+/c/en/1,2_dichlorotetrafluoroethane-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,2_dichlorotetrafluoroethane	/r/IsA	/c/en/chemical_compound/n	1,2 dichlorotetrafluoroethane	chemical compound	is a		CN	
+/c/en/1,2_dichlorotetrafluoroethane-/r/Synonym-/c/en/1,2_dichlorotetrafluoroethane-0000	/c/en/1,2_dichlorotetrafluoroethane	/r/Synonym	/c/en/1,2_dichlorotetrafluoroethane	1,2 dichlorotetrafluoroethane	1,2 dichlorotetrafluoroethane	synonym		CN	
+/c/en/1,2_dimethoxybenzene/n-/r/IsA-/c/en/ether/n-0000	/c/en/1,2_dimethoxybenzene/n	/r/IsA	/c/en/ether/n	1,2 dimethoxybenzene	ether	is a		CN	
+/c/en/1,2_dimethoxybenzene-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,2_dimethoxybenzene	/r/IsA	/c/en/chemical_compound/n	1,2 dimethoxybenzene	chemical compound	is a		CN	
+/c/en/1,2_dimethoxybenzene-/r/Synonym-/c/en/1,2_dimethoxybenzene-0000	/c/en/1,2_dimethoxybenzene	/r/Synonym	/c/en/1,2_dimethoxybenzene	1,2 dimethoxybenzene	1,2 dimethoxybenzene	synonym		CN	
+/c/en/1,2_dimethylhydrazine/n-/r/IsA-/c/en/tangible_thing/n-0000	/c/en/1,2_dimethylhydrazine/n	/r/IsA	/c/en/tangible_thing/n	1,2 dimethylhydrazine	tangible thing	is a		CN	
+/c/en/1,2_dimethylhydrazine-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,2_dimethylhydrazine	/r/IsA	/c/en/chemical_compound/n	1,2 dimethylhydrazine	chemical compound	is a		CN	
+/c/en/1,2_dimethylhydrazine-/r/IsA-/c/en/dimethylhydrazine/n-0000	/c/en/1,2_dimethylhydrazine	/r/IsA	/c/en/dimethylhydrazine/n	1,2 dimethylhydrazine	dimethylhydrazine	is a		CN	
+/c/en/1,2_dimethylhydrazine-/r/Synonym-/c/en/1,2_dimethylhydrazine-0000	/c/en/1,2_dimethylhydrazine	/r/Synonym	/c/en/1,2_dimethylhydrazine	1,2 dimethylhydrazine	1,2 dimethylhydrazine	synonym		CN	
+/c/en/1,2_naphthoquinone/n-/r/HasContext-/c/en/organic_compound-0000	/c/en/1,2_naphthoquinone/n	/r/HasContext	/c/en/organic_compound	1,2 naphthoquinone	organic compound	has context		CN	
+/c/en/1,2_naphthoquinone/n-/r/RelatedTo-/c/en/naphthoquinone-0000	/c/en/1,2_naphthoquinone/n	/r/RelatedTo	/c/en/naphthoquinone	1,2 naphthoquinone	naphthoquinone	related to		CN	
+/c/en/1,2_naphthoquinone-/r/DerivedFrom-/c/en/naphthoquinone/n-0000	/c/en/1,2_naphthoquinone	/r/DerivedFrom	/c/en/naphthoquinone/n	1,2 naphthoquinone	naphthoquinone	derived from		CN	
+/c/en/1,2_naphthoquinone-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,2_naphthoquinone	/r/IsA	/c/en/chemical_compound/n	1,2 naphthoquinone	chemical compound	is a		CN	
+/c/en/1,2_naphthoquinone-/r/Synonym-/c/en/1,2_naphthoquinone-0000	/c/en/1,2_naphthoquinone	/r/Synonym	/c/en/1,2_naphthoquinone	1,2 naphthoquinone	1,2 naphthoquinone	synonym		CN	
+/c/en/1,3,5_cyclohexatriene-/r/FormOf-/c/en/cyclohexa_1,3,5_triene/n-0000	/c/en/1,3,5_cyclohexatriene	/r/FormOf	/c/en/cyclohexa_1,3,5_triene/n	1,3,5 cyclohexatriene	cyclohexa 1,3,5 triene	form of		CN	
+/c/en/1,3_diazole-/r/DerivedFrom-/c/en/diazole/n-0000	/c/en/1,3_diazole	/r/DerivedFrom	/c/en/diazole/n	1,3 diazole	diazole	derived from		CN	
+/c/en/1,3_dimethylpentylamine/n-/r/IsA-/c/en/amine/n-0000	/c/en/1,3_dimethylpentylamine/n	/r/IsA	/c/en/amine/n	1,3 dimethylpentylamine	amine	is a		CN	
+/c/en/1,3bpg/n-/r/IsA-/c/en/chemical_object/n-0000	/c/en/1,3bpg/n	/r/IsA	/c/en/chemical_object/n	1,3bpg	chemical object	is a		CN	
+/c/en/1,3bpg/n-/r/IsA-/c/en/organic_molecule/n-0000	/c/en/1,3bpg/n	/r/IsA	/c/en/organic_molecule/n	1,3bpg	organic molecule	is a		CN	
+/c/en/1,4_dimethoxybenzene/n-/r/IsA-/c/en/ether/n-0000	/c/en/1,4_dimethoxybenzene/n	/r/IsA	/c/en/ether/n	1,4 dimethoxybenzene	ether	is a		CN	
+/c/en/1,4_dioxane/n-/r/IsA-/c/en/ether/n-0000	/c/en/1,4_dioxane/n	/r/IsA	/c/en/ether/n	1,4 dioxane	ether	is a		CN	
+/c/en/1,4_dioxane-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,4_dioxane	/r/IsA	/c/en/chemical_compound/n	1,4 dioxane	chemical compound	is a		CN	
+/c/en/1,4_dioxane-/r/Synonym-/c/en/1,4_dioxane-0000	/c/en/1,4_dioxane	/r/Synonym	/c/en/1,4_dioxane	1,4 dioxane	1,4 dioxane	synonym		CN	
+/c/en/1,4_naphthoquinone/n-/r/HasContext-/c/en/organic_compound-0000	/c/en/1,4_naphthoquinone/n	/r/HasContext	/c/en/organic_compound	1,4 naphthoquinone	organic compound	has context		CN	
+/c/en/1,4_naphthoquinone/n-/r/RelatedTo-/c/en/naphthoquinone-0000	/c/en/1,4_naphthoquinone/n	/r/RelatedTo	/c/en/naphthoquinone	1,4 naphthoquinone	naphthoquinone	related to		CN	
+/c/en/1,4_naphthoquinone-/r/DerivedFrom-/c/en/naphthoquinone/n-0000	/c/en/1,4_naphthoquinone	/r/DerivedFrom	/c/en/naphthoquinone/n	1,4 naphthoquinone	naphthoquinone	derived from		CN	
+/c/en/1,4_naphthoquinone-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/1,4_naphthoquinone	/r/IsA	/c/en/chemical_compound/n	1,4 naphthoquinone	chemical compound	is a		CN	
+/c/en/1,4_naphthoquinone-/r/Synonym-/c/en/1,4_naphthoquinone-0000	/c/en/1,4_naphthoquinone	/r/Synonym	/c/en/1,4_naphthoquinone	1,4 naphthoquinone	1,4 naphthoquinone	synonym		CN	
+/c/en/1/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/1/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	1	cardinal	similar to		CN	[[1]] is similar to [[cardinal]]
+/c/en/1/a-/r/FormOf-/c/en/a1-0000	/c/en/1/a	/r/FormOf	/c/en/a1	1	a1	form of		CN	
+/c/en/1/n/wikt/en_2-/r/FormOf-/c/en/plus_one-0000	/c/en/1/n/wikt/en_2	/r/FormOf	/c/en/plus_one	1	plus one	form of		CN	
+/c/en/1/n/wn/quantity-/r/Synonym-/c/en/one/n/wn/quantity-0000	/c/en/1/n/wn/quantity	/r/Synonym	/c/en/one/n/wn/quantity	1	one	synonym		CN	[[1]] is a synonym of [[one]]
+/c/en/1/n/wp/ep-/r/InstanceOf-/c/en/extended_play-0000	/c/en/1/n/wp/ep	/r/InstanceOf	/c/en/extended_play	1	extended play	instance of		CN	
+/c/en/1/n/wp/ep-/r/IsA-/c/en/album/n-0000	/c/en/1/n/wp/ep	/r/IsA	/c/en/album/n	1	album	is a		CN	
+/c/en/1/n/wp/ep-/r/Synonym-/c/en/1/n/wp/ep-0000	/c/en/1/n/wp/ep	/r/Synonym	/c/en/1/n/wp/ep	1	1	synonym		CN	
+/c/en/1/n/wp/ep-/r/dbpedia/genre-/c/en/indie_pop-0000	/c/en/1/n/wp/ep	/r/dbpedia/genre	/c/en/indie_pop	1	indie pop	genre		CN	
+/c/en/1/n/wp/number-/r/Synonym-/c/en/1/n/wp/number-0000	/c/en/1/n/wp/number	/r/Synonym	/c/en/1/n/wp/number	1	1	synonym		CN	
+/c/en/1/n-/r/HasContext-/c/en/historical-0000	/c/en/1/n	/r/HasContext	/c/en/historical	1	historical	has context		CN	
+/c/en/1/n-/r/HasContext-/c/en/military-0000	/c/en/1/n	/r/HasContext	/c/en/military	1	military	has context		CN	
+/c/en/1/n-/r/HasContext-/c/en/us-0000	/c/en/1/n	/r/HasContext	/c/en/us	1	us	has context		CN	
+/c/en/1/n-/r/RelatedTo-/c/en/angstrom-0000	/c/en/1/n	/r/RelatedTo	/c/en/angstrom	1	angstrom	related to		CN	
+/c/en/10,000_metres/n-/r/Synonym-/c/en/10,000_meters-0000	/c/en/10,000_metres/n	/r/Synonym	/c/en/10,000_meters	10,000 metres	10,000 meters	synonym		CN	
+/c/en/10,000_metres-/r/RelatedTo-/c/en/10-0000	/c/en/10,000_metres	/r/RelatedTo	/c/en/10	10,000 metres	10	related to		CN	
+/c/en/10,000_metres-/r/Synonym-/c/en/10,000_metres-0000	/c/en/10,000_metres	/r/Synonym	/c/en/10,000_metres	10,000 metres	10,000 metres	synonym		CN	
+/c/en/10.0/n-/r/RelatedTo-/c/en/perfection-0000	/c/en/10.0/n	/r/RelatedTo	/c/en/perfection	10.0	perfection	related to		CN	
+/c/en/10.0/n-/r/RelatedTo-/c/en/perfect-0000	/c/en/10.0/n	/r/RelatedTo	/c/en/perfect	10.0	perfect	related to		CN	
+/c/en/10.0s/n-/r/FormOf-/c/en/10.0-0000	/c/en/10.0s/n	/r/FormOf	/c/en/10.0	10.0s	10.0	form of		CN	
+/c/en/10/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/10/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	10	cardinal	similar to		CN	[[10]] is similar to [[cardinal]]
+/c/en/10/n/wn/quantity-/r/Synonym-/c/en/ten/n/wn/quantity-0000	/c/en/10/n/wn/quantity	/r/Synonym	/c/en/ten/n/wn/quantity	10	ten	synonym		CN	[[10]] is a synonym of [[ten]]
+/c/en/10/n-/r/RelatedTo-/c/en/intense-0000	/c/en/10/n	/r/RelatedTo	/c/en/intense	10	intense	related to		CN	
+/c/en/10/n-/r/RelatedTo-/c/en/perfect-0000	/c/en/10/n	/r/RelatedTo	/c/en/perfect	10	perfect	related to		CN	
+/c/en/100/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/100/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	100	cardinal	similar to		CN	[[100]] is similar to [[cardinal]]
+/c/en/100/a-/r/FormOf-/c/en/one_hundred_percent-0000	/c/en/100/a	/r/FormOf	/c/en/one_hundred_percent	100	one hundred percent	form of		CN	
+/c/en/100/n/wn/quantity-/r/Synonym-/c/en/hundred/n/wn/quantity-0000	/c/en/100/n/wn/quantity	/r/Synonym	/c/en/hundred/n/wn/quantity	100	hundred	synonym		CN	[[100]] is a synonym of [[hundred]]
+/c/en/100/n-/r/HasContext-/c/en/video_games-0000	/c/en/100/n	/r/HasContext	/c/en/video_games	100	video games	has context		CN	
+/c/en/100/n-/r/RelatedTo-/c/en/any-0000	/c/en/100/n	/r/RelatedTo	/c/en/any	100	any	related to		CN	
+/c/en/100/n-/r/RelatedTo-/c/en/low-0000	/c/en/100/n	/r/RelatedTo	/c/en/low	100	low	related to		CN	
+/c/en/100/n-/r/RelatedTo-/c/en/speedrunning-0000	/c/en/100/n	/r/RelatedTo	/c/en/speedrunning	100	speedrunning	related to		CN	
+/c/en/100/n-/r/RelatedTo-/c/en/unlock-0000	/c/en/100/n	/r/RelatedTo	/c/en/unlock	100	unlock	related to		CN	
+/c/en/100/r-/r/FormOf-/c/en/one_hundred_percent-0000	/c/en/100/r	/r/FormOf	/c/en/one_hundred_percent	100	one hundred percent	form of		CN	
+/c/en/1000/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/1000/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	1000	cardinal	similar to		CN	[[1000]] is similar to [[cardinal]]
+/c/en/1000/n/wn/quantity-/r/Synonym-/c/en/thousand/n/wn/quantity-0000	/c/en/1000/n/wn/quantity	/r/Synonym	/c/en/thousand/n/wn/quantity	1000	thousand	synonym		CN	[[1000]] is a synonym of [[thousand]]
+/c/en/10000/n/wn/quantity-/r/Synonym-/c/en/ten_thousand/n/wn/quantity-0000	/c/en/10000/n/wn/quantity	/r/Synonym	/c/en/ten_thousand/n/wn/quantity	10000	ten thousand	synonym		CN	[[10000]] is a synonym of [[ten thousand]]
+/c/en/10000/n/wp/number-/r/Synonym-/c/en/10000/n/wp/number-0000	/c/en/10000/n/wp/number	/r/Synonym	/c/en/10000/n/wp/number	10000	10000	synonym		CN	
+/c/en/100000/n/wn/quantity-/r/Synonym-/c/en/hundred_thousand/n/wn/quantity-0000	/c/en/100000/n/wn/quantity	/r/Synonym	/c/en/hundred_thousand/n/wn/quantity	100000	hundred thousand	synonym		CN	[[100000]] is a synonym of [[hundred thousand]]
+/c/en/1000000/n/wn/quantity-/r/Synonym-/c/en/million/n/wn/quantity-0000	/c/en/1000000/n/wn/quantity	/r/Synonym	/c/en/million/n/wn/quantity	1000000	million	synonym		CN	[[1000000]] is a synonym of [[million]]
+/c/en/1000000000/n/wn/quantity-/r/Synonym-/c/en/billion/a/wn-0000	/c/en/1000000000/n/wn/quantity	/r/Synonym	/c/en/billion/a/wn	1000000000	billion	synonym		CN	[[1000000000]] is a synonym of [[billion]]
+/c/en/1000000000000/n/wn/quantity-/r/Synonym-/c/en/billion/a/wn-0000	/c/en/1000000000000/n/wn/quantity	/r/Synonym	/c/en/billion/a/wn	1000000000000	billion	synonym		CN	[[1000000000000]] is a synonym of [[billion]]
+/c/en/1000000000000/n/wn/quantity-/r/Synonym-/c/en/trillion/n/wn/quantity-0000	/c/en/1000000000000/n/wn/quantity	/r/Synonym	/c/en/trillion/n/wn/quantity	1000000000000	trillion	synonym		CN	[[1000000000000]] is a synonym of [[trillion]]
+/c/en/10000_mbit_s/n-/r/IsA-/c/en/generic_artifact/n-0000	/c/en/10000_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	10000 mbit s	generic artifact	is a		CN	
+/c/en/10000_metres/n-/r/HasContext-/c/en/athletics-0000	/c/en/10000_metres/n	/r/HasContext	/c/en/athletics	10000 metres	athletics	has context		CN	
+/c/en/10000_metres/n-/r/RelatedTo-/c/en/10,000_metres-0000	/c/en/10000_metres/n	/r/RelatedTo	/c/en/10,000_metres	10000 metres	10,000 metres	related to		CN	
+/c/en/10000_metres/n-/r/RelatedTo-/c/en/long_distance-0000	/c/en/10000_metres/n	/r/RelatedTo	/c/en/long_distance	10000 metres	long distance	related to		CN	
+/c/en/10000_metres/n-/r/RelatedTo-/c/en/metres-0000	/c/en/10000_metres/n	/r/RelatedTo	/c/en/metres	10000 metres	metres	related to		CN	
+/c/en/1000_mbit_s/n-/r/IsA-/c/en/generic_artifact/n-0000	/c/en/1000_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	1000 mbit s	generic artifact	is a		CN	
+/c/en/1000_meter/a-/r/FormOf-/c/en/1000_metre-0000	/c/en/1000_meter/a	/r/FormOf	/c/en/1000_metre	1000 meter	1000 metre	form of		CN	
+/c/en/1000_metre/a-/r/RelatedTo-/c/en/distance-0000	/c/en/1000_metre/a	/r/RelatedTo	/c/en/distance	1000 metre	distance	related to		CN	
+/c/en/1000_metre/a-/r/RelatedTo-/c/en/height-0000	/c/en/1000_metre/a	/r/RelatedTo	/c/en/height	1000 metre	height	related to		CN	
+/c/en/1000_metres/n-/r/HasContext-/c/en/athletics-0000	/c/en/1000_metres/n	/r/HasContext	/c/en/athletics	1000 metres	athletics	has context		CN	
+/c/en/1000_metres/n-/r/RelatedTo-/c/en/metre-0000	/c/en/1000_metres/n	/r/RelatedTo	/c/en/metre	1000 metres	metre	related to		CN	
+/c/en/1000_metres/n-/r/RelatedTo-/c/en/middle_distance-0000	/c/en/1000_metres/n	/r/RelatedTo	/c/en/middle_distance	1000 metres	middle distance	related to		CN	
+/c/en/1000th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/1000th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	1000th	ordinal	similar to		CN	[[1000th]] is similar to [[ordinal]]
+/c/en/1000-/r/HasProperty-/c/en/one_thousand-0000	/c/en/1000	/r/HasProperty	/c/en/one_thousand	1000	one thousand	has property		CN	[[1000]] is [[one thousand]]
+/c/en/100_hamburger/n-/r/HasContext-/c/en/aviation-0000	/c/en/100_hamburger/n	/r/HasContext	/c/en/aviation	100 hamburger	aviation	has context		CN	
+/c/en/100_hamburger/n-/r/HasContext-/c/en/slang-0000	/c/en/100_hamburger/n	/r/HasContext	/c/en/slang	100 hamburger	slang	has context		CN	
+/c/en/100_hamburger/n-/r/RelatedTo-/c/en/general_aviation-0000	/c/en/100_hamburger/n	/r/RelatedTo	/c/en/general_aviation	100 hamburger	general aviation	related to		CN	
+/c/en/100_hamburgers/n-/r/FormOf-/c/en/100_hamburger-0000	/c/en/100_hamburgers/n	/r/FormOf	/c/en/100_hamburger	100 hamburgers	100 hamburger	form of		CN	
+/c/en/100_kilometres_altitude-/r/DefinedAs-/c/en/official_edge_of_space-0000	/c/en/100_kilometres_altitude	/r/DefinedAs	/c/en/official_edge_of_space	100 kilometres altitude	official edge of space	defined as		CN	[[100 kilometres altitude]] is the [[official edge of space]]
+/c/en/100_mbit_s/n-/r/IsA-/c/en/generic_artifact/n-0000	/c/en/100_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	100 mbit s	generic artifact	is a		CN	
+/c/en/100_men-/r/CapableOf-/c/en/row_galley-0000	/c/en/100_men	/r/CapableOf	/c/en/row_galley	100 men	row galley	capable of		CN	[[100 men]] can [[row a galley]]
+/c/en/100_meter_breaststroke/n-/r/IsA-/c/en/quick_burst_sport/n-0000	/c/en/100_meter_breaststroke/n	/r/IsA	/c/en/quick_burst_sport/n	100 meter breaststroke	quick burst sport	is a		CN	
+/c/en/100_meter_breaststroke/n-/r/IsA-/c/en/swimming_race/n-0000	/c/en/100_meter_breaststroke/n	/r/IsA	/c/en/swimming_race/n	100 meter breaststroke	swimming race	is a		CN	
+/c/en/100_meter_fres_style-/r/IsA-/c/en/olympic_swimming_event-0000	/c/en/100_meter_fres_style	/r/IsA	/c/en/olympic_swimming_event	100 meter fres style	olympic swimming event	is a		CN	[[The 100 meter fres style]] is [[an Olympic swimming event]]
+/c/en/100_meter_run/n-/r/IsA-/c/en/sprinting_competition/n-0000	/c/en/100_meter_run/n	/r/IsA	/c/en/sprinting_competition/n	100 meter run	sprinting competition	is a		CN	
+/c/en/100_metres/n-/r/HasContext-/c/en/athletics-0000	/c/en/100_metres/n	/r/HasContext	/c/en/athletics	100 metres	athletics	has context		CN	
+/c/en/100_metres/n-/r/RelatedTo-/c/en/metres-0000	/c/en/100_metres/n	/r/RelatedTo	/c/en/metres	100 metres	metres	related to		CN	
+/c/en/100_metres/n-/r/RelatedTo-/c/en/sprint-0000	/c/en/100_metres/n	/r/RelatedTo	/c/en/sprint	100 metres	sprint	related to		CN	
+/c/en/100_metres/n-/r/Synonym-/c/en/100_meters-0000	/c/en/100_metres/n	/r/Synonym	/c/en/100_meters	100 metres	100 meters	synonym		CN	
+/c/en/100_metres/n-/r/Synonym-/c/en/100_metre_dash-0000	/c/en/100_metres/n	/r/Synonym	/c/en/100_metre_dash	100 metres	100 metre dash	synonym		CN	
+/c/en/100_metres-/r/Synonym-/c/en/100_metres-0000	/c/en/100_metres	/r/Synonym	/c/en/100_metres	100 metres	100 metres	synonym		CN	
+/c/en/100_pennies-/r/CapableOf-/c/en/equal_one_dollar-0000	/c/en/100_pennies	/r/CapableOf	/c/en/equal_one_dollar	100 pennies	equal one dollar	capable of		CN	[[100 pennies]] can [[equal one dollar]]
+/c/en/100_percent/a-/r/RelatedTo-/c/en/complete-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/complete	100 percent	complete	related to		CN	
+/c/en/100_percent/a-/r/RelatedTo-/c/en/confident-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/confident	100 percent	confident	related to		CN	
+/c/en/100_percent/a-/r/RelatedTo-/c/en/entire-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/entire	100 percent	entire	related to		CN	
+/c/en/100_percent/a-/r/RelatedTo-/c/en/knowledge-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/knowledge	100 percent	knowledge	related to		CN	
+/c/en/100_percent/a-/r/RelatedTo-/c/en/sure-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/sure	100 percent	sure	related to		CN	
+/c/en/100_percent/a-/r/RelatedTo-/c/en/whole-0000	/c/en/100_percent/a	/r/RelatedTo	/c/en/whole	100 percent	whole	related to		CN	
+/c/en/100_percent/r-/r/RelatedTo-/c/en/completely-0000	/c/en/100_percent/r	/r/RelatedTo	/c/en/completely	100 percent	completely	related to		CN	
+/c/en/100_percent/r-/r/RelatedTo-/c/en/entirely-0000	/c/en/100_percent/r	/r/RelatedTo	/c/en/entirely	100 percent	entirely	related to		CN	
+/c/en/100_percent/r-/r/RelatedTo-/c/en/wholly-0000	/c/en/100_percent/r	/r/RelatedTo	/c/en/wholly	100 percent	wholly	related to		CN	
+/c/en/100_percent-/r/HasContext-/c/en/slang-0000	/c/en/100_percent	/r/HasContext	/c/en/slang	100 percent	slang	has context		CN	
+/c/en/100_percent-/r/HasContext-/c/en/south_africa-0000	/c/en/100_percent	/r/HasContext	/c/en/south_africa	100 percent	south africa	has context		CN	
+/c/en/100_percent-/r/RelatedTo-/c/en/excellent-0000	/c/en/100_percent	/r/RelatedTo	/c/en/excellent	100 percent	excellent	related to		CN	
+/c/en/100_percent-/r/RelatedTo-/c/en/magnificent-0000	/c/en/100_percent	/r/RelatedTo	/c/en/magnificent	100 percent	magnificent	related to		CN	
+/c/en/100_percent-/r/RelatedTo-/c/en/wonderful-0000	/c/en/100_percent	/r/RelatedTo	/c/en/wonderful	100 percent	wonderful	related to		CN	
+/c/en/100_s/n-/r/FormOf-/c/en/100s-0000	/c/en/100_s/n	/r/FormOf	/c/en/100s	100 s	100s	form of		CN	
+/c/en/100_troop_strength/n-/r/IsA-/c/en/deployable_military_unit/n-0000	/c/en/100_troop_strength/n	/r/IsA	/c/en/deployable_military_unit/n	100 troop strength	deployable military unit	is a		CN	
+/c/en/100_year_flood/n-/r/RelatedTo-/c/en/probability-0000	/c/en/100_year_flood/n	/r/RelatedTo	/c/en/probability	100 year flood	probability	related to		CN	
+/c/en/100_year_floods/n-/r/FormOf-/c/en/100_year_flood-0000	/c/en/100_year_floods/n	/r/FormOf	/c/en/100_year_flood	100 year floods	100 year flood	form of		CN	
+/c/en/100ll-/r/IsA-/c/en/avgas/n-0000	/c/en/100ll	/r/IsA	/c/en/avgas/n	100ll	avgas	is a		CN	
+/c/en/100s/n-/r/RelatedTo-/c/en/fahrenheit-0000	/c/en/100s/n	/r/RelatedTo	/c/en/fahrenheit	100s	fahrenheit	related to		CN	
+/c/en/100s/n-/r/RelatedTo-/c/en/hundreds-0000	/c/en/100s/n	/r/RelatedTo	/c/en/hundreds	100s	hundreds	related to		CN	
+/c/en/100th/a/wn-/r/IsA-/c/en/common_fraction/n/wn/quantity-0000	/c/en/100th/a/wn	/r/IsA	/c/en/common_fraction/n/wn/quantity	hundredth|one hundredth|one percent|one-hundredth	common fraction|simple fraction	is a		CN|WN	[[one-hundredth]] is a type of [[common fraction]]
+/c/en/100th/a/wn-/r/IsA-/c/en/echelon/n/wn/military-0000	/c/en/100th/a/wn	/r/IsA	/c/en/echelon/n/wn/military	hundredth	rank	is a		CN|WN	[[hundredth]] is a type of [[rank]]
+/c/en/100th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/100th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	100th	ordinal	similar to		CN	[[100th]] is similar to [[ordinal]]
+/c/en/100-/r/HasProperty-/c/en/one_hundred-0000	/c/en/100	/r/HasProperty	/c/en/one_hundred	100	one hundred	has property		CN	[[100]] is [[one hundred]]
+/c/en/101/a/wn-/r/IsA-/c/en/chemical_element/n/wn/substance-0000	/c/en/101/a/wn	/r/IsA	/c/en/chemical_element/n/wn/substance	Md|Mv|atomic number 101|mendelevium	chemical element|element	is a		CN|WN	[[mendelevium]] is a type of [[chemical element]]
+/c/en/101/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/101/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	101	cardinal	similar to		CN	[[101]] is similar to [[cardinal]]
+/c/en/101/a-/r/HasContext-/c/en/us-0000	/c/en/101/a	/r/HasContext	/c/en/us	101	us	has context		CN	
+/c/en/101/a-/r/RelatedTo-/c/en/basic-0000	/c/en/101/a	/r/RelatedTo	/c/en/basic	101	basic	related to		CN	
+/c/en/101/a-/r/RelatedTo-/c/en/beginner-0000	/c/en/101/a	/r/RelatedTo	/c/en/beginner	101	beginner	related to		CN	
+/c/en/101/a-/r/RelatedTo-/c/en/from_scratch-0000	/c/en/101/a	/r/RelatedTo	/c/en/from_scratch	101	from scratch	related to		CN	
+/c/en/101_dalmatians-/r/IsA-/c/en/famous_movie-0000	/c/en/101_dalmatians	/r/IsA	/c/en/famous_movie	101 dalmatians	famous movie	is a		CN	[["101 dalmatians"]] is [[a famous movie]]
+/c/en/101st/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/101st/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	101st	ordinal	similar to		CN	[[101st]] is similar to [[ordinal]]
+/c/en/1040/n-/r/HasContext-/c/en/taxation-0000	/c/en/1040/n	/r/HasContext	/c/en/taxation	1040	taxation	has context		CN	
+/c/en/1040/n-/r/HasContext-/c/en/us-0000	/c/en/1040/n	/r/HasContext	/c/en/us	1040	us	has context		CN	
+/c/en/1040/n-/r/RelatedTo-/c/en/income_tax-0000	/c/en/1040/n	/r/RelatedTo	/c/en/income_tax	1040	income tax	related to		CN	
+/c/en/1040_form/n-/r/IsA-/c/en/conceptual_work_series_periodic/n-0000	/c/en/1040_form/n	/r/IsA	/c/en/conceptual_work_series_periodic/n	1040 form	conceptual work series periodic	is a		CN	
+/c/en/1040_form/n-/r/IsA-/c/en/series_of_conceptual_work/n-0000	/c/en/1040_form/n	/r/IsA	/c/en/series_of_conceptual_work/n	1040 form	series of conceptual work	is a		CN	
+/c/en/1040_form/n-/r/IsA-/c/en/tax_form/n-0000	/c/en/1040_form/n	/r/IsA	/c/en/tax_form/n	1040 form	tax form	is a		CN	
+/c/en/1040ez/n-/r/IsA-/c/en/tax_form/n-0000	/c/en/1040ez/n	/r/IsA	/c/en/tax_form/n	1040ez	tax form	is a		CN	
+/c/en/1040s/n-/r/FormOf-/c/en/1040-0000	/c/en/1040s/n	/r/FormOf	/c/en/1040	1040s	1040	form of		CN	
+/c/en/1040x_tax_form/n-/r/IsA-/c/en/tax_form/n-0000	/c/en/1040x_tax_form/n	/r/IsA	/c/en/tax_form/n	1040x tax form	tax form	is a		CN	
+/c/en/105/a/wn-/r/IsA-/c/en/cryptogamia/n/wn/plant-0000	/c/en/105/a/wn	/r/IsA	/c/en/cryptogamia/n/wn/plant	cultivar	tracheophyte|vascular plant	is a		CN|WN	[[cultivar]] is a type of [[vascular plant]]
+/c/en/105/a/wn-/r/IsA-/c/en/variety/n/wn/biology-0000	/c/en/105/a/wn	/r/IsA	/c/en/variety/n/wn/biology	cultivar	variety	is a		CN|WN	[[cultivar]] is a type of [[variety]]
+/c/en/105/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/105/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	105	cardinal	similar to		CN	[[105]] is similar to [[cardinal]]
+/c/en/105mm_howitzer/n-/r/IsA-/c/en/howitzer/n-0000	/c/en/105mm_howitzer/n	/r/IsA	/c/en/howitzer/n	105mm howitzer	howitzer	is a		CN	
+/c/en/105mm_self_propelled_howitzer/n-/r/IsA-/c/en/105mm_howitzer/n-0000	/c/en/105mm_self_propelled_howitzer/n	/r/IsA	/c/en/105mm_howitzer/n	105mm self propelled howitzer	105mm howitzer	is a		CN	
+/c/en/105mm_self_propelled_howitzer/n-/r/IsA-/c/en/self_propelled_howitzer/n-0000	/c/en/105mm_self_propelled_howitzer/n	/r/IsA	/c/en/self_propelled_howitzer/n	105mm self propelled howitzer	self propelled howitzer	is a		CN	
+/c/en/105mm_towed_howitzer/n-/r/IsA-/c/en/105mm_howitzer/n-0000	/c/en/105mm_towed_howitzer/n	/r/IsA	/c/en/105mm_howitzer/n	105mm towed howitzer	105mm howitzer	is a		CN	
+/c/en/105mm_towed_howitzer/n-/r/IsA-/c/en/towed_howitzer/n-0000	/c/en/105mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	105mm towed howitzer	towed howitzer	is a		CN	
+/c/en/105th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/105th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	105th	ordinal	similar to		CN	[[105th]] is similar to [[ordinal]]
+/c/en/106/n-/r/HasContext-/c/en/aviation-0000	/c/en/106/n	/r/HasContext	/c/en/aviation	106	aviation	has context		CN	
+/c/en/106s/n-/r/FormOf-/c/en/106-0000	/c/en/106s/n	/r/FormOf	/c/en/106	106s	106	form of		CN	
+/c/en/1080/n/wikt/en_1-/r/RelatedTo-/c/en/skateboarding-0000	/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/skateboarding	1080	skateboarding	related to		CN	
+/c/en/1080/n/wikt/en_1-/r/RelatedTo-/c/en/snowboarding-0000	/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/snowboarding	1080	snowboarding	related to		CN	
+/c/en/1080/n/wikt/en_1-/r/RelatedTo-/c/en/trick-0000	/c/en/1080/n/wikt/en_1	/r/RelatedTo	/c/en/trick	1080	trick	related to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/1260-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1260	1080	1260	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/1440-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1440	1080	1440	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/1620-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1620	1080	1620	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/1800-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/1800	1080	1800	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/180-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/180	1080	180	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/360-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/360	1080	360	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/540-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/540	1080	540	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/720-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/720	1080	720	similar to		CN	
+/c/en/1080/n/wikt/en_1-/r/SimilarTo-/c/en/900-0000	/c/en/1080/n/wikt/en_1	/r/SimilarTo	/c/en/900	1080	900	similar to		CN	
+/c/en/109/n-/r/HasContext-/c/en/aviation-0000	/c/en/109/n	/r/HasContext	/c/en/aviation	109	aviation	has context		CN	
+/c/en/109/n-/r/HasContext-/c/en/military-0000	/c/en/109/n	/r/HasContext	/c/en/military	109	military	has context		CN	
+/c/en/109/n-/r/HasContext-/c/en/world_war_ii-0000	/c/en/109/n	/r/HasContext	/c/en/world_war_ii	109	world war ii	has context		CN	
+/c/en/109/n-/r/RelatedTo-/c/en/aircraft-0000	/c/en/109/n	/r/RelatedTo	/c/en/aircraft	109	aircraft	related to		CN	
+/c/en/109/n-/r/RelatedTo-/c/en/fighter-0000	/c/en/109/n	/r/RelatedTo	/c/en/fighter	109	fighter	related to		CN	
+/c/en/109/n-/r/RelatedTo-/c/en/messerschmitt-0000	/c/en/109/n	/r/RelatedTo	/c/en/messerschmitt	109	messerschmitt	related to		CN	
+/c/en/1095/n-/r/HasContext-/c/en/metallurgy-0000	/c/en/1095/n	/r/HasContext	/c/en/metallurgy	1095	metallurgy	has context		CN	
+/c/en/1095/n-/r/IsA-/c/en/carbon_steel-0000	/c/en/1095/n	/r/IsA	/c/en/carbon_steel	1095	carbon steel	is a		CN	
+/c/en/1095/n-/r/IsA-/c/en/high_carbon_steel-0000	/c/en/1095/n	/r/IsA	/c/en/high_carbon_steel	1095	high carbon steel	is a		CN	
+/c/en/1095/n-/r/IsA-/c/en/iron_compound-0000	/c/en/1095/n	/r/IsA	/c/en/iron_compound	1095	iron compound	is a		CN	
+/c/en/1095/n-/r/IsA-/c/en/steel-0000	/c/en/1095/n	/r/IsA	/c/en/steel	1095	steel	is a		CN	
+/c/en/1095/n-/r/Synonym-/c/en/1095_steel-0000	/c/en/1095/n	/r/Synonym	/c/en/1095_steel	1095	1095 steel	synonym		CN	
+/c/en/1095/n-/r/Synonym-/c/en/aisi_1095-0000	/c/en/1095/n	/r/Synonym	/c/en/aisi_1095	1095	aisi 1095	synonym		CN	
+/c/en/1095/n-/r/Synonym-/c/en/sae_1095-0000	/c/en/1095/n	/r/Synonym	/c/en/sae_1095	1095	sae 1095	synonym		CN	
+/c/en/1099/n-/r/HasContext-/c/en/taxation-0000	/c/en/1099/n	/r/HasContext	/c/en/taxation	1099	taxation	has context		CN	
+/c/en/1099/n-/r/HasContext-/c/en/us-0000	/c/en/1099/n	/r/HasContext	/c/en/us	1099	us	has context		CN	
+/c/en/1099/n-/r/RelatedTo-/c/en/non_employment-0000	/c/en/1099/n	/r/RelatedTo	/c/en/non_employment	1099	non employment	related to		CN	
+/c/en/1099s/n-/r/FormOf-/c/en/1099-0000	/c/en/1099s/n	/r/FormOf	/c/en/1099	1099s	1099	form of		CN	
+/c/en/109s/n-/r/FormOf-/c/en/109-0000	/c/en/109s/n	/r/FormOf	/c/en/109	109s	109	form of		CN	
+/c/en/10_20/n-/r/HasContext-/c/en/cb-0000	/c/en/10_20/n	/r/HasContext	/c/en/cb	10 20	cb	has context		CN	
+/c/en/10_20/n-/r/HasContext-/c/en/slang-0000	/c/en/10_20/n	/r/HasContext	/c/en/slang	10 20	slang	has context		CN	
+/c/en/10_20s/n-/r/FormOf-/c/en/10_20-0000	/c/en/10_20s/n	/r/FormOf	/c/en/10_20	10 20s	10 20	form of		CN	
+/c/en/10_20-/r/RelatedTo-/c/en/10_4-0000	/c/en/10_20	/r/RelatedTo	/c/en/10_4	10 20	10 4	related to		CN	
+/c/en/10_40_window/n-/r/RelatedTo-/c/en/geographic-0000	/c/en/10_40_window/n	/r/RelatedTo	/c/en/geographic	10 40 window	geographic	related to		CN	
+/c/en/10_40_window/n-/r/RelatedTo-/c/en/latitude-0000	/c/en/10_40_window/n	/r/RelatedTo	/c/en/latitude	10 40 window	latitude	related to		CN	
+/c/en/10_4-/r/HasContext-/c/en/cb-0000	/c/en/10_4	/r/HasContext	/c/en/cb	10 4	cb	has context		CN	
+/c/en/10_4-/r/HasContext-/c/en/slang-0000	/c/en/10_4	/r/HasContext	/c/en/slang	10 4	slang	has context		CN	
+/c/en/10_4-/r/RelatedTo-/c/en/10_20-0000	/c/en/10_4	/r/RelatedTo	/c/en/10_20	10 4	10 20	related to		CN	
+/c/en/10_4-/r/RelatedTo-/c/en/acknowledged-0000	/c/en/10_4	/r/RelatedTo	/c/en/acknowledged	10 4	acknowledged	related to		CN	
+/c/en/10_4-/r/RelatedTo-/c/en/affirmative-0000	/c/en/10_4	/r/RelatedTo	/c/en/affirmative	10 4	affirmative	related to		CN	
+/c/en/10_4-/r/RelatedTo-/c/en/cb_radio-0000	/c/en/10_4	/r/RelatedTo	/c/en/cb_radio	10 4	cb radio	related to		CN	
+/c/en/10_4-/r/RelatedTo-/c/en/understood-0000	/c/en/10_4	/r/RelatedTo	/c/en/understood	10 4	understood	related to		CN	
+/c/en/10_4-/r/SimilarTo-/c/en/affirmative-0000	/c/en/10_4	/r/SimilarTo	/c/en/affirmative	10 4	affirmative	similar to		CN	
+/c/en/10_a.m/n-/r/IsA-/c/en/calendar_hour/n-0000	/c/en/10_a.m/n	/r/IsA	/c/en/calendar_hour/n	10 a.m	calendar hour	is a		CN	
+/c/en/10_day_measles/n-/r/RelatedTo-/c/en/7_day_measles-0000	/c/en/10_day_measles/n	/r/RelatedTo	/c/en/7_day_measles	10 day measles	7 day measles	related to		CN	
+/c/en/10_day_measles/n-/r/RelatedTo-/c/en/measles-0000	/c/en/10_day_measles/n	/r/RelatedTo	/c/en/measles	10 day measles	measles	related to		CN	
+/c/en/10_day_measles/n-/r/RelatedTo-/c/en/rubeola-0000	/c/en/10_day_measles/n	/r/RelatedTo	/c/en/rubeola	10 day measles	rubeola	related to		CN	
+/c/en/10_downing_street/n-/r/HasContext-/c/en/metonym-0000	/c/en/10_downing_street/n	/r/HasContext	/c/en/metonym	10 downing street	metonym	has context		CN	
+/c/en/10_downing_street/n-/r/HasContext-/c/en/uk-0000	/c/en/10_downing_street/n	/r/HasContext	/c/en/uk	10 downing street	uk	has context		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/11_downing_street-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/11_downing_street	10 downing street	11 downing street	related to		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/government-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/government	10 downing street	government	related to		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/london-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/london	10 downing street	london	related to		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/prime_minister-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/prime_minister	10 downing street	prime minister	related to		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/residence-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/residence	10 downing street	residence	related to		CN	
+/c/en/10_downing_street/n-/r/RelatedTo-/c/en/united_kingdom-0000	/c/en/10_downing_street/n	/r/RelatedTo	/c/en/united_kingdom	10 downing street	united kingdom	related to		CN	
+/c/en/10_downing_street/n-/r/Synonym-/c/en/no_10-0000	/c/en/10_downing_street/n	/r/Synonym	/c/en/no_10	10 downing street	no 10	synonym		CN	
+/c/en/10_downing_street/n-/r/Synonym-/c/en/number_10-0000	/c/en/10_downing_street/n	/r/Synonym	/c/en/number_10	10 downing street	number 10	synonym		CN	
+/c/en/10_downing_street/n-/r/Synonym-/c/en/number_ten-0000	/c/en/10_downing_street/n	/r/Synonym	/c/en/number_ten	10 downing street	number ten	synonym		CN	
+/c/en/10_downing_street-/r/AtLocation-/c/en/city_of_westminster-0000	/c/en/10_downing_street	/r/AtLocation	/c/en/city_of_westminster	10 downing street	city of westminster	at location		CN	
+/c/en/10_downing_street-/r/IsA-/c/en/building/n-0000	/c/en/10_downing_street	/r/IsA	/c/en/building/n	10 downing street	building	is a		CN	
+/c/en/10_downing_street-/r/PartOf-/c/en/london/n-0000	/c/en/10_downing_street	/r/PartOf	/c/en/london/n	10 downing street	london	part of		CN	
+/c/en/10_downing_street-/r/RelatedTo-/c/en/1600_pennsylvania_avenue-0000	/c/en/10_downing_street	/r/RelatedTo	/c/en/1600_pennsylvania_avenue	10 downing street	1600 pennsylvania avenue	related to		CN	
+/c/en/10_downing_street-/r/RelatedTo-/c/en/24_sussex_drive-0000	/c/en/10_downing_street	/r/RelatedTo	/c/en/24_sussex_drive	10 downing street	24 sussex drive	related to		CN	
+/c/en/10_downing_street-/r/Synonym-/c/en/10_downing_street-0000	/c/en/10_downing_street	/r/Synonym	/c/en/10_downing_street	10 downing street	10 downing street	synonym		CN	
+/c/en/10_fingers-/r/PartOf-/c/en/normal_human_body-0000	/c/en/10_fingers	/r/PartOf	/c/en/normal_human_body	10 fingers	normal human body	part of		CN	[[10 fingers]] is part of [[a normal human body]]
+/c/en/10_foot_user_interface/n-/r/HasContext-/c/en/gui-0000	/c/en/10_foot_user_interface/n	/r/HasContext	/c/en/gui	10 foot user interface	gui	has context		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/computer-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/computer	10 foot user interface	computer	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/element-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/element	10 foot user interface	element	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/graphical_user_interface-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/graphical_user_interface	10 foot user interface	graphical user interface	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/remote_control-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/remote_control	10 foot user interface	remote control	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/smartphone-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/smartphone	10 foot user interface	smartphone	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/television-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/television	10 foot user interface	television	related to		CN	
+/c/en/10_foot_user_interface/n-/r/RelatedTo-/c/en/visual-0000	/c/en/10_foot_user_interface/n	/r/RelatedTo	/c/en/visual	10 foot user interface	visual	related to		CN	
+/c/en/10_foot_user_interfaces/n-/r/FormOf-/c/en/10_foot_user_interface-0000	/c/en/10_foot_user_interfaces/n	/r/FormOf	/c/en/10_foot_user_interface	10 foot user interfaces	10 foot user interface	form of		CN	
+/c/en/10_k/n-/r/IsA-/c/en/annual_report/n-0000	/c/en/10_k/n	/r/IsA	/c/en/annual_report/n	10 k	annual report	is a		CN	
+/c/en/10_mbit_s/n-/r/IsA-/c/en/generic_artifact/n-0000	/c/en/10_mbit_s/n	/r/IsA	/c/en/generic_artifact/n	10 mbit s	generic artifact	is a		CN	
+/c/en/10_membered/a/wn-/r/SimilarTo-/c/en/membered/a/wn/chemistry-0000	/c/en/10_membered/a/wn	/r/SimilarTo	/c/en/membered/a/wn/chemistry	10 membered	membered	similar to		CN	[[10-membered]] is similar to [[membered]]
+/c/en/10_methyloctadecanoic_acid/n-/r/RelatedTo-/c/en/tuberculostearic_acid-0000	/c/en/10_methyloctadecanoic_acid/n	/r/RelatedTo	/c/en/tuberculostearic_acid	10 methyloctadecanoic acid	tuberculostearic acid	related to		CN	
+/c/en/10_methylstearic_acid/n-/r/RelatedTo-/c/en/tuberculostearic_acid-0000	/c/en/10_methylstearic_acid/n	/r/RelatedTo	/c/en/tuberculostearic_acid	10 methylstearic acid	tuberculostearic acid	related to		CN	
+/c/en/10_of_population-/r/IsA-/c/en/colour_blind-0000	/c/en/10_of_population	/r/IsA	/c/en/colour_blind	10 of population	colour blind	is a		CN	[[Some 10% of the population]] is [[colour blind]]
+/c/en/10_p.m/n-/r/IsA-/c/en/calendar_hour/n-0000	/c/en/10_p.m/n	/r/IsA	/c/en/calendar_hour/n	10 p.m	calendar hour	is a		CN	
+/c/en/10_points_to_gryffindor-/r/FormOf-/c/en/ten_points_to_gryffindor-0000	/c/en/10_points_to_gryffindor	/r/FormOf	/c/en/ten_points_to_gryffindor	10 points to gryffindor	ten points to gryffindor	form of		CN	
+/c/en/10_q/n-/r/IsA-/c/en/quarterly_financial_statement/n-0000	/c/en/10_q/n	/r/IsA	/c/en/quarterly_financial_statement/n	10 q	quarterly financial statement	is a		CN	
+/c/en/10_s/n-/r/FormOf-/c/en/10-0000	/c/en/10_s/n	/r/FormOf	/c/en/10	10 s	10	form of		CN	
+/c/en/10_second_car/n-/r/HasContext-/c/en/sports_cars-0000	/c/en/10_second_car/n	/r/HasContext	/c/en/sports_cars	10 second car	sports cars	has context		CN	
+/c/en/10_speed_bicycle/n-/r/IsA-/c/en/bicycle_multi_gear/n-0000	/c/en/10_speed_bicycle/n	/r/IsA	/c/en/bicycle_multi_gear/n	10 speed bicycle	bicycle multi gear	is a		CN	
+/c/en/10_toes-/r/PartOf-/c/en/normal_human_body-0000	/c/en/10_toes	/r/PartOf	/c/en/normal_human_body	10 toes	normal human body	part of		CN	[[10 toes]] is part of [[a normal human body]]
+/c/en/10_undecenoic_acid/n-/r/HasContext-/c/en/fatty_acid-0000	/c/en/10_undecenoic_acid/n	/r/HasContext	/c/en/fatty_acid	10 undecenoic acid	fatty acid	has context		CN	
+/c/en/10_undecenoic_acid/n-/r/RelatedTo-/c/en/undecylenic_acid-0000	/c/en/10_undecenoic_acid/n	/r/RelatedTo	/c/en/undecylenic_acid	10 undecenoic acid	undecylenic acid	related to		CN	
+/c/en/10am-/r/HasProperty-/c/en/late_to_wake_up-0000	/c/en/10am	/r/HasProperty	/c/en/late_to_wake_up	10am	late to wake up	has property		CN	[[10am]] is [[late to wake up]]
+/c/en/10base2/n-/r/HasContext-/c/en/computing-0000	/c/en/10base2/n	/r/HasContext	/c/en/computing	10base2	computing	has context		CN	
+/c/en/10base2/n-/r/RelatedTo-/c/en/10base5-0000	/c/en/10base2/n	/r/RelatedTo	/c/en/10base5	10base2	10base5	related to		CN	
+/c/en/10base2/n-/r/RelatedTo-/c/en/cable-0000	/c/en/10base2/n	/r/RelatedTo	/c/en/cable	10base2	cable	related to		CN	
+/c/en/10base2/n-/r/RelatedTo-/c/en/ethernet-0000	/c/en/10base2/n	/r/RelatedTo	/c/en/ethernet	10base2	ethernet	related to		CN	
+/c/en/10base2/n-/r/Synonym-/c/en/thinnet-0000	/c/en/10base2/n	/r/Synonym	/c/en/thinnet	10base2	thinnet	synonym		CN	
+/c/en/10base5/n-/r/HasContext-/c/en/computing-0000	/c/en/10base5/n	/r/HasContext	/c/en/computing	10base5	computing	has context		CN	
+/c/en/10base5/n-/r/RelatedTo-/c/en/10base2-0000	/c/en/10base5/n	/r/RelatedTo	/c/en/10base2	10base5	10base2	related to		CN	
+/c/en/10base5/n-/r/RelatedTo-/c/en/cable-0000	/c/en/10base5/n	/r/RelatedTo	/c/en/cable	10base5	cable	related to		CN	
+/c/en/10base5/n-/r/RelatedTo-/c/en/ethernet-0000	/c/en/10base5/n	/r/RelatedTo	/c/en/ethernet	10base5	ethernet	related to		CN	
+/c/en/10base5/n-/r/Synonym-/c/en/thicknet-0000	/c/en/10base5/n	/r/Synonym	/c/en/thicknet	10base5	thicknet	synonym		CN	
+/c/en/10base5s/n-/r/RelatedTo-/c/en/10base5-0000	/c/en/10base5s/n	/r/RelatedTo	/c/en/10base5	10base5s	10base5	related to		CN	
+/c/en/10f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/10f_catheter/n	/r/IsA	/c/en/catheter/n	10f catheter	catheter	is a		CN	
+/c/en/10mm-/r/IsA-/c/en/1cm-0000	/c/en/10mm	/r/IsA	/c/en/1cm	10mm	1cm	is a		CN	[[10mm]] is [[1cm]]
+/c/en/10s/n-/r/RelatedTo-/c/en/1910s-0000	/c/en/10s/n	/r/RelatedTo	/c/en/1910s	10s	1910s	related to		CN	
+/c/en/10s/n-/r/RelatedTo-/c/en/2010s-0000	/c/en/10s/n	/r/RelatedTo	/c/en/2010s	10s	2010s	related to		CN	
+/c/en/10s/n-/r/RelatedTo-/c/en/tens-0000	/c/en/10s/n	/r/RelatedTo	/c/en/tens	10s	tens	related to		CN	
+/c/en/10s/n-/r/Synonym-/c/en/1910s-0000	/c/en/10s/n	/r/Synonym	/c/en/1910s	10s	1910s	synonym		CN	
+/c/en/10th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/10th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	10th	ordinal	similar to		CN	[[10th]] is similar to [[ordinal]]
+/c/en/10th_cir/n-/r/HasContext-/c/en/legal-0000	/c/en/10th_cir/n	/r/HasContext	/c/en/legal	10th cir	legal	has context		CN	
+/c/en/10th_grade/n-/r/FormOf-/c/en/tenth_grade-0000	/c/en/10th_grade/n	/r/FormOf	/c/en/tenth_grade	10th grade	tenth grade	form of		CN	
+/c/en/10x_sugar-/r/DerivedFrom-/c/en/sugar/n-0000	/c/en/10x_sugar	/r/DerivedFrom	/c/en/sugar/n	10x sugar	sugar	derived from		CN	
+/c/en/10x-/r/EtymologicallyRelatedTo-/c/en/thanks-0000	/c/en/10x	/r/EtymologicallyRelatedTo	/c/en/thanks	10x	thanks	etymologically related to		CN	
+/c/en/10x-/r/FormOf-/c/en/thanks-0000	/c/en/10x	/r/FormOf	/c/en/thanks	10x	thanks	form of		CN	
+/c/en/10x-/r/HasContext-/c/en/internet_slang-0000	/c/en/10x	/r/HasContext	/c/en/internet_slang	10x	internet slang	has context		CN	
+/c/en/10x-/r/HasContext-/c/en/sensational_spelling-0000	/c/en/10x	/r/HasContext	/c/en/sensational_spelling	10x	sensational spelling	has context		CN	
+/c/en/10x-/r/RelatedTo-/c/en/thanx-0000	/c/en/10x	/r/RelatedTo	/c/en/thanx	10x	thanx	related to		CN	
+/c/en/10x-/r/RelatedTo-/c/en/thx-0000	/c/en/10x	/r/RelatedTo	/c/en/thx	10x	thx	related to		CN	
+/c/en/10-/r/HasProperty-/c/en/9_plus_1-0000	/c/en/10	/r/HasProperty	/c/en/9_plus_1	10	9 plus 1	has property		CN	[[10]] is [[9 plus 1]]
+/c/en/10-/r/HasProperty-/c/en/ten-0000	/c/en/10	/r/HasProperty	/c/en/ten	10	ten	has property		CN	[[10]] is [[ten]]
+/c/en/10-/r/IsA-/c/en/higher_number_than_9-0000	/c/en/10	/r/IsA	/c/en/higher_number_than_9	10	higher number than 9	is a		CN	[[10]] is [[a higher number than 9]]
+/c/en/11/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/11/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	11	cardinal	similar to		CN	[[11]] is similar to [[cardinal]]
+/c/en/11/n/wn/quantity-/r/Synonym-/c/en/eleven/n/wn/quantity-0000	/c/en/11/n/wn/quantity	/r/Synonym	/c/en/eleven/n/wn/quantity	11	eleven	synonym		CN	[[11]] is a synonym of [[eleven]]
+/c/en/11/n/wp/number-/r/Synonym-/c/en/11/n/wp/number-0000	/c/en/11/n/wp/number	/r/Synonym	/c/en/11/n/wp/number	11	11	synonym		CN	
+/c/en/11/n-/r/HasContext-/c/en/cricket-0000	/c/en/11/n	/r/HasContext	/c/en/cricket	11	cricket	has context		CN	
+/c/en/11/n-/r/HasContext-/c/en/football-0000	/c/en/11/n	/r/HasContext	/c/en/football	11	football	has context		CN	
+/c/en/11/n-/r/HasContext-/c/en/slang-0000	/c/en/11/n	/r/HasContext	/c/en/slang	11	slang	has context		CN	
+/c/en/11/n-/r/HasContext-/c/en/us-0000	/c/en/11/n	/r/HasContext	/c/en/us	11	us	has context		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/attractive-0000	/c/en/11/n	/r/RelatedTo	/c/en/attractive	11	attractive	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/cricket-0000	/c/en/11/n	/r/RelatedTo	/c/en/cricket	11	cricket	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/exceptional-0000	/c/en/11/n	/r/RelatedTo	/c/en/exceptional	11	exceptional	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/football-0000	/c/en/11/n	/r/RelatedTo	/c/en/football	11	football	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/intensity-0000	/c/en/11/n	/r/RelatedTo	/c/en/intensity	11	intensity	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/off_charts-0000	/c/en/11/n	/r/RelatedTo	/c/en/off_charts	11	off charts	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/person-0000	/c/en/11/n	/r/RelatedTo	/c/en/person	11	person	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/physically-0000	/c/en/11/n	/r/RelatedTo	/c/en/physically	11	physically	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/player-0000	/c/en/11/n	/r/RelatedTo	/c/en/player	11	player	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/specimen-0000	/c/en/11/n	/r/RelatedTo	/c/en/specimen	11	specimen	related to		CN	
+/c/en/11/n-/r/RelatedTo-/c/en/team-0000	/c/en/11/n	/r/RelatedTo	/c/en/team	11	team	related to		CN	
+/c/en/110/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/110/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	110	cardinal	similar to		CN	[[110]] is similar to [[cardinal]]
+/c/en/110/n-/r/FormOf-/c/en/hundred_and_ten_percent-0000	/c/en/110/n	/r/FormOf	/c/en/hundred_and_ten_percent	110	hundred and ten percent	form of		CN	
+/c/en/1100-/r/HasProperty-/c/en/eleven_hundred-0000	/c/en/1100	/r/HasProperty	/c/en/eleven_hundred	1100	eleven hundred	has property		CN	[[1100]] is [[eleven hundred]]
+/c/en/1100-/r/HasProperty-/c/en/one_thousand_one_hundred-0000	/c/en/1100	/r/HasProperty	/c/en/one_thousand_one_hundred	1100	one thousand one hundred	has property		CN	[[1100]] is [[one thousand one hundred]]
+/c/en/110_proof/a-/r/HasContext-/c/en/us-0000	/c/en/110_proof/a	/r/HasContext	/c/en/us	110 proof	us	has context		CN	
+/c/en/110_proof/a-/r/RelatedTo-/c/en/strong-0000	/c/en/110_proof/a	/r/RelatedTo	/c/en/strong	110 proof	strong	related to		CN	
+/c/en/110_proof/r-/r/RelatedTo-/c/en/intensely-0000	/c/en/110_proof/r	/r/RelatedTo	/c/en/intensely	110 proof	intensely	related to		CN	
+/c/en/110_proof/r-/r/RelatedTo-/c/en/strongly-0000	/c/en/110_proof/r	/r/RelatedTo	/c/en/strongly	110 proof	strongly	related to		CN	
+/c/en/110_proof-/r/EtymologicallyRelatedTo-/c/en/proof-0000	/c/en/110_proof	/r/EtymologicallyRelatedTo	/c/en/proof	110 proof	proof	etymologically related to		CN	
+/c/en/110_proof-/r/RelatedTo-/c/en/bootleg-0000	/c/en/110_proof	/r/RelatedTo	/c/en/bootleg	110 proof	bootleg	related to		CN	
+/c/en/110_proof-/r/RelatedTo-/c/en/moonshine-0000	/c/en/110_proof	/r/RelatedTo	/c/en/moonshine	110 proof	moonshine	related to		CN	
+/c/en/110s/n-/r/FormOf-/c/en/110-0000	/c/en/110s/n	/r/FormOf	/c/en/110	110s	110	form of		CN	
+/c/en/110s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/110s/n	/r/RelatedTo	/c/en/decade	110s	decade	related to		CN	
+/c/en/110th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/110th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	110th	ordinal	similar to		CN	[[110th]] is similar to [[ordinal]]
+/c/en/111111111_squared-/r/IsA-/c/en/12345678987654321-0000	/c/en/111111111_squared	/r/IsA	/c/en/12345678987654321	111111111 squared	12345678987654321	is a		CN	[[111111111 squared]] is [[12345678987654321]]
+/c/en/112/n-/r/RelatedTo-/c/en/emergency_service-0000	/c/en/112/n	/r/RelatedTo	/c/en/emergency_service	112	emergency service	related to		CN	
+/c/en/112/n-/r/RelatedTo-/c/en/pan_european-0000	/c/en/112/n	/r/RelatedTo	/c/en/pan_european	112	pan european	related to		CN	
+/c/en/112-/r/RelatedTo-/c/en/000-0000	/c/en/112	/r/RelatedTo	/c/en/000	112	000	related to		CN	
+/c/en/112-/r/RelatedTo-/c/en/911-0000	/c/en/112	/r/RelatedTo	/c/en/911	112	911	related to		CN	
+/c/en/112-/r/RelatedTo-/c/en/999-0000	/c/en/112	/r/RelatedTo	/c/en/999	112	999	related to		CN	
+/c/en/112-/r/RelatedTo-/c/en/triple_o-0000	/c/en/112	/r/RelatedTo	/c/en/triple_o	112	triple o	related to		CN	
+/c/en/115/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/115/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	115	cardinal	similar to		CN	[[115]] is similar to [[cardinal]]
+/c/en/115th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/115th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	115th	ordinal	similar to		CN	[[115th]] is similar to [[ordinal]]
+/c/en/11_a.m/n-/r/IsA-/c/en/calendar_hour/n-0000	/c/en/11_a.m/n	/r/IsA	/c/en/calendar_hour/n	11 a.m	calendar hour	is a		CN	
+/c/en/11_bang_bang/n-/r/HasContext-/c/en/derogatory-0000	/c/en/11_bang_bang/n	/r/HasContext	/c/en/derogatory	11 bang bang	derogatory	has context		CN	
+/c/en/11_bang_bang/n-/r/HasContext-/c/en/military-0000	/c/en/11_bang_bang/n	/r/HasContext	/c/en/military	11 bang bang	military	has context		CN	
+/c/en/11_bang_bang/n-/r/HasContext-/c/en/slang-0000	/c/en/11_bang_bang/n	/r/HasContext	/c/en/slang	11 bang bang	slang	has context		CN	
+/c/en/11_bang_bang/n-/r/HasContext-/c/en/us-0000	/c/en/11_bang_bang/n	/r/HasContext	/c/en/us	11 bang bang	us	has context		CN	
+/c/en/11_bang_bang/n-/r/RelatedTo-/c/en/infantryman-0000	/c/en/11_bang_bang/n	/r/RelatedTo	/c/en/infantryman	11 bang bang	infantryman	related to		CN	
+/c/en/11_bang_bang/n-/r/Synonym-/c/en/11_bulletstopper-0000	/c/en/11_bang_bang/n	/r/Synonym	/c/en/11_bulletstopper	11 bang bang	11 bulletstopper	synonym		CN	
+/c/en/11_bang_bang/n-/r/Synonym-/c/en/11_bush-0000	/c/en/11_bang_bang/n	/r/Synonym	/c/en/11_bush	11 bang bang	11 bush	synonym		CN	
+/c/en/11_bang_bangs/n-/r/FormOf-/c/en/11_bang_bang-0000	/c/en/11_bang_bangs/n	/r/FormOf	/c/en/11_bang_bang	11 bang bangs	11 bang bang	form of		CN	
+/c/en/11_deoxycorticosterone/n-/r/HasContext-/c/en/steroid_hormone-0000	/c/en/11_deoxycorticosterone/n	/r/HasContext	/c/en/steroid_hormone	11 deoxycorticosterone	steroid hormone	has context		CN	
+/c/en/11_deoxycorticosterone/n-/r/RelatedTo-/c/en/desoxycorticosterone-0000	/c/en/11_deoxycorticosterone/n	/r/RelatedTo	/c/en/desoxycorticosterone	11 deoxycorticosterone	desoxycorticosterone	related to		CN	
+/c/en/11_deoxycorticosterone/n-/r/RelatedTo-/c/en/mineralocorticoid-0000	/c/en/11_deoxycorticosterone/n	/r/RelatedTo	/c/en/mineralocorticoid	11 deoxycorticosterone	mineralocorticoid	related to		CN	
+/c/en/11_deoxycorticosterone-/r/IsA-/c/en/drug/n-0000	/c/en/11_deoxycorticosterone	/r/IsA	/c/en/drug/n	11 deoxycorticosterone	drug	is a		CN	
+/c/en/11_deoxycorticosterone-/r/Synonym-/c/en/11_deoxycorticosterone-0000	/c/en/11_deoxycorticosterone	/r/Synonym	/c/en/11_deoxycorticosterone	11 deoxycorticosterone	11 deoxycorticosterone	synonym		CN	
+/c/en/11_deoxycortisol/n-/r/IsA-/c/en/steroid/n-0000	/c/en/11_deoxycortisol/n	/r/IsA	/c/en/steroid/n	11 deoxycortisol	steroid	is a		CN	
+/c/en/11_downing_street/n-/r/HasContext-/c/en/uk-0000	/c/en/11_downing_street/n	/r/HasContext	/c/en/uk	11 downing street	uk	has context		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/10_downing_street-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/10_downing_street	11 downing street	10 downing street	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/chancellor_of_exchequer-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/chancellor_of_exchequer	11 downing street	chancellor of exchequer	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/chancellor-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/chancellor	11 downing street	chancellor	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/exchequer-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/exchequer	11 downing street	exchequer	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/london-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/london	11 downing street	london	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/residence-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/residence	11 downing street	residence	related to		CN	
+/c/en/11_downing_street/n-/r/RelatedTo-/c/en/united_kingdom-0000	/c/en/11_downing_street/n	/r/RelatedTo	/c/en/united_kingdom	11 downing street	united kingdom	related to		CN	
+/c/en/11_downing_street/n-/r/Synonym-/c/en/no_11-0000	/c/en/11_downing_street/n	/r/Synonym	/c/en/no_11	11 downing street	no 11	synonym		CN	
+/c/en/11_downing_street/n-/r/Synonym-/c/en/number_11-0000	/c/en/11_downing_street/n	/r/Synonym	/c/en/number_11	11 downing street	number 11	synonym		CN	
+/c/en/11_downing_street/n-/r/Synonym-/c/en/number_eleven-0000	/c/en/11_downing_street/n	/r/Synonym	/c/en/number_eleven	11 downing street	number eleven	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/11z_eicosenoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/11z_eicosenoic_acid	11 eicosenoic acid	11z eicosenoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/11z_icosenoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/11z_icosenoic_acid	11 eicosenoic acid	11z icosenoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/cis_11_eicosenoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_11_eicosenoic_acid	11 eicosenoic acid	cis 11 eicosenoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/cis_11_icosenoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_11_icosenoic_acid	11 eicosenoic acid	cis 11 icosenoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/cis_gondoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/cis_gondoic_acid	11 eicosenoic acid	cis gondoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid/n-/r/Synonym-/c/en/gondoic_acid-0000	/c/en/11_eicosenoic_acid/n	/r/Synonym	/c/en/gondoic_acid	11 eicosenoic acid	gondoic acid	synonym		CN	
+/c/en/11_eicosenoic_acid-/r/IsA-/c/en/chemical_compound/n-0000	/c/en/11_eicosenoic_acid	/r/IsA	/c/en/chemical_compound/n	11 eicosenoic acid	chemical compound	is a		CN	
+/c/en/11_eicosenoic_acid-/r/Synonym-/c/en/11_eicosenoic_acid-0000	/c/en/11_eicosenoic_acid	/r/Synonym	/c/en/11_eicosenoic_acid	11 eicosenoic acid	11 eicosenoic acid	synonym		CN	
+/c/en/11_november/n/wn/time-/r/Synonym-/c/en/martinmas/n/wn/time-0000	/c/en/11_november/n/wn/time	/r/Synonym	/c/en/martinmas/n/wn/time	11 november	martinmas	synonym		CN	[[11 November]] is a synonym of [[Martinmas]]
+/c/en/11_november-/r/IsA-/c/en/remembrance_day-0000	/c/en/11_november	/r/IsA	/c/en/remembrance_day	11 november	remembrance day	is a		CN	[[11 November]] is [[Remembrance Day]]
+/c/en/11_p.m/n-/r/IsA-/c/en/calendar_hour/n-0000	/c/en/11_p.m/n	/r/IsA	/c/en/calendar_hour/n	11 p.m	calendar hour	is a		CN	
+/c/en/11_plus/n/wn/act-/r/Synonym-/c/en/eleven_plus/n/wn/act-0000	/c/en/11_plus/n/wn/act	/r/Synonym	/c/en/eleven_plus/n/wn/act	11 plus	eleven plus	synonym		CN	[[11-plus]] is a synonym of [[eleven-plus]]
+/c/en/11_plus_22-/r/HasProperty-/c/en/33-0000	/c/en/11_plus_22	/r/HasProperty	/c/en/33	11 plus 22	33	has property		CN	[[11 plus 22]] is [[33]]
+/c/en/11_plus_examination/n-/r/HasContext-/c/en/british-0000	/c/en/11_plus_examination/n	/r/HasContext	/c/en/british	11 plus examination	british	has context		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/comprehensive_school-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/comprehensive_school	11 plus examination	comprehensive school	related to		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/education-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/education	11 plus examination	education	related to		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/examination-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/examination	11 plus examination	examination	related to		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/grammar_school-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/grammar_school	11 plus examination	grammar school	related to		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/secondary_modern_school-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/secondary_modern_school	11 plus examination	secondary modern school	related to		CN	
+/c/en/11_plus_examination/n-/r/RelatedTo-/c/en/secondary-0000	/c/en/11_plus_examination/n	/r/RelatedTo	/c/en/secondary	11 plus examination	secondary	related to		CN	
+/c/en/11_plus_examination/n-/r/Synonym-/c/en/11_plus-0000	/c/en/11_plus_examination/n	/r/Synonym	/c/en/11_plus	11 plus examination	11 plus	synonym		CN	
+/c/en/11_plus_examinations/n-/r/FormOf-/c/en/11_plus_examination-0000	/c/en/11_plus_examinations/n	/r/FormOf	/c/en/11_plus_examination	11 plus examinations	11 plus examination	form of		CN	
+/c/en/11e_octadecenoic_acid/n-/r/RelatedTo-/c/en/vaccenic_acid-0000	/c/en/11e_octadecenoic_acid/n	/r/RelatedTo	/c/en/vaccenic_acid	11e octadecenoic acid	vaccenic acid	related to		CN	
+/c/en/11f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/11f_catheter/n	/r/IsA	/c/en/catheter/n	11f catheter	catheter	is a		CN	
+/c/en/11th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/11th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	11th	ordinal	similar to		CN	[[11th]] is similar to [[ordinal]]
+/c/en/11th_cir/n-/r/HasContext-/c/en/legal-0000	/c/en/11th_cir/n	/r/HasContext	/c/en/legal	11th cir	legal	has context		CN	
+/c/en/11th_commandments/n-/r/FormOf-/c/en/11th_commandment-0000	/c/en/11th_commandments/n	/r/FormOf	/c/en/11th_commandment	11th commandments	11th commandment	form of		CN	
+/c/en/11th_commandment-/r/DerivedFrom-/c/en/ten_commandments/n-0000	/c/en/11th_commandment	/r/DerivedFrom	/c/en/ten_commandments/n	11th commandment	ten commandments	derived from		CN	
+/c/en/11th_grade/n-/r/FormOf-/c/en/eleventh_grade-0000	/c/en/11th_grade/n	/r/FormOf	/c/en/eleventh_grade	11th grade	eleventh grade	form of		CN	
+/c/en/11th_hour/n-/r/FormOf-/c/en/eleventh_hour-0000	/c/en/11th_hour/n	/r/FormOf	/c/en/eleventh_hour	11th hour	eleventh hour	form of		CN	
+/c/en/11th_hours/n-/r/FormOf-/c/en/11th_hour-0000	/c/en/11th_hours/n	/r/FormOf	/c/en/11th_hour	11th hours	11th hour	form of		CN	
+/c/en/11z_eicosenoic_acid/n-/r/RelatedTo-/c/en/11_eicosenoic_acid-0000	/c/en/11z_eicosenoic_acid/n	/r/RelatedTo	/c/en/11_eicosenoic_acid	11z eicosenoic acid	11 eicosenoic acid	related to		CN	
+/c/en/11z_icosenoic_acid/n-/r/RelatedTo-/c/en/11_eicosenoic_acid-0000	/c/en/11z_icosenoic_acid/n	/r/RelatedTo	/c/en/11_eicosenoic_acid	11z icosenoic acid	11 eicosenoic acid	related to		CN	
+/c/en/11-/r/HasProperty-/c/en/eleven-0000	/c/en/11	/r/HasProperty	/c/en/eleven	11	eleven	has property		CN	[[11]] is [[eleven]]
+/c/en/11-/r/IsA-/c/en/film/n-0000	/c/en/11	/r/IsA	/c/en/film/n	11	film	is a		CN	
+/c/en/11-/r/Synonym-/c/en/11-0000	/c/en/11	/r/Synonym	/c/en/11	11	11	synonym		CN	
+/c/en/12.7_mm_machine_gun/n-/r/IsA-/c/en/heavy_machine_gun/n-0000	/c/en/12.7_mm_machine_gun/n	/r/IsA	/c/en/heavy_machine_gun/n	12.7 mm machine gun	heavy machine gun	is a		CN	
+/c/en/12/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/12/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	12	cardinal	similar to		CN	[[12]] is similar to [[cardinal]]
+/c/en/12/n/wn/quantity-/r/Synonym-/c/en/twelve/n/wn/quantity-0000	/c/en/12/n/wn/quantity	/r/Synonym	/c/en/twelve/n/wn/quantity	12	twelve	synonym		CN	[[12]] is a synonym of [[twelve]]
+/c/en/120/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/120/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	120	cardinal	similar to		CN	[[120]] is similar to [[cardinal]]
+/c/en/120/n/wn/quantity-/r/Synonym-/c/en/long_hundred/n/wn/quantity-0000	/c/en/120/n/wn/quantity	/r/Synonym	/c/en/long_hundred/n/wn/quantity	120	long hundred	synonym		CN	[[120]] is a synonym of [[long hundred]]
+/c/en/1200-/r/HasProperty-/c/en/twelve_hundred-0000	/c/en/1200	/r/HasProperty	/c/en/twelve_hundred	1200	twelve hundred	has property		CN	[[1200]] is [[twelve hundred]]
+/c/en/120_cell/n-/r/HasContext-/c/en/geometry-0000	/c/en/120_cell/n	/r/HasContext	/c/en/geometry	120 cell	geometry	has context		CN	
+/c/en/120_cell/n-/r/RelatedTo-/c/en/dodecahedron-0000	/c/en/120_cell/n	/r/RelatedTo	/c/en/dodecahedron	120 cell	dodecahedron	related to		CN	
+/c/en/120_cell/n-/r/RelatedTo-/c/en/facet-0000	/c/en/120_cell/n	/r/RelatedTo	/c/en/facet	120 cell	facet	related to		CN	
+/c/en/120_cell/n-/r/RelatedTo-/c/en/four_dimensional-0000	/c/en/120_cell/n	/r/RelatedTo	/c/en/four_dimensional	120 cell	four dimensional	related to		CN	
+/c/en/120_cell/n-/r/RelatedTo-/c/en/polytope-0000	/c/en/120_cell/n	/r/RelatedTo	/c/en/polytope	120 cell	polytope	related to		CN	
+/c/en/120_cell/n-/r/Synonym-/c/en/dodecacontachoron-0000	/c/en/120_cell/n	/r/Synonym	/c/en/dodecacontachoron	120 cell	dodecacontachoron	synonym		CN	
+/c/en/120_cells/n-/r/FormOf-/c/en/120_cell-0000	/c/en/120_cells/n	/r/FormOf	/c/en/120_cell	120 cells	120 cell	form of		CN	
+/c/en/120_reset/v-/r/HasContext-/c/en/computing-0000	/c/en/120_reset/v	/r/HasContext	/c/en/computing	120 reset	computing	has context		CN	
+/c/en/120_reset/v-/r/HasContext-/c/en/us-0000	/c/en/120_reset/v	/r/HasContext	/c/en/us	120 reset	us	has context		CN	
+/c/en/120_reset/v-/r/RelatedTo-/c/en/personal_computer-0000	/c/en/120_reset/v	/r/RelatedTo	/c/en/personal_computer	120 reset	personal computer	related to		CN	
+/c/en/120_reset/v-/r/RelatedTo-/c/en/power_off-0000	/c/en/120_reset/v	/r/RelatedTo	/c/en/power_off	120 reset	power off	related to		CN	
+/c/en/120_reset/v-/r/RelatedTo-/c/en/power_on-0000	/c/en/120_reset/v	/r/RelatedTo	/c/en/power_on	120 reset	power on	related to		CN	
+/c/en/120_resets/v-/r/FormOf-/c/en/120_reset-0000	/c/en/120_resets/v	/r/FormOf	/c/en/120_reset	120 resets	120 reset	form of		CN	
+/c/en/120_resetting/v-/r/FormOf-/c/en/120_reset-0000	/c/en/120_resetting/v	/r/FormOf	/c/en/120_reset	120 resetting	120 reset	form of		CN	
+/c/en/120_reset-/r/RelatedTo-/c/en/reboot-0000	/c/en/120_reset	/r/RelatedTo	/c/en/reboot	120 reset	reboot	related to		CN	
+/c/en/120_volt_device/n-/r/IsA-/c/en/electrical_device/n-0000	/c/en/120_volt_device/n	/r/IsA	/c/en/electrical_device/n	120 volt device	electrical device	is a		CN	
+/c/en/120_volt_device/n-/r/IsA-/c/en/tangible_thing/n-0000	/c/en/120_volt_device/n	/r/IsA	/c/en/tangible_thing/n	120 volt device	tangible thing	is a		CN	
+/c/en/120mm_mortar/n-/r/IsA-/c/en/heavy_mortar/n-0000	/c/en/120mm_mortar/n	/r/IsA	/c/en/heavy_mortar/n	120mm mortar	heavy mortar	is a		CN	
+/c/en/120s/n-/r/FormOf-/c/en/120-0000	/c/en/120s/n	/r/FormOf	/c/en/120	120s	120	form of		CN	
+/c/en/120s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/120s/n	/r/RelatedTo	/c/en/decade	120s	decade	related to		CN	
+/c/en/120th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/120th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	120th	ordinal	similar to		CN	[[120th]] is similar to [[ordinal]]
+/c/en/121/a-/r/RelatedTo-/c/en/one_to_one-0000	/c/en/121/a	/r/RelatedTo	/c/en/one_to_one	121	one to one	related to		CN	
+/c/en/121-/r/IsA-/c/en/train/n-0000	/c/en/121	/r/IsA	/c/en/train/n	121	train	is a		CN	
+/c/en/121-/r/Synonym-/c/en/121-0000	/c/en/121	/r/Synonym	/c/en/121	121	121	synonym		CN	
+/c/en/122_mm_rocket_launcher/n-/r/IsA-/c/en/tangible_thing/n-0000	/c/en/122_mm_rocket_launcher/n	/r/IsA	/c/en/tangible_thing/n	122 mm rocket launcher	tangible thing	is a		CN	
+/c/en/122mm_howitzer/n-/r/IsA-/c/en/howitzer/n-0000	/c/en/122mm_howitzer/n	/r/IsA	/c/en/howitzer/n	122mm howitzer	howitzer	is a		CN	
+/c/en/122mm_self_propelled_howitzer/n-/r/IsA-/c/en/122mm_howitzer/n-0000	/c/en/122mm_self_propelled_howitzer/n	/r/IsA	/c/en/122mm_howitzer/n	122mm self propelled howitzer	122mm howitzer	is a		CN	
+/c/en/122mm_self_propelled_howitzer/n-/r/IsA-/c/en/self_propelled_artillery/n-0000	/c/en/122mm_self_propelled_howitzer/n	/r/IsA	/c/en/self_propelled_artillery/n	122mm self propelled howitzer	self propelled artillery	is a		CN	
+/c/en/123-/r/MadeOf-/c/en/troll-0000	/c/en/123	/r/MadeOf	/c/en/troll	123	troll	made of		CN	[[123]] is made of [[troll]].
+/c/en/124141234-/r/IsA-/c/en/number-0000	/c/en/124141234	/r/IsA	/c/en/number	124141234	number	is a		CN	[[124141234]] is [[a number]]
+/c/en/124_spider/n-/r/IsA-/c/en/fiat/n-0000	/c/en/124_spider/n	/r/IsA	/c/en/fiat/n	124 spider	fiat	is a		CN	
+/c/en/125/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/125/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	125	cardinal	similar to		CN	[[125]] is similar to [[cardinal]]
+/c/en/125/n-/r/HasContext-/c/en/rail-0000	/c/en/125/n	/r/HasContext	/c/en/rail	125	rail	has context		CN	
+/c/en/125/n-/r/HasContext-/c/en/uk-0000	/c/en/125/n	/r/HasContext	/c/en/uk	125	uk	has context		CN	
+/c/en/125/n-/r/RelatedTo-/c/en/hst-0000	/c/en/125/n	/r/RelatedTo	/c/en/hst	125	hst	related to		CN	
+/c/en/125s/n-/r/FormOf-/c/en/125-0000	/c/en/125s/n	/r/FormOf	/c/en/125	125s	125	form of		CN	
+/c/en/125th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/125th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	125th	ordinal	similar to		CN	[[125th]] is similar to [[ordinal]]
+/c/en/1260/n-/r/HasContext-/c/en/skiing-0000	/c/en/1260/n	/r/HasContext	/c/en/skiing	1260	skiing	has context		CN	
+/c/en/1260/n-/r/HasContext-/c/en/snowboarding-0000	/c/en/1260/n	/r/HasContext	/c/en/snowboarding	1260	snowboarding	has context		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/1080-0000	/c/en/1260/n	/r/SimilarTo	/c/en/1080	1260	1080	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/1440-0000	/c/en/1260/n	/r/SimilarTo	/c/en/1440	1260	1440	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/1620-0000	/c/en/1260/n	/r/SimilarTo	/c/en/1620	1260	1620	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/1800-0000	/c/en/1260/n	/r/SimilarTo	/c/en/1800	1260	1800	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/180-0000	/c/en/1260/n	/r/SimilarTo	/c/en/180	1260	180	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/360-0000	/c/en/1260/n	/r/SimilarTo	/c/en/360	1260	360	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/540-0000	/c/en/1260/n	/r/SimilarTo	/c/en/540	1260	540	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/720-0000	/c/en/1260/n	/r/SimilarTo	/c/en/720	1260	720	similar to		CN	
+/c/en/1260/n-/r/SimilarTo-/c/en/900-0000	/c/en/1260/n	/r/SimilarTo	/c/en/900	1260	900	similar to		CN	
+/c/en/128_bit-/r/DerivedFrom-/c/en/bit/n/wikt/en_3-0000	/c/en/128_bit	/r/DerivedFrom	/c/en/bit/n/wikt/en_3	128 bit	bit	derived from		CN	
+/c/en/12_angry_men-/r/IsA-/c/en/famous_film-0000	/c/en/12_angry_men	/r/IsA	/c/en/famous_film	12 angry men	famous film	is a		CN	[[12 Angry Men]] is [[a famous film]]
+/c/en/12_crown_4/n-/r/HasContext-/c/en/organic_compound-0000	/c/en/12_crown_4/n	/r/HasContext	/c/en/organic_compound	12 crown 4	organic compound	has context		CN	
+/c/en/12_crown_4/n-/r/RelatedTo-/c/en/crown_ether-0000	/c/en/12_crown_4/n	/r/RelatedTo	/c/en/crown_ether	12 crown 4	crown ether	related to		CN	
+/c/en/12_foot/n-/r/HasContext-/c/en/curling-0000	/c/en/12_foot/n	/r/HasContext	/c/en/curling	12 foot	curling	has context		CN	
+/c/en/12_foot/n-/r/RelatedTo-/c/en/4_foot-0000	/c/en/12_foot/n	/r/RelatedTo	/c/en/4_foot	12 foot	4 foot	related to		CN	
+/c/en/12_foot/n-/r/RelatedTo-/c/en/house-0000	/c/en/12_foot/n	/r/RelatedTo	/c/en/house	12 foot	house	related to		CN	
+/c/en/12_foot/n-/r/Synonym-/c/en/front_ring-0000	/c/en/12_foot/n	/r/Synonym	/c/en/front_ring	12 foot	front ring	synonym		CN	
+/c/en/12_hour_clock/n-/r/Antonym-/c/en/24_hour_clock-0000	/c/en/12_hour_clock/n	/r/Antonym	/c/en/24_hour_clock	12 hour clock	24 hour clock	antonym		CN	
+/c/en/12_hour_clock/n-/r/RelatedTo-/c/en/ante_meridiem-0000	/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/ante_meridiem	12 hour clock	ante meridiem	related to		CN	
+/c/en/12_hour_clock/n-/r/RelatedTo-/c/en/day-0000	/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/day	12 hour clock	day	related to		CN	
+/c/en/12_hour_clock/n-/r/RelatedTo-/c/en/hour-0000	/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/hour	12 hour clock	hour	related to		CN	
+/c/en/12_hour_clock/n-/r/RelatedTo-/c/en/post_meridiem-0000	/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/post_meridiem	12 hour clock	post meridiem	related to		CN	
+/c/en/12_hour_clock/n-/r/RelatedTo-/c/en/timekeeping-0000	/c/en/12_hour_clock/n	/r/RelatedTo	/c/en/timekeeping	12 hour clock	timekeeping	related to		CN	
+/c/en/12_inch_television_set/n-/r/IsA-/c/en/television_set/n-0000	/c/en/12_inch_television_set/n	/r/IsA	/c/en/television_set/n	12 inch television set	television set	is a		CN	
+/c/en/12_ounce_curls/n-/r/RelatedTo-/c/en/beer-0000	/c/en/12_ounce_curls/n	/r/RelatedTo	/c/en/beer	12 ounce curls	beer	related to		CN	
+/c/en/12_ounce_curls/n-/r/RelatedTo-/c/en/drink-0000	/c/en/12_ounce_curls/n	/r/RelatedTo	/c/en/drink	12 ounce curls	drink	related to		CN	
+/c/en/12_speed_bicycle/n-/r/IsA-/c/en/bicycle_multi_gear/n-0000	/c/en/12_speed_bicycle/n	/r/IsA	/c/en/bicycle_multi_gear/n	12 speed bicycle	bicycle multi gear	is a		CN	
+/c/en/12_string_guitar/n-/r/IsA-/c/en/acoustic_guitar/n-0000	/c/en/12_string_guitar/n	/r/IsA	/c/en/acoustic_guitar/n	12 string guitar	acoustic guitar	is a		CN	
+/c/en/12_tone_music/n/wn/communication-/r/Synonym-/c/en/twelve_tone_music/n/wn/communication-0000	/c/en/12_tone_music/n/wn/communication	/r/Synonym	/c/en/twelve_tone_music/n/wn/communication	12 tone music	twelve tone music	synonym		CN	[[12-tone music]] is a synonym of [[twelve-tone music]]
+/c/en/12_tone_system/n/wn/communication-/r/Synonym-/c/en/twelve_tone_music/n/wn/communication-0000	/c/en/12_tone_system/n/wn/communication	/r/Synonym	/c/en/twelve_tone_music/n/wn/communication	12 tone system	twelve tone music	synonym		CN	[[12-tone system]] is a synonym of [[twelve-tone music]]
+/c/en/12f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/12f_catheter/n	/r/IsA	/c/en/catheter/n	12f catheter	catheter	is a		CN	
+/c/en/12mo/n-/r/HasContext-/c/en/paper-0000	/c/en/12mo/n	/r/HasContext	/c/en/paper	12mo	paper	has context		CN	
+/c/en/12mo/n-/r/HasContext-/c/en/printing-0000	/c/en/12mo/n	/r/HasContext	/c/en/printing	12mo	printing	has context		CN	
+/c/en/12mo/n-/r/RelatedTo-/c/en/page-0000	/c/en/12mo/n	/r/RelatedTo	/c/en/page	12mo	page	related to		CN	
+/c/en/12mo/n-/r/RelatedTo-/c/en/size-0000	/c/en/12mo/n	/r/RelatedTo	/c/en/size	12mo	size	related to		CN	
+/c/en/12mo/n-/r/Synonym-/c/en/12º-0000	/c/en/12mo/n	/r/Synonym	/c/en/12º	12mo	12º	synonym		CN	
+/c/en/12mo/n-/r/Synonym-/c/en/d-0000	/c/en/12mo/n	/r/Synonym	/c/en/d	12mo	d	synonym		CN	
+/c/en/12mos/n-/r/FormOf-/c/en/12mo-0000	/c/en/12mos/n	/r/FormOf	/c/en/12mo	12mos	12mo	form of		CN	
+/c/en/12mos/n-/r/RelatedTo-/c/en/12mo-0000	/c/en/12mos/n	/r/RelatedTo	/c/en/12mo	12mos	12mo	related to		CN	
+/c/en/12th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/12th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	12th	ordinal	similar to		CN	[[12th]] is similar to [[ordinal]]
+/c/en/12th_grade/n-/r/FormOf-/c/en/twelfth_grade-0000	/c/en/12th_grade/n	/r/FormOf	/c/en/twelfth_grade	12th grade	twelfth grade	form of		CN	
+/c/en/12-/r/HasProperty-/c/en/twelve-0000	/c/en/12	/r/HasProperty	/c/en/twelve	12	twelve	has property		CN	[[12]] is [[twelve]]
+/c/en/12-/r/IsA-/c/en/dozen-0000	/c/en/12	/r/IsA	/c/en/dozen	12	dozen	is a		CN	[[12]] is [[a dozen]]
+/c/en/12-/r/IsA-/c/en/train/n-0000	/c/en/12	/r/IsA	/c/en/train/n	12	train	is a		CN	
+/c/en/12-/r/Synonym-/c/en/12-0000	/c/en/12	/r/Synonym	/c/en/12	12	12	synonym		CN	
+/c/en/12ºs/n-/r/RelatedTo-/c/en/12º-0000	/c/en/12ºs/n	/r/RelatedTo	/c/en/12º	12ºs	12º	related to		CN	
+/c/en/13/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/13/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	13	cardinal	similar to		CN	[[13]] is similar to [[cardinal]]
+/c/en/13/n/wn/quantity-/r/Synonym-/c/en/thirteen/n/wn/quantity-0000	/c/en/13/n/wn/quantity	/r/Synonym	/c/en/thirteen/n/wn/quantity	13	thirteen	synonym		CN	[[13]] is a synonym of [[thirteen]]
+/c/en/13/n/wp/number-/r/Synonym-/c/en/13/n/wp/number-0000	/c/en/13/n/wp/number	/r/Synonym	/c/en/13/n/wp/number	13	13	synonym		CN	
+/c/en/130/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/130/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	130	cardinal	similar to		CN	[[130]] is similar to [[cardinal]]
+/c/en/1309512-/r/IsA-/c/en/higher_than_19844-0000	/c/en/1309512	/r/IsA	/c/en/higher_than_19844	1309512	higher than 19844	is a		CN	[[1309512]] is [[higher than 19844]]
+/c/en/130mm_howitzer/n-/r/IsA-/c/en/howitzer/n-0000	/c/en/130mm_howitzer/n	/r/IsA	/c/en/howitzer/n	130mm howitzer	howitzer	is a		CN	
+/c/en/130mm_towed_howitzer/n-/r/IsA-/c/en/130mm_howitzer/n-0000	/c/en/130mm_towed_howitzer/n	/r/IsA	/c/en/130mm_howitzer/n	130mm towed howitzer	130mm howitzer	is a		CN	
+/c/en/130mm_towed_howitzer/n-/r/IsA-/c/en/towed_howitzer/n-0000	/c/en/130mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	130mm towed howitzer	towed howitzer	is a		CN	
+/c/en/130th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/130th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	130th	ordinal	similar to		CN	[[130th]] is similar to [[ordinal]]
+/c/en/1337/a-/r/FormOf-/c/en/elite-0000	/c/en/1337/a	/r/FormOf	/c/en/elite	1337	elite	form of		CN	
+/c/en/1337/a-/r/FormOf-/c/en/leet-0000	/c/en/1337/a	/r/FormOf	/c/en/leet	1337	leet	form of		CN	
+/c/en/1337/a-/r/HasContext-/c/en/internet_slang-0000	/c/en/1337/a	/r/HasContext	/c/en/internet_slang	1337	internet slang	has context		CN	
+/c/en/1337/a-/r/HasContext-/c/en/leet-0000	/c/en/1337/a	/r/HasContext	/c/en/leet	1337	leet	has context		CN	
+/c/en/1337/a-/r/IsA-/c/en/leetspeak-0000	/c/en/1337/a	/r/IsA	/c/en/leetspeak	1337	leetspeak	is a		CN	
+/c/en/1337/a-/r/IsA-/c/en/leet-0000	/c/en/1337/a	/r/IsA	/c/en/leet	1337	leet	is a		CN	
+/c/en/1337/n-/r/FormOf-/c/en/leet-0000	/c/en/1337/n	/r/FormOf	/c/en/leet	1337	leet	form of		CN	
+/c/en/1337/n-/r/HasContext-/c/en/internet_slang-0000	/c/en/1337/n	/r/HasContext	/c/en/internet_slang	1337	internet slang	has context		CN	
+/c/en/1337/n-/r/HasContext-/c/en/leet-0000	/c/en/1337/n	/r/HasContext	/c/en/leet	1337	leet	has context		CN	
+/c/en/134340_pluto/n-/r/FormOf-/c/en/pluto-0000	/c/en/134340_pluto/n	/r/FormOf	/c/en/pluto	134340 pluto	pluto	form of		CN	
+/c/en/135/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/135/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	135	cardinal	similar to		CN	[[135]] is similar to [[cardinal]]
+/c/en/135th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/135th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	135th	ordinal	similar to		CN	[[135th]] is similar to [[ordinal]]
+/c/en/13_inch_television_set/n-/r/IsA-/c/en/television_set/n-0000	/c/en/13_inch_television_set/n	/r/IsA	/c/en/television_set/n	13 inch television set	television set	is a		CN	
+/c/en/13f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/13f_catheter/n	/r/IsA	/c/en/catheter/n	13f catheter	catheter	is a		CN	
+/c/en/13th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/13th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	13th	ordinal	similar to		CN	[[13th]] is similar to [[ordinal]]
+/c/en/13th_month/n-/r/HasContext-/c/en/generally_attributive-0000	/c/en/13th_month/n	/r/HasContext	/c/en/generally_attributive	13th month	generally attributive	has context		CN	
+/c/en/13th_month/n-/r/HasContext-/c/en/singapore-0000	/c/en/13th_month/n	/r/HasContext	/c/en/singapore	13th month	singapore	has context		CN	
+/c/en/13th_months/n-/r/FormOf-/c/en/13th_month-0000	/c/en/13th_months/n	/r/FormOf	/c/en/13th_month	13th months	13th month	form of		CN	
+/c/en/13z_docosenoic_acid/n-/r/RelatedTo-/c/en/erucic_acid-0000	/c/en/13z_docosenoic_acid/n	/r/RelatedTo	/c/en/erucic_acid	13z docosenoic acid	erucic acid	related to		CN	
+/c/en/13z_eicosanoic_acid/n-/r/RelatedTo-/c/en/paullinic_acid-0000	/c/en/13z_eicosanoic_acid/n	/r/RelatedTo	/c/en/paullinic_acid	13z eicosanoic acid	paullinic acid	related to		CN	
+/c/en/13-/r/HasProperty-/c/en/thirteen-0000	/c/en/13	/r/HasProperty	/c/en/thirteen	13	thirteen	has property		CN	[[13]] is [[thirteen]]
+/c/en/14/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/14/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	14	cardinal	similar to		CN	[[14]] is similar to [[cardinal]]
+/c/en/14/n/wn/quantity-/r/Synonym-/c/en/fourteen/n/wn/quantity-0000	/c/en/14/n/wn/quantity	/r/Synonym	/c/en/fourteen/n/wn/quantity	14	fourteen	synonym		CN	[[14]] is a synonym of [[fourteen]]
+/c/en/140/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/140/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	140	cardinal	similar to		CN	[[140]] is similar to [[cardinal]]
+/c/en/140_species_of_snakes-/r/ReceivesAction-/c/en/found_in_australia-0000	/c/en/140_species_of_snakes	/r/ReceivesAction	/c/en/found_in_australia	140 species of snakes	found in australia	receives action		CN	[[140 species of snakes]] are [[found in Australia]]
+/c/en/140_townhouse_development_in_north_watson-/r/HasA-/c/en/been_knocked_back-0000	/c/en/140_townhouse_development_in_north_watson	/r/HasA	/c/en/been_knocked_back	140 townhouse development in north watson	been knocked back	has a		CN	[[A 140-townhouse development in north Watson]] has [[been knocked back]]
+/c/en/140th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/140th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	140th	ordinal	similar to		CN	[[140th]] is similar to [[ordinal]]
+/c/en/1411-/r/DefinedAs-/c/en/phone_number_for_information-0000	/c/en/1411	/r/DefinedAs	/c/en/phone_number_for_information	1411	phone number for information	defined as		CN	[[1411]] is the [[phone number for information]]
+/c/en/144/n/wn/quantity-/r/Synonym-/c/en/gross/n/wn/quantity-0000	/c/en/144/n/wn/quantity	/r/Synonym	/c/en/gross/n/wn/quantity	144	gross	synonym		CN	[[144]] is a synonym of [[gross]]
+/c/en/1440/n-/r/HasContext-/c/en/skiing-0000	/c/en/1440/n	/r/HasContext	/c/en/skiing	1440	skiing	has context		CN	
+/c/en/1440/n-/r/HasContext-/c/en/snowboarding-0000	/c/en/1440/n	/r/HasContext	/c/en/snowboarding	1440	snowboarding	has context		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/1080-0000	/c/en/1440/n	/r/SimilarTo	/c/en/1080	1440	1080	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/1260-0000	/c/en/1440/n	/r/SimilarTo	/c/en/1260	1440	1260	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/1620-0000	/c/en/1440/n	/r/SimilarTo	/c/en/1620	1440	1620	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/1800-0000	/c/en/1440/n	/r/SimilarTo	/c/en/1800	1440	1800	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/180-0000	/c/en/1440/n	/r/SimilarTo	/c/en/180	1440	180	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/360-0000	/c/en/1440/n	/r/SimilarTo	/c/en/360	1440	360	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/540-0000	/c/en/1440/n	/r/SimilarTo	/c/en/540	1440	540	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/720-0000	/c/en/1440/n	/r/SimilarTo	/c/en/720	1440	720	similar to		CN	
+/c/en/1440/n-/r/SimilarTo-/c/en/900-0000	/c/en/1440/n	/r/SimilarTo	/c/en/900	1440	900	similar to		CN	
+/c/en/145/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/145/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	145	cardinal	similar to		CN	[[145]] is similar to [[cardinal]]
+/c/en/145th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/145th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	145th	ordinal	similar to		CN	[[145th]] is similar to [[ordinal]]
+/c/en/147/n-/r/HasContext-/c/en/snooker-0000	/c/en/147/n	/r/HasContext	/c/en/snooker	147	snooker	has context		CN	
+/c/en/147/n-/r/RelatedTo-/c/en/maximum_break-0000	/c/en/147/n	/r/RelatedTo	/c/en/maximum_break	147	maximum break	related to		CN	
+/c/en/147/n-/r/RelatedTo-/c/en/snooker-0000	/c/en/147/n	/r/RelatedTo	/c/en/snooker	147	snooker	related to		CN	
+/c/en/147s/n-/r/FormOf-/c/en/147-0000	/c/en/147s/n	/r/FormOf	/c/en/147	147s	147	form of		CN	
+/c/en/147s/n-/r/RelatedTo-/c/en/147-0000	/c/en/147s/n	/r/RelatedTo	/c/en/147	147s	147	related to		CN	
+/c/en/14_18/n-/r/RelatedTo-/c/en/world_war_i-0000	/c/en/14_18/n	/r/RelatedTo	/c/en/world_war_i	14 18	world war i	related to		CN	
+/c/en/14_18_war/n-/r/RelatedTo-/c/en/world_war_i-0000	/c/en/14_18_war/n	/r/RelatedTo	/c/en/world_war_i	14 18 war	world war i	related to		CN	
+/c/en/14_18_war-/r/RelatedTo-/c/en/14_18-0000	/c/en/14_18_war	/r/RelatedTo	/c/en/14_18	14 18 war	14 18	related to		CN	
+/c/en/14_july/n/wn/time-/r/Synonym-/c/en/bastille_day/n/wn/time-0000	/c/en/14_july/n/wn/time	/r/Synonym	/c/en/bastille_day/n/wn/time	14 july	bastille day	synonym		CN	[[14 July]] is a synonym of [[Bastille Day]]
+/c/en/14er/n-/r/FormOf-/c/en/fourteener-0000	/c/en/14er/n	/r/FormOf	/c/en/fourteener	14er	fourteener	form of		CN	
+/c/en/14ers/n-/r/FormOf-/c/en/14er-0000	/c/en/14ers/n	/r/FormOf	/c/en/14er	14ers	14er	form of		CN	
+/c/en/14f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/14f_catheter/n	/r/IsA	/c/en/catheter/n	14f catheter	catheter	is a		CN	
+/c/en/14k/n-/r/RelatedTo-/c/en/hong_kong-0000	/c/en/14k/n	/r/RelatedTo	/c/en/hong_kong	14k	hong kong	related to		CN	
+/c/en/14k/n-/r/RelatedTo-/c/en/triad-0000	/c/en/14k/n	/r/RelatedTo	/c/en/triad	14k	triad	related to		CN	
+/c/en/14th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/14th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	14th	ordinal	similar to		CN	[[14th]] is similar to [[ordinal]]
+/c/en/14-/r/HasProperty-/c/en/fourteen-0000	/c/en/14	/r/HasProperty	/c/en/fourteen	14	fourteen	has property		CN	[[14]] is [[fourteen]]
+/c/en/15/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/15/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	15	cardinal	similar to		CN	[[15]] is similar to [[cardinal]]
+/c/en/15/n/wn/quantity-/r/Synonym-/c/en/fifteen/n/wn/quantity-0000	/c/en/15/n/wn/quantity	/r/Synonym	/c/en/fifteen/n/wn/quantity	15	fifteen	synonym		CN	[[15]] is a synonym of [[fifteen]]
+/c/en/150/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/150/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	150	cardinal	similar to		CN	[[150]] is similar to [[cardinal]]
+/c/en/1500_meter_run/n-/r/IsA-/c/en/endurance_event/n-0000	/c/en/1500_meter_run/n	/r/IsA	/c/en/endurance_event/n	1500 meter run	endurance event	is a		CN	
+/c/en/1500_meter_run/n-/r/IsA-/c/en/running_event/n-0000	/c/en/1500_meter_run/n	/r/IsA	/c/en/running_event/n	1500 meter run	running event	is a		CN	
+/c/en/1500_metres/n-/r/HasContext-/c/en/athletics-0000	/c/en/1500_metres/n	/r/HasContext	/c/en/athletics	1500 metres	athletics	has context		CN	
+/c/en/1500_metres/n-/r/RelatedTo-/c/en/metres-0000	/c/en/1500_metres/n	/r/RelatedTo	/c/en/metres	1500 metres	metres	related to		CN	
+/c/en/1500_metres/n-/r/RelatedTo-/c/en/middle_distance-0000	/c/en/1500_metres/n	/r/RelatedTo	/c/en/middle_distance	1500 metres	middle distance	related to		CN	
+/c/en/1500_metres/n-/r/Synonym-/c/en/1500_meters-0000	/c/en/1500_metres/n	/r/Synonym	/c/en/1500_meters	1500 metres	1500 meters	synonym		CN	
+/c/en/1500_metres-/r/Synonym-/c/en/1500_metres-0000	/c/en/1500_metres	/r/Synonym	/c/en/1500_metres	1500 metres	1500 metres	synonym		CN	
+/c/en/150th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/150th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	150th	ordinal	similar to		CN	[[150th]] is similar to [[ordinal]]
+/c/en/152mm_howitzer/n-/r/IsA-/c/en/howitzer/n-0000	/c/en/152mm_howitzer/n	/r/IsA	/c/en/howitzer/n	152mm howitzer	howitzer	is a		CN	
+/c/en/152mm_towed_howitzer/n-/r/IsA-/c/en/152mm_howitzer/n-0000	/c/en/152mm_towed_howitzer/n	/r/IsA	/c/en/152mm_howitzer/n	152mm towed howitzer	152mm howitzer	is a		CN	
+/c/en/152mm_towed_howitzer/n-/r/IsA-/c/en/towed_howitzer/n-0000	/c/en/152mm_towed_howitzer/n	/r/IsA	/c/en/towed_howitzer/n	152mm towed howitzer	towed howitzer	is a		CN	
+/c/en/1530s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1530s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1530s	decade|decennary|decennium	is a		CN|WN	[[1530s]] is a type of [[decade]]
+/c/en/155/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/155/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	155	cardinal	similar to		CN	[[155]] is similar to [[cardinal]]
+/c/en/155_sp_howitzer/n-/r/IsA-/c/en/155mm_howitzer/n-0000	/c/en/155_sp_howitzer/n	/r/IsA	/c/en/155mm_howitzer/n	155 sp howitzer	155mm howitzer	is a		CN	
+/c/en/155_sp_howitzer/n-/r/IsA-/c/en/self_propelled_howitzer/n-0000	/c/en/155_sp_howitzer/n	/r/IsA	/c/en/self_propelled_howitzer/n	155 sp howitzer	self propelled howitzer	is a		CN	
+/c/en/155mm_howitzer/n-/r/IsA-/c/en/howitzer/n-0000	/c/en/155mm_howitzer/n	/r/IsA	/c/en/howitzer/n	155mm howitzer	howitzer	is a		CN	
+/c/en/155th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/155th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	155th	ordinal	similar to		CN	[[155th]] is similar to [[ordinal]]
+/c/en/15_august_1945/n/wn/time-/r/Synonym-/c/en/v_j_day/n/wn/time-0000	/c/en/15_august_1945/n/wn/time	/r/Synonym	/c/en/v_j_day/n/wn/time	15 august 1945	v j day	synonym		CN	[[15 August 1945]] is a synonym of [[V-J Day]]
+/c/en/15_crown_5/n-/r/HasContext-/c/en/organic_compound-0000	/c/en/15_crown_5/n	/r/HasContext	/c/en/organic_compound	15 crown 5	organic compound	has context		CN	
+/c/en/15_crown_5/n-/r/RelatedTo-/c/en/crown_ether-0000	/c/en/15_crown_5/n	/r/RelatedTo	/c/en/crown_ether	15 crown 5	crown ether	related to		CN	
+/c/en/15_may_organization/n/wn/terrorism-/r/HasContext-/c/en/israel/n/wn/location-0000	/c/en/15_may_organization/n/wn/terrorism	/r/HasContext	/c/en/israel/n/wn/location	15 may organization	israel	has context		CN	[[15 May Organization]] is used in the region of [[Israel]]
+/c/en/15_may_organization/n/wn/terrorism-/r/HasContext-/c/en/terrorism/n/wn/act-0000	/c/en/15_may_organization/n/wn/terrorism	/r/HasContext	/c/en/terrorism/n/wn/act	15 may organization	terrorism	has context		CN	[[15 May Organization]] is used in the context of [[terrorism]]
+/c/en/15_megabytes_of_fame/n-/r/RelatedTo-/c/en/computing-0000	/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/computing	15 megabytes of fame	computing	related to		CN	
+/c/en/15_megabytes_of_fame/n-/r/RelatedTo-/c/en/internet-0000	/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/internet	15 megabytes of fame	internet	related to		CN	
+/c/en/15_megabytes_of_fame/n-/r/RelatedTo-/c/en/modest-0000	/c/en/15_megabytes_of_fame/n	/r/RelatedTo	/c/en/modest	15 megabytes of fame	modest	related to		CN	
+/c/en/15_megabytes_of_fame-/r/DerivedFrom-/c/en/15_minutes_of_fame/n-0000	/c/en/15_megabytes_of_fame	/r/DerivedFrom	/c/en/15_minutes_of_fame/n	15 megabytes of fame	15 minutes of fame	derived from		CN	
+/c/en/15_minutes/n/wn/time-/r/Synonym-/c/en/quarter_hour/n/wn/time-0000	/c/en/15_minutes/n/wn/time	/r/Synonym	/c/en/quarter_hour/n/wn/time	15 minutes	quarter hour	synonym		CN	[[15 minutes]] is a synonym of [[quarter-hour]]
+/c/en/15_minutes_of_fame/n-/r/RelatedTo-/c/en/famous_for_fifteen_minutes-0000	/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/famous_for_fifteen_minutes	15 minutes of fame	famous for fifteen minutes	related to		CN	
+/c/en/15_minutes_of_fame/n-/r/RelatedTo-/c/en/flurry-0000	/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/flurry	15 minutes of fame	flurry	related to		CN	
+/c/en/15_minutes_of_fame/n-/r/RelatedTo-/c/en/spotlight-0000	/c/en/15_minutes_of_fame/n	/r/RelatedTo	/c/en/spotlight	15 minutes of fame	spotlight	related to		CN	
+/c/en/15_minutes_of_fame/n-/r/Synonym-/c/en/15_minutes-0000	/c/en/15_minutes_of_fame/n	/r/Synonym	/c/en/15_minutes	15 minutes of fame	15 minutes	synonym		CN	
+/c/en/15_minutes_of_fame/n-/r/Synonym-/c/en/moment_in_sun-0000	/c/en/15_minutes_of_fame/n	/r/Synonym	/c/en/moment_in_sun	15 minutes of fame	moment in sun	synonym		CN	
+/c/en/15_minutes_of_fame-/r/RelatedTo-/c/en/legend_in_one's_own_lunchtime-0000	/c/en/15_minutes_of_fame	/r/RelatedTo	/c/en/legend_in_one's_own_lunchtime	15 minutes of fame	legend in one's own lunchtime	related to		CN	
+/c/en/15_minutes_of_shame-/r/DerivedFrom-/c/en/15_minutes_of_fame/n-0000	/c/en/15_minutes_of_shame	/r/DerivedFrom	/c/en/15_minutes_of_fame/n	15 minutes of shame	15 minutes of fame	derived from		CN	
+/c/en/15_minutes-/r/DerivedFrom-/c/en/fifteen-0000	/c/en/15_minutes	/r/DerivedFrom	/c/en/fifteen	15 minutes	fifteen	derived from		CN	
+/c/en/15_minutes-/r/EtymologicallyRelatedTo-/c/en/15_minutes_of_fame-0000	/c/en/15_minutes	/r/EtymologicallyRelatedTo	/c/en/15_minutes_of_fame	15 minutes	15 minutes of fame	etymologically related to		CN	
+/c/en/15_minutes-/r/IsA-/c/en/film/n-0000	/c/en/15_minutes	/r/IsA	/c/en/film/n	15 minutes	film	is a		CN	
+/c/en/15_minutes-/r/Synonym-/c/en/15_minutes-0000	/c/en/15_minutes	/r/Synonym	/c/en/15_minutes	15 minutes	15 minutes	synonym		CN	
+/c/en/15_of_argentina's_population-/r/HasProperty-/c/en/native_indian-0000	/c/en/15_of_argentina's_population	/r/HasProperty	/c/en/native_indian	15 of argentina's population	native indian	has property		CN	[[15% of Argentina's population]] is [[native indian]]
+/c/en/15_year_old_alex-/r/DefinedAs-/c/en/main_character_in_clockwork_orange-0000	/c/en/15_year_old_alex	/r/DefinedAs	/c/en/main_character_in_clockwork_orange	15 year old alex	main character in clockwork orange	defined as		CN	[[15-year-old Alex]] is the [[main character in'A Clockwork Orange']]
+/c/en/15_°_c_calorie-/r/IsA-/c/en/calorie/n-0000	/c/en/15_°_c_calorie	/r/IsA	/c/en/calorie/n	15 ° c calorie	calorie	is a		CN	
+/c/en/15_°_calorie-/r/DerivedFrom-/c/en/calorie/n-0000	/c/en/15_°_calorie	/r/DerivedFrom	/c/en/calorie/n	15 ° calorie	calorie	derived from		CN	
+/c/en/15f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/15f_catheter/n	/r/IsA	/c/en/catheter/n	15f catheter	catheter	is a		CN	
+/c/en/15th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/15th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	15th	ordinal	similar to		CN	[[15th]] is similar to [[ordinal]]
+/c/en/15z_tetracosenoic_acid/n-/r/RelatedTo-/c/en/nervonic_acid-0000	/c/en/15z_tetracosenoic_acid/n	/r/RelatedTo	/c/en/nervonic_acid	15z tetracosenoic acid	nervonic acid	related to		CN	
+/c/en/15-/r/HasProperty-/c/en/fifteen-0000	/c/en/15	/r/HasProperty	/c/en/fifteen	15	fifteen	has property		CN	[[15]] is [[fifteen]]
+/c/en/15-/r/IsA-/c/en/automobile/n-0000	/c/en/15	/r/IsA	/c/en/automobile/n	15	automobile	is a		CN	
+/c/en/15-/r/IsA-/c/en/band/n-0000	/c/en/15	/r/IsA	/c/en/band/n	15	band	is a		CN	
+/c/en/15-/r/Synonym-/c/en/15-0000	/c/en/15	/r/Synonym	/c/en/15	15	15	synonym		CN	
+/c/en/15-/r/dbpedia/genre-/c/en/k_pop-0000	/c/en/15	/r/dbpedia/genre	/c/en/k_pop	15	k pop	genre		CN	
+/c/en/16/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/16/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	16	cardinal	similar to		CN	[[16]] is similar to [[cardinal]]
+/c/en/16/n/wn/quantity-/r/Synonym-/c/en/sixteen/n/wn/quantity-0000	/c/en/16/n/wn/quantity	/r/Synonym	/c/en/sixteen/n/wn/quantity	16	sixteen	synonym		CN	[[16]] is a synonym of [[sixteen]]
+/c/en/160/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/160/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	160	cardinal	similar to		CN	[[160]] is similar to [[cardinal]]
+/c/en/1600_pennsylvania_avenue/n-/r/RelatedTo-/c/en/10_downing_street-0000	/c/en/1600_pennsylvania_avenue/n	/r/RelatedTo	/c/en/10_downing_street	1600 pennsylvania avenue	10 downing street	related to		CN	
+/c/en/1600_pennsylvania_avenue/n-/r/RelatedTo-/c/en/24_sussex_drive-0000	/c/en/1600_pennsylvania_avenue/n	/r/RelatedTo	/c/en/24_sussex_drive	1600 pennsylvania avenue	24 sussex drive	related to		CN	
+/c/en/160th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/160th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	160th	ordinal	similar to		CN	[[160th]] is similar to [[ordinal]]
+/c/en/1620/n-/r/HasContext-/c/en/skiing-0000	/c/en/1620/n	/r/HasContext	/c/en/skiing	1620	skiing	has context		CN	
+/c/en/1620/n-/r/HasContext-/c/en/snowboarding-0000	/c/en/1620/n	/r/HasContext	/c/en/snowboarding	1620	snowboarding	has context		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/1080-0000	/c/en/1620/n	/r/SimilarTo	/c/en/1080	1620	1080	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/1260-0000	/c/en/1620/n	/r/SimilarTo	/c/en/1260	1620	1260	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/1440-0000	/c/en/1620/n	/r/SimilarTo	/c/en/1440	1620	1440	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/1800-0000	/c/en/1620/n	/r/SimilarTo	/c/en/1800	1620	1800	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/180-0000	/c/en/1620/n	/r/SimilarTo	/c/en/180	1620	180	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/360-0000	/c/en/1620/n	/r/SimilarTo	/c/en/360	1620	360	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/540-0000	/c/en/1620/n	/r/SimilarTo	/c/en/540	1620	540	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/720-0000	/c/en/1620/n	/r/SimilarTo	/c/en/720	1620	720	similar to		CN	
+/c/en/1620/n-/r/SimilarTo-/c/en/900-0000	/c/en/1620/n	/r/SimilarTo	/c/en/900	1620	900	similar to		CN	
+/c/en/163rd_game/n-/r/HasContext-/c/en/baseball-0000	/c/en/163rd_game/n	/r/HasContext	/c/en/baseball	163rd game	baseball	has context		CN	
+/c/en/164/n-/r/IsA-/c/en/alfa_romeo_automobile/n-0000	/c/en/164/n	/r/IsA	/c/en/alfa_romeo_automobile/n	164	alfa romeo automobile	is a		CN	
+/c/en/165/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/165/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	165	cardinal	similar to		CN	[[165]] is similar to [[cardinal]]
+/c/en/165th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/165th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	165th	ordinal	similar to		CN	[[165th]] is similar to [[ordinal]]
+/c/en/16_bit-/r/DerivedFrom-/c/en/bit/n/wikt/en_3-0000	/c/en/16_bit	/r/DerivedFrom	/c/en/bit/n/wikt/en_3	16 bit	bit	derived from		CN	
+/c/en/16_cell/n-/r/HasContext-/c/en/geometry-0000	/c/en/16_cell/n	/r/HasContext	/c/en/geometry	16 cell	geometry	has context		CN	
+/c/en/16_cell/n-/r/RelatedTo-/c/en/facet-0000	/c/en/16_cell/n	/r/RelatedTo	/c/en/facet	16 cell	facet	related to		CN	
+/c/en/16_cell/n-/r/RelatedTo-/c/en/four_dimensional-0000	/c/en/16_cell/n	/r/RelatedTo	/c/en/four_dimensional	16 cell	four dimensional	related to		CN	
+/c/en/16_cell/n-/r/RelatedTo-/c/en/octahedron-0000	/c/en/16_cell/n	/r/RelatedTo	/c/en/octahedron	16 cell	octahedron	related to		CN	
+/c/en/16_cell/n-/r/RelatedTo-/c/en/polytope-0000	/c/en/16_cell/n	/r/RelatedTo	/c/en/polytope	16 cell	polytope	related to		CN	
+/c/en/16_cell/n-/r/RelatedTo-/c/en/tetrahedron-0000	/c/en/16_cell/n	/r/RelatedTo	/c/en/tetrahedron	16 cell	tetrahedron	related to		CN	
+/c/en/16_cell/n-/r/Synonym-/c/en/4_orthoplex-0000	/c/en/16_cell/n	/r/Synonym	/c/en/4_orthoplex	16 cell	4 orthoplex	synonym		CN	
+/c/en/16_cells/n-/r/FormOf-/c/en/16_cell-0000	/c/en/16_cells/n	/r/FormOf	/c/en/16_cell	16 cells	16 cell	form of		CN	
+/c/en/16_cell-/r/DerivedFrom-/c/en/16-0000	/c/en/16_cell	/r/DerivedFrom	/c/en/16	16 cell	16	derived from		CN	
+/c/en/16_cell-/r/DerivedFrom-/c/en/cell-0000	/c/en/16_cell	/r/DerivedFrom	/c/en/cell	16 cell	cell	derived from		CN	
+/c/en/16_cell-/r/IsA-/c/en/orthoplex/n-0000	/c/en/16_cell	/r/IsA	/c/en/orthoplex/n	16 cell	orthoplex	is a		CN	
+/c/en/16_pf/n/wn/communication-/r/Synonym-/c/en/sixteen_personality_factor_questionnaire/n/wn/communication-0000	/c/en/16_pf/n/wn/communication	/r/Synonym	/c/en/sixteen_personality_factor_questionnaire/n/wn/communication	16 pf	sixteen personality factor questionnaire	synonym		CN	[[16 PF]] is a synonym of [[Sixteen Personality Factor Questionnaire]]
+/c/en/16f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/16f_catheter/n	/r/IsA	/c/en/catheter/n	16f catheter	catheter	is a		CN	
+/c/en/16mo/n-/r/HasContext-/c/en/paper-0000	/c/en/16mo/n	/r/HasContext	/c/en/paper	16mo	paper	has context		CN	
+/c/en/16mo/n-/r/HasContext-/c/en/printing-0000	/c/en/16mo/n	/r/HasContext	/c/en/printing	16mo	printing	has context		CN	
+/c/en/16mo/n-/r/RelatedTo-/c/en/sextodecimo-0000	/c/en/16mo/n	/r/RelatedTo	/c/en/sextodecimo	16mo	sextodecimo	related to		CN	
+/c/en/16mos/n-/r/FormOf-/c/en/16mo-0000	/c/en/16mos/n	/r/FormOf	/c/en/16mo	16mos	16mo	form of		CN	
+/c/en/16s_rrnas/n-/r/FormOf-/c/en/16s_rrna-0000	/c/en/16s_rrnas/n	/r/FormOf	/c/en/16s_rrna	16s rrnas	16s rrna	form of		CN	
+/c/en/16th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/16th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	16th	ordinal	similar to		CN	[[16th]] is similar to [[ordinal]]
+/c/en/16th_note-/r/FormOf-/c/en/sixteenth_note/n-0000	/c/en/16th_note	/r/FormOf	/c/en/sixteenth_note/n	16th note	sixteenth note	form of		CN	
+/c/en/16th_rest-/r/FormOf-/c/en/sixteenth_rest/n-0000	/c/en/16th_rest	/r/FormOf	/c/en/sixteenth_rest/n	16th rest	sixteenth rest	form of		CN	
+/c/en/16-/r/HasProperty-/c/en/sixteen-0000	/c/en/16	/r/HasProperty	/c/en/sixteen	16	sixteen	has property		CN	[[16]] is [[sixteen]]
+/c/en/16-/r/InstanceOf-/c/en/siege_engine-0000	/c/en/16	/r/InstanceOf	/c/en/siege_engine	16	siege engine	instance of		CN	
+/c/en/16-/r/IsA-/c/en/locomotive/n-0000	/c/en/16	/r/IsA	/c/en/locomotive/n	16	locomotive	is a		CN	
+/c/en/16-/r/IsA-/c/en/train/n-0000	/c/en/16	/r/IsA	/c/en/train/n	16	train	is a		CN	
+/c/en/16-/r/IsA-/c/en/weapon/n-0000	/c/en/16	/r/IsA	/c/en/weapon/n	16	weapon	is a		CN	
+/c/en/16-/r/Synonym-/c/en/16-0000	/c/en/16	/r/Synonym	/c/en/16	16	16	synonym		CN	
+/c/en/17/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/17/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	17	cardinal	similar to		CN	[[17]] is similar to [[cardinal]]
+/c/en/17/n/wn/quantity-/r/Synonym-/c/en/seventeen/n/wn/quantity-0000	/c/en/17/n/wn/quantity	/r/Synonym	/c/en/seventeen/n/wn/quantity	17	seventeen	synonym		CN	[[17]] is a synonym of [[seventeen]]
+/c/en/170/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/170/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	170	cardinal	similar to		CN	[[170]] is similar to [[cardinal]]
+/c/en/170th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/170th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	170th	ordinal	similar to		CN	[[170th]] is similar to [[ordinal]]
+/c/en/1710s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1710s/n	/r/RelatedTo	/c/en/decade	1710s	decade	related to		CN	
+/c/en/1720s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1720s/n	/r/RelatedTo	/c/en/decade	1720s	decade	related to		CN	
+/c/en/1728/n/wn/quantity-/r/Synonym-/c/en/great_gross/n/wn/quantity-0000	/c/en/1728/n/wn/quantity	/r/Synonym	/c/en/great_gross/n/wn/quantity	1728	great gross	synonym		CN	[[1728]] is a synonym of [[great gross]]
+/c/en/1730s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1730s/n	/r/RelatedTo	/c/en/decade	1730s	decade	related to		CN	
+/c/en/1740s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1740s/n	/r/RelatedTo	/c/en/decade	1740s	decade	related to		CN	
+/c/en/175/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/175/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	175	cardinal	similar to		CN	[[175]] is similar to [[cardinal]]
+/c/en/1750s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1750s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1750s	decade|decennary|decennium	is a		CN|WN	[[1750s]] is a type of [[decade]]
+/c/en/1750s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1750s/n	/r/RelatedTo	/c/en/decade	1750s	decade	related to		CN	
+/c/en/175er/n-/r/HasContext-/c/en/historical-0000	/c/en/175er/n	/r/HasContext	/c/en/historical	175er	historical	has context		CN	
+/c/en/175er/n-/r/RelatedTo-/c/en/nazi-0000	/c/en/175er/n	/r/RelatedTo	/c/en/nazi	175er	nazi	related to		CN	
+/c/en/175ers/n-/r/FormOf-/c/en/175er-0000	/c/en/175ers/n	/r/FormOf	/c/en/175er	175ers	175er	form of		CN	
+/c/en/175th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/175th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	175th	ordinal	similar to		CN	[[175th]] is similar to [[ordinal]]
+/c/en/1760s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1760s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1760s	decade|decennary|decennium	is a		CN|WN	[[1760s]] is a type of [[decade]]
+/c/en/1760s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1760s/n	/r/RelatedTo	/c/en/decade	1760s	decade	related to		CN	
+/c/en/1770s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1770s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1770s	decade|decennary|decennium	is a		CN|WN	[[1770s]] is a type of [[decade]]
+/c/en/1770s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1770s/n	/r/RelatedTo	/c/en/decade	1770s	decade	related to		CN	
+/c/en/1780s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1780s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1780s	decade|decennary|decennium	is a		CN|WN	[[1780s]] is a type of [[decade]]
+/c/en/1780s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1780s/n	/r/RelatedTo	/c/en/decade	1780s	decade	related to		CN	
+/c/en/1790s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1790s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1790s	decade|decennary|decennium	is a		CN|WN	[[1790s]] is a type of [[decade]]
+/c/en/1790s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1790s/n	/r/RelatedTo	/c/en/decade	1790s	decade	related to		CN	
+/c/en/17_hydroxypregnenolone/n-/r/IsA-/c/en/steroid/n-0000	/c/en/17_hydroxypregnenolone/n	/r/IsA	/c/en/steroid/n	17 hydroxypregnenolone	steroid	is a		CN	
+/c/en/17_ketosteroid/n-/r/IsA-/c/en/steroid/n-0000	/c/en/17_ketosteroid/n	/r/IsA	/c/en/steroid/n	17 ketosteroid	steroid	is a		CN	
+/c/en/17_november/n/wn/terrorism-/r/Synonym-/c/en/revolutionary_organization_17_november/n/wn/terrorism-0000	/c/en/17_november/n/wn/terrorism	/r/Synonym	/c/en/revolutionary_organization_17_november/n/wn/terrorism	17 november	revolutionary organization 17 november	synonym		CN	[[17 November]] is a synonym of [[Revolutionary Organization 17 November]]
+/c/en/17f_catheter/n-/r/IsA-/c/en/catheter/n-0000	/c/en/17f_catheter/n	/r/IsA	/c/en/catheter/n	17f catheter	catheter	is a		CN	
+/c/en/17th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/17th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	17th	ordinal	similar to		CN	[[17th]] is similar to [[ordinal]]
+/c/en/17-/r/HasProperty-/c/en/seventeen-0000	/c/en/17	/r/HasProperty	/c/en/seventeen	17	seventeen	has property		CN	[[17]] is [[seventeen]]
+/c/en/17-/r/PartOf-/c/en/set_of_integers-0000	/c/en/17	/r/PartOf	/c/en/set_of_integers	17	set of integers	part of		CN	[[17]] is part of [[the set of integers]]
+/c/en/18/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/18/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	18	cardinal	similar to		CN	[[18]] is similar to [[cardinal]]
+/c/en/18/n/wn/quantity-/r/Synonym-/c/en/eighteen/n/wn/quantity-0000	/c/en/18/n/wn/quantity	/r/Synonym	/c/en/eighteen/n/wn/quantity	18	eighteen	synonym		CN	[[18]] is a synonym of [[eighteen]]
+/c/en/18/n/wp/number-/r/Synonym-/c/en/18/n/wp/number-0000	/c/en/18/n/wp/number	/r/Synonym	/c/en/18/n/wp/number	18	18	synonym		CN	
+/c/en/180/a/wn-/r/SimilarTo-/c/en/cardinal/a/wn-0000	/c/en/180/a/wn	/r/SimilarTo	/c/en/cardinal/a/wn	180	cardinal	similar to		CN	[[180]] is similar to [[cardinal]]
+/c/en/180/n/wp/video_game-/r/IsA-/c/en/video_game/n-0000	/c/en/180/n/wp/video_game	/r/IsA	/c/en/video_game/n	180	video game	is a		CN	
+/c/en/180/n/wp/video_game-/r/Synonym-/c/en/180/n/wp/video_game-0000	/c/en/180/n/wp/video_game	/r/Synonym	/c/en/180/n/wp/video_game	180	180	synonym		CN	
+/c/en/180/n/wp/video_game-/r/dbpedia/genre-/c/en/sports_game-0000	/c/en/180/n/wp/video_game	/r/dbpedia/genre	/c/en/sports_game	180	sports game	genre		CN	
+/c/en/180/n-/r/HasContext-/c/en/sports-0000	/c/en/180/n	/r/HasContext	/c/en/sports	180	sports	has context		CN	
+/c/en/180/n-/r/RelatedTo-/c/en/change-0000	/c/en/180/n	/r/RelatedTo	/c/en/change	180	change	related to		CN	
+/c/en/180/n-/r/RelatedTo-/c/en/complete-0000	/c/en/180/n	/r/RelatedTo	/c/en/complete	180	complete	related to		CN	
+/c/en/180/n-/r/RelatedTo-/c/en/degree-0000	/c/en/180/n	/r/RelatedTo	/c/en/degree	180	degree	related to		CN	
+/c/en/180/n-/r/RelatedTo-/c/en/opposite-0000	/c/en/180/n	/r/RelatedTo	/c/en/opposite	180	opposite	related to		CN	
+/c/en/180/n-/r/RelatedTo-/c/en/spin-0000	/c/en/180/n	/r/RelatedTo	/c/en/spin	180	spin	related to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/1080-0000	/c/en/180/n	/r/SimilarTo	/c/en/1080	180	1080	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/1260-0000	/c/en/180/n	/r/SimilarTo	/c/en/1260	180	1260	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/1440-0000	/c/en/180/n	/r/SimilarTo	/c/en/1440	180	1440	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/1620-0000	/c/en/180/n	/r/SimilarTo	/c/en/1620	180	1620	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/1800-0000	/c/en/180/n	/r/SimilarTo	/c/en/1800	180	1800	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/360-0000	/c/en/180/n	/r/SimilarTo	/c/en/360	180	360	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/540-0000	/c/en/180/n	/r/SimilarTo	/c/en/540	180	540	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/720-0000	/c/en/180/n	/r/SimilarTo	/c/en/720	180	720	similar to		CN	
+/c/en/180/n-/r/SimilarTo-/c/en/900-0000	/c/en/180/n	/r/SimilarTo	/c/en/900	180	900	similar to		CN	
+/c/en/180/n-/r/Synonym-/c/en/about_face-0000	/c/en/180/n	/r/Synonym	/c/en/about_face	180	about face	synonym		CN	
+/c/en/180/n-/r/Synonym-/c/en/about_turn-0000	/c/en/180/n	/r/Synonym	/c/en/about_turn	180	about turn	synonym		CN	
+/c/en/180/n-/r/Synonym-/c/en/u_turn-0000	/c/en/180/n	/r/Synonym	/c/en/u_turn	180	u turn	synonym		CN	
+/c/en/1800/n-/r/HasContext-/c/en/skiing-0000	/c/en/1800/n	/r/HasContext	/c/en/skiing	1800	skiing	has context		CN	
+/c/en/1800/n-/r/HasContext-/c/en/snowboarding-0000	/c/en/1800/n	/r/HasContext	/c/en/snowboarding	1800	snowboarding	has context		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/1080-0000	/c/en/1800/n	/r/SimilarTo	/c/en/1080	1800	1080	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/1260-0000	/c/en/1800/n	/r/SimilarTo	/c/en/1260	1800	1260	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/1440-0000	/c/en/1800/n	/r/SimilarTo	/c/en/1440	1800	1440	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/1620-0000	/c/en/1800/n	/r/SimilarTo	/c/en/1620	1800	1620	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/180-0000	/c/en/1800/n	/r/SimilarTo	/c/en/180	1800	180	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/360-0000	/c/en/1800/n	/r/SimilarTo	/c/en/360	1800	360	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/540-0000	/c/en/1800/n	/r/SimilarTo	/c/en/540	1800	540	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/720-0000	/c/en/1800/n	/r/SimilarTo	/c/en/720	1800	720	similar to		CN	
+/c/en/1800/n-/r/SimilarTo-/c/en/900-0000	/c/en/1800/n	/r/SimilarTo	/c/en/900	1800	900	similar to		CN	
+/c/en/1800s/n/wp/decade-/r/Synonym-/c/en/1800s/n/wp/decade-0000	/c/en/1800s/n/wp/decade	/r/Synonym	/c/en/1800s/n/wp/decade	1800s	1800s	synonym		CN	
+/c/en/1800s/n-/r/FormOf-/c/en/1800-0000	/c/en/1800s/n	/r/FormOf	/c/en/1800	1800s	1800	form of		CN	
+/c/en/1800s/n-/r/HasContext-/c/en/snowboarding-0000	/c/en/1800s/n	/r/HasContext	/c/en/snowboarding	1800s	snowboarding	has context		CN	
+/c/en/1800s/n-/r/RelatedTo-/c/en/century-0000	/c/en/1800s/n	/r/RelatedTo	/c/en/century	1800s	century	related to		CN	
+/c/en/1800s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1800s/n	/r/RelatedTo	/c/en/decade	1800s	decade	related to		CN	
+/c/en/180_degrees-/r/AtLocation-/c/en/corner-0000	/c/en/180_degrees	/r/AtLocation	/c/en/corner	180 degrees	corner	at location		CN	*Something you find in [[the corner]] is [[180 degrees]]
+/c/en/180s/n-/r/FormOf-/c/en/180-0000	/c/en/180s/n	/r/FormOf	/c/en/180	180s	180	form of		CN	
+/c/en/180s/n-/r/RelatedTo-/c/en/180-0000	/c/en/180s/n	/r/RelatedTo	/c/en/180	180s	180	related to		CN	
+/c/en/180th/a/wn-/r/SimilarTo-/c/en/holy_order/n/wn/state-0000	/c/en/180th/a/wn	/r/SimilarTo	/c/en/holy_order/n/wn/state	180th	ordinal	similar to		CN	[[180th]] is similar to [[ordinal]]
+/c/en/1810s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1810s/n	/r/RelatedTo	/c/en/decade	1810s	decade	related to		CN	
+/c/en/1820s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1820s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1820s	decade|decennary|decennium	is a		CN|WN	[[1820s]] is a type of [[decade]]
+/c/en/1820s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1820s/n	/r/RelatedTo	/c/en/decade	1820s	decade	related to		CN	
+/c/en/1830s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1830s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1830s	decade|decennary|decennium	is a		CN|WN	[[1830s]] is a type of [[decade]]
+/c/en/1830s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1830s/n	/r/RelatedTo	/c/en/decade	1830s	decade	related to		CN	
+/c/en/1830s-/r/Synonym-/c/en/1830s-0000	/c/en/1830s	/r/Synonym	/c/en/1830s	1830s	1830s	synonym		CN	
+/c/en/1840s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1840s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1840s	decade|decennary|decennium	is a		CN|WN	[[1840s]] is a type of [[decade]]
+/c/en/1840s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1840s/n	/r/RelatedTo	/c/en/decade	1840s	decade	related to		CN	
+/c/en/1850s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1850s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1850s	decade|decennary|decennium	is a		CN|WN	[[1850s]] is a type of [[decade]]
+/c/en/1850s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1850s/n	/r/RelatedTo	/c/en/decade	1850s	decade	related to		CN	
+/c/en/1860s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1860s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1860s	decade|decennary|decennium	is a		CN|WN	[[1860s]] is a type of [[decade]]
+/c/en/1860s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1860s/n	/r/RelatedTo	/c/en/decade	1860s	decade	related to		CN	
+/c/en/18650/n-/r/RelatedTo-/c/en/21700-0000	/c/en/18650/n	/r/RelatedTo	/c/en/21700	18650	21700	related to		CN	
+/c/en/18650s/n-/r/FormOf-/c/en/18650-0000	/c/en/18650s/n	/r/FormOf	/c/en/18650	18650s	18650	form of		CN	
+/c/en/187/n-/r/HasContext-/c/en/us-0000	/c/en/187/n	/r/HasContext	/c/en/us	187	us	has context		CN	
+/c/en/187/n-/r/RelatedTo-/c/en/california-0000	/c/en/187/n	/r/RelatedTo	/c/en/california	187	california	related to		CN	
+/c/en/187/n-/r/RelatedTo-/c/en/code-0000	/c/en/187/n	/r/RelatedTo	/c/en/code	187	code	related to		CN	
+/c/en/187/n-/r/RelatedTo-/c/en/murder-0000	/c/en/187/n	/r/RelatedTo	/c/en/murder	187	murder	related to		CN	
+/c/en/187/n-/r/RelatedTo-/c/en/police-0000	/c/en/187/n	/r/RelatedTo	/c/en/police	187	police	related to		CN	
+/c/en/1870s/n/wn/time-/r/IsA-/c/en/decade/n/wn/time-0000	/c/en/1870s/n/wn/time	/r/IsA	/c/en/decade/n/wn/time	1870s	decade|decennary|decennium	is a		CN|WN	[[1870s]] is a type of [[decade]]
+/c/en/1870s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1870s/n	/r/RelatedTo	/c/en/decade	1870s	decade	related to		CN	
+/c/en/1880s/n/wn/time-/r/Synonym-/c/en/eighties/n/wn/time-0000	/c/en/1880s/n/wn/time	/r/Synonym	/c/en/eighties/n/wn/time	1880s	eighties	synonym		CN	[[1880s]] is a synonym of [[eighties]]
+/c/en/1880s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1880s/n	/r/RelatedTo	/c/en/decade	1880s	decade	related to		CN	
+/c/en/1880s-/r/RelatedTo-/c/en/1880s-0000	/c/en/1880s	/r/RelatedTo	/c/en/1880s	1880s	1880s	related to		CN	
+/c/en/1880s-/r/RelatedTo-/c/en/fashion-0000	/c/en/1880s	/r/RelatedTo	/c/en/fashion	1880s	fashion	related to		CN	
+/c/en/1880s-/r/Synonym-/c/en/1880s-0000	/c/en/1880s	/r/Synonym	/c/en/1880s	1880s	1880s	synonym		CN	
+/c/en/1890s/n/wn/time-/r/Synonym-/c/en/nineties/n/wn/time-0000	/c/en/1890s/n/wn/time	/r/Synonym	/c/en/nineties/n/wn/time	1890s	nineties	synonym		CN	[[1890s]] is a synonym of [[nineties]]
+/c/en/1890s/n-/r/RelatedTo-/c/en/decade-0000	/c/en/1890s/n	/r/RelatedTo	/c/en/decade	1890s	decade	related to		CN	
+/c/en/1890s/n-/r/Synonym-/c/en/90s-0000	/c/en/1890s/n	/r/Synonym	/c/en/90s	1890s	90s	synonym		CN	
+/c/en/1890s-/r/IsA-/c/en/90s/n-0000	/c/en/1890s	/r/IsA	/c/en/90s/n	1890s	90s	is a		CN	
+/c/en/1890s-/r/RelatedTo-/c/en/1890s-0000	/c/en/1890s	/r/RelatedTo	/c/en/1890s	1890s	1890s	related to		CN	
+/c/en/1890s-/r/RelatedTo-/c/en/fashion-0000	/c/en/1890s	/r/RelatedTo	/c/en/fashion	1890s	fashion	related to		CN	
+/c/en/1890s-/r/Synonym-/c/en/1890s-0000	/c/en/1890s	/r/Synonym	/c/en/1890s	1890s	1890s	synonym		CN	
+/c/en/18_crown_6/n-/r/HasContext-/c/en/organic_compound-0000	/c/en/18_crown_6/n	/r/HasContext	/c/en/organic_compound	18 crown 6	organic compound	has context		CN	
+/c/en/18_crown_6/n-/r/RelatedTo-/c/en/crown_ether-0000	/c/en/18_crown_6/n	/r/RelatedTo	/c/en/crown_ether	18 crown 6	crown ether	related to		CN	
+/c/en/18_foot_potato-/r/UsedFor-/c/en/intimidate_angry_leprechauns-0000	/c/en/18_foot_potato	/r/UsedFor	/c/en/intimidate_angry_leprechauns	18 foot potato	intimidate angry leprechauns	used for		CN	You can use [[an 18-foot potato]] to [[intimidate angry leprechauns]]
+/c/en/18_holes/n-/r/HasContext-/c/en/slang-0000	/c/en/18_holes/n	/r/HasContext	/c/en/slang	18 holes	slang	has context		CN	
+/c/en/18_holes/n-/r/HasContext-/c/en/sports-0000	/c/en/18_holes/n	/r/HasContext	/c/en/sports	18 holes	sports	has context		CN	
+/c/en/18_holes/n-/r/RelatedTo-/c/en/golf-0000	/c/en/18_holes/n	/r/RelatedTo	/c/en/golf	18 holes	golf	related to		CN	
+/c/en/18_holes/n-/r/RelatedTo-/c/en/round-0000	/c/en/18_holes/n	/r/RelatedTo	/c/en/round	18 holes	round	related to		CN	
+/c/en/18_karat_gold/n/wn/substance-/r/IsA-/c/en/alloy/n/wn/substance-0000	/c/en/18_karat_gold/n/wn/substance	/r/IsA	/c/en/alloy/n/wn/substance	18 karat gold|18-karat gold	alloy|metal	is a		CN|WN	[[18-karat gold]] is a type of [[alloy]]
+/c/en/18_wheeler/n-/r/RelatedTo-/c/en/big_rig-0000	/c/en/18_wheeler/n	/r/RelatedTo	/c/en/big_rig	18 wheeler	big rig	related to		CN	
+/c/en/18_wheeler/n-/r/RelatedTo-/c/en/semi_trailer-0000	/c/en/18_wheeler/n	/r/RelatedTo	/c/en/semi_trailer	18 wheeler	semi trailer	related to		CN	
+/c/en/18_wheeler/n-/r/RelatedTo-/c/en/tractor-0000	/c/en/18_wheeler/n	/r/RelatedTo	/c/en/tractor	18 wheeler	tractor	related to		CN	
+/c/en/18_wheeler/n-/r/RelatedTo-/c/en/truck-0000	/c/en/18_wheeler/n	/r/RelatedTo	/c/en/truck	18 wheeler	truck	related to		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/articulated_lorry-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/articulated_lorry	18 wheeler	articulated lorry	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/artic-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/artic	18 wheeler	artic	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/big_rig-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/big_rig	18 wheeler	big rig	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/juggernaut-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/juggernaut	18 wheeler	juggernaut	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/semi_trailer_truck-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/semi_trailer_truck	18 wheeler	semi trailer truck	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/semi-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/semi	18 wheeler	semi	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/tractor_trailer-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/tractor_trailer	18 wheeler	tractor trailer	synonym		CN	
+/c/en/18_wheeler/n-/r/Synonym-/c/en/truck_and_trailer-0000	/c/en/18_wheeler/n	/r/Synonym	/c/en/truck_and_trailer	18 wheeler	truck and trailer	synonym		CN	
+/c/en/18_wheelers/n-/r/FormOf-/c/en/18_wheeler-0000	/c/en/18_wheelers/n	/r/FormOf	/c/en/18_wheeler	18 wheelers	18 wheeler	form of		CN	
+/c/en/18_wheeler-/r/DerivedFrom-/c/en/wheeler-0000	/c/en/18_wheeler	/r/DerivedFrom	/c/en/wheeler	18 wheeler	wheeler	derived from		CN	
+/c/en/18_yard_box/n-/r/HasContext-/c/en/soccer-0000	/c/en/18_yard_box/n	/r/HasContext	/c/en/soccer	18 yard box	soccer	has context		CN	
+/c/en/18_yard_box/n-/r/RelatedTo-/c/en/18_yard_line-0000	/c/en/18_yard_box/n	/r/RelatedTo	/c/en/18_yard_line	18 yard box	18 yard line	related to		CN	
+/c/en/18_yard_box/n-/r/RelatedTo-/c/en/penalty_box-0000	/c/en/18_yard_box/n	/r/RelatedTo	/c/en/penalty_box	18 yard box	penalty box	related to		CN	
+/c/en/18_yard_boxes/n-/r/FormOf-/c/en/18_yard_box-0000	/c/en/18_yard_boxes/n	/r/FormOf	/c/en/18_yard_box	18 yard boxes	18 yard box	form of		CN	
+/c/en/18_yard_line/n-/r/HasContext-/c/en/soccer-0000	/c/en/18_yard_line/n	/r/HasContext	/c/en/soccer	18 yard line	soccer	has context		CN	
