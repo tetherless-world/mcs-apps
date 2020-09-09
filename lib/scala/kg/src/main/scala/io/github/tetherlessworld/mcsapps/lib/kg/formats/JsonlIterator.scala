@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory
 
 import scala.io.Source
 
-abstract class JsonlReader[T](source: Source) extends AutoCloseable with Iterable[T] {
+abstract class JsonlIterator[T](source: Source) extends AutoCloseable with Iterator[T] {
+  private val delegate = iterator
   private val logger = LoggerFactory.getLogger(getClass)
 
   protected val decoder: Decoder[T]
@@ -17,7 +18,9 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable with Iterabl
   final override def close(): Unit =
     source.close()
 
-  final def iterator: Iterator[T] =
+  override def hasNext: Boolean = delegate.hasNext
+
+  protected final def iterator: Iterator[T] =
     iterator(source.getLines().flatMap(line => {
       val parseResult = parse(line)
       parseResult match {
@@ -41,9 +44,11 @@ abstract class JsonlReader[T](source: Source) extends AutoCloseable with Iterabl
       }
     )
   }
+
+  final override def next(): T = delegate.next()
 }
 
-object JsonlReader {
+object JsonlIterator {
   def openSource(inputStream: InputStream) =
     Source.fromInputStream(
       try {
