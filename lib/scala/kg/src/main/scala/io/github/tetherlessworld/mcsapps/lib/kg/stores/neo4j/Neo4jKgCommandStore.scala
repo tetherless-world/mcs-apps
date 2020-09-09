@@ -104,7 +104,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             transaction.run(
               s"""
                  |MATCH (node:${NodeLabel} {id:$$nodeId})
-                 |MERGE (label:${LabelLabel} {id:$$labelId})
+                 |MERGE (label:${LabelLabel} {id:$$labelId, label:$$labelId, labels:$$labelId})
                  |MERGE (node)-[:${LabelRelationshipType}]->(label)
                  |""".stripMargin,
               toTransactionRunParameters(Map(
@@ -158,24 +158,15 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final override def putSources(sources: Iterator[KgSource]): Unit =
           for (source <- sources) {
-            val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
-            val sourceExists =
-              transaction.run(
-                s"""
-                  |MATCH (source:${SourceLabel})
-                  |WHERE source.id = $$id
-                  |RETURN source.label
-                  |LIMIT 1
-                  |""".stripMargin,
-                transactionRunParameters
-              ).hasNext
-            if (!sourceExists) {
-              transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
-              //        logger.debug("created source {}", source.id)
-            }
-            //      else {
-            //        logger.debug(s"source {} already exists", source.id)
-            //      }
+            transaction.run(
+              s"""
+                 |MERGE (:${SourceLabel} { id: $$id, label: $$label, labels: $$label, sources: $$id })
+                 |""".stripMargin,
+              toTransactionRunParameters(Map(
+                "id" -> source.id,
+                "label" -> source.label
+              ))
+            )
           }
 
         final def writeLabelPageRanks: Unit = {
@@ -191,6 +182,23 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
                |writeProperty: 'pageRank'
                |})
                |""".stripMargin
+          )
+        }
+
+        final def writeLabelSources: Unit = {
+          if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""
+               |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(:${NodeLabel})-[:${SourceRelationshipType}]->(source:${SourceLabel})
+               |WITH label, collect(distinct source.id) AS sourceIds
+               |SET label.sources = apoc.text.join(sourceIds, $$listDelim)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "listDelim" -> ListDelimString
+            ))
           )
         }
 
@@ -229,6 +237,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     final override def close(): Unit = {
       writeNodePageRanks
       writeLabelPageRanks
+      writeLabelSources
     }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
@@ -309,6 +318,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
       }
     }
 
+    private def writeLabelSources: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeLabelSources
+        transaction.commit()
+      }
+    }
+
     private def writeNodePageRanks: Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodePageRanks
@@ -342,7 +358,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         logger.info("bootstrapping neo4j indices")
 
         val bootstrapCypherStatements = List(
-          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}"],["id", "labels", "sources"]);""",
+          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}", "${SourceLabel}", "${LabelLabel}"],["id", "label", "labels", "sources"]);""",
           s"""CREATE CONSTRAINT node_id_constraint ON (node:${NodeLabel}) ASSERT node.id IS UNIQUE;""",
           s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;""",
           s"""CREATE CONSTRAINT label_id_constraint ON (label:${LabelLabel}) ASSERT label.id IS UNIQUE;"""
