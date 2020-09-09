@@ -215,12 +215,12 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       transaction.run("MATCH (n) RETURN COUNT(n) as count").single().get("count").asInt() == 0
 
     final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = {
-      val cypher = KgNodeQueryCypher(query)
+      val cypher = KgNodeQueryFulltextCypher(query)
 
       transaction.run(
         s"""${cypher}
            |RETURN labels(node)[0] as type, node.label, ${nodePropertyNamesString}
-           |ORDER by ${(sorts.getOrElse(List()) ++ List(KgSearchSort(KgSearchSortField.Id, SortDirection.Ascending))).map(sort => s"node.${if (sort.field == KgSearchSortField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}
+           |${sorts.map(sorts => s"ORDER BY ${sorts.map(sort => s"node.${if (sort.field == KgSearchSortField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}").getOrElse("")}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
@@ -230,7 +230,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           case NodeLabel => KgNodeSearchResult(record.toNode)
           case LabelLabel => KgNodeLabelSearchResult(
             nodeLabel = record.get("node.label").asString,
-            sourceIds = record.get("node.sources").asString.split(ListDelimString).toList
+            sourceIds = record.get("node.sources").asString.split(ListDelimChar).toList
           )
           case SourceLabel => KgSourceSearchResult(
             sourceId = record.get("node.id").asString
@@ -240,7 +240,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     }
 
     final override def searchCount(query: KgSearchQuery): Int = {
-      val cypher = KgNodeQueryCypher(query)
+      val cypher = KgNodeQueryFulltextCypher(query)
 
       transaction.run(
         s"""${cypher}
@@ -251,15 +251,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     }
 
     final override def searchFacets(query: KgSearchQuery): KgSearchFacets = {
-      val cypher = KgNodeQueryCypher(query)
+      val cypher = KgNodeQueryFulltextCypher(query)
 
       // Get sources
       val sourceIds =
         transaction.run(
           s"""
-             |${cypher.fulltextCall.getOrElse("")}
-             |MATCH ${(cypher.matchClauses ++ List(s"(node)-[:${SourceRelationshipType}]->(source:${SourceLabel})")).mkString(", ")}
-             |${if (cypher.whereClauses.nonEmpty) "WHERE " + cypher.whereClauses.mkString(" AND ") else ""}
+             |${cypher}
+             |MATCH (node)-[:${SourceRelationshipType}]->(source:${SourceLabel})
              |RETURN DISTINCT source.id
              |""".stripMargin,
           toTransactionRunParameters(cypher.bindings)
@@ -295,55 +294,34 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
          |""".stripMargin
     }
 
-    private final case class KgNodeQueryCypher(
+    private final case class KgNodeQueryFulltextCypher(
                                                 bindings: Map[String, Any],
-                                                fulltextCall: Option[String],
-                                                matchClauses: List[String],
-                                                whereClauses: List[String]
+                                                fulltextCall: String
                                               ) {
-      final override def toString =
-        (fulltextCall.toList ++
-          List("MATCH " + matchClauses.mkString(", ")) ++
-          (if (whereClauses.nonEmpty) List("WHERE " + whereClauses.mkString(" AND ")) else List())).mkString("\n")
+      final override def toString = fulltextCall
     }
 
-    private object KgNodeQueryCypher {
-      def apply(query: KgSearchQuery): KgNodeQueryCypher = {
-        // Do this in an semi-imperative way but with immutable data structures and vals. It makes the code more readable.
+    private object KgNodeQueryFulltextCypher {
+      def apply(query: KgSearchQuery): KgNodeQueryFulltextCypher = {
 
-        val fulltextCall = query.text.map(text =>
-          """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""")
-        val textBindings = query.text.map("text" -> _).toList
-
-        val distinctSourceIds =
-          if (query.filters.isDefined && query.filters.get.sourceIds.isDefined) {
-            query.filters.get.sourceIds.get.exclude.getOrElse(List()) ++ query.filters.get.sourceIds.get.include.getOrElse(List())
-          } else {
-            List()
-          }.distinct
-
-        val distinctSourceIdBindings = distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"source${sourceIdWithIndex._2}" -> sourceIdWithIndex._1)
-
-        val matchClauses: List[String] = List(s"(node: ${NodeLabel})") ++
-          distinctSourceIds.zipWithIndex.map(sourceIdWithIndex => s"(source${sourceIdWithIndex._2}:${SourceLabel} { id: $$source${sourceIdWithIndex._2} })")
-
-        val whereClauses: List[String] =
+        val luceneSearchTerms =
+          List("id:*") ++
+          query.text.map(text => List(s"(${text})")).getOrElse(List()) ++ {
           if (query.filters.isDefined && query.filters.get.sourceIds.isDefined) {
             query.filters.get.sourceIds.get.exclude.toList.flatMap(
-              _.map(excludeSourceId => s"NOT (node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(excludeSourceId)})"
+              _.map(excludeSourceId => s"NOT sources:${excludeSourceId}"
               )) ++
               query.filters.get.sourceIds.get.include.toList.flatMap(
-                _.map(includeSourceId => s"(node)-[:${SourceRelationshipType}]-(source${distinctSourceIds.indexOf(includeSourceId)})"
+                _.map(includeSourceId => s"sources:${includeSourceId}"
                 ))
           } else {
             List()
           }
+        }
 
-        KgNodeQueryCypher(
-          bindings = (textBindings ++ distinctSourceIdBindings).toMap,
-          fulltextCall = fulltextCall,
-          matchClauses = matchClauses,
-          whereClauses = whereClauses
+        KgNodeQueryFulltextCypher(
+          bindings = List("text" ->  luceneSearchTerms.mkString(" AND ") ).toMap,
+          fulltextCall = """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""",
         )
       }
     }
