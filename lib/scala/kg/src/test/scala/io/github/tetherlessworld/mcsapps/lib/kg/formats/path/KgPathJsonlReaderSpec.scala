@@ -7,8 +7,8 @@ import org.scalatest.{Matchers, WordSpec}
 class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
   "KG path .jsonl reader" can {
     "read the test data" in {
-      withResource(KgPathsJsonlReader.open(TestKgtkDataResources.pathsJsonl.getAsStream())) { reader =>
-        val paths = reader.iterator.toList
+      withResource(KgPathsJsonlIterator.open(TestKgtkDataResources.pathsJsonl.getAsStream())) { iterator =>
+        val paths = iterator.toList
         paths.size should be > 0
         for (path <- paths) {
           path.id should not be empty

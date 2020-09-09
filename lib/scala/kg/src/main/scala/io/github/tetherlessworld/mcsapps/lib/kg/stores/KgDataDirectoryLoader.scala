@@ -3,7 +3,7 @@
 import java.nio.file.{Files, Path, Paths}
 import java.util.stream.Collectors
 
-import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgesTsvReader
+import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgesTsvIterator
 import javax.inject.{Inject, Singleton}
 import org.slf4j.LoggerFactory
 import play.api.Configuration
@@ -45,13 +45,13 @@ class KgDataDirectoryLoader(dataDirectoryPath: Path, kgCommandStore: KgCommandSt
         val fileName = filePath.getFileName.toString.toLowerCase
         if (fileName.endsWith(".tsv") || fileName.endsWith(".tsv.bz2")) {
           logger.info("loading KGTK edges from {}", filePath)
-          ec.execute { () => {
-            withResource(KgtkEdgesTsvReader.open(filePath)) { reader =>
-              withIteratorProgress(reader.iterator, logger, filePath.toString) { iterator =>
+//          ec.execute { () => {
+            withResource(KgtkEdgesTsvIterator.open(filePath)) { iterator =>
+              withIteratorProgress(iterator, logger, filePath.toString) { iterator =>
                 kgCommandStore.withTransaction { _.putKgtkEdgesWithNodes(iterator) }
               }
             }
-          }}
+//          }}
           true
         } else if (fileName.endsWith(".md")) {
           false
