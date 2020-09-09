@@ -29,8 +29,8 @@ class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
     }
 
     "read the beginning of the cskg_connected.tsv" in {
-      val tsv = DataResource("/io/github/tetherlessworld/mcsapps/lib/kg/formats/kgtk/cskg_connected_head.tsv").getAsString()
-      withResource(new KgtkEdgesTsvIterator(Source.fromString(tsv))) { iterator =>
+      val tsv = DataResource("/io/github/tetherlessworld/mcsapps/lib/kg/formats/kgtk/cskg_connected_head.tsv")
+      withResource(new KgtkEdgesTsvIterator(tsv.getAsStream())) { iterator =>
         val data = iterator.toList
         data.size should be(999)
       }

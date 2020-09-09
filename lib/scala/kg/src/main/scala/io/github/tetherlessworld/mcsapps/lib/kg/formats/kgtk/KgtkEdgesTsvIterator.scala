@@ -1,18 +1,21 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
 
 import java.io.{BufferedInputStream, FileInputStream, FileNotFoundException, InputStream}
+import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 import java.util.NoSuchElementException
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode}
 import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
+import org.apache.commons.io.{Charsets, IOUtils}
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
 import scala.io.{Codec, Source}
+import scala.collection.JavaConverters._
 
-final class KgtkEdgesTsvIterator(source: Source) extends AutoCloseable with Iterator[KgtkEdgeWithNodes] {
+final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable with Iterator[KgtkEdgeWithNodes] {
   // Multiple values in a column are separated by |
   // Per #220, we assume that columns do not contain \t and that individual values do not contain | or \t, so
   // we can do a two-level split of a TSV line: \t to get columns from a line and then | to get values from a column.
@@ -22,7 +25,7 @@ final class KgtkEdgesTsvIterator(source: Source) extends AutoCloseable with Iter
   private final val ValueDelimiter = '|';
 
   private[this] var _next: Option[KgtkEdgeWithNodes] = None
-  private val lineWithIndexIterator = source.getLines().zipWithIndex
+  private val lineWithIndexIterator = IOUtils.lineIterator(inputStream, StandardCharsets.UTF_8).asScala.zipWithIndex
   private val headerLineSplit: List[String] =
     if (lineWithIndexIterator.hasNext) {
       val headerLine = lineWithIndexIterator.next()
@@ -33,9 +36,9 @@ final class KgtkEdgesTsvIterator(source: Source) extends AutoCloseable with Iter
 
   private val logger = LoggerFactory.getLogger(getClass)
 
-  final override def close(): Unit =
-    source.close()
-
+  final override def close(): Unit = {
+    inputStream.close()
+  }
 
   final def hasNext: Boolean = {
     _next match {
@@ -72,6 +75,10 @@ final class KgtkEdgesTsvIterator(source: Source) extends AutoCloseable with Iter
     var lineSplit = line.split('\t')
     while (lineSplit.length < headerLineSplit.length) {
       lineSplit :+= ""
+    }
+    if (lineSplit.length > headerLineSplit.length) {
+      logger.info(f"line ${lineIndex} has more columns (${lineSplit.length}) than the header (${headerLineSplit.length}), skipping")
+      return None
     }
     val row = headerLineSplit.zip(lineSplit).toMap
 
@@ -147,12 +154,12 @@ object KgtkEdgesTsvIterator {
     if (inputStream == null) {
       throw new FileNotFoundException("KgtkTsvReader missing resource")
     } else {
-      new KgtkEdgesTsvIterator(Source.fromInputStream(
+      new KgtkEdgesTsvIterator(
         try {
           new CompressorStreamFactory().createCompressorInputStream(inputStream)
         } catch {
           case _: CompressorException => inputStream // CompressorStreamFactory throws an exception if it can't recognize a signature
         }
-      )(Codec.UTF8))
+      )
     }
 }
