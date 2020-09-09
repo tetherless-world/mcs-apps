@@ -128,15 +128,11 @@ final class KgtkEdgesTsvIterator(source: Source) extends AutoCloseable with Iter
   }
 
   private def readNext(): Option[KgtkEdgeWithNodes] = {
-    logger.info("reading")
     while (lineWithIndexIterator.hasNext) {
       val (line, lineIndex) = lineWithIndexIterator.next
-      logger.info("{}", lineIndex)
       val parsedLine = parseLine(line, lineIndex)
       if (parsedLine.isDefined) {
         return parsedLine
-      } else {
-        logger.info("unparsed line")
       }
     }
     None
