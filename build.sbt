@@ -45,7 +45,6 @@ lazy val kgLib =
   (project in file("lib/scala/kg"))
     .settings(
       libraryDependencies ++= Seq(
-        "com.github.tototoshi" %% "scala-csv" % "1.3.6",
         // Implement search in the MemStore (and thus the TestStore)
         "com.outr" %% "lucene4s" % "1.9.1",
         "io.github.tetherless-world" %% "twxplore-base" % twxploreVersion,
