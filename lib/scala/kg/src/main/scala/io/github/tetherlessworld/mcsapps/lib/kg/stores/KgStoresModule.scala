@@ -1,6 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import com.google.inject.AbstractModule
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.empty.EmptyKgStore
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.mem.MemKgStore
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j.{Neo4jKgCommandStore, Neo4jKgQueryStore}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.test.TestKgStore
@@ -11,11 +12,15 @@ final class KgStoresModule(environment: Environment, configuration: Configuratio
   private val logger = LoggerFactory.getLogger(classOf[KgStoresModule])
 
   override def configure(): Unit = {
-    configuration.getOptional[String]("kgStore").getOrElse("neo4j") match {
+    val kgStoreName = configuration.getOptional[String]("kgStore").getOrElse("neo4j")
+    kgStoreName match {
+      case "empty" => {
+        bind(classOf[KgCommandStore]).to(classOf[EmptyKgStore])
+        bind(classOf[KgQueryStore]).to(classOf[EmptyKgStore])
+      }
       case "mem" => {
         bind(classOf[KgCommandStore]).to(classOf[MemKgStore])
         bind(classOf[KgQueryStore]).to(classOf[MemKgStore])
-        bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()
       }
       case "test" => {
         logger.info("using test stores")
@@ -25,8 +30,13 @@ final class KgStoresModule(environment: Environment, configuration: Configuratio
       case _ => {
         bind(classOf[KgCommandStore]).to(classOf[Neo4jKgCommandStore])
         bind(classOf[KgQueryStore]).to(classOf[Neo4jKgQueryStore])
-        bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()
       }
+    }
+
+    kgStoreName match {
+      case "mem" =>
+      case _ =>
+        bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()
     }
   }
 }
