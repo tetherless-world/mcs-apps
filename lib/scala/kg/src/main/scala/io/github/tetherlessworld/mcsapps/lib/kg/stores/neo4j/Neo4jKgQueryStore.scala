@@ -217,67 +217,37 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = {
       val cypher = KgNodeQueryCypher(query)
 
-      val nodeSearchResults = transaction.run(
+      transaction.run(
         s"""${cypher}
-           |RETURN ${nodePropertyNamesString}
+           |RETURN labels(node)[0] as type, node.label, ${nodePropertyNamesString}
            |ORDER by ${(sorts.getOrElse(List()) ++ List(KgSearchSort(KgSearchSortField.Id, SortDirection.Ascending))).map(sort => s"node.${if (sort.field == KgSearchSortField.PageRank) "pageRank" else sort.field.value.toLowerCase()} ${if (sort.direction == SortDirection.Ascending) "asc" else "desc"}").mkString(", ")}
            |SKIP ${offset}
            |LIMIT ${limit}
            |""".stripMargin,
         toTransactionRunParameters(cypher.bindings)
-      ).toNodes.map(KgNodeSearchResult(_))
-
-      val nodeLabelSearchResults = transaction.run(
-        s"""${cypher}
-           |MATCH (node)-[:${LabelRelationshipType}]->(label:${LabelLabel})
-           |MATCH (source:${SourceLabel})<-[:${SourceRelationshipType}]-(node)-[:${LabelRelationshipType}]->(label)
-           |WITH DISTINCT label AS label, collect(distinct source) AS sourcesByLabel
-           |UNWIND sourcesByLabel AS source
-           |RETURN label.id, source.id
-           |""".stripMargin,
-        toTransactionRunParameters(cypher.bindings)
-      ).asScala.toList.groupBy(_.get("label.id").asString).mapValues(_.map(_.get("source.id").asString)).map(pair => KgNodeLabelSearchResult(nodeLabel = pair._1, sourceIds = pair._2))
-
-      val nodeSourceSearchResults = transaction.run(
-        s"""${cypher}
-           |MATCH (node)-[:${SourceRelationshipType}]->(source:${SourceLabel})
-           |WITH DISTINCT source AS source
-           |RETURN source.id
-           |""".stripMargin,
-        toTransactionRunParameters(cypher.bindings)
-      ).asScala.toList.map(_.get("source.id").asString).map(KgSourceSearchResult(_))
-
-      nodeSearchResults ++ nodeLabelSearchResults ++ nodeSourceSearchResults
+      ).asScala.toList.map { record =>
+        record.get("type").asString match {
+          case NodeLabel => KgNodeSearchResult(record.toNode)
+          case LabelLabel => KgNodeLabelSearchResult(
+            nodeLabel = record.get("node.label").asString,
+            sourceIds = record.get("node.sources").asString.split(ListDelimString).toList
+          )
+          case SourceLabel => KgSourceSearchResult(
+            sourceId = record.get("node.id").asString
+          )
+        }
+      }
     }
 
     final override def searchCount(query: KgSearchQuery): Int = {
       val cypher = KgNodeQueryCypher(query)
-      val nodeCount =
-        transaction.run(
-          s"""${cypher}
-             |RETURN COUNT(node)
-             |""".stripMargin,
-          toTransactionRunParameters(cypher.bindings)
-        ).single().get("COUNT(node)").asInt()
-      val nodeLabelCount =
-        transaction.run(
-          s"""${cypher}
-             |MATCH (node)-[:${LabelRelationshipType}]->(label:${LabelLabel})
-             |WITH DISTINCT label AS label
-             |RETURN COUNT(label)
-             |""".stripMargin,
-          toTransactionRunParameters(cypher.bindings)
-        ).single().get("COUNT(label)").asInt()
-      val nodeSourceCount =
-        transaction.run(
-          s"""${cypher}
-             |MATCH (node)-[:${SourceRelationshipType}]->(source:${SourceLabel})
-             |WITH DISTINCT source AS source
-             |RETURN COUNT(source)
-             |""".stripMargin,
-            toTransactionRunParameters(cypher.bindings)
-        ).single().get("COUNT(source)").asInt()
-      nodeCount + nodeLabelCount + nodeSourceCount
+
+      transaction.run(
+        s"""${cypher}
+           |RETURN COUNT(node)
+           |""".stripMargin,
+        toTransactionRunParameters(cypher.bindings)
+      ).single().get("COUNT(node)").asInt
     }
 
     final override def searchFacets(query: KgSearchQuery): KgSearchFacets = {
