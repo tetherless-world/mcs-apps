@@ -113,7 +113,7 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
         `object` = node2.get,
         predicate = relation.get,
         sentences = row.getList("sentence"),
-        sources = sources,
+        sourceIds = sources,
         subject = node1.get
       ),
       node1 = KgNode(
