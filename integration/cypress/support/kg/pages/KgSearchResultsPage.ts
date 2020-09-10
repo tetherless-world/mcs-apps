@@ -20,7 +20,7 @@ class KgSearchFacets {
 
 class KgSearchResultsTable extends MuiDataTable {
   constructor() {
-    super("[data-cy=matchingNodesTable]");
+    super("[data-cy=search-results-table]");
   }
 
   row(index: number) {

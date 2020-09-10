@@ -188,7 +188,7 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   );
 
   return (
-    <div data-cy="matchingNodesTable">
+    <div data-cy="search-results-table">
       <MUIDataTable
         // Is a @material-ui property
         // but missing in types
@@ -205,7 +205,7 @@ export const KgSearchResultsTable: React.FunctionComponent<{
           onChangeRowsPerPage,
           onColumnSortChange,
           setRowProps(_, rowIndex) {
-            return {"data-cy": "node-" + rowIndex};
+            return {"data-cy": "search-result-" + rowIndex};
           },
         }}
         title={

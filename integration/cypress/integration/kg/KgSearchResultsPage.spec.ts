@@ -1,11 +1,12 @@
 import {KgSearchResultsPage} from "../../support/kg/pages/KgSearchResultsPage";
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
-import {KgNodePage} from "../../support/kg/pages/KgNodePage";
+import {KgNodeLabelPage} from "../../support/kg/pages/KgNodeLabelPage";
 
 context("KgSearchResultsPage", () => {
   let page: KgSearchResultsPage;
   let node: KgNode;
+  let nodeLabel: string;
   let source: {id: string; label: string};
   let totalNodes: number;
   let topNodesByLabelDescending: KgNode[];
@@ -13,7 +14,8 @@ context("KgSearchResultsPage", () => {
   before(() => {
     KgTestData.kgNodes.then((kgNodes) => {
       node = kgNodes[0];
-      page = new KgSearchResultsPage(node.labels[0]);
+      nodeLabel = node.labels[0];
+      page = new KgSearchResultsPage(nodeLabel);
       source = KgTestData.kgSources[0];
       assert(source.id === node.sourceIds[0]);
       totalNodes = kgNodes.length;
@@ -31,12 +33,10 @@ context("KgSearchResultsPage", () => {
 
   beforeEach(() => page.visit());
 
-  it("should show node page", () => {
-    page.resultsTable.row(0).nodeLink.click();
+  it("should show a node label page as the first result", () => {
+    page.resultsTable.row(0).nodeLabelLink.click();
 
-    const nodePage = new KgNodePage(node.id);
-
-    nodePage.assertLoaded();
+    new KgNodeLabelPage(nodeLabel).assertLoaded();
   });
 
   it("should show source search", () => {
