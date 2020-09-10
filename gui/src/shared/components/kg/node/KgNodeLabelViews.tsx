@@ -38,7 +38,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       ),
       relPath: "",
       label: "Grid",
-      dataCy: "predicate-grid",
+      dataCy: "edge-objects-grid",
       routeMatch,
     }),
     list: new TabRoute({
@@ -50,7 +50,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       ),
       relPath: "/list",
       label: "List",
-      dataCy: "predicate-list",
+      dataCy: "edge-objects-list",
       routeMatch,
     }),
   };
