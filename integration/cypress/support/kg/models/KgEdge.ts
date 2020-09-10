@@ -3,5 +3,4 @@ export type KgEdge = {
   readonly predicate: string;
   readonly sourceIds: string[];
   readonly subject: string;
-  readonly weight: number;
 };
