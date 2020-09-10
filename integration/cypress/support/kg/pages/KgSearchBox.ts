@@ -1,4 +1,4 @@
-class NodeSearchSuggestionLink {
+class KgSearchBoxSuggestionLink {
   constructor(
     private readonly index: number,
     private readonly parentSelector: string
@@ -26,24 +26,24 @@ export class KgSearchBox {
   }
 
   suggestion(index: number) {
-    return new NodeSearchSuggestionLink(index, this.parentSelector);
+    return new KgSearchBoxSuggestionLink(index, this.parentSelector);
   }
 
   selectAllDatasources() {
-    cy.get(this.parentSelector + " [data-cy=datasourceSelect]").click();
+    cy.get(this.parentSelector + " [data-cy=sourceSelect]").click();
 
-    cy.get("[data-cy=allDatasourcesSelectMenuItem]").click();
+    cy.get("[data-cy=allSourcesSelectMenuItem]").click();
   }
 
   selectSource(label: string) {
-    cy.get(this.parentSelector + " [data-cy=datasourceSelect]").click();
+    cy.get(this.parentSelector + " [data-cy=sourceSelect]").click();
 
     cy.get("[data-cy=datasourceSelectMenuItem]").contains(label).click();
   }
 
   get selectedDatasource() {
     return cy.get(
-      this.parentSelector + " [data-cy=datasourceSelect] [data-cy=value]"
+      this.parentSelector + " [data-cy=sourceSelect] [data-cy=value]"
     );
   }
 }
