@@ -161,7 +161,7 @@ final class MemKgIndex {
         KgNodeLabelSearchResult(nodeLabel = nodeLabel, sourceIds = sourceIds)
       }
       case KgSourceDocument.Type => {
-        val sourceId = luceneResult(LuceneFields.id)
+        val sourceId = luceneResult(LuceneFields.sources)
 //        val sourceLabel = luceneResult(LuceneFields.label)
         KgSourceSearchResult(sourceId)
       }
