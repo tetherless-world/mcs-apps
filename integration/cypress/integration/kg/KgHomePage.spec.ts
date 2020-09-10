@@ -1,8 +1,8 @@
 import {KgHomePage} from "../../support/kg/pages/KgHomePage";
 import {KgTestData} from "../../support/kg/KgTestData";
-import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 import {KgNode} from "../../support/kg/models/KgNode";
 import {KgSearchResultsPage} from "../../support/kg/pages/KgSearchResultsPage";
+import {KgNodeLabelPage} from "../../support/kg/pages/KgNodeLabelPage";
 
 context("KG Home Page", () => {
   const page = new KgHomePage();
@@ -34,17 +34,17 @@ context("KG Home Page", () => {
     page.assertLoaded();
   });
 
-  it("should show node page", () => {
-    page.search.get().type(node.labels[0]);
+  it("should show node label page after searching and selecting an autocompletion", () => {
+    const nodeLabel = node.labels[0]; // "Shared node label 58";
+    page.search.get().type(nodeLabel);
 
     page.search.suggestion(0).get().click();
 
-    const nodePage = new KgNodePage(node.id);
-
-    nodePage.assertLoaded();
+    const nodeLabelPage = new KgNodeLabelPage(nodeLabel);
+    nodeLabelPage.assertLoaded();
   });
 
-  it("should show node search results page", () => {
+  it("should show node search results page after searching for text", () => {
     page.search.get().type(node.labels[0]);
 
     page.search.enter();
