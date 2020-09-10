@@ -29,27 +29,14 @@ class KgSearchResultsTable extends MuiDataTable {
       get() {
         return table.get().find(`[data-cy=search-result-${index}]`);
       },
+      get nodeLabelLink() {
+        return this.get().find("[data-cy=node-label-link]").first();
+      },
       get nodeLink() {
-        const row = this;
-        return {
-          click() {
-            this.get().click();
-          },
-          get() {
-            return row.get().find("[data-cy=node-link]").first();
-          },
-        };
+        return this.get().find("[data-cy=node-link]").first();
       },
       get sourceLink() {
-        const row = this;
-        return {
-          click() {
-            this.get().click();
-          },
-          get() {
-            return row.get().find("[data-cy=source-link]");
-          },
-        };
+        return this.get().find("[data-cy=source-link]");
       },
     };
   }

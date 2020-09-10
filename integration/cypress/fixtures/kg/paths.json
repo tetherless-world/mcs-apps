@@ -6,7 +6,7 @@
             "/r/Antonym",
             "portal_test_data:1"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -19,7 +19,7 @@
             "/r/AtLocation",
             "portal_test_data:7"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -34,7 +34,7 @@
             "/r/CausesDesire",
             "portal_test_data:13"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -51,7 +51,7 @@
             "/r/DistinctFrom",
             "portal_test_data:19"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -70,7 +70,7 @@
             "/r/HasFirstSubevent",
             "portal_test_data:25"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -91,7 +91,7 @@
             "/r/MotivatedByGoal",
             "portal_test_data:31"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -114,7 +114,7 @@
             "/r/DefinedAs",
             "portal_test_data:37"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -139,7 +139,7 @@
             "/r/DistinctFrom",
             "portal_test_data:43"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -166,7 +166,7 @@
             "/r/CausesDesire",
             "portal_test_data:49"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     },
@@ -195,7 +195,7 @@
             "/r/AtLocation",
             "portal_test_data:55"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data"
         ]
     }
