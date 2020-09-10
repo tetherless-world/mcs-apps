@@ -17,7 +17,7 @@ export const KgNodeSourcesCard: React.FunctionComponent<{
     <CardContent>
       <List>
         {nodeSources.map((source) => (
-          <ListItemText data-cy="node-source">
+          <ListItemText data-cy="node-source" key={source.id}>
             <KgSourcePill source={source} />
           </ListItemText>
         ))}
