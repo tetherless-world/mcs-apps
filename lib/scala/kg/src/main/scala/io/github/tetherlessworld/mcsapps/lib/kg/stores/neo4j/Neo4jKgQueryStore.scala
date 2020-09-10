@@ -79,7 +79,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
             KgPath(
               edges = pathRecords.sortBy(pathRecord => pathRecord.pathEdgeIndex).map(pathRecord => pathRecord.toEdge),
               id = pathId,
-              sources = pathRecords(0).sources,
+               sourceIds = pathRecords(0).sources,
             )
         }
       ).toList

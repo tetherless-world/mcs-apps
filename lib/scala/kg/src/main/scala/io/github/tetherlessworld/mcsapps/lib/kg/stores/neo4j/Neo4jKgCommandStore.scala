@@ -149,7 +149,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
                   "pathEdgeIndex" -> pathEdgeIndex,
                   "pathEdgePredicate" -> pathEdge.predicate,
                   "pathId" -> path.id,
-                  "sources" -> path.sources.mkString(ListDelimString),
+                  "sources" -> path.sourceIds.mkString(ListDelimString),
                   "subject" -> pathEdge.subject
                 ))
               )
