@@ -14,7 +14,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
   switch (result.__typename) {
     case "KgNodeLabelSearchResult": {
       return (
-        <>
+        <span>
           Node label:&nbsp;
           <KgNodeLabelLink
             nodeLabel={result.nodeLabel}
@@ -26,12 +26,12 @@ export const KgSearchResultLink: React.FunctionComponent<{
                 : undefined
             }
           />
-        </>
+        </span>
       );
     }
     case "KgNodeSearchResult": {
       return (
-        <>
+        <span>
           Node:&nbsp;
           <KgNodeLink
             node={{
@@ -43,7 +43,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
                 : undefined,
             }}
           />
-        </>
+        </span>
       );
     }
     default:
