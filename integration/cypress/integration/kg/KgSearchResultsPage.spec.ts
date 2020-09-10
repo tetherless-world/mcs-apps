@@ -7,27 +7,33 @@ context("KgSearchResultsPage", () => {
   let page: KgSearchResultsPage;
   let node: KgNode;
   let nodeLabel: string;
+  let nodes: KgNode[];
   let source: {id: string; label: string};
-  let totalNodes: number;
+  let totalSearchResults: number;
   let topNodesByLabelDescending: KgNode[];
 
   before(() => {
     KgTestData.kgNodes.then((kgNodes) => {
-      node = kgNodes[0];
-      nodeLabel = node.labels[0];
-      page = new KgSearchResultsPage(nodeLabel);
-      source = KgTestData.kgSources[0];
-      assert(source.id === node.sourceIds[0]);
-      totalNodes = kgNodes.length;
-      topNodesByLabelDescending = kgNodes
-        .sort((left, right) =>
-          right.labels
-            .slice()
-            .sort()
-            .join(" ")
-            .localeCompare(left.labels.slice().sort().join(" "))
-        )
-        .slice(0, 20);
+      KgTestData.kgNodeLabelCounts.then((kgNodeLabelCounts) => {
+        node = kgNodes[0];
+        nodeLabel = node.labels[0];
+        nodes = kgNodes;
+        page = new KgSearchResultsPage(nodeLabel);
+        source = KgTestData.kgSources[0];
+        assert(source.id === node.sourceIds[0]);
+        const nodeLabelsCount = Object.keys(kgNodeLabelCounts).length;
+        totalSearchResults =
+          kgNodes.length + nodeLabelsCount + KgTestData.kgSources.length;
+        topNodesByLabelDescending = kgNodes
+          .sort((left, right) =>
+            right.labels
+              .slice()
+              .sort()
+              .join(" ")
+              .localeCompare(left.labels.slice().sort().join(" "))
+          )
+          .slice(0, 20);
+      });
     });
   });
 
@@ -40,8 +46,11 @@ context("KgSearchResultsPage", () => {
   });
 
   it("should show source search", () => {
-    page.resultsTable.row(0).sourceLink.click();
-    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.resultsTable.row(0).sourceLink(0).click();
+    page.resultsTable.title.count.should(
+      "contain",
+      (totalSearchResults - (KgTestData.kgSources.length - 1)).toString()
+    );
     page.resultsTable.title.filters.should("contain", source.label);
   });
 
@@ -50,15 +59,24 @@ context("KgSearchResultsPage", () => {
   });
 
   it("should show count and query in the title", () => {
-    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.resultsTable.title.count.should(
+      "contain",
+      totalSearchResults.toString()
+    );
     page.resultsTable.title.queryText.should("contain", node.labels[0]);
   });
 
   it("should exclude some results by faceted search", () => {
-    page.resultsTable.title.count.should("contain", totalNodes.toString());
+    page.resultsTable.title.count.should(
+      "contain",
+      totalSearchResults.toString()
+    );
     page.facets.sources.disclose();
     page.facets.sources.valueCheckbox("portal_test_data_secondary_0").click();
-    page.resultsTable.title.count.should("not.contain", totalNodes.toString());
+    page.resultsTable.title.count.should(
+      "not.contain",
+      totalSearchResults.toString()
+    );
     page.resultsTable.title.filters.should(
       "contain",
       "Portal test data secondary 0"

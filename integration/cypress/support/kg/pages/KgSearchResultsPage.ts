@@ -35,8 +35,10 @@ class KgSearchResultsTable extends MuiDataTable {
       get nodeLink() {
         return this.get().find("[data-cy=node-link]").first();
       },
-      get sourceLink() {
-        return this.get().find("[data-cy=source-link]");
+      sourceLink(index: number) {
+        return this.get().find(
+          `[data-cy=source-${index}] [data-cy=source-link]`
+        );
       },
     };
   }

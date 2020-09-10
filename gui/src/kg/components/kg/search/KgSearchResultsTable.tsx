@@ -153,11 +153,11 @@ export const KgSearchResultsTable: React.FunctionComponent<{
             return sourceIds
               ? (sourceIds as string[])
                   .map((sourceId) => resolveSourceId({allSources, sourceId}))
-                  .map((source) => (
-                    <React.Fragment key={source.id}>
+                  .map((source, sourceIndex) => (
+                    <span data-cy={`source-${sourceIndex}`} key={source.id}>
                       <KgSourcePill source={source} />
                       <br />
-                    </React.Fragment>
+                    </span>
                   ))
               : null;
           },
