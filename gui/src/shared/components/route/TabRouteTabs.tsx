@@ -7,6 +7,9 @@ export const TabRouteTabs: React.FunctionComponent<{
   tabRoutes: readonly TabRoute[];
 }> = ({tabRoutes}) => {
   const location = useLocation();
+  if (typeof location.pathname === "undefined") {
+    throw new EvalError();
+  }
 
   return (
     <Tabs value={location.pathname}>
