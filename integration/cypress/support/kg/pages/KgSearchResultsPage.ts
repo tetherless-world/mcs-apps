@@ -33,7 +33,10 @@ class KgSearchResultsTable extends MuiDataTable {
         const row = this;
         return {
           click() {
-            row.get().find("[data-cy=source-link]").first().click();
+            this.get().click();
+          },
+          get() {
+            return row.get().find("[data-cy=node-link]").first();
           },
         };
       },
@@ -44,7 +47,7 @@ class KgSearchResultsTable extends MuiDataTable {
             this.get().click();
           },
           get() {
-            return row.get().find("[data-cy=node-link]");
+            return row.get().find("[data-cy=source-link]");
           },
         };
       },

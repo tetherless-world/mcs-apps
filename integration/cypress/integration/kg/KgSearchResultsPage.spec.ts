@@ -15,7 +15,7 @@ context("KgSearchResultsPage", () => {
       node = kgNodes[0];
       page = new KgSearchResultsPage(node.labels[0]);
       source = KgTestData.kgSources[0];
-      assert(source.id === node.sources[0]);
+      assert(source.id === node.sourceIds[0]);
       totalNodes = kgNodes.length;
       topNodesByLabelDescending = kgNodes
         .sort((left, right) =>
