@@ -1,0 +1,38 @@
+#import "./KgNodeFragment.graphql"
+
+query KgSearchBoxAutocompleteQuery(
+  $kgId: String!
+  $query: KgSearchQuery!
+) {
+  kgById(id: $kgId) {
+    search(
+      limit: 5
+      offset: 0
+      query: $query
+    ) {
+      ... on KgEdgeLabelSearchResult {
+        edgeLabel
+        sourceIds
+      }
+      ... on KgEdgeSearchResult {
+        edge {
+          id
+          label
+          sourceIds
+        }
+      }
+      ... on KgNodeLabelSearchResult {
+        nodeLabel
+        sourceIds
+      }
+      ... on KgNodeSearchResult {
+        node {
+          ... KgNodeFragment
+        }
+      }
+      ... on KgSourceSearchResult {
+        sourceId
+      }
+    }
+  }
+}

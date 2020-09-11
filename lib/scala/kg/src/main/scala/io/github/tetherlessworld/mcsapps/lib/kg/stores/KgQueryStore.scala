@@ -3,6 +3,28 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
 
 trait KgQueryStore {
+  def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge]
+
+  /**
+   * Get a node by ID.
+   */
+  def getNodeById(id: String): Option[KgNode]
+
+  /**
+   * Get nodes by label.
+   */
+  def getNodesByLabel(label: String): List[KgNode]
+
+  /**
+   * Get a path by id.
+   */
+  def getPathById(id: String): Option[KgPath]
+
+  /**
+   * Get a random node
+   */
+  def getRandomNode: KgNode
+
   /**
    * Get all sources
    */
@@ -14,52 +36,7 @@ trait KgQueryStore {
    */
   def getSourcesById: Map[String, KgSource]
 
-  /**
-   * Get edges that have the given node ID as an object.
-   */
-  def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge]
-
-  /**
-   * Get edges that have the given node ID as a subject.
-   */
-  def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge]
-
-  /**
-   * Search nodes and return facets.
-   */
-  def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets
-
-  /**
-   * Search nodes.
-   */
-  def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode]
-
-  /**
-   * Get count of fulltext search results.
-   */
-  def getMatchingNodesCount(query: KgNodeQuery): Int;
-
-  /**
-   * Get a node by ID.
-   */
-  def getNodeById(id: String): Option[KgNode]
-
-  def getPathById(id: String): Option[KgPath]
-
-  /**
-   * Get a random node
-   */
-  def getRandomNode: KgNode
-
-  /**
-   * Get top edges using pageRank grouped by relation that have the given node ID as an object
-   */
-  def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge]
-
-  /**
-   * Get top edges using pageRank grouped by relation that have the given node ID as a subject
-   */
-  def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge]
+  def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge]
 
   /**
    * Get total number of edges.
@@ -72,4 +49,21 @@ trait KgQueryStore {
   def getTotalNodesCount: Int;
 
   def isEmpty: Boolean
+
+  /**
+   * Search the store.
+   */
+  def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult]
+
+  /**
+   * Search the store and return the total number of results.
+   */
+  def searchCount(query: KgSearchQuery): Int
+
+  /**
+   * Search the store and return facets of the results.
+   *
+   * This could be folded into search, but it's cleaner to do it this way.
+   */
+  def searchFacets(query: KgSearchQuery): KgSearchFacets
 }

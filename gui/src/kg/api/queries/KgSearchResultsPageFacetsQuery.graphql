@@ -1,0 +1,18 @@
+#import "./KgSearchFacetsFragment.graphql"
+#import "./KgSourceFragment.graphql"
+
+query KgSearchResultsPageFacetsQuery(
+  $kgId: String!
+  $query: KgSearchQuery!
+  $queryText: String
+) {
+  kgById(id: $kgId) {
+    searchFacets(query: {text: $queryText}) {
+      ... KgSearchFacetsFragment
+    }
+    searchCount(query: $query)
+    sources {
+      ... KgSourceFragment
+    }
+  }
+}

@@ -22,13 +22,13 @@ export const KgSourcePill: React.FunctionComponent<
       variant="outlined"
       onClick={() => {
         history.push(
-          Hrefs.kg({id: kgId}).nodeSearch({
+          Hrefs.kg({id: kgId}).search({
             query: {
               filters: {
                 sourceIds: {include: [source.id]},
               },
             },
-            __typename: "KgNodeSearchVariables",
+            __typename: "KgSearchVariables",
           })
         );
       }}

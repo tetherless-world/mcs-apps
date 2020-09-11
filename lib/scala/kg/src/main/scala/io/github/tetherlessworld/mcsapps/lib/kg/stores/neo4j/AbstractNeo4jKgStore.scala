@@ -12,6 +12,9 @@ abstract class AbstractNeo4jKgStore(protected val configuration: Neo4jStoreConfi
   protected val PathRelationshipType = "PATH"
   protected val SourceLabel = "Source"
   protected val SourceRelationshipType = "SOURCE"
+  protected val LabelLabel = "Label"
+  protected val LabelRelationshipType = "LABEL"
+  protected val LabelEdgeRelationshipType = "LABELEDGE"
 
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
 

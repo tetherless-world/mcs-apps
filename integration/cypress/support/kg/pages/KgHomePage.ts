@@ -1,9 +1,9 @@
 import {Page} from "../../Page";
-import {KgNodeSearchBox} from "./KgNodeSearchBox";
+import {KgSearchBox} from "./KgSearchBox";
 
 export class KgHomePage extends Page {
   get search() {
-    return new KgNodeSearchBox(this.frame.bodySelector);
+    return new KgSearchBox(this.frame.bodySelector);
   }
 
   readonly relativeUrl: string = "/";

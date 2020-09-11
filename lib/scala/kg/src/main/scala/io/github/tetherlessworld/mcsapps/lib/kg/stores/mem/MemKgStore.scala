@@ -3,37 +3,41 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 import com.outr.lucene4s._
 import com.outr.lucene4s.facet.FacetField
 import com.outr.lucene4s.query._
+import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
+import scala.annotation.tailrec
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
+
   private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
     final override def clear(): Unit = {
       edges = List()
-      lucene.deleteAll()
-      nodes = List()
+      nodeLabelsByLabel = Map()
       nodesById = Map()
-      paths = List()
       pathsById = Map()
       sourcesById = Map()
+
+      index.clear()
     }
 
     override def close(): Unit = {
-      writeNodePageRanks
+      nodesById = PageRank.calculateNodePageRanks(nodesById.values.toList.sortBy(_.id), edges).map(node => (node.id, node)).toMap
 
-      lucene.deleteAll()
-      MemKgStore.this.nodes.foreach(node => {
-        lucene.doc().facets(node.sourceIds.map(LuceneFields.nodeSource(_)):_*).fields(LuceneFields.nodeId(node.id), LuceneFields.nodeLabels(node.labels.mkString(" ")), LuceneFields.nodeSources(node.sourceIds.mkString(" ")), LuceneFields.nodePageRank(node.pageRank.get)).index()
-      })
-      lucene.commit()
+      val nodeLabels = PageRank.calculateNodeLabelPageRanks(nodesById = nodesById, edges = edges)
+      nodeLabelsByLabel = nodeLabels.map(nodeLabel => (nodeLabel.nodeLabel, nodeLabel)).toMap
+
+      index.index(nodesById = nodesById, nodeLabelsByLabel = nodeLabelsByLabel, sourcesById = sourcesById)
     }
 
-    final override def putEdges(edges: Iterator[KgEdge]): Unit = {
-      MemKgStore.this.edges = edges.toList
-      putSourceIds(MemKgStore.this.edges.flatMap(_.sources).distinct)
+    final override def putEdges(edgesIterator: Iterator[KgEdge]): Unit = {
+      edges ++= edgesIterator.toList
+      putSourceIds(edges.flatMap(_.sourceIds).distinct)
     }
 
     final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
@@ -44,15 +48,12 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       putEdges(uniqueEdges)
     }
 
-    final override def putNodes(nodes: Iterator[KgNode]): Unit = {
-      MemKgStore.this.nodes = nodes.toList
-      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
-      putSourceIds(MemKgStore.this.nodes.flatMap(_.sourceIds).distinct)
+    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit = {
+      nodesById ++= nodesIterator.map(node => (node.id, node)).toList
     }
 
-    final override def putPaths(paths: Iterator[KgPath]): Unit = {
-      MemKgStore.this.paths = paths.toList
-      MemKgStore.this.pathsById = MemKgStore.this.paths.map(path => (path.id, path)).toMap
+    final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
+      pathsById ++= pathsIterator.map(path => (path.id, path)).toMap
     }
 
     private def putSourceIds(sourceIds: List[String]): Unit =
@@ -65,134 +66,112 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
         }
       }
     }
-
-    private def writeNodePageRanks: Unit = {
-      MemKgStore.this.nodes = KgNodePageRankCalculator(MemKgStore.this.nodes, MemKgStore.this.edges)
-      MemKgStore.this.nodesById = MemKgStore.this.nodes.map(node => (node.id, node)).toMap
-    }
   }
 
+  // Don't store redundant data structures e.g., nodes + nodesById
   private var edges: List[KgEdge] = List()
-  private val lucene = new DirectLucene(List("sources", "id", "labels"), autoCommit = false)
-  private object LuceneFields {
-    val nodeId = lucene.create.field[String]("id", fullTextSearchable = true)
-    val nodeLabels = lucene.create.field[String]("labels", fullTextSearchable = true)
-    val nodeSources = lucene.create.field[String]("sources")
-    val nodePageRank = lucene.create.field[Double]("pageRank")
-    val nodeSource = lucene.create.facet("source", multiValued = true)
-  }
-  private var nodes: List[KgNode] = List()
+  private val index = new MemKgIndex()
+  private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private var paths: List[KgPath] = List()
   private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
-  private def getLuceneField(sortableField: KgNodeSortableField) =
-    sortableField match {
-      case KgNodeSortableField.PageRank => LuceneFields.nodePageRank
-      case KgNodeSortableField.Sources => LuceneFields.nodeSources
-      case KgNodeSortableField.Labels => LuceneFields.nodeLabels
-      case KgNodeSortableField.Id => LuceneFields.nodeId
+  final override def beginTransaction: KgCommandStoreTransaction =
+    new MemKgCommandStoreTransaction
+
+  private def filterEdges(filters: KgEdgeFilters): List[KgEdge] = {
+    var edges = this.edges
+    if (filters.objectId.isDefined) {
+      edges = edges.filter(_.`object` == filters.objectId.get)
     }
-//  private def filterNodes(filters: Option[NodeFilters], nodes: List[Node]): List[Node] =
-//    if (filters.isDefined) {
-//      filterNodes(filters.get, nodes)
-//    } else {
-//      nodes
-//    }
-//
-//  private def filterNodes(filters: NodeFilters, nodes: List[Node]): List[Node] =
-//    if (filters.datasource.isDefined) {
-//      filterNodes(filters.datasource.get, nodes, node => node.datasource)
-//    } else {
-//      nodes
-//    }
-//
-//  private def filterNodes(filters: StringFacetFilter, nodes: List[Node], nodePropertyGetter: (Node) => String): List[Node] =
-//    nodes.filter(node => {
-//      val nodeProperty = nodePropertyGetter(node)
-//      val excluded = filters.exclude.getOrElse(List()).exists(exclude => exclude == nodeProperty)
-//      val included = filters.include.getOrElse(List()).exists(include => include == nodeProperty)
-//      !excluded && (!filters.include.isDefined || included)
-//    })
+    if (filters.objectLabel.isDefined) {
+      edges = edges.filter(edge => nodesById(edge.`object`).labels.contains(filters.objectLabel.get))
+    }
+    if (filters.subjectId.isDefined) {
+      edges = edges.filter(_.subject == filters.subjectId.get)
+    }
+    if (filters.subjectLabel.isDefined) {
+      edges = edges.filter(edge => nodesById(edge.subject).labels.contains(filters.subjectLabel.get))
+    }
+    edges
+  }
 
-  final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] =
-    edges.filter(edge => edge.`object` == objectNodeId).sortBy(edge => nodesById(edge.subject).pageRank.get).drop(offset).take(limit)
-
-  final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(edge => edge.subject == subjectNodeId).sortBy(edge => nodesById(edge.`object`).pageRank.get).drop(offset).take(limit)
+  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] = {
+    val unsortedEdges = filterEdges(filters)
+    val sortedEdges: List[KgEdge] = sort.field match {
+      case KgEdgesSortField.Id =>
+        unsortedEdges.sortBy(edge => edge.id)(if (sort.direction == SortDirection.Ascending) Ordering.String else Ordering[String].reverse).toList
+      case KgEdgesSortField.ObjectPageRank =>
+        unsortedEdges.sortBy(edge => nodesById(edge.`object`).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).toList
+      case _ => throw new UnsupportedOperationException
+    }
+    sortedEdges.drop(offset).take(limit)
+  }
 
   final override def getNodeById(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets = {
-    val results = lucene.query().filter(toSearchTerms(query):_*).facet(LuceneFields.nodeSource, limit = 100).search()
-    // The facet result also has a count per value, which we're ignoring
-    KgNodeFacets(
-      sources = results.facet(LuceneFields.nodeSource).map(_.values.map(_.value).map(sourceId => sourcesById(sourceId)).toList).getOrElse(List())
-    )
+  final override def getNodesByLabel(label: String): List[KgNode] = {
+    nodeLabelsByLabel.get(label).map(nodeLabel => nodeLabel.nodes).getOrElse(List())
   }
 
-  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = {
-    val querySorts = sorts.getOrElse(List()).map(sort => FieldSort(getLuceneField(sort.field), sort.direction == SortDirection.Descending))
-    val results: PagedResults[SearchResult] = lucene.query().filter(toSearchTerms(query):_*).sort(querySorts:_*).limit(limit).offset(offset).search()
-    results.results.toList.map(searchResult => nodesById(searchResult(LuceneFields.nodeId)))
-  }
-
-  final override def getMatchingNodesCount(query: KgNodeQuery): Int = {
-    val results = lucene.query().filter(toSearchTerms(query):_*).search()
-    results.total.intValue
-  }
-
-  override def getPathById(id: String): Option[KgPath] =
+  final override def getPathById(id: String): Option[KgPath] =
     pathsById.get(id)
 
   final override def getSourcesById: Map[String, KgSource] =
     sourcesById
 
-  override def getRandomNode: KgNode =
-    nodes(random.nextInt(nodes.size))
+  final override def getRandomNode: KgNode =
+    nodesById.values.toList(random.nextInt(nodesById.size))
 
-  final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] =
-    edges.filter(_.`object` == objectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+    val edges = filterEdges(filters)
+    sort.field match {
+      case KgTopEdgesSortField.ObjectPageRank =>
+        // Group edges by predicate and take the top <limit> edges within each predicate group
+        edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit)).values.flatten.toList
+      case KgTopEdgesSortField.ObjectLabelPageRank => {
+        // Group edges by predicate
+        edges.groupBy(_.predicate).mapValues(edgesWithPredicate => {
+          // Group edges by object label
+          // Since a node can have multiple labels, the same edge can be in multiple groups
+          // Each group should only have one reference to a unique edge, however, so we use a map.
+          val edgesByObjectLabels = new mutable.HashMap[String, mutable.HashMap[String, KgEdge]]
+          for (edge <- edgesWithPredicate) {
+            for (objectLabel <- nodesById(edge.`object`).labels) {
+              edgesByObjectLabels.getOrElseUpdate(objectLabel, new mutable.HashMap[String, KgEdge])(edge.id) = edge
+            }
+          }
+          // Calculate the PageRank of each object label group
+          // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
+          edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
+            // Label page rank = max of the constituent node page ranks
+            //            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
+            val objectLabelPageRank = nodeLabelsByLabel(objectLabel).pageRank.get
 
-  final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] =
-    edges.filter(_.subject == subjectNodeId).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.`object`).pageRank.get)(Ordering[Double].reverse).take(limit)).values.flatten.toList
+            (objectLabel, edgesById.values.toList.sortBy(_.id), objectLabelPageRank)
+          }).toList.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).map(_._2).take(limit).flatten
+        }).values.flatten.toList
+      }
+    }
+  }
 
   final override def getTotalEdgesCount: Int =
     edges.size
 
   final override def getTotalNodesCount: Int =
-    nodes.size
+    nodesById.size
 
   override def isEmpty: Boolean =
-    edges.isEmpty && nodes.isEmpty && paths.isEmpty
+    edges.isEmpty && nodesById.isEmpty && pathsById.isEmpty
 
+  final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] =
+    index.search(limit = limit, offset = offset, query = query, sorts = sorts)
 
-  private def toSearchTerms(query: KgNodeQuery): List[SearchTerm] = {
-    val textSearchTerm = query.text.map(text => string2ParsableSearchTerm(text)).getOrElse(MatchAllSearchTerm)
-    if (query.filters.isDefined) {
-      val filterSearchTerms = toSearchTerms(query.filters.get)
-      if (!filterSearchTerms.isEmpty) {
-        List(textSearchTerm, grouped(filterSearchTerms:_*))
-      } else {
-        List(textSearchTerm)
-      }
-    }  else {
-      List(textSearchTerm)
-    }
-  }
+  final override def searchCount(query: KgSearchQuery): Int =
+    index.searchCount(query = query)
 
-  private def toSearchTerms(nodeFilters: KgNodeFilters): List[(SearchTerm, Condition)] = {
-    nodeFilters.sourceIds.map(source => toSearchTerms(LuceneFields.nodeSource, source)).getOrElse(List())
-  }
-
-  private def toSearchTerms(field: FacetField, stringFilter: StringFacetFilter): List[(SearchTerm, Condition)] = {
-    stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
-    stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
-  }
-
-  final override def beginTransaction: KgCommandStoreTransaction =
-    new MemKgCommandStoreTransaction
+  final override def searchFacets(query: KgSearchQuery): KgSearchFacets =
+    index.searchFacets(query = query)
 }

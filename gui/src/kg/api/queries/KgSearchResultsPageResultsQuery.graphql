@@ -1,0 +1,42 @@
+#import "./KgNodeFragment.graphql"
+
+query KgSearchResultsPageResultsQuery(
+  $kgId: String!
+  $limit: Int!
+  $offset: Int!
+  $query: KgSearchQuery!
+  $sorts: [KgSearchSort!]
+) {
+  kgById(id: $kgId) {
+    search(
+      limit: $limit
+      offset: $offset
+      query: $query
+      sorts: $sorts
+    ) {
+      ... on KgEdgeSearchResult {
+        edge {
+          id
+          label
+          sourceIds
+        }
+      }
+      ... on KgEdgeLabelSearchResult {
+        edgeLabel
+        sourceIds
+      }
+      ... on KgNodeLabelSearchResult {
+        nodeLabel
+        sourceIds
+      }
+      ... on KgNodeSearchResult {
+        node {
+          ... KgNodeFragment
+        }
+      }
+      ... on KgSourceSearchResult {
+        sourceId
+      }
+    }
+  }
+}

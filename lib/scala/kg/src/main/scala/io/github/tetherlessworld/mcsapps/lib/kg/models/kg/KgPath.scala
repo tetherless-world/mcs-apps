@@ -4,7 +4,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.kg
  * A path through the graph. The path list is
  * [subject node id, predicate, object node id / subject node id, predicate, ..., object node id]
  */
-final case class KgPath(id: String, path: List[String], sources: List[String]) {
+final case class KgPath(id: String, path: List[String], sourceIds: List[String]) {
   def edges: List[KgEdge] = {
     (0 until (path.length - 1) by 2).map(pathI =>
       KgEdge(
@@ -13,7 +13,7 @@ final case class KgPath(id: String, path: List[String], sources: List[String]) {
         `object` = path(pathI + 2),
         predicate = path(pathI + 1),
         sentences = List(),
-        sources = sources,
+        sourceIds = sourceIds,
         subject = path(pathI)
       )
     ).toList
@@ -21,10 +21,10 @@ final case class KgPath(id: String, path: List[String], sources: List[String]) {
 }
 
 object KgPath {
-  def apply(edges: List[KgEdge], id: String, sources: List[String]): KgPath =
+  def apply(edges: List[KgEdge], id: String, sourceIds: List[String]): KgPath =
     KgPath(
       id = id,
       path = List(edges(0).subject) ++ edges.flatMap(edge => List(edge.predicate, edge.`object`)),
-      sources = sources
+      sourceIds = sourceIds
     )
 }

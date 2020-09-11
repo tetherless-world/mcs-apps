@@ -40,7 +40,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               "object" -> edge.`object`,
               "predicate" -> edge.predicate,
               "sentences" -> edge.sentences.mkString(ListDelimString),
-              "sources" -> edge.sources.mkString(ListDelimString),
+              "sources" -> edge.sourceIds.mkString(ListDelimString),
               "subject" -> edge.subject,
             ))
           )
@@ -49,7 +49,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           // The putEdges, putNodes, et al. methods assume that the iterator is small enough to buffer.
           // We buffer here, but the transaction also buffers.
           val edgesList = edges.toList
-          putSources(edgesList.flatMap(_.sources).distinct.map(KgSource(_)))
+          putSources(edgesList.flatMap(_.sourceIds).distinct.map(KgSource(_)))
           for (edge <- edgesList) {
             putEdge(edge)
           }
@@ -99,6 +99,31 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               ))
             )
           }
+
+          for (label <- node.labels) {
+            transaction.run(
+              s"""
+                 |MATCH (node:${NodeLabel} {id:$$nodeId})
+                 |MERGE (label:${LabelLabel} {id:$$labelId, label:$$labelId, labels:$$labelId})
+                 |MERGE (node)-[:${LabelRelationshipType}]->(label)
+                 |""".stripMargin,
+              toTransactionRunParameters(Map(
+                "labelId" -> label,
+                "nodeId" -> node.id
+              ))
+            )
+          }
+
+          transaction.run(
+            s"""
+               |MATCH (node:${NodeLabel} {id:$$nodeId})
+               |MATCH (s:${LabelLabel})<-[:${LabelRelationshipType}]-(node)-[:${LabelRelationshipType}]->(t:${LabelLabel})
+               |MERGE (s)-[:${LabelEdgeRelationshipType}]-(t)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "nodeId" -> node.id
+            ))
+          )
         }
 
         final override def putNodes(nodes: Iterator[KgNode]): Unit = {
@@ -124,7 +149,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
                   "pathEdgeIndex" -> pathEdgeIndex,
                   "pathEdgePredicate" -> pathEdge.predicate,
                   "pathId" -> path.id,
-                  "sources" -> path.sources.mkString(ListDelimString),
+                  "sources" -> path.sourceIds.mkString(ListDelimString),
                   "subject" -> pathEdge.subject
                 ))
               )
@@ -133,25 +158,49 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final override def putSources(sources: Iterator[KgSource]): Unit =
           for (source <- sources) {
-            val transactionRunParameters = toTransactionRunParameters(Map("id" -> source.id, "label" -> source.label))
-            val sourceExists =
-              transaction.run(
-                s"""
-                  |MATCH (source:${SourceLabel})
-                  |WHERE source.id = $$id
-                  |RETURN source.label
-                  |LIMIT 1
-                  |""".stripMargin,
-                transactionRunParameters
-              ).hasNext
-            if (!sourceExists) {
-              transaction.run("CREATE (:Source { id: $id, label: $label });", transactionRunParameters)
-              //        logger.debug("created source {}", source.id)
-            }
-            //      else {
-            //        logger.debug(s"source {} already exists", source.id)
-            //      }
+            transaction.run(
+              s"""
+                 |MERGE (:${SourceLabel} { id: $$id, label: $$label, labels: $$label, sources: $$id })
+                 |""".stripMargin,
+              toTransactionRunParameters(Map(
+                "id" -> source.id,
+                "label" -> source.label
+              ))
+            )
           }
+
+        final def writeLabelPageRanks: Unit = {
+          if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""
+               |CALL gds.pageRank.write({
+               |nodeQuery: 'MATCH (n: ${LabelLabel}) RETURN id(n) as id',
+               |relationshipQuery: 'MATCH (s: ${LabelLabel})-[:${LabelEdgeRelationshipType}]-(t: ${LabelLabel}) RETURN id(s) as source, id(t) as target',
+               |writeProperty: 'pageRank'
+               |})
+               |""".stripMargin
+          )
+        }
+
+        final def writeLabelSources: Unit = {
+          if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""
+               |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(:${NodeLabel})-[:${SourceRelationshipType}]->(source:${SourceLabel})
+               |WITH label, collect(distinct source.id) AS sourceIds
+               |SET label.sources = apoc.text.join(sourceIds, $$listDelim)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "listDelim" -> ListDelimString
+            ))
+          )
+        }
 
         final def writeNodePageRanks: Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
@@ -162,7 +211,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             s"""
                |CALL gds.pageRank.write({
                |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
-               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(r)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(r)<>"${PathRelationshipType}" AND TYPE(r)<>"${LabelRelationshipType}" RETURN id(source) as source, id(target) as target',
                |writeProperty: 'pageRank'
                |})
                |""".stripMargin
@@ -185,8 +234,11 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
       }
     }
 
-    final override def close(): Unit =
+    final override def close(): Unit = {
       writeNodePageRanks
+      writeLabelPageRanks
+      writeLabelSources
+    }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
       putModelsBatched(edges) { (edges, transaction) => {
@@ -259,6 +311,20 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         transaction.commit()
       }
 
+    private def writeLabelPageRanks: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeLabelPageRanks
+        transaction.commit()
+      }
+    }
+
+    private def writeLabelSources: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeLabelSources
+        transaction.commit()
+      }
+    }
+
     private def writeNodePageRanks: Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodePageRanks
@@ -292,9 +358,10 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         logger.info("bootstrapping neo4j indices")
 
         val bootstrapCypherStatements = List(
-          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}"],["id", "labels", "sources"]);""",
+          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}", "${SourceLabel}", "${LabelLabel}"],["id", "label", "labels", "sources"]);""",
           s"""CREATE CONSTRAINT node_id_constraint ON (node:${NodeLabel}) ASSERT node.id IS UNIQUE;""",
-          s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;"""
+          s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;""",
+          s"""CREATE CONSTRAINT label_id_constraint ON (label:${LabelLabel}) ASSERT label.id IS UNIQUE;"""
         )
 
         session.writeTransaction { transaction =>

@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "kg/components/kg/search/KgSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {KgNoRoute} from "kg/components/error/KgNoRoute";
@@ -8,6 +8,7 @@ import {KgHrefs} from "kg/KgHrefs";
 import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
 import {kgId} from "shared/api/kgId";
 import {QueryParamProvider} from "use-query-params";
+import {KgNodeLabelPage} from "kg/components/kg/node/KgNodeLabelPage";
 
 export const KgRoutes: React.FunctionComponent = () => (
   <BrowserRouter>
@@ -16,18 +17,25 @@ export const KgRoutes: React.FunctionComponent = () => (
         <Route exact path={KgHrefs.home} component={KgHomePage} />
 
         <Route
-          exact
-          path={KgHrefs.kg({id: kgId}).nodeSearch()}
-          component={KgNodeSearchResultsPage}
-        />
-        <Route
           path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
           component={KgNodePage}
+        />
+        <Route
+          path={KgHrefs.kg({id: kgId}).nodeLabel({
+            label: ":nodeLabel",
+            labelEncoded: true,
+          })}
+          component={KgNodeLabelPage}
         />
         <Route
           exact
           path={KgHrefs.kg({id: kgId}).randomNode}
           component={RandomKgNodePage}
+        />
+        <Route
+          exact
+          path={KgHrefs.kg({id: kgId}).search()}
+          component={KgSearchResultsPage}
         />
 
         <Route component={KgNoRoute} />

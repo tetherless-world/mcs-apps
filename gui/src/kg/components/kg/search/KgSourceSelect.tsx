@@ -15,7 +15,7 @@ export const KgSourceSelect: React.FunctionComponent<{
   );
 
   return (
-    <Paper variant="outlined" square style={style} data-cy="datasourceSelect">
+    <Paper variant="outlined" square style={style} data-cy="sourceSelect">
       <Select
         displayEmpty
         value={selectedSource}
@@ -38,7 +38,7 @@ export const KgSourceSelect: React.FunctionComponent<{
           </span>
         )}
       >
-        <MenuItem value="" data-cy="allDatasourcesSelectMenuItem">
+        <MenuItem value="" data-cy="allSourcesSelectMenuItem">
           All Sources
         </MenuItem>
         {sources.map((source) => (

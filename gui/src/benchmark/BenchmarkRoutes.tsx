@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import {KgNodeSearchResultsPage} from "kg/components/kg/search/KgNodeSearchResultsPage";
+import {KgSearchResultsPage} from "kg/components/kg/search/KgSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {BenchmarkNoRoute} from "benchmark/components/error/BenchmarkNoRoute";
@@ -68,8 +68,8 @@ export const BenchmarkRoutes: React.FunctionComponent = () => (
       {/* KG Routes */}
       <Route
         exact
-        path={BenchmarkHrefs.kg({id: kgId}).nodeSearch()}
-        component={KgNodeSearchResultsPage}
+        path={BenchmarkHrefs.kg({id: kgId}).search()}
+        component={KgSearchResultsPage}
       />
       <Route
         path={BenchmarkHrefs.kg({id: kgId}).node({

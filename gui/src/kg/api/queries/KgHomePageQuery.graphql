@@ -1,8 +1,9 @@
+#import "./KgSourceFragment.graphql"
+
 query KgHomePageQuery($kgId: String!) {
   kgById(id: $kgId) {
     sources {
-      id
-      label
+      ... KgSourceFragment
     }
   }
 }

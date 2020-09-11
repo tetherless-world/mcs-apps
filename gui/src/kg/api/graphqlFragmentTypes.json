@@ -1,5 +1,27 @@
 {
   "__schema": {
-    "types": []
+    "types": [
+      {
+        "kind": "UNION",
+        "name": "KgSearchResult",
+        "possibleTypes": [
+          {
+            "name": "KgEdgeSearchResult"
+          },
+          {
+            "name": "KgEdgeLabelSearchResult"
+          },
+          {
+            "name": "KgNodeLabelSearchResult"
+          },
+          {
+            "name": "KgNodeSearchResult"
+          },
+          {
+            "name": "KgSourceSearchResult"
+          }
+        ]
+      }
+    ]
   }
 }

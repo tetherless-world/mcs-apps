@@ -18,16 +18,16 @@ export enum SortDirection {
   Descending = "Descending",
 }
 
-export interface KgNodeFilters {
+export interface KgSearchFilters {
   sourceIds?: StringFacetFilter | null;
 }
 
-export interface KgNodeQuery {
-  filters?: KgNodeFilters | null;
+export interface KgSearchQuery {
+  filters?: KgSearchFilters | null;
   text?: string | null;
 }
 
-export interface KgNodeSort {
+export interface KgSearchSort {
   field: KgNodeSortableField;
   direction: SortDirection;
 }

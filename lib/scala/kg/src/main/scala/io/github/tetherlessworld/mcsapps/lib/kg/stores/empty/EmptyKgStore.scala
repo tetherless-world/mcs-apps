@@ -2,7 +2,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.empty
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, KgNodeFacets, KgNodeQuery, KgNodeSort, KgQueryStore}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, KgEdgeFilters, KgEdgesSort, KgQueryStore, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgTopEdgesSort}
 
 /**
  * Store implementation that is always empty and discards all writes to it.
@@ -46,18 +46,29 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
     }
   }
 
+  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] = List()
+
   final override def getSourcesById: Map[String, KgSource] = Map()
-  final override def getEdgesByObject(limit: Int, objectNodeId: String, offset: Int): List[KgEdge] = List()
-  final override def getEdgesBySubject(limit: Int, offset: Int, subjectNodeId: String): List[KgEdge] = List()
-  final override def getMatchingNodeFacets(query: KgNodeQuery): KgNodeFacets = KgNodeFacets(sources = List())
-  final override def getMatchingNodes(limit: Int, offset: Int, query: KgNodeQuery, sorts: Option[List[KgNodeSort]]): List[KgNode] = List()
-  final override def getMatchingNodesCount(query: KgNodeQuery): Int = 0
+
   final override def getNodeById(id: String): Option[KgNode] = None
+
+  final override def getNodesByLabel(label: String): List[KgNode] = List()
+
   final override def getPathById(id: String): Option[KgPath] = None
+
   final override def getRandomNode: KgNode = throw new NoSuchElementException
-  final override def getTopEdgesByObject(limit: Int, objectNodeId: String): List[KgEdge] = List()
-  final override def getTopEdgesBySubject(limit: Int, subjectNodeId: String): List[KgEdge] = List()
+
+  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = List()
+
   final override def getTotalEdgesCount: Int = 0
+
   final override def getTotalNodesCount: Int = 0
+
   final override def isEmpty: Boolean = true
+
+  final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = List()
+
+  final override def searchCount(query: KgSearchQuery): Int = 0
+
+  final override def searchFacets(query: KgSearchQuery): KgSearchFacets = KgSearchFacets(List())
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {KgNodeSearchBox} from "kg/components/kg/search/KgNodeSearchBox";
+import {KgSearchBox} from "kg/components/kg/search/KgSearchBox";
 import {KgFrame} from "kg/components/frame/KgFrame";
 
 import {
@@ -18,14 +18,15 @@ import {
 import {Link, useHistory} from "react-router-dom";
 
 import {KgHrefs} from "kg/KgHrefs";
-import {KgNodeSearchBoxValue} from "shared/models/kg/node/KgNodeSearchBoxValue";
+import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
 import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
 import * as KgHomePageQueryDocument from "kg/api/queries/KgHomePageQuery.graphql";
 import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
-import {KgNodeQuery, StringFacetFilter} from "kg/api/graphqlGlobalTypes";
-import {KgNodeSearchLink} from "shared/components/kg/node/KgNodeSearchLink";
+import {KgSearchQuery, StringFacetFilter} from "kg/api/graphqlGlobalTypes";
+import {KgSearchLink} from "shared/components/kg/search/KgSearchLink";
+import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 
 // Constants
 const CONCEPT_NET_SOURCE_ID = "CN";
@@ -45,12 +46,12 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const KgNodeSearchListItem: React.FunctionComponent<React.PropsWithChildren<{
-  query: KgNodeQuery;
+const KgSearchListItem: React.FunctionComponent<React.PropsWithChildren<{
+  query: KgSearchQuery;
 }>> = ({children, query}) => (
   <ListItem>
     <ListItemText>
-      <KgNodeSearchLink query={query}>{children}</KgNodeSearchLink>
+      <KgSearchLink query={query}>{children}</KgSearchLink>
     </ListItemText>
   </ListItem>
 );
@@ -68,38 +69,9 @@ export const KgHomePage: React.FunctionComponent = () => {
     sourcesFilter,
     setSourcesFilter,
   ] = React.useState<StringFacetFilter | null>(null);
-  const [searchBoxValue, setSearchBoxValue] = React.useState<
-    KgNodeSearchBoxValue
-  >(null);
-
-  const onSearchSubmit = () => {
-    if (searchBoxValue === null) {
-      return;
-    }
-
-    switch (searchBoxValue.__typename) {
-      case "KgNode":
-        history.push(KgHrefs.kg({id: kgId}).node({id: searchBoxValue.id}));
-        break;
-      case "text":
-        const query: KgNodeQuery = {};
-        query.text = searchBoxValue.text;
-        if (sourcesFilter) {
-          query.filters = {sourceIds: sourcesFilter};
-        }
-
-        history.push(
-          KgHrefs.kg({id: kgId}).nodeSearch({
-            __typename: "KgNodeSearchVariables",
-            query,
-          })
-        );
-        break;
-      default:
-        const _exhaustiveCheck: never = searchBoxValue;
-        _exhaustiveCheck;
-    }
-  };
+  const [searchBoxValue, setSearchBoxValue] = React.useState<KgSearchBoxValue>(
+    null
+  );
 
   return (
     <KgFrame hideNavbarSearchBox={true} {...query}>
@@ -117,11 +89,12 @@ export const KgHomePage: React.FunctionComponent = () => {
                 {data && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
-                      <KgNodeSearchBox
+                      <KgSearchBox
+                        allSources={data.kgById.sources}
                         autoFocus
+                        filters={{sourceIds: sourcesFilter}}
                         placeholder="Search a word or try a query"
                         onChange={setSearchBoxValue}
-                        onSubmit={onSearchSubmit}
                       />
                     </Grid>
                     <Grid item>
@@ -138,7 +111,12 @@ export const KgHomePage: React.FunctionComponent = () => {
                           <Button
                             color="primary"
                             variant="contained"
-                            onClick={onSearchSubmit}
+                            onClick={() =>
+                              redirectToKgSearchBoxValue(
+                                history,
+                                searchBoxValue
+                              )
+                            }
                           >
                             Search
                           </Button>
@@ -160,13 +138,11 @@ export const KgHomePage: React.FunctionComponent = () => {
               <Grid item>
                 <h2>Examples:</h2>
                 <List>
-                  <KgNodeSearchListItem query={{}}>
-                    All nodes
-                  </KgNodeSearchListItem>
+                  <KgSearchListItem query={{}}>All nodes</KgSearchListItem>
                   {sources.some(
                     (source) => source.id === CONCEPT_NET_SOURCE_ID
                   ) ? (
-                    <KgNodeSearchListItem
+                    <KgSearchListItem
                       query={{
                         filters: {
                           sourceIds: {include: [CONCEPT_NET_SOURCE_ID]},
@@ -174,12 +150,12 @@ export const KgHomePage: React.FunctionComponent = () => {
                       }}
                     >
                       All nodes in ConceptNet
-                    </KgNodeSearchListItem>
+                    </KgSearchListItem>
                   ) : null}
                   {sources.some(
                     (source) => source.id === WORD_NET_SOURCE_ID
                   ) ? (
-                    <KgNodeSearchListItem
+                    <KgSearchListItem
                       query={{
                         filters: {
                           sourceIds: {include: [WORD_NET_SOURCE_ID]},
@@ -187,11 +163,11 @@ export const KgHomePage: React.FunctionComponent = () => {
                       }}
                     >
                       All nodes in WordNet
-                    </KgNodeSearchListItem>
+                    </KgSearchListItem>
                   ) : null}
-                  <KgNodeSearchListItem query={{text: "animal"}}>
+                  <KgSearchListItem query={{text: "animal"}}>
                     Nodes relating to "animal"
-                  </KgNodeSearchListItem>
+                  </KgSearchListItem>
                 </List>
               </Grid>
             </Grid>

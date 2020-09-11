@@ -2,10 +2,7 @@ fragment KgNodeFragment on KgNode {
   aliases
   id
   label
-  sources {
-    id
-    label
-  }
   pos
   pageRank
+  sourceIds
 }

@@ -1,7 +1,0 @@
-#import "./KgSourceFragment.graphql"
-
-fragment KgNodeFacetsFragment on KgNodeFacets {
-  sources {
-    ... KgSourceFragment
-  }
-}

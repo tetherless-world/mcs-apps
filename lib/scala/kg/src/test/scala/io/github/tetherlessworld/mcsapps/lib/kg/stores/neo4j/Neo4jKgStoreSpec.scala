@@ -3,11 +3,11 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 import java.net.InetAddress
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
+import org.scalatest.{BeforeAndAfterAll, WordSpec}
 import org.slf4j.LoggerFactory
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgQueryStore, KgStoreBehaviors, Neo4jStoreConfiguration}
 
-class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfterAll {
+class Neo4jKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommandStoreBehaviors with KgQueryStoreBehaviors {
   val logger = LoggerFactory.getLogger(getClass)
   val configuration = new Neo4jStoreConfiguration(commitInterval = Neo4jStoreConfiguration.CommitIntervalDefault, password = "nC1aB4mji623s2Zs", uri = "bolt://mcs-neo4j:7687", user = "neo4j")
   val command = new Neo4jKgCommandStore(configuration)
@@ -30,11 +30,11 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
   }
 
   private object Neo4jKgStoreFactory extends KgStoreFactory {
-    override def apply(testMode: TestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
+    override def apply(testMode: StoreTestMode)(f: (KgCommandStore, KgQueryStore) => Unit): Unit = {
       try {
         f(command, query)
       } finally {
-        if (testMode == TestMode.ReadWrite) {
+        if (testMode == StoreTestMode.ReadWrite) {
           resetSut()
         }
       }
@@ -43,7 +43,8 @@ class Neo4jKgStoreSpec extends WordSpec with KgStoreBehaviors with BeforeAndAfte
 
   if (inTestingEnvironment) {
     "The neo4j store" can {
-        behave like store(Neo4jKgStoreFactory)
+        behave like commandStore(Neo4jKgStoreFactory)
+        behave like queryStore(Neo4jKgStoreFactory)
       }
   }
 }

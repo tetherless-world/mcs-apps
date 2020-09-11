@@ -1,0 +1,6 @@
+fragment KgSearchFacetsFragment on KgSearchFacets {
+  sourceIds {
+    count
+    value
+  }
+}

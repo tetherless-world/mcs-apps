@@ -2,362 +2,390 @@
     {
         "id": "portal_test_data:0",
         "labels": [
+            "Shared node label 0",
             "Test node 0",
             "KgNode0",
             "NodeAlias0"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "n"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:1",
         "labels": [
+            "Shared node label 1",
             "Test node 1",
             "KgNode1",
             "NodeAlias1"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:2",
         "labels": [
+            "Shared node label 2",
             "Test node 2",
             "KgNode2",
             "NodeAlias2"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
-        "pos": "n"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:3",
         "labels": [
+            "Shared node label 3",
             "Test node 3",
             "KgNode3",
             "NodeAlias3"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:4",
         "labels": [
+            "Shared node label 4",
             "Test node 4",
             "KgNode4",
             "NodeAlias4"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "v"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:5",
         "labels": [
+            "Shared node label 5",
             "Test node 5",
             "KgNode5",
             "NodeAlias5"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "a"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:6",
         "labels": [
+            "Shared node label 6",
             "Test node 6",
             "KgNode6",
             "NodeAlias6"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:7",
+        "labels": [
+            "Shared node label 7",
+            "Test node 7",
+            "KgNode7",
+            "NodeAlias7"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:7",
-        "labels": [
-            "Test node 7",
-            "KgNode7",
-            "NodeAlias7"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:8",
         "labels": [
+            "Shared node label 8",
             "Test node 8",
             "KgNode8",
             "NodeAlias8"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:9",
-        "labels": [
-            "Test node 9",
-            "KgNode9",
-            "NodeAlias9"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:10",
-        "labels": [
-            "Test node 10",
-            "KgNode10",
-            "NodeAlias10"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:11",
-        "labels": [
-            "Test node 11",
-            "KgNode11",
-            "NodeAlias11"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:12",
-        "labels": [
-            "Test node 12",
-            "KgNode12",
-            "NodeAlias12"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:13",
-        "labels": [
-            "Test node 13",
-            "KgNode13",
-            "NodeAlias13"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:9",
+        "labels": [
+            "Shared node label 9",
+            "Test node 9",
+            "KgNode9",
+            "NodeAlias9"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:10",
+        "labels": [
+            "Shared node label 10",
+            "Test node 10",
+            "KgNode10",
+            "NodeAlias10"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:11",
+        "labels": [
+            "Shared node label 11",
+            "Test node 11",
+            "KgNode11",
+            "NodeAlias11"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:12",
+        "labels": [
+            "Shared node label 12",
+            "Test node 12",
+            "KgNode12",
+            "NodeAlias12"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:13",
+        "labels": [
+            "Shared node label 13",
+            "Test node 13",
+            "KgNode13",
+            "NodeAlias13"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "n"
+    },
+    {
         "id": "portal_test_data:14",
         "labels": [
+            "Shared node label 14",
             "Test node 14",
             "KgNode14",
             "NodeAlias14"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
         "id": "portal_test_data:15",
         "labels": [
+            "Shared node label 15",
             "Test node 15",
             "KgNode15",
             "NodeAlias15"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:16",
         "labels": [
+            "Shared node label 16",
             "Test node 16",
             "KgNode16",
             "NodeAlias16"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:17",
         "labels": [
+            "Shared node label 17",
             "Test node 17",
             "KgNode17",
             "NodeAlias17"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "a"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:18",
         "labels": [
+            "Shared node label 18",
             "Test node 18",
             "KgNode18",
             "NodeAlias18"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:19",
-        "labels": [
-            "Test node 19",
-            "KgNode19",
-            "NodeAlias19"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
+        "id": "portal_test_data:19",
+        "labels": [
+            "Shared node label 19",
+            "Test node 19",
+            "KgNode19",
+            "NodeAlias19"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:20",
         "labels": [
+            "Shared node label 20",
             "Test node 20",
             "KgNode20",
             "NodeAlias20"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:21",
+        "labels": [
+            "Shared node label 21",
+            "Test node 21",
+            "KgNode21",
+            "NodeAlias21"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:22",
+        "labels": [
+            "Shared node label 22",
+            "Test node 22",
+            "KgNode22",
+            "NodeAlias22"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:23",
+        "labels": [
+            "Shared node label 23",
+            "Test node 23",
+            "KgNode23",
+            "NodeAlias23"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:21",
+        "id": "portal_test_data:24",
         "labels": [
-            "Test node 21",
-            "KgNode21",
-            "NodeAlias21"
+            "Shared node label 24",
+            "Test node 24",
+            "KgNode24",
+            "NodeAlias24"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:22",
-        "labels": [
-            "Test node 22",
-            "KgNode22",
-            "NodeAlias22"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:23",
-        "labels": [
-            "Test node 23",
-            "KgNode23",
-            "NodeAlias23"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:24",
-        "labels": [
-            "Test node 24",
-            "KgNode24",
-            "NodeAlias24"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:25",
         "labels": [
+            "Shared node label 25",
             "Test node 25",
             "KgNode25",
             "NodeAlias25"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:26",
         "labels": [
+            "Shared node label 26",
             "Test node 26",
             "KgNode26",
             "NodeAlias26"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:27",
         "labels": [
+            "Shared node label 27",
             "Test node 27",
             "KgNode27",
             "NodeAlias27"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
@@ -366,219 +394,236 @@
     {
         "id": "portal_test_data:28",
         "labels": [
+            "Shared node label 28",
             "Test node 28",
             "KgNode28",
             "NodeAlias28"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:29",
-        "labels": [
-            "Test node 29",
-            "KgNode29",
-            "NodeAlias29"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:30",
-        "labels": [
-            "Test node 30",
-            "KgNode30",
-            "NodeAlias30"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:29",
+        "labels": [
+            "Shared node label 29",
+            "Test node 29",
+            "KgNode29",
+            "NodeAlias29"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:30",
+        "labels": [
+            "Shared node label 30",
+            "Test node 30",
+            "KgNode30",
+            "NodeAlias30"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "r"
+    },
+    {
         "id": "portal_test_data:31",
         "labels": [
+            "Shared node label 31",
             "Test node 31",
             "KgNode31",
             "NodeAlias31"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:32",
         "labels": [
+            "Shared node label 32",
             "Test node 32",
             "KgNode32",
             "NodeAlias32"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
-        "pos": "v"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:33",
         "labels": [
+            "Shared node label 33",
             "Test node 33",
             "KgNode33",
             "NodeAlias33"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:34",
+        "labels": [
+            "Shared node label 34",
+            "Test node 34",
+            "KgNode34",
+            "NodeAlias34"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:35",
+        "labels": [
+            "Shared node label 35",
+            "Test node 35",
+            "KgNode35",
+            "NodeAlias35"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:34",
+        "id": "portal_test_data:36",
         "labels": [
-            "Test node 34",
-            "KgNode34",
-            "NodeAlias34"
+            "Shared node label 36",
+            "Test node 36",
+            "KgNode36",
+            "NodeAlias36"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:35",
-        "labels": [
-            "Test node 35",
-            "KgNode35",
-            "NodeAlias35"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:36",
-        "labels": [
-            "Test node 36",
-            "KgNode36",
-            "NodeAlias36"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:37",
         "labels": [
+            "Shared node label 37",
             "Test node 37",
             "KgNode37",
             "NodeAlias37"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:38",
         "labels": [
+            "Shared node label 38",
             "Test node 38",
             "KgNode38",
             "NodeAlias38"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:39",
+        "labels": [
+            "Shared node label 39",
+            "Test node 39",
+            "KgNode39",
+            "NodeAlias39"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:39",
-        "labels": [
-            "Test node 39",
-            "KgNode39",
-            "NodeAlias39"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
         "id": "portal_test_data:40",
         "labels": [
+            "Shared node label 40",
             "Test node 40",
             "KgNode40",
             "NodeAlias40"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:41",
         "labels": [
+            "Shared node label 41",
             "Test node 41",
             "KgNode41",
             "NodeAlias41"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:42",
-        "labels": [
-            "Test node 42",
-            "KgNode42",
-            "NodeAlias42"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:43",
-        "labels": [
-            "Test node 43",
-            "KgNode43",
-            "NodeAlias43"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
+        "id": "portal_test_data:42",
+        "labels": [
+            "Shared node label 42",
+            "Test node 42",
+            "KgNode42",
+            "NodeAlias42"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:43",
+        "labels": [
+            "Shared node label 43",
+            "Test node 43",
+            "KgNode43",
+            "NodeAlias43"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:44",
         "labels": [
+            "Shared node label 44",
             "Test node 44",
             "KgNode44",
             "NodeAlias44"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
@@ -587,206 +632,222 @@
     {
         "id": "portal_test_data:45",
         "labels": [
+            "Shared node label 45",
             "Test node 45",
             "KgNode45",
             "NodeAlias45"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:46",
         "labels": [
+            "Shared node label 46",
             "Test node 46",
             "KgNode46",
             "NodeAlias46"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:47",
-        "labels": [
-            "Test node 47",
-            "KgNode47",
-            "NodeAlias47"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:48",
-        "labels": [
-            "Test node 48",
-            "KgNode48",
-            "NodeAlias48"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:49",
+        "id": "portal_test_data:47",
         "labels": [
-            "Test node 49",
-            "KgNode49",
-            "NodeAlias49"
+            "Shared node label 47",
+            "Test node 47",
+            "KgNode47",
+            "NodeAlias47"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:48",
+        "labels": [
+            "Shared node label 48",
+            "Test node 48",
+            "KgNode48",
+            "NodeAlias48"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:50",
+        "id": "portal_test_data:49",
         "labels": [
-            "Test node 50",
-            "KgNode50",
-            "NodeAlias50"
+            "Shared node label 49",
+            "Test node 49",
+            "KgNode49",
+            "NodeAlias49"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:51",
-        "labels": [
-            "Test node 51",
-            "KgNode51",
-            "NodeAlias51"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:52",
-        "labels": [
-            "Test node 52",
-            "KgNode52",
-            "NodeAlias52"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:53",
-        "labels": [
-            "Test node 53",
-            "KgNode53",
-            "NodeAlias53"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:54",
-        "labels": [
-            "Test node 54",
-            "KgNode54",
-            "NodeAlias54"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:55",
+        "id": "portal_test_data:50",
         "labels": [
-            "Test node 55",
-            "KgNode55",
-            "NodeAlias55"
+            "Shared node label 50",
+            "Test node 50",
+            "KgNode50",
+            "NodeAlias50"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:56",
+        "id": "portal_test_data:51",
         "labels": [
-            "Test node 56",
-            "KgNode56",
-            "NodeAlias56"
+            "Shared node label 51",
+            "Test node 51",
+            "KgNode51",
+            "NodeAlias51"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:52",
+        "labels": [
+            "Shared node label 52",
+            "Test node 52",
+            "KgNode52",
+            "NodeAlias52"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:57",
+        "id": "portal_test_data:53",
         "labels": [
-            "Test node 57",
-            "KgNode57",
-            "NodeAlias57"
+            "Shared node label 53",
+            "Test node 53",
+            "KgNode53",
+            "NodeAlias53"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
-        "pos": "a"
+        "pos": "n"
     },
     {
-        "id": "portal_test_data:58",
+        "id": "portal_test_data:54",
         "labels": [
-            "Test node 58",
-            "KgNode58",
-            "NodeAlias58"
+            "Shared node label 54",
+            "Test node 54",
+            "KgNode54",
+            "NodeAlias54"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:55",
+        "labels": [
+            "Shared node label 55",
+            "Test node 55",
+            "KgNode55",
+            "NodeAlias55"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:59",
+        "id": "portal_test_data:56",
         "labels": [
-            "Test node 59",
-            "KgNode59",
-            "NodeAlias59"
+            "Shared node label 56",
+            "Test node 56",
+            "KgNode56",
+            "NodeAlias56"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:57",
+        "labels": [
+            "Shared node label 57",
+            "Test node 57",
+            "KgNode57",
+            "NodeAlias57"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:58",
+        "labels": [
+            "Shared node label 58",
+            "Test node 58",
+            "KgNode58",
+            "NodeAlias58"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:59",
+        "labels": [
+            "Shared node label 59",
+            "Test node 59",
+            "KgNode59",
+            "NodeAlias59"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:60",
         "labels": [
+            "Shared node label 60",
             "Test node 60",
             "KgNode60",
             "NodeAlias60"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
@@ -795,284 +856,306 @@
     {
         "id": "portal_test_data:61",
         "labels": [
+            "Shared node label 61",
             "Test node 61",
             "KgNode61",
             "NodeAlias61"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "v"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:62",
         "labels": [
+            "Shared node label 62",
             "Test node 62",
             "KgNode62",
             "NodeAlias62"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "n"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:63",
         "labels": [
+            "Shared node label 63",
             "Test node 63",
             "KgNode63",
             "NodeAlias63"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "n"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:64",
         "labels": [
+            "Shared node label 64",
             "Test node 64",
             "KgNode64",
             "NodeAlias64"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:65",
         "labels": [
+            "Shared node label 65",
             "Test node 65",
             "KgNode65",
             "NodeAlias65"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:66",
-        "labels": [
-            "Test node 66",
-            "KgNode66",
-            "NodeAlias66"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:67",
+        "id": "portal_test_data:66",
         "labels": [
-            "Test node 67",
-            "KgNode67",
-            "NodeAlias67"
+            "Shared node label 66",
+            "Test node 66",
+            "KgNode66",
+            "NodeAlias66"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:68",
-        "labels": [
-            "Test node 68",
-            "KgNode68",
-            "NodeAlias68"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
+        "id": "portal_test_data:67",
+        "labels": [
+            "Shared node label 67",
+            "Test node 67",
+            "KgNode67",
+            "NodeAlias67"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:68",
+        "labels": [
+            "Shared node label 68",
+            "Test node 68",
+            "KgNode68",
+            "NodeAlias68"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "a"
+    },
+    {
         "id": "portal_test_data:69",
         "labels": [
+            "Shared node label 69",
             "Test node 69",
             "KgNode69",
             "NodeAlias69"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:70",
         "labels": [
+            "Shared node label 70",
             "Test node 70",
             "KgNode70",
             "NodeAlias70"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:71",
+        "labels": [
+            "Shared node label 71",
+            "Test node 71",
+            "KgNode71",
+            "NodeAlias71"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:72",
+        "labels": [
+            "Shared node label 72",
+            "Test node 72",
+            "KgNode72",
+            "NodeAlias72"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:73",
+        "labels": [
+            "Shared node label 73",
+            "Test node 73",
+            "KgNode73",
+            "NodeAlias73"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:74",
+        "labels": [
+            "Shared node label 74",
+            "Test node 74",
+            "KgNode74",
+            "NodeAlias74"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:75",
+        "labels": [
+            "Shared node label 75",
+            "Test node 75",
+            "KgNode75",
+            "NodeAlias75"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:76",
+        "labels": [
+            "Shared node label 76",
+            "Test node 76",
+            "KgNode76",
+            "NodeAlias76"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:71",
+        "id": "portal_test_data:77",
         "labels": [
-            "Test node 71",
-            "KgNode71",
-            "NodeAlias71"
+            "Shared node label 77",
+            "Test node 77",
+            "KgNode77",
+            "NodeAlias77"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:78",
+        "labels": [
+            "Shared node label 78",
+            "Test node 78",
+            "KgNode78",
+            "NodeAlias78"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:72",
-        "labels": [
-            "Test node 72",
-            "KgNode72",
-            "NodeAlias72"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:73",
-        "labels": [
-            "Test node 73",
-            "KgNode73",
-            "NodeAlias73"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:74",
-        "labels": [
-            "Test node 74",
-            "KgNode74",
-            "NodeAlias74"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:75",
-        "labels": [
-            "Test node 75",
-            "KgNode75",
-            "NodeAlias75"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:76",
-        "labels": [
-            "Test node 76",
-            "KgNode76",
-            "NodeAlias76"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:77",
-        "labels": [
-            "Test node 77",
-            "KgNode77",
-            "NodeAlias77"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:78",
-        "labels": [
-            "Test node 78",
-            "KgNode78",
-            "NodeAlias78"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:79",
         "labels": [
+            "Shared node label 79",
             "Test node 79",
             "KgNode79",
             "NodeAlias79"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "a"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:80",
         "labels": [
+            "Shared node label 80",
             "Test node 80",
             "KgNode80",
             "NodeAlias80"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "v"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:81",
         "labels": [
+            "Shared node label 81",
             "Test node 81",
             "KgNode81",
             "NodeAlias81"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "v"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:82",
         "labels": [
+            "Shared node label 82",
             "Test node 82",
             "KgNode82",
             "NodeAlias82"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
@@ -1081,37 +1164,40 @@
     {
         "id": "portal_test_data:83",
         "labels": [
+            "Shared node label 83",
             "Test node 83",
             "KgNode83",
             "NodeAlias83"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:84",
         "labels": [
+            "Shared node label 84",
             "Test node 84",
             "KgNode84",
             "NodeAlias84"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:85",
         "labels": [
+            "Shared node label 85",
             "Test node 85",
             "KgNode85",
             "NodeAlias85"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
@@ -1120,284 +1206,306 @@
     {
         "id": "portal_test_data:86",
         "labels": [
+            "Shared node label 86",
             "Test node 86",
             "KgNode86",
             "NodeAlias86"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
-        "pos": "a"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:87",
         "labels": [
+            "Shared node label 87",
             "Test node 87",
             "KgNode87",
             "NodeAlias87"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "n"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:88",
         "labels": [
+            "Shared node label 88",
             "Test node 88",
             "KgNode88",
             "NodeAlias88"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "n"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:89",
         "labels": [
+            "Shared node label 89",
             "Test node 89",
             "KgNode89",
             "NodeAlias89"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "r"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:90",
         "labels": [
+            "Shared node label 90",
             "Test node 90",
             "KgNode90",
             "NodeAlias90"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:91",
         "labels": [
+            "Shared node label 91",
             "Test node 91",
             "KgNode91",
             "NodeAlias91"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "a"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:92",
         "labels": [
+            "Shared node label 92",
             "Test node 92",
             "KgNode92",
             "NodeAlias92"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:93",
-        "labels": [
-            "Test node 93",
-            "KgNode93",
-            "NodeAlias93"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:93",
+        "labels": [
+            "Shared node label 93",
+            "Test node 93",
+            "KgNode93",
+            "NodeAlias93"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
         "id": "portal_test_data:94",
         "labels": [
+            "Shared node label 94",
             "Test node 94",
             "KgNode94",
             "NodeAlias94"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "n"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:95",
         "labels": [
+            "Shared node label 95",
             "Test node 95",
             "KgNode95",
             "NodeAlias95"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:96",
-        "labels": [
-            "Test node 96",
-            "KgNode96",
-            "NodeAlias96"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:97",
-        "labels": [
-            "Test node 97",
-            "KgNode97",
-            "NodeAlias97"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:98",
-        "labels": [
-            "Test node 98",
-            "KgNode98",
-            "NodeAlias98"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:99",
+        "id": "portal_test_data:96",
         "labels": [
-            "Test node 99",
-            "KgNode99",
-            "NodeAlias99"
+            "Shared node label 96",
+            "Test node 96",
+            "KgNode96",
+            "NodeAlias96"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:97",
+        "labels": [
+            "Shared node label 97",
+            "Test node 97",
+            "KgNode97",
+            "NodeAlias97"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
+        "id": "portal_test_data:98",
+        "labels": [
+            "Shared node label 98",
+            "Test node 98",
+            "KgNode98",
+            "NodeAlias98"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:99",
+        "labels": [
+            "Shared node label 99",
+            "Test node 99",
+            "KgNode99",
+            "NodeAlias99"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:100",
         "labels": [
+            "Shared node label 0",
             "Test node 100",
             "KgNode100",
             "NodeAlias100"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:101",
         "labels": [
+            "Shared node label 1",
             "Test node 101",
             "KgNode101",
             "NodeAlias101"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:102",
         "labels": [
+            "Shared node label 2",
             "Test node 102",
             "KgNode102",
             "NodeAlias102"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "n"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:103",
         "labels": [
+            "Shared node label 3",
             "Test node 103",
             "KgNode103",
             "NodeAlias103"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:104",
         "labels": [
+            "Shared node label 4",
             "Test node 104",
             "KgNode104",
             "NodeAlias104"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:105",
-        "labels": [
-            "Test node 105",
-            "KgNode105",
-            "NodeAlias105"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:105",
+        "labels": [
+            "Shared node label 5",
+            "Test node 105",
+            "KgNode105",
+            "NodeAlias105"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
         "id": "portal_test_data:106",
         "labels": [
+            "Shared node label 6",
             "Test node 106",
             "KgNode106",
             "NodeAlias106"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:107",
         "labels": [
+            "Shared node label 7",
             "Test node 107",
             "KgNode107",
             "NodeAlias107"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
@@ -1406,232 +1514,250 @@
     {
         "id": "portal_test_data:108",
         "labels": [
+            "Shared node label 8",
             "Test node 108",
             "KgNode108",
             "NodeAlias108"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:109",
         "labels": [
+            "Shared node label 9",
             "Test node 109",
             "KgNode109",
             "NodeAlias109"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:110",
         "labels": [
+            "Shared node label 10",
             "Test node 110",
             "KgNode110",
             "NodeAlias110"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:111",
         "labels": [
+            "Shared node label 11",
             "Test node 111",
             "KgNode111",
             "NodeAlias111"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:112",
         "labels": [
+            "Shared node label 12",
             "Test node 112",
             "KgNode112",
             "NodeAlias112"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:113",
+        "labels": [
+            "Shared node label 13",
+            "Test node 113",
+            "KgNode113",
+            "NodeAlias113"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:113",
-        "labels": [
-            "Test node 113",
-            "KgNode113",
-            "NodeAlias113"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "r"
-    },
-    {
         "id": "portal_test_data:114",
         "labels": [
+            "Shared node label 14",
             "Test node 114",
             "KgNode114",
             "NodeAlias114"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
-        "pos": "a"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:115",
         "labels": [
+            "Shared node label 15",
             "Test node 115",
             "KgNode115",
             "NodeAlias115"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:116",
         "labels": [
+            "Shared node label 16",
             "Test node 116",
             "KgNode116",
             "NodeAlias116"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "n"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:117",
         "labels": [
+            "Shared node label 17",
             "Test node 117",
             "KgNode117",
             "NodeAlias117"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:118",
-        "labels": [
-            "Test node 118",
-            "KgNode118",
-            "NodeAlias118"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
+        "id": "portal_test_data:118",
+        "labels": [
+            "Shared node label 18",
+            "Test node 118",
+            "KgNode118",
+            "NodeAlias118"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
         "id": "portal_test_data:119",
         "labels": [
+            "Shared node label 19",
             "Test node 119",
             "KgNode119",
             "NodeAlias119"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:120",
         "labels": [
+            "Shared node label 20",
             "Test node 120",
             "KgNode120",
             "NodeAlias120"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:121",
-        "labels": [
-            "Test node 121",
-            "KgNode121",
-            "NodeAlias121"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:122",
-        "labels": [
-            "Test node 122",
-            "KgNode122",
-            "NodeAlias122"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:123",
-        "labels": [
-            "Test node 123",
-            "KgNode123",
-            "NodeAlias123"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:124",
-        "labels": [
-            "Test node 124",
-            "KgNode124",
-            "NodeAlias124"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:121",
+        "labels": [
+            "Shared node label 21",
+            "Test node 121",
+            "KgNode121",
+            "NodeAlias121"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:122",
+        "labels": [
+            "Shared node label 22",
+            "Test node 122",
+            "KgNode122",
+            "NodeAlias122"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:123",
+        "labels": [
+            "Shared node label 23",
+            "Test node 123",
+            "KgNode123",
+            "NodeAlias123"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:124",
+        "labels": [
+            "Shared node label 24",
+            "Test node 124",
+            "KgNode124",
+            "NodeAlias124"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "a"
+    },
+    {
         "id": "portal_test_data:125",
         "labels": [
+            "Shared node label 25",
             "Test node 125",
             "KgNode125",
             "NodeAlias125"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
@@ -1640,401 +1766,432 @@
     {
         "id": "portal_test_data:126",
         "labels": [
+            "Shared node label 26",
             "Test node 126",
             "KgNode126",
             "NodeAlias126"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:127",
         "labels": [
+            "Shared node label 27",
             "Test node 127",
             "KgNode127",
             "NodeAlias127"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:128",
         "labels": [
+            "Shared node label 28",
             "Test node 128",
             "KgNode128",
             "NodeAlias128"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:129",
-        "labels": [
-            "Test node 129",
-            "KgNode129",
-            "NodeAlias129"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:130",
-        "labels": [
-            "Test node 130",
-            "KgNode130",
-            "NodeAlias130"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:131",
+        "id": "portal_test_data:129",
         "labels": [
-            "Test node 131",
-            "KgNode131",
-            "NodeAlias131"
+            "Shared node label 29",
+            "Test node 129",
+            "KgNode129",
+            "NodeAlias129"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:132",
+        "id": "portal_test_data:130",
         "labels": [
-            "Test node 132",
-            "KgNode132",
-            "NodeAlias132"
+            "Shared node label 30",
+            "Test node 130",
+            "KgNode130",
+            "NodeAlias130"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:131",
+        "labels": [
+            "Shared node label 31",
+            "Test node 131",
+            "KgNode131",
+            "NodeAlias131"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
+        "id": "portal_test_data:132",
+        "labels": [
+            "Shared node label 32",
+            "Test node 132",
+            "KgNode132",
+            "NodeAlias132"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "a"
+    },
+    {
         "id": "portal_test_data:133",
         "labels": [
+            "Shared node label 33",
             "Test node 133",
             "KgNode133",
             "NodeAlias133"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:134",
         "labels": [
+            "Shared node label 34",
             "Test node 134",
             "KgNode134",
             "NodeAlias134"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:135",
-        "labels": [
-            "Test node 135",
-            "KgNode135",
-            "NodeAlias135"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:136",
-        "labels": [
-            "Test node 136",
-            "KgNode136",
-            "NodeAlias136"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
+        "id": "portal_test_data:135",
+        "labels": [
+            "Shared node label 35",
+            "Test node 135",
+            "KgNode135",
+            "NodeAlias135"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:136",
+        "labels": [
+            "Shared node label 36",
+            "Test node 136",
+            "KgNode136",
+            "NodeAlias136"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "a"
+    },
+    {
         "id": "portal_test_data:137",
         "labels": [
+            "Shared node label 37",
             "Test node 137",
             "KgNode137",
             "NodeAlias137"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:138",
         "labels": [
+            "Shared node label 38",
             "Test node 138",
             "KgNode138",
             "NodeAlias138"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
         "id": "portal_test_data:139",
         "labels": [
+            "Shared node label 39",
             "Test node 139",
             "KgNode139",
             "NodeAlias139"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:140",
         "labels": [
+            "Shared node label 40",
             "Test node 140",
             "KgNode140",
             "NodeAlias140"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:141",
-        "labels": [
-            "Test node 141",
-            "KgNode141",
-            "NodeAlias141"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:142",
-        "labels": [
-            "Test node 142",
-            "KgNode142",
-            "NodeAlias142"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:143",
-        "labels": [
-            "Test node 143",
-            "KgNode143",
-            "NodeAlias143"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:144",
+        "id": "portal_test_data:141",
         "labels": [
-            "Test node 144",
-            "KgNode144",
-            "NodeAlias144"
+            "Shared node label 41",
+            "Test node 141",
+            "KgNode141",
+            "NodeAlias141"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:142",
+        "labels": [
+            "Shared node label 42",
+            "Test node 142",
+            "KgNode142",
+            "NodeAlias142"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:143",
+        "labels": [
+            "Shared node label 43",
+            "Test node 143",
+            "KgNode143",
+            "NodeAlias143"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
+        "id": "portal_test_data:144",
+        "labels": [
+            "Shared node label 44",
+            "Test node 144",
+            "KgNode144",
+            "NodeAlias144"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "a"
+    },
+    {
         "id": "portal_test_data:145",
         "labels": [
+            "Shared node label 45",
             "Test node 145",
             "KgNode145",
             "NodeAlias145"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:146",
+        "labels": [
+            "Shared node label 46",
+            "Test node 146",
+            "KgNode146",
+            "NodeAlias146"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:146",
-        "labels": [
-            "Test node 146",
-            "KgNode146",
-            "NodeAlias146"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:147",
         "labels": [
+            "Shared node label 47",
             "Test node 147",
             "KgNode147",
             "NodeAlias147"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:148",
-        "labels": [
-            "Test node 148",
-            "KgNode148",
-            "NodeAlias148"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:149",
+        "id": "portal_test_data:148",
         "labels": [
-            "Test node 149",
-            "KgNode149",
-            "NodeAlias149"
+            "Shared node label 48",
+            "Test node 148",
+            "KgNode148",
+            "NodeAlias148"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:150",
-        "labels": [
-            "Test node 150",
-            "KgNode150",
-            "NodeAlias150"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:149",
+        "labels": [
+            "Shared node label 49",
+            "Test node 149",
+            "KgNode149",
+            "NodeAlias149"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "n"
+    },
+    {
+        "id": "portal_test_data:150",
+        "labels": [
+            "Shared node label 50",
+            "Test node 150",
+            "KgNode150",
+            "NodeAlias150"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "r"
+    },
+    {
         "id": "portal_test_data:151",
         "labels": [
+            "Shared node label 51",
             "Test node 151",
             "KgNode151",
             "NodeAlias151"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "a"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:152",
         "labels": [
+            "Shared node label 52",
             "Test node 152",
             "KgNode152",
             "NodeAlias152"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
         "id": "portal_test_data:153",
         "labels": [
+            "Shared node label 53",
             "Test node 153",
             "KgNode153",
             "NodeAlias153"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
-        "pos": "v"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:154",
         "labels": [
+            "Shared node label 54",
             "Test node 154",
             "KgNode154",
             "NodeAlias154"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:155",
-        "labels": [
-            "Test node 155",
-            "KgNode155",
-            "NodeAlias155"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "r"
     },
     {
+        "id": "portal_test_data:155",
+        "labels": [
+            "Shared node label 55",
+            "Test node 155",
+            "KgNode155",
+            "NodeAlias155"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:156",
         "labels": [
+            "Shared node label 56",
             "Test node 156",
             "KgNode156",
             "NodeAlias156"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
@@ -2043,11 +2200,12 @@
     {
         "id": "portal_test_data:157",
         "labels": [
+            "Shared node label 57",
             "Test node 157",
             "KgNode157",
             "NodeAlias157"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
@@ -2056,547 +2214,589 @@
     {
         "id": "portal_test_data:158",
         "labels": [
+            "Shared node label 58",
             "Test node 158",
             "KgNode158",
             "NodeAlias158"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:159",
-        "labels": [
-            "Test node 159",
-            "KgNode159",
-            "NodeAlias159"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
+        "id": "portal_test_data:159",
+        "labels": [
+            "Shared node label 59",
+            "Test node 159",
+            "KgNode159",
+            "NodeAlias159"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
         "id": "portal_test_data:160",
         "labels": [
+            "Shared node label 60",
             "Test node 160",
             "KgNode160",
             "NodeAlias160"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "r"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:161",
         "labels": [
+            "Shared node label 61",
             "Test node 161",
             "KgNode161",
             "NodeAlias161"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:162",
         "labels": [
+            "Shared node label 62",
             "Test node 162",
             "KgNode162",
             "NodeAlias162"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:163",
-        "labels": [
-            "Test node 163",
-            "KgNode163",
-            "NodeAlias163"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:164",
+        "id": "portal_test_data:163",
         "labels": [
-            "Test node 164",
-            "KgNode164",
-            "NodeAlias164"
+            "Shared node label 63",
+            "Test node 163",
+            "KgNode163",
+            "NodeAlias163"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:165",
+        "id": "portal_test_data:164",
         "labels": [
-            "Test node 165",
-            "KgNode165",
-            "NodeAlias165"
+            "Shared node label 64",
+            "Test node 164",
+            "KgNode164",
+            "NodeAlias164"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:166",
+        "id": "portal_test_data:165",
         "labels": [
-            "Test node 166",
-            "KgNode166",
-            "NodeAlias166"
+            "Shared node label 65",
+            "Test node 165",
+            "KgNode165",
+            "NodeAlias165"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
+        "id": "portal_test_data:166",
+        "labels": [
+            "Shared node label 66",
+            "Test node 166",
+            "KgNode166",
+            "NodeAlias166"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "r"
+    },
+    {
         "id": "portal_test_data:167",
         "labels": [
+            "Shared node label 67",
             "Test node 167",
             "KgNode167",
             "NodeAlias167"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:168",
         "labels": [
+            "Shared node label 68",
             "Test node 168",
             "KgNode168",
             "NodeAlias168"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "r"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:169",
         "labels": [
+            "Shared node label 69",
             "Test node 169",
             "KgNode169",
             "NodeAlias169"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:170",
         "labels": [
+            "Shared node label 70",
             "Test node 170",
             "KgNode170",
             "NodeAlias170"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
         "id": "portal_test_data:171",
         "labels": [
+            "Shared node label 71",
             "Test node 171",
             "KgNode171",
             "NodeAlias171"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_0"
         ],
         "pos": "v"
     },
     {
         "id": "portal_test_data:172",
         "labels": [
+            "Shared node label 72",
             "Test node 172",
             "KgNode172",
             "NodeAlias172"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "n"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:173",
         "labels": [
+            "Shared node label 73",
             "Test node 173",
             "KgNode173",
             "NodeAlias173"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
-        "pos": "v"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:174",
         "labels": [
+            "Shared node label 74",
             "Test node 174",
             "KgNode174",
             "NodeAlias174"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
-        "pos": "v"
+        "pos": "r"
     },
     {
         "id": "portal_test_data:175",
         "labels": [
+            "Shared node label 75",
             "Test node 175",
             "KgNode175",
             "NodeAlias175"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "a"
-    },
-    {
-        "id": "portal_test_data:176",
-        "labels": [
-            "Test node 176",
-            "KgNode176",
-            "NodeAlias176"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:177",
+        "id": "portal_test_data:176",
         "labels": [
-            "Test node 177",
-            "KgNode177",
-            "NodeAlias177"
+            "Shared node label 76",
+            "Test node 176",
+            "KgNode176",
+            "NodeAlias176"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
-        ],
-        "pos": "r"
-    },
-    {
-        "id": "portal_test_data:178",
-        "labels": [
-            "Test node 178",
-            "KgNode178",
-            "NodeAlias178"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:179",
+        "id": "portal_test_data:177",
         "labels": [
-            "Test node 179",
-            "KgNode179",
-            "NodeAlias179"
+            "Shared node label 77",
+            "Test node 177",
+            "KgNode177",
+            "NodeAlias177"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:180",
+        "id": "portal_test_data:178",
         "labels": [
-            "Test node 180",
-            "KgNode180",
-            "NodeAlias180"
+            "Shared node label 78",
+            "Test node 178",
+            "KgNode178",
+            "NodeAlias178"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_1"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:181",
+        "id": "portal_test_data:179",
         "labels": [
-            "Test node 181",
-            "KgNode181",
-            "NodeAlias181"
+            "Shared node label 79",
+            "Test node 179",
+            "KgNode179",
+            "NodeAlias179"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:180",
+        "labels": [
+            "Shared node label 80",
+            "Test node 180",
+            "KgNode180",
+            "NodeAlias180"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:181",
+        "labels": [
+            "Shared node label 81",
+            "Test node 181",
+            "KgNode181",
+            "NodeAlias181"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "n"
+    },
+    {
         "id": "portal_test_data:182",
         "labels": [
+            "Shared node label 82",
             "Test node 182",
             "KgNode182",
             "NodeAlias182"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
         "id": "portal_test_data:183",
         "labels": [
+            "Shared node label 83",
             "Test node 183",
             "KgNode183",
             "NodeAlias183"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_1"
+            "portal_test_data_secondary_0"
         ],
-        "pos": "r"
+        "pos": "v"
     },
     {
         "id": "portal_test_data:184",
         "labels": [
+            "Shared node label 84",
             "Test node 184",
             "KgNode184",
             "NodeAlias184"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
-        "pos": "n"
+        "pos": "a"
     },
     {
         "id": "portal_test_data:185",
         "labels": [
+            "Shared node label 85",
             "Test node 185",
             "KgNode185",
             "NodeAlias185"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_0"
+            "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
         "id": "portal_test_data:186",
         "labels": [
+            "Shared node label 86",
             "Test node 186",
             "KgNode186",
             "NodeAlias186"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
-        ],
-        "pos": "v"
-    },
-    {
-        "id": "portal_test_data:187",
-        "labels": [
-            "Test node 187",
-            "KgNode187",
-            "NodeAlias187"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_2"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:188",
+        "id": "portal_test_data:187",
         "labels": [
-            "Test node 188",
-            "KgNode188",
-            "NodeAlias188"
+            "Shared node label 87",
+            "Test node 187",
+            "KgNode187",
+            "NodeAlias187"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_1"
         ],
         "pos": "v"
     },
     {
-        "id": "portal_test_data:189",
+        "id": "portal_test_data:188",
         "labels": [
-            "Test node 189",
-            "KgNode189",
-            "NodeAlias189"
+            "Shared node label 88",
+            "Test node 188",
+            "KgNode188",
+            "NodeAlias188"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "a"
     },
     {
+        "id": "portal_test_data:189",
+        "labels": [
+            "Shared node label 89",
+            "Test node 189",
+            "KgNode189",
+            "NodeAlias189"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "n"
+    },
+    {
         "id": "portal_test_data:190",
         "labels": [
+            "Shared node label 90",
             "Test node 190",
             "KgNode190",
             "NodeAlias190"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
         "pos": "r"
     },
     {
         "id": "portal_test_data:191",
         "labels": [
+            "Shared node label 91",
             "Test node 191",
             "KgNode191",
             "NodeAlias191"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:192",
+        "labels": [
+            "Shared node label 92",
+            "Test node 192",
+            "KgNode192",
+            "NodeAlias192"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "a"
     },
     {
-        "id": "portal_test_data:192",
-        "labels": [
-            "Test node 192",
-            "KgNode192",
-            "NodeAlias192"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
         "id": "portal_test_data:193",
         "labels": [
+            "Shared node label 93",
             "Test node 193",
             "KgNode193",
             "NodeAlias193"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "r"
+        "pos": "n"
     },
     {
         "id": "portal_test_data:194",
         "labels": [
+            "Shared node label 94",
             "Test node 194",
             "KgNode194",
             "NodeAlias194"
         ],
-        "sources": [
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_2"
+        ],
+        "pos": "r"
+    },
+    {
+        "id": "portal_test_data:195",
+        "labels": [
+            "Shared node label 95",
+            "Test node 195",
+            "KgNode195",
+            "NodeAlias195"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_0"
+        ],
+        "pos": "v"
+    },
+    {
+        "id": "portal_test_data:196",
+        "labels": [
+            "Shared node label 96",
+            "Test node 196",
+            "KgNode196",
+            "NodeAlias196"
+        ],
+        "sourceIds": [
+            "portal_test_data",
+            "portal_test_data_secondary_1"
+        ],
+        "pos": "a"
+    },
+    {
+        "id": "portal_test_data:197",
+        "labels": [
+            "Shared node label 97",
+            "Test node 197",
+            "KgNode197",
+            "NodeAlias197"
+        ],
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_2"
         ],
         "pos": "n"
     },
     {
-        "id": "portal_test_data:195",
+        "id": "portal_test_data:198",
         "labels": [
-            "Test node 195",
-            "KgNode195",
-            "NodeAlias195"
+            "Shared node label 98",
+            "Test node 198",
+            "KgNode198",
+            "NodeAlias198"
         ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_0"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:196",
-        "labels": [
-            "Test node 196",
-            "KgNode196",
-            "NodeAlias196"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "n"
-    },
-    {
-        "id": "portal_test_data:197",
-        "labels": [
-            "Test node 197",
-            "KgNode197",
-            "NodeAlias197"
-        ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
             "portal_test_data_secondary_0"
         ],
         "pos": "r"
     },
     {
-        "id": "portal_test_data:198",
-        "labels": [
-            "Test node 198",
-            "KgNode198",
-            "NodeAlias198"
-        ],
-        "sources": [
-            "portal_test_data",
-            "portal_test_data_secondary_1"
-        ],
-        "pos": "v"
-    },
-    {
         "id": "portal_test_data:199",
         "labels": [
+            "Shared node label 99",
             "Test node 199",
             "KgNode199",
             "NodeAlias199"
         ],
-        "sources": [
+        "sourceIds": [
             "portal_test_data",
-            "portal_test_data_secondary_2"
+            "portal_test_data_secondary_1"
         ],
-        "pos": "n"
+        "pos": "v"
     }
 ]

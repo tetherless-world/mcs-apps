@@ -7,7 +7,7 @@ import {KgFrame} from "kg/components/frame/KgFrame";
 export const KgNoRoute: React.FunctionComponent = () => {
   const location = useLocation();
   return (
-    <KgFrame data={true} loading={false}>
+    <KgFrame data={{kgById: {sources: []}}} loading={false}>
       {({data}) => (
         <h3>
           <code>{location.pathname}</code>

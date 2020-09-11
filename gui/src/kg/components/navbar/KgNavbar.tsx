@@ -11,8 +11,8 @@ import {
 
 import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
-import {KgNodeSearchBox} from "../kg/search/KgNodeSearchBox";
-import {KgNavbarProps} from "kg/components/navbar/KgNavbarProps";
+import {KgSearchBox} from "../kg/search/KgSearchBox";
+import {KgSource} from "shared/models/kg/source/KgSource";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -32,9 +32,10 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export const KgNavbar: React.FunctionComponent<KgNavbarProps> = ({
-  hideNavbarSearchBox,
-}) => {
+export const KgNavbar: React.FunctionComponent<{
+  allSources: readonly KgSource[];
+  hideNavbarSearchBox?: boolean;
+}> = ({allSources, hideNavbarSearchBox}) => {
   const classes = useStyles();
 
   return (
@@ -44,7 +45,8 @@ export const KgNavbar: React.FunctionComponent<KgNavbarProps> = ({
           <Typography variant="h5">CSKG</Typography>
         </Button>
         {!hideNavbarSearchBox ? (
-          <KgNodeSearchBox
+          <KgSearchBox
+            allSources={allSources}
             autocompleteStyle={{display: "inline-block"}}
             placeholder="Search a word"
           />

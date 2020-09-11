@@ -38,14 +38,14 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
            |""".stripMargin))
     }
 
-    "get KG edges the node is a subject of" in {
+    "get top KG edges the node is a subject of" in {
       val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
            kgById(id: $$kgId) {
              nodeById(id: $$nodeId) {
-               subjectOfEdges(limit: 10000, offset: 0) {
+               topSubjectOfEdges(limit: 10000) {
                  predicate
                  object
                  objectNode {
@@ -63,25 +63,26 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
       }
     }
 
-    "get KG edges the node is an object of" in {
-      val node = TestKgData.nodes(0)
-      val query =
-        graphql"""
-         query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
-           kgById(id: $$kgId) {
-             nodeById(id: $$nodeId) {
-               objectOfEdges(limit: 10000, offset: 0) {
-                 predicate
-                 subject
-               }
-             }
-           }
-         }
-       """
-
-      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)))
-      result must include("""{"data":{"kgById":{"nodeById":{"objectOfEdges":[{"predicate"""")
-    }
+    // Deprecated feature
+//    "get top KG edges the node is an object of" in {
+//      val node = TestKgData.nodes(0)
+//      val query =
+//        graphql"""
+//         query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
+//           kgById(id: $$kgId) {
+//             nodeById(id: $$nodeId) {
+//               topObjectOfEdges(limit: 10000) {
+//                 predicate
+//                 subject
+//               }
+//             }
+//           }
+//         }
+//       """
+//
+//      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)))
+//      result must include("""{"data":{"kgById":{"nodeById":{"objectOfEdges":[{"predicate"""")
+//    }
 
     "get a random KG node" in {
         val query =
@@ -100,36 +101,61 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         results must include("""{"data":{"kgById":{"randomNode":{"id":"""")
     }
 
-    "search KG nodes" in {
-      val node = TestKgData.nodes(0)
+    "search KG labels" in {
+      val label = TestKgData.nodeLabelsByLabel.keys.head
       val query =
         graphql"""
-         query MatchingKgNodesQuery($$kgId: String!, $$text: String!) {
+         query KgSourceSearchQuery($$kgId: String!, $$text: String!) {
            kgById(id: $$kgId) {
-             matchingNodes(query: {text: $$text}, limit: 1, offset: 0) {
-              id
+             search(query: {text: $$text}, limit: 10, offset: 0) {
+                __typename
+                  ... on KgNodeLabelSearchResult {
+                    nodeLabel
+                  }
              }
-             matchingNodesCount(query: {text: $$text})
+             searchCount(query: {text: $$text})
            }
          }
        """
 
-      executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""labels:"${node.labels(0)}"""")) must be(Json.parse(
-        s"""
-           |{"data":{"kgById":{"matchingNodes":[{"id":"${node.id}"}],"matchingNodesCount":1}}}
-           |""".stripMargin))
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""label:"${label}"""")))
+
+      result must include(label)
+    }
+
+    "search KG nodes" in {
+      val node = TestKgData.nodes(0)
+      val query =
+        graphql"""
+         query KgNodeSearchQuery($$kgId: String!, $$text: String!) {
+           kgById(id: $$kgId) {
+             search(query: {text: $$text}, limit: 10, offset: 0) {
+                __typename
+                  ... on KgNodeSearchResult {
+                    node {
+                      id
+                    }
+                  }
+             }
+             searchCount(query: {text: $$text})
+           }
+         }
+       """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""labels:"${node.labels(0)}"""")))
+
+      result must include(node.id)
     }
 
     "get KG node facets" in {
       val query =
         graphql"""
-         query MatchingKgNodesQuery($$kgId: String!) {
+         query KgNodeFacetSearchQuery($$kgId: String!) {
            kgById(id: $$kgId) {
-             matchingNodeFacets(query: {}) {
-              sources {
-                id
-                label
-              }
+             searchFacets(query: {}) {
+                sourceIds {
+                  value
+                }
              }
            }
          }
@@ -138,7 +164,6 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
       val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId)))
       for (source <- TestKgData.sources) {
         result must include(source.id)
-        result must include(source.label)
       }
     }
 

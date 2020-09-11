@@ -11,9 +11,16 @@ export interface RandomKgNodePageQuery_kgById_randomNode {
   id: string;
 }
 
+export interface RandomKgNodePageQuery_kgById_sources {
+  __typename: "KgSource";
+  id: string;
+  label: string;
+}
+
 export interface RandomKgNodePageQuery_kgById {
   __typename: "Kg";
   randomNode: RandomKgNodePageQuery_kgById_randomNode;
+  sources: RandomKgNodePageQuery_kgById_sources[];
 }
 
 export interface RandomKgNodePageQuery {
