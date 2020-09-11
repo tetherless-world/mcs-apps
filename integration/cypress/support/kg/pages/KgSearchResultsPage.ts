@@ -78,7 +78,7 @@ class KgSearchResultsTable extends MuiDataTable {
 }
 
 export class KgSearchResultsPage extends Page {
-  constructor(private readonly search: string) {
+  constructor(private readonly search?: string) {
     super();
   }
 
@@ -86,9 +86,11 @@ export class KgSearchResultsPage extends Page {
   readonly resultsTable = new KgSearchResultsTable();
 
   get relativeUrl() {
-    return (
-      `/kg/${KgTestData.kgId}/search?query=` +
-      encodeURIComponent(JSON.stringify({text: this.search}))
-    );
+    let relativeUrl = `/kg/${KgTestData.kgId}/search`;
+    if (this.search) {
+      relativeUrl +=
+        "?query=" + encodeURIComponent(JSON.stringify({text: this.search}));
+    }
+    return relativeUrl;
   }
 }
