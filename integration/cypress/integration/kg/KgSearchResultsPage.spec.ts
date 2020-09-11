@@ -88,14 +88,19 @@ context("KgSearchResultsPage", () => {
 
     page.resultsTable
       .row(0)
-      .nodeLabelLink.should("have.text", nodeLabelsDescending[0]);
+      .nodeLabelLink.should(
+        "have.text",
+        "Node label: " + nodeLabelsDescending[0]
+      );
 
     page.resultsTable
       .get()
       .find("[data-cy=node-label-link]")
       .should(($els) => {
         expect($els.toArray().map(($el) => $el.innerText)).to.deep.equal(
-          nodeLabelsDescending.slice(0, 10)
+          nodeLabelsDescending
+            .slice(0, 10)
+            .map((nodeLabel) => "Node label: " + nodeLabel)
         );
       });
   });
@@ -109,20 +114,22 @@ context("KgSearchResultsPage", () => {
 
     page.resultsTable
       .row(0)
-      .nodeLabelLink.should("have.text", nodeLabelsDescending[0]);
+      .nodeLabelLink.should("contain", nodeLabelsDescending[0]);
 
     page.resultsTable.paginateNext();
 
     page.resultsTable
       .row(0)
-      .nodeLabelLink.should("have.text", nodeLabelsDescending[10]);
+      .nodeLabelLink.should("contain", nodeLabelsDescending[10]);
 
     page.resultsTable
       .get()
       .find("[data-cy=node-label-link]")
       .should(($els) => {
         expect($els.toArray().map(($el) => $el.innerText)).to.deep.equal(
-          nodeLabelsDescending.slice(10, 20)
+          nodeLabelsDescending
+            .slice(10, 20)
+            .map((nodeLabel) => "Node label: " + nodeLabel)
         );
       });
   });

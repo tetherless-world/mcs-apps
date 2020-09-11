@@ -24,7 +24,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
               : undefined
           }
         >
-          Node label:&nbsp;{result.nodeLabel}
+          Node label: {result.nodeLabel}
         </KgNodeLabelLink>
       );
     }
@@ -40,7 +40,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
               : undefined,
           }}
         >
-          Node:&nbsp;{result.node.label ?? result.node.id}
+          Node: {result.node.label ?? result.node.id}
         </KgNodeLink>
       );
     }
