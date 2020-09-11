@@ -4,7 +4,7 @@ import io.github.tetherlessworld.mcsapps.lib.benchmark.data.TestBenchmarkDataRes
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
-class BenchmarkQuestionsJsonlReaderSpec extends WordSpec with Matchers with WithResource {
+class BenchmarkQuestionsJsonlIteratorSpec extends WordSpec with Matchers with WithResource {
   "Benchmark questions .jsonl reader" can {
     "read the test data" in {
       withResource(BenchmarkQuestionsJsonlIterator.open(TestBenchmarkDataResources.benchmarkQuestionsJsonl.getAsStream())) { iterator =>

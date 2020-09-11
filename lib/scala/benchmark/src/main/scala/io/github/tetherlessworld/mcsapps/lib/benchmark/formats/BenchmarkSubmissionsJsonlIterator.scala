@@ -9,11 +9,11 @@ import io.github.tetherlessworld.mcsapps.lib.kg.formats.JsonlIterator
 
 import scala.io.Source
 
-final class BenchmarkSubmissionsJsonlReader(source: Source) extends JsonlIterator[BenchmarkSubmission](source) {
+final class BenchmarkSubmissionsJsonlIterator(source: Source) extends JsonlIterator[BenchmarkSubmission](source) {
   protected val decoder: Decoder[BenchmarkSubmission] = deriveDecoder
 }
 
-object BenchmarkSubmissionsJsonlReader {
-  def open(inputStream: InputStream): BenchmarkSubmissionsJsonlReader =
-    new BenchmarkSubmissionsJsonlReader(JsonlIterator.openSource(inputStream))
+object BenchmarkSubmissionsJsonlIterator {
+  def open(inputStream: InputStream): BenchmarkSubmissionsJsonlIterator =
+    new BenchmarkSubmissionsJsonlIterator(JsonlIterator.openSource(inputStream))
 }

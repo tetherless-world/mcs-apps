@@ -4,10 +4,10 @@ import io.github.tetherlessworld.mcsapps.lib.benchmark.data.TestBenchmarkDataRes
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
-class BenchmarkAnswersJsonlReaderSpec extends WordSpec with Matchers with WithResource {
+class BenchmarkAnswersJsonlIteratorSpec extends WordSpec with Matchers with WithResource {
   "Benchmark answers .jsonl reader" can {
     "read the test data" in {
-      withResource(BenchmarkAnswersJsonlReader.open(TestBenchmarkDataResources.benchmarkAnswersJsonl.getAsStream())) { iterator =>
+      withResource(BenchmarkAnswersJsonlIterator.open(TestBenchmarkDataResources.benchmarkAnswersJsonl.getAsStream())) { iterator =>
         val answers = iterator.toList
         for (answer <- answers) {
           answer.submissionId should not be empty
