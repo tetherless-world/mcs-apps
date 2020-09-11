@@ -7,13 +7,14 @@ import {KgSourcePill} from "../source/KgSourcePill";
 import {KgNodePosBadge} from "./KgNodePosBadge";
 
 export const KgNodeLink: React.FunctionComponent<{
+  children?: React.ReactNode;
   node: {
     id: string;
     label: string | null;
     pos: string | null;
     sources?: readonly KgSource[];
   };
-}> = ({node}) => {
+}> = ({children, node}) => {
   const label = node.label ?? node.id;
   return (
     <Link
@@ -24,10 +25,10 @@ export const KgNodeLink: React.FunctionComponent<{
       <span style={{marginRight: "5px"}}>
         {node.pos ? (
           <KgNodePosBadge badgeContent={node.pos} color="primary">
-            {label}
+            {children ?? label}
           </KgNodePosBadge>
         ) : (
-          label
+          children ?? label
         )}
       </span>
       {node.sources
