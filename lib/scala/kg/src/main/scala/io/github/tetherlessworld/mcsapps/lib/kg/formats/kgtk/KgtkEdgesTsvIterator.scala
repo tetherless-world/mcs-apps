@@ -106,6 +106,9 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       return None
     }
 
+    val node1Parsed = KgNodeIdParser.parseMergedNodeId(node1.get)
+    val node2Parsed = KgNodeIdParser.parseMergedNodeId(node2.get)
+
     Some(kgtk.KgtkEdgeWithNodes(
       edge = KgEdge(
         id = row.getNonBlank("id").getOrElse(s"${node1}-${relation}-${node2}"),
@@ -119,16 +122,18 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       node1 = KgNode(
         id = node1.get,
         labels = row.getList("node1;label"),
-        pos = None,
+        pos = node1Parsed.pos,
         sourceIds = sources,
-        pageRank = None
+        pageRank = None,
+        wordNetSenseNumber = node1Parsed.wordNetSenseNumber
       ),
       node2 = KgNode(
         id = node2.get,
         labels = row.getList("node2;label"),
-        pos = None,
+        pos = node2Parsed.pos,
         sourceIds = sources,
-        pageRank = None
+        pageRank = None,
+        wordNetSenseNumber = node2Parsed.wordNetSenseNumber
       ),
       sources = sources
     ))
