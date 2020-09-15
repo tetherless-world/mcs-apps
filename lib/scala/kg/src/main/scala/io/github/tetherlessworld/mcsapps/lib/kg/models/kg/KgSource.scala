@@ -4,7 +4,13 @@ final case class KgSource(id: String, label: String)
 
 object KgSource {
   val WellKnownSources: Map[String, KgSource] = Map(
+    "AT" -> "Atomic",
     "CN" -> "ConceptNet",
+    "FN" -> "FrameNet",
+    "RG" -> "Roget",
+    "VG" -> "Visual Genome",
+    "WD" -> "Wikidata",
+    "WN" -> "WordNet",
     "portal_test_data" -> "Portal test data",
     "portal_test_data_secondary_0" -> "Portal test data secondary 0",
     "portal_test_data_secondary_1" -> "Portal test data secondary 1",
