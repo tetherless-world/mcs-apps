@@ -6,7 +6,7 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.io.Source
 
-class KgtkEdgesTsvReaderSpec extends WordSpec with Matchers with WithResource {
+class KgtkEdgesTsvIteratorSpec extends WordSpec with Matchers with WithResource {
   "KGTK edges TSV Reader" can {
     "read the test data" in {
       withResource(KgtkEdgesTsvIterator.open(TestKgtkDataResources.edgesTsvBz2.getAsStream())) { iterator =>

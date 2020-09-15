@@ -40,8 +40,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         id = recordMap("node.id").asInstanceOf[String],
         labels = toList(recordMap("node.labels").asInstanceOf[String]),
         pageRank = Try(recordMap("node.pageRank").asInstanceOf[Double].doubleValue()).toOption,
-        pos = Option(recordMap("node.pos")).map(_.asInstanceOf[String]),
-        sourceIds = toList(recordMap("node.sources").asInstanceOf[String])
+        pos = Option(recordMap("node.pos")).map(_.asInstanceOf[String].charAt(0)),
+        sourceIds = toList(recordMap("node.sources").asInstanceOf[String]),
+        wordNetSenseNumber = None
       )
     }
 
