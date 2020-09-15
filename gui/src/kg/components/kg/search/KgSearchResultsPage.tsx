@@ -266,7 +266,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
           setResults((prevState) => data.kgById.search);
         });
       });
-  }, [limitQueryParam, offsetQueryParam, sortsQueryParam]);
+  }, [limitQueryParam, offsetQueryParam, queryQueryParam, sortsQueryParam]);
 
   type KgFrameData = {
     facets: KgSearchFacetsFragment;
