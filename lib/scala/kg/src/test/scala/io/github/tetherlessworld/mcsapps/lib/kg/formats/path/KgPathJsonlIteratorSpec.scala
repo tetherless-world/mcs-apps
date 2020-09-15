@@ -4,7 +4,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgtkDataResources
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
-class KgPathJsonlReaderSpec extends WordSpec with Matchers with WithResource {
+class KgPathJsonlIteratorSpec extends WordSpec with Matchers with WithResource {
   "KG path .jsonl reader" can {
     "read the test data" in {
       withResource(KgPathsJsonlIterator.open(TestKgtkDataResources.pathsJsonl.getAsStream())) { iterator =>
