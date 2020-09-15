@@ -87,6 +87,7 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       logger.info("line {} is missing sources, skipping", lineIndex)
       return None
     }
+    assert(sources.length == sources.toSet.size, lineIndex)
 
     val node1 = row.getNonBlank("node1")
     if (!node1.isDefined) {
