@@ -5,6 +5,37 @@ import org.slf4j.LoggerFactory
 object KgNodeIdParser {
   private val logger = LoggerFactory.getLogger("KgNodeIdParser")
 
+  private def parseCskgConceptNetNodeId(nodeId: String): KgParsedNodeId = {
+    val nodeIdSplit = nodeId.split('/')
+    assert(nodeIdSplit(0).isEmpty)
+    assert(nodeIdSplit(1) == "c")
+    assert(nodeIdSplit(2) == "en")
+    val concept = nodeIdSplit(3)
+    if (nodeIdSplit.length > 4) {
+      val pos = nodeIdSplit(4)
+      assert(pos.nonEmpty)
+      KgParsedNodeId(pos = Some(pos.charAt(0)), wordNetSenseNumber = None)
+    } else {
+      KgParsedNodeId(pos = None, wordNetSenseNumber = None)
+    }
+  }
+
+  private def parseCskgWordNetNodeId(nodeId: String): KgParsedNodeId = {
+    // wn:angiotensin_ii_inhibitor.n.01
+    val nodeIdSplit = nodeId.split(':')
+    assert(nodeIdSplit.length == 2)
+    val unqualifiedNodeIdSplit = nodeIdSplit(1).split('.')
+    if (unqualifiedNodeIdSplit.length < 3) {
+      return KgParsedNodeId(pos = None, wordNetSenseNumber = None)
+    }
+    assert(unqualifiedNodeIdSplit.length == 3, nodeId)
+    val word = unqualifiedNodeIdSplit(0)
+    val pos = unqualifiedNodeIdSplit(1)
+    assert(pos.length == 1)
+    val wordNetSenseNumber = unqualifiedNodeIdSplit(2).toInt
+    KgParsedNodeId(pos = Some(pos.charAt(0)), wordNetSenseNumber = Some(wordNetSenseNumber))
+  }
+
   def parseMergedNodeId(mergedNodeId: String): KgParsedNodeId =
     parseMergedNodeId(mergedNodeId, mergedNodeId.split('-').toList)
 
@@ -35,16 +66,30 @@ object KgNodeIdParser {
     }
   }
 
-  private def parseConceptNetNodeId(nodeId: String): KgParsedNodeId = {
-    val nodeIdSplit = nodeId.split('/')
-    KgParsedNodeId(pos = None, wordNetSenseNumber = None)
-  }
-
   private def parsePreMergeNodeId(preMergeNodeId: String): KgParsedNodeId = {
+    var parsed = KgParsedNodeId(pos = None, wordNetSenseNumber = None)
     if (preMergeNodeId.startsWith("/c/en")) {
-      parseConceptNetNodeId(preMergeNodeId)
+      parsed = parseCskgConceptNetNodeId(preMergeNodeId)
     } else {
-      KgParsedNodeId(pos = None, wordNetSenseNumber = None)
+      val nodeIdSplit = preMergeNodeId.split(':')
+      if (nodeIdSplit.length == 2) {
+        val namespace = nodeIdSplit(0)
+        val unqualifiedNodeId = nodeIdSplit(1)
+        namespace match {
+          case "at" | "fn" | "rg" | "wd" | "wn" =>
+          case "wn" => parsed = parseCskgWordNetNodeId(preMergeNodeId)
+          case _ => logger.warn("unrecognized node id format: {}", preMergeNodeId)
+        }
+      }
     }
+
+    if (parsed.pos.isDefined) {
+      val pos = parsed.pos.get
+      assert(pos == 'a' || pos == 'n' || pos == 'r' || pos == 's' || pos == 'v', preMergeNodeId)
+    }
+    if (parsed.wordNetSenseNumber.isDefined) {
+      assert(parsed.wordNetSenseNumber.get >= 0)
+    }
+    parsed
   }
 }
