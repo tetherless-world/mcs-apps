@@ -42,10 +42,11 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
-    Field("pos", OptionType(StringType), resolve = _.value.pos),
+    Field("pos", OptionType(StringType), resolve = _.value.pos.map(_.toString)),
     Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
-    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectId = Some(ctx.value.id)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending)))
+    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectId = Some(ctx.value.id)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))),
+    Field("wordNetSenseNumber", OptionType(IntType), resolve = _.value.wordNetSenseNumber),
   ))
   val KgNodesByLabelType = deriveObjectType[KgGraphQlSchemaContext, AbstractKgGraphQlSchemaDefinition.KgNodesByLabel](
     AddFields(

@@ -91,8 +91,9 @@ object KgData {
     KgNode(
       id = node1.id, // should be equal
       labels = node1.labels ::: node2.labels distinct,
-      pos = None,
+      pos = node1.pos,
       sourceIds = node1.sourceIds ::: node2.sourceIds distinct,
-      pageRank = None // should not be initialized yet
+      pageRank = None, // should not be initialized yet,
+      wordNetSenseNumber = node1.wordNetSenseNumber
     )
 }

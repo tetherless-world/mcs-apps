@@ -87,7 +87,8 @@ object PageRank {
         labels = List(),
         pageRank = None,
         pos = None,
-        sourceIds = List()
+        sourceIds = List(),
+        wordNetSenseNumber = None
       ))
 
     val nodeLabelNodesWithPageRanks = calculateNodePageRanks(nodeLabelNodes, nodeLabelEdges)
