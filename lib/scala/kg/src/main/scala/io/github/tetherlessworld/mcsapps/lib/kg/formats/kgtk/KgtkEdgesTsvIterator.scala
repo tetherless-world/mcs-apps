@@ -106,8 +106,8 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       return None
     }
 
-    val node1Parsed = KgNodeIdParser.parseMergedNodeId(node1.get)
-    val node2Parsed = KgNodeIdParser.parseMergedNodeId(node2.get)
+    val node1Parsed = KgNodeIdParser.parseNodeId(lineIndex, node1.get)
+    val node2Parsed = KgNodeIdParser.parseNodeId(lineIndex, node2.get)
 
     Some(kgtk.KgtkEdgeWithNodes(
       edge = KgEdge(

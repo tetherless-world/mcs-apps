@@ -36,56 +36,56 @@ object KgNodeIdParser {
     KgParsedNodeId(pos = Some(pos.charAt(0)), wordNetSenseNumber = Some(wordNetSenseNumber))
   }
 
-  def parseMergedNodeId(mergedNodeId: String): KgParsedNodeId =
-    parseMergedNodeId(mergedNodeId, mergedNodeId.split('-').toList)
+//  def parseMergedNodeId(lineIndex: Int, mergedNodeId: String): KgParsedNodeId =
+//    parseMergedNodeId(lineIndex, mergedNodeId, List(mergedNodeId))
+//
+//  private def parseMergedNodeId(lineIndex: Int, mergedNodeId: String, preMergeNodeIds: List[String]): KgParsedNodeId = {
+//    if (preMergeNodeIds.isEmpty) {
+//      throw new UnsupportedOperationException("node id's cannot be empty")
+//    } else if (preMergeNodeIds.length == 1) {
+//      parsePreMergeNodeId(lineIndex, preMergeNodeIds(0))
+//    } else {
+//      val parses = preMergeNodeIds.map(parsePreMergeNodeId(lineIndex, _))
+//      val partsOfSpeech = parses.flatMap(_.pos.toList)
+//      if (partsOfSpeech.isEmpty) {
+//        parses(0)  // Doesn't matter if we return anything
+//      } else if (partsOfSpeech.length == 1) {
+//        val partOfSpeech = partsOfSpeech(0)
+//        val parseWithPosAndWordNet = parses.find(parse => parse.pos.isDefined && parse.pos.get == partOfSpeech && parse.wordNetSenseNumber.isDefined)
+//        if (parseWithPosAndWordNet.isDefined) {
+//          parseWithPosAndWordNet.get
+//        } else {
+//          val parseWithPos = parses.find(parse => parse.pos.isDefined && parse.pos.get == partOfSpeech)
+//          parseWithPos.get
+//        }
+//      } else {
+//        // Conflict, don't return anything
+//        logger.warn("merged node id has part of speech conflict: {}", mergedNodeId)
+//        KgParsedNodeId(pos = None, wordNetSenseNumber = None)
+//      }
+//    }
+//  }
 
-  private def parseMergedNodeId(mergedNodeId: String, preMergeNodeIds: List[String]): KgParsedNodeId = {
-    if (preMergeNodeIds.isEmpty) {
-      throw new UnsupportedOperationException("node id's cannot be empty")
-    } else if (preMergeNodeIds.length == 1) {
-      parsePreMergeNodeId(preMergeNodeIds(0))
-    } else {
-      val parses = preMergeNodeIds.map(parsePreMergeNodeId(_))
-      val partsOfSpeech = parses.flatMap(_.pos.toList)
-      if (partsOfSpeech.isEmpty) {
-        parses(0)  // Doesn't matter if we return anything
-      } else if (partsOfSpeech.length == 1) {
-        val partOfSpeech = partsOfSpeech(0)
-        val parseWithPosAndWordNet = parses.find(parse => parse.pos.isDefined && parse.pos.get == partOfSpeech && parse.wordNetSenseNumber.isDefined)
-        if (parseWithPosAndWordNet.isDefined) {
-          parseWithPosAndWordNet.get
-        } else {
-          val parseWithPos = parses.find(parse => parse.pos.isDefined && parse.pos.get == partOfSpeech)
-          parseWithPos.get
-        }
-      } else {
-        // Conflict, don't return anything
-        logger.warn("merged node id has part of speech conflict: {}", mergedNodeId)
-        KgParsedNodeId(pos = None, wordNetSenseNumber = None)
-      }
-    }
-  }
-
-  private def parsePreMergeNodeId(preMergeNodeId: String): KgParsedNodeId = {
+  def parseNodeId(lineIndex: Int, nodeId: String): KgParsedNodeId = {
     var parsed = KgParsedNodeId(pos = None, wordNetSenseNumber = None)
-    if (preMergeNodeId.startsWith("/c/en")) {
-      parsed = parseCskgConceptNetNodeId(preMergeNodeId)
+    if (nodeId.startsWith("/c/en")) {
+      parsed = parseCskgConceptNetNodeId(nodeId)
     } else {
-      val nodeIdSplit = preMergeNodeId.split(':')
+      val nodeIdSplit = nodeId.split(':')
       if (nodeIdSplit.length == 2) {
         val namespace = nodeIdSplit(0)
         val unqualifiedNodeId = nodeIdSplit(1)
         namespace match {
-          case "at" | "fn" | "rg" | "wd" | "wn" =>
-          case "wn" => parsed = parseCskgWordNetNodeId(preMergeNodeId)
-          case _ => logger.warn("unrecognized node id format: {}", preMergeNodeId)
+          case "at" | "fn" | "rg" | "wd" =>
+          case "wn" => parsed = parseCskgWordNetNodeId(nodeId)
+          case _ => logger.warn("unrecognized node id format line {}: {}", lineIndex, nodeId)
         }
       }
     }
 
     if (parsed.pos.isDefined) {
       val pos = parsed.pos.get
-      assert(pos == 'a' || pos == 'n' || pos == 'r' || pos == 's' || pos == 'v', preMergeNodeId)
+      assert(pos == 'a' || pos == 'n' || pos == 'r' || pos == 's' || pos == 'v', nodeId)
     }
     if (parsed.wordNetSenseNumber.isDefined) {
       assert(parsed.wordNetSenseNumber.get >= 0)
