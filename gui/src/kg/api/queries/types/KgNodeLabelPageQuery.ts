@@ -9,7 +9,6 @@
 export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels_nodes {
   __typename: "KgNode";
   id: string;
-  labels: string[];
   pos: string | null;
 }
 
@@ -17,6 +16,7 @@ export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels
   __typename: "KgNodeLabel";
   nodeLabel: string;
   nodes: KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels_nodes[];
+  sourceIds: string[];
 }
 
 export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_topEdges {
@@ -31,9 +31,17 @@ export interface KgNodeLabelPageQuery_kgById_nodeLabel_context {
   topEdges: KgNodeLabelPageQuery_kgById_nodeLabel_context_topEdges[];
 }
 
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_nodes {
+  __typename: "KgNode";
+  id: string;
+  pos: string | null;
+}
+
 export interface KgNodeLabelPageQuery_kgById_nodeLabel {
   __typename: "KgNodeLabel";
   context: KgNodeLabelPageQuery_kgById_nodeLabel_context;
+  nodeLabel: string;
+  nodes: KgNodeLabelPageQuery_kgById_nodeLabel_nodes[];
   sourceIds: string[];
 }
 

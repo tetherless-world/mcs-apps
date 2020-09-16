@@ -31,10 +31,7 @@ export const KgNodeLabelPage: React.FunctionComponent = () => {
         return (
           <KgNodeLabelViews
             allSources={data.kgById.sources}
-            nodeLabel={{
-              sourceIds: nodeLabel.sourceIds,
-              topEdges: nodeLabel.context.topEdges,
-            }}
+            nodeLabel={nodeLabel}
           />
         );
       }}

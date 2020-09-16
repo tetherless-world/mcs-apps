@@ -1,38 +1,32 @@
 import * as React from "react";
 import {useRouteMatch} from "react-router-dom";
 import {Grid} from "@material-ui/core";
-import {KgNodeContextGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
-import {KgNodeContextLists} from "shared/components/kg/node/KgEdgeObjectsLists";
-import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
+import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
+import {KgNodeContextLists} from "shared/components/kg/node/KgNodeContextLists";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
 import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
-import {indexKgEdgeObjectsByPredicate} from "shared/models/kg/node/indexKgEdgeObjectsByPredicate";
-import {KgNodeLabel} from "shared/models/kg/node/KgNodeLabel";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgNodeLabelContext} from "shared/models/kg/node/KgNodeLabelContext";
 
 export const KgNodeLabelViews: React.FunctionComponent<{
   allSources: readonly KgSource[];
-  nodeLabel: KgNodeLabel & {
+  nodeLabel: {
     context: KgNodeLabelContext;
+    nodeLabel: string;
     sourceIds: readonly string[];
   };
 }> = ({allSources, nodeLabel}) => {
   const routeMatch = useRouteMatch();
-
-  const edgeObjectsByPredicate = indexKgEdgeObjectsByPredicate(
-    nodeLabel.topEdges
-  );
 
   const tabRoutes = {
     grid: new TabRoute({
       content: (
         <KgNodeContextGrid
           allSources={allSources}
-          edgeObjectsByPredicate={edgeObjectsByPredicate}
+          nodeContext={nodeLabel.context}
         />
       ),
       relPath: "",
@@ -44,7 +38,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       content: (
         <KgNodeContextLists
           allSources={allSources}
-          edgeObjectsByPredicate={edgeObjectsByPredicate}
+          nodeContext={nodeLabel.context}
         />
       ),
       relPath: "/list",

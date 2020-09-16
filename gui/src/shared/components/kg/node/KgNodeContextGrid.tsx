@@ -1,6 +1,5 @@
 import {Card, CardContent, CardHeader, Grid, List} from "@material-ui/core";
 import * as React from "react";
-import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 import {indexNodeContextByTopEdgePredicate} from "shared/models/kg/node/indexNodeContextByTopEdgePredicate";

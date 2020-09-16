@@ -9,13 +9,14 @@
 export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels_nodes {
   __typename: "KgNode";
   id: string;
-  labels: string[];
+  pos: string | null;
 }
 
 export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels {
   __typename: "KgNodeLabel";
   nodeLabel: string;
   nodes: KgNodePageQuery_kgById_node_context_relatedNodeLabels_nodes[];
+  sourceIds: string[];
 }
 
 export interface KgNodePageQuery_kgById_node_context_topEdges {

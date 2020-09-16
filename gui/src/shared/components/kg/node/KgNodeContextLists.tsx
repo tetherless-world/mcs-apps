@@ -3,11 +3,13 @@ import {
   CardContent,
   createStyles,
   List,
+  ListItem,
   makeStyles,
 } from "@material-ui/core";
 import * as React from "react";
-import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
+import {indexNodeContextByTopEdgePredicate} from "shared/models/kg/node/indexNodeContextByTopEdgePredicate";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -37,14 +39,16 @@ const useStyles = makeStyles(() =>
 
 export const KgNodeContextLists: React.FunctionComponent<{
   allSources: readonly KgSource[];
-  edgeObjectsByPredicate: {
-    [predicate: string]: KgEdgeObject[];
-  };
-}> = ({edgeObjectsByPredicate, allSources}) => {
+  nodeContext: KgNodeContext;
+}> = ({allSources, nodeContext}) => {
+  const nodeLabelsByTopEdgePredicate = indexNodeContextByTopEdgePredicate(
+    nodeContext
+  );
+
   const classes = useStyles();
   return (
     <React.Fragment>
-      {Object.keys(edgeObjectsByPredicate).map((predicate) => (
+      {Object.keys(nodeLabelsByTopEdgePredicate).map((predicate) => (
         <Card
           className={classes.edgeListRoot}
           data-cy={`list-${predicate}-edges`}
@@ -55,11 +59,11 @@ export const KgNodeContextLists: React.FunctionComponent<{
               <p>{predicate}</p>
             </div>
             <List>
-              {edgeObjectsByPredicate[predicate]!.map((edge) => (
-                <div></div>
-                // <ListItem data-cy="edge" key={edge.object}>
-                //   <KgNodeLink node={{...edge.objectNode!, allSources}} />
-                // </ListItem>
+              {nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => (
+                <ListItem data-cy="edge" key={nodeLabel.nodeLabel}>
+                  {nodeLabel.nodeLabel}
+                  {/*<KgNodeLink node={{...edge.objectNode!, allSources}} />*/}
+                </ListItem>
               ))}
             </List>
           </CardContent>

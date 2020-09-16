@@ -10,8 +10,6 @@ import {KgFrame} from "kg/components/frame/KgFrame";
 import {kgId} from "shared/api/kgId";
 import {NotFound} from "shared/components/error/NotFound";
 import {KgNodeViews} from "shared/components/kg/node/KgNodeViews";
-import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
-import {KgNodeLabel} from "shared/models/kg/node/KgNodeLabel";
 
 export const KgNodePage: React.FunctionComponent = () => {
   let {nodeId} = useParams<{nodeId: string}>();
@@ -30,12 +28,7 @@ export const KgNodePage: React.FunctionComponent = () => {
           return <NotFound label={nodeId} />;
         }
 
-        return (
-          <KgNodeViews
-            allSources={data.kgById.sources}
-            node={{...node, topEdges: node.context.topEdges}}
-          />
-        );
+        return <KgNodeViews allSources={data.kgById.sources} node={node} />;
       }}
     </KgFrame>
   );

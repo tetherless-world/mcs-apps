@@ -10,7 +10,7 @@ export const KgNodeLabelLink: React.FunctionComponent<{
   nodeLabel: string;
   nodes?: readonly {
     id: string;
-    pos?: string;
+    pos: string | null | undefined;
   }[];
   sources?: readonly KgSource[];
 }> = ({children, nodeLabel, sources}) => {

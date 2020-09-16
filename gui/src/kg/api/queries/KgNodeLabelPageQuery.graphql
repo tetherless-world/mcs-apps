@@ -21,6 +21,7 @@ query KgNodeLabelPageQuery(
           predicate
         }
       }
+      nodeLabel
       nodes {
         id
         pos

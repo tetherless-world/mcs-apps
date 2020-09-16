@@ -8,14 +8,13 @@ import {
   List,
   ListItemText,
 } from "@material-ui/core";
-import {KgNodeContextGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
-import {KgNodeContextLists} from "shared/components/kg/node/KgEdgeObjectsLists";
+import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
+import {KgNodeContextLists} from "shared/components/kg/node/KgNodeContextLists";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
 import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
-import {indexKgEdgeObjectsByPredicate} from "shared/models/kg/node/indexKgEdgeObjectsByPredicate";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 
@@ -37,15 +36,10 @@ export const KgNodeViews: React.FunctionComponent<{
     title += " (" + node.pos + ")";
   }
 
-  const edgeObjectsByPredicate = indexKgEdgeObjectsByPredicate(node.context);
-
   const tabRoutes = {
     grid: new TabRoute({
       content: (
-        <KgNodeContextGrid
-          allSources={allSources}
-          edgeObjectsByPredicate={edgeObjectsByPredicate}
-        />
+        <KgNodeContextGrid allSources={allSources} nodeContext={node.context} />
       ),
       relPath: "",
       label: "Grid",
@@ -56,7 +50,7 @@ export const KgNodeViews: React.FunctionComponent<{
       content: (
         <KgNodeContextLists
           allSources={allSources}
-          edgeObjectsByPredicate={edgeObjectsByPredicate}
+          nodeContext={node.context}
         />
       ),
       relPath: "/list",
