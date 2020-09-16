@@ -163,21 +163,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
       val cypher = sort.field match {
         case KgTopEdgesSortField.ObjectLabelPageRank =>
-          // first group edges by predicate and collect object labels
-          // then flatten, sort by label pageRank, and get distinct labels
-          // finally, use initial edge query to find the edges that correspond to the labels
           s"""
-             |WITH type(edge) as relation, collect([(object)-[:${LabelRelationshipType}]-(l:${LabelLabel}) | l]) as groupObjectLabelsByRelation
-             |WITH relation, reduce(objectLabels = [], label in groupObjectLabelsByRelation | objectLabels + label) as objectLabels
-             |UNWIND objectLabels as objectLabel
-             |WITH relation, objectLabel
-             |ORDER BY objectLabel.pageRank desc, objectLabel.id
-             |WITH relation, collect(distinct objectLabel)[0 .. ${limit}] as objectLabels
-             |UNWIND objectLabels as objectLabel
-             |WITH relation, objectLabel
-             |MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
-             |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}" AND type(edge) = relation
-             |WITH objectLabel, subject, edge, object
+             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id
+             |WITH type(edge) as relation, collect(distinct objectLabel)[0 .. ${limit}] as distinctObjectLabelsByRelation
+             |UNWIND distinctObjectLabelsByRelation as objectLabel
+             |MATCH ${filters.subjectLabel.map(_ => s"(:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-").getOrElse("")}
+             |(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
+             |WHERE type(edge) = relation
+             |WITH edge, subject, object, objectLabel
              |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
              |""".stripMargin
         case KgTopEdgesSortField.ObjectPageRank =>
@@ -276,22 +269,24 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
     private def filterEdgesCypher(filters: KgEdgeFilters): String = {
       var matchCypher: String = ""
+
       if (filters.objectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
       } else if (filters.objectLabel.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel} {id: $$objectLabel})"
+        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(:${LabelLabel} {id: $$objectLabel}) " +
+          s"MATCH (object)-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
       } else if (filters.subjectId.isDefined) {
         matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
       } else if (filters.subjectLabel.isDefined) {
-        matchCypher = s"MATCH (label:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})"
+        matchCypher = s"MATCH (subjectLabel:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
       } else {
         throw new UnsupportedOperationException
       }
 
       s"""
          |${matchCypher}
-         |WHERE type(edge)<>"${PathRelationshipType}" AND type(edge)<>"${LabelRelationshipType}"
-         |WITH edge, subject, object
+         |WHERE type(edge)<>"${PathRelationshipType}"
+         |WITH edge, subject, object${if (filters.objectLabel.isDefined || filters.subjectLabel.isDefined) ", objectLabel" else ""}
          |""".stripMargin
     }
 
