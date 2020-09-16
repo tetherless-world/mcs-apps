@@ -39,6 +39,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   // KgNode
   implicit lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
     Field("aliases", OptionType(ListType(StringType)), resolve = ctx => if (ctx.value.labels.size > 1) Some(ctx.value.labels.slice(1, ctx.value.labels.size)) else None),
+    Field("context", KgNodeContextType, resolve = ctx => ctx.ctx.kgQueryStore.getNodeContext(ctx.value.id).get),
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
@@ -47,12 +48,21 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("wordNetSenseNumber", OptionType(IntType), resolve = _.value.wordNetSenseNumber),
   ))
+  // KgNodeContext
+  implicit lazy val KgNodeContextType: ObjectType[KgGraphQlSchemaContext, KgNodeContext] = ObjectType("KgNodeContext", () => fields[KgGraphQlSchemaContext, KgNodeContext](
+    Field("relatedNodeLabels", ListType(KgNodeLabelType), resolve = _.value.relatedNodeLabels),
+    Field("topEdges", ListType(KgEdgeType), resolve = _.value.topEdges)
+  ))
   // KgNodeLabel
-  val KgNodeLabelType = deriveObjectType[KgGraphQlSchemaContext, KgNodeLabel](
-    AddFields(
-      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
-    )
-  )
+  implicit lazy val KgNodeLabelType: ObjectType[KgGraphQlSchemaContext, KgNodeLabel] = ObjectType("KgNodeLabel", () => fields[KgGraphQlSchemaContext, KgNodeLabel](
+    Field("context", OptionType(KgNodeLabelContextType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabelContext(ctx.value.nodeLabel).get),
+    Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
+  ))
+  // KgNodeLabelContext
+  implicit lazy val KgNodeLabelContextType: ObjectType[KgGraphQlSchemaContext, KgNodeLabelContext] = ObjectType("KgNodeLabelContext", () => fields[KgGraphQlSchemaContext, KgNodeLabelContext](
+    Field("relatedNodeLabels", ListType(KgNodeLabelType), resolve = _.value.relatedNodeLabels),
+    Field("topEdges", ListType(KgEdgeType), resolve = _.value.topEdges)
+  ))
 
   // KgPath
   val KgPathType = deriveObjectType[KgGraphQlSchemaContext, KgPath](
