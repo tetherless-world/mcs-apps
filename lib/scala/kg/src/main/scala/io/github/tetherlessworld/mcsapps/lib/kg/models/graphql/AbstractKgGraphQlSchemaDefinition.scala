@@ -2,7 +2,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.graphql
 
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
 import sangria.macros.derive.{AddFields, deriveEnumType, deriveInputObjectType, deriveObjectType}
@@ -47,9 +47,10 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("wordNetSenseNumber", OptionType(IntType), resolve = _.value.wordNetSenseNumber),
   ))
-  val KgNodesByLabelType = deriveObjectType[KgGraphQlSchemaContext, AbstractKgGraphQlSchemaDefinition.KgNodesByLabel](
+  // KgNodeLabel
+  val KgNodeLabelType = deriveObjectType[KgGraphQlSchemaContext, KgNodeLabel](
     AddFields(
-      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds))
+      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
     )
   )
 
@@ -93,11 +94,8 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("search", ListType(KgSearchResultType), arguments = LimitArgument :: OffsetArgument :: KgSearchQueryArgument :: KgSearchSortsArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.search(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgSearchQueryArgument), sorts = ctx.args.arg(KgSearchSortsArgument).map(_.toList))),
     Field("searchCount", IntType, arguments = KgSearchQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.searchCount(query = ctx.args.arg(KgSearchQueryArgument))),
     Field("searchFacets", KgSearchFacetsType, arguments = KgSearchQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.searchFacets(query = ctx.args.arg(KgSearchQueryArgument))),
-    Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.args.arg(IdArgument))),
-    Field("nodesByLabel", KgNodesByLabelType, arguments = LabelArgument :: Nil, resolve = ctx => {
-      val label = ctx.args.arg(LabelArgument)
-      AbstractKgGraphQlSchemaDefinition.KgNodesByLabel(nodeLabel = label, nodes = ctx.ctx.kgQueryStore.getNodesByLabel(label))
-    }),
+    Field("node", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.args.arg(IdArgument))),
+    Field("nodeLabel", OptionType(KgNodeLabelType), arguments = LabelArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabel(ctx.args.arg(LabelArgument))),
     Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPath(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeType, resolve = ctx => ctx.ctx.kgQueryStore.getRandomNode),
     Field("sources", ListType(KgSourceType), resolve = ctx => ctx.ctx.kgQueryStore.getSources),

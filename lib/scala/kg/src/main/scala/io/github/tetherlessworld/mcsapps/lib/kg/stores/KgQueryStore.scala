@@ -3,8 +3,6 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 
 trait KgQueryStore {
-  def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge]
-
   /**
    * Get a node by ID.
    */
