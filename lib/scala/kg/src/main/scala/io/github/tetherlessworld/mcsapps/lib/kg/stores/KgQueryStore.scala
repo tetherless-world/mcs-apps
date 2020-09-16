@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 
 trait KgQueryStore {
   def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge]
@@ -8,17 +8,27 @@ trait KgQueryStore {
   /**
    * Get a node by ID.
    */
-  def getNodeById(id: String): Option[KgNode]
+  def getNode(id: String): Option[KgNode]
 
   /**
-   * Get nodes by label.
+   * Get a node's context, for the node page.
    */
-  def getNodesByLabel(label: String): List[KgNode]
+  def getNodeContext(id: String): Option[KgNodeContext]
+
+  /**
+   * Get a node label by label.
+   */
+  def getNodeLabel(label: String): Option[KgNodeLabel]
+
+  /**
+   * Get a node label's context, for the node label page.
+   */
+  def getNodeLabelContext(label: String): Option[KgNodeLabelContext]
 
   /**
    * Get a path by id.
    */
-  def getPathById(id: String): Option[KgPath]
+  def getPath(id: String): Option[KgPath]
 
   /**
    * Get a random node
@@ -35,8 +45,6 @@ trait KgQueryStore {
    * Get sources mapped by id
    */
   def getSourcesById: Map[String, KgSource]
-
-  def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge]
 
   /**
    * Get total number of edges.

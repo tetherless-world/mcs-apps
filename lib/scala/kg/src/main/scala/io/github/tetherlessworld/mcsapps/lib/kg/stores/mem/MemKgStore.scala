@@ -109,14 +109,14 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     sortedEdges.drop(offset).take(limit)
   }
 
-  final override def getNodeById(id: String): Option[KgNode] =
+  final override def getNode(id: String): Option[KgNode] =
     nodesById.get(id)
 
   final override def getNodesByLabel(label: String): List[KgNode] = {
     nodeLabelsByLabel.get(label).map(nodeLabel => nodeLabel.nodes).getOrElse(List())
   }
 
-  final override def getPathById(id: String): Option[KgPath] =
+  final override def getPath(id: String): Option[KgPath] =
     pathsById.get(id)
 
   final override def getSourcesById: Map[String, KgSource] =
@@ -125,7 +125,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getRandomNode: KgNode =
     nodesById.values.toList(random.nextInt(nodesById.size))
 
-  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+  final override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
     val edges = filterEdges(filters)
     sort.field match {
       case KgTopEdgesSortField.ObjectPageRank =>

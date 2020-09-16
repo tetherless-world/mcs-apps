@@ -29,12 +29,12 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("object", StringType, resolve = _.value.`object`),
-    Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.`object`)),
+    Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.`object`)),
     Field("predicate", StringType, resolve = _.value.predicate),
     Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("subject", StringType, resolve = _.value.subject),
-    Field("subjectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.value.subject)),
+    Field("subjectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.subject)),
   ))
   // KgNode
   implicit lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
@@ -45,13 +45,11 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("pos", OptionType(StringType), resolve = _.value.pos.map(_.toString)),
     Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
     Field("sources", ListType(KgSourceType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
-    Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectId = Some(ctx.value.id)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))),
     Field("wordNetSenseNumber", OptionType(IntType), resolve = _.value.wordNetSenseNumber),
   ))
   val KgNodesByLabelType = deriveObjectType[KgGraphQlSchemaContext, AbstractKgGraphQlSchemaDefinition.KgNodesByLabel](
     AddFields(
-      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds)),
-      Field("topSubjectOfEdges", ListType(KgEdgeType), arguments = LimitArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(ctx.value.nodeLabel)), limit = ctx.args.arg(LimitArgument), sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)))
+      Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds))
     )
   )
 
@@ -95,12 +93,12 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("search", ListType(KgSearchResultType), arguments = LimitArgument :: OffsetArgument :: KgSearchQueryArgument :: KgSearchSortsArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.search(limit = ctx.args.arg(LimitArgument), offset = ctx.args.arg(OffsetArgument), query = ctx.args.arg(KgSearchQueryArgument), sorts = ctx.args.arg(KgSearchSortsArgument).map(_.toList))),
     Field("searchCount", IntType, arguments = KgSearchQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.searchCount(query = ctx.args.arg(KgSearchQueryArgument))),
     Field("searchFacets", KgSearchFacetsType, arguments = KgSearchQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.searchFacets(query = ctx.args.arg(KgSearchQueryArgument))),
-    Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeById(ctx.args.arg(IdArgument))),
+    Field("nodeById", OptionType(KgNodeType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.args.arg(IdArgument))),
     Field("nodesByLabel", KgNodesByLabelType, arguments = LabelArgument :: Nil, resolve = ctx => {
       val label = ctx.args.arg(LabelArgument)
       AbstractKgGraphQlSchemaDefinition.KgNodesByLabel(nodeLabel = label, nodes = ctx.ctx.kgQueryStore.getNodesByLabel(label))
     }),
-    Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPathById(ctx.args.arg(IdArgument))),
+    Field("pathById", OptionType(KgPathType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPath(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeType, resolve = ctx => ctx.ctx.kgQueryStore.getRandomNode),
     Field("sources", ListType(KgSourceType), resolve = ctx => ctx.ctx.kgQueryStore.getSources),
     Field("totalEdgesCount", IntType, resolve = ctx => ctx.ctx.kgQueryStore.getTotalEdgesCount),
@@ -109,5 +107,4 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 }
 
 object AbstractKgGraphQlSchemaDefinition {
-  final case class KgNodesByLabel(nodeLabel: String, nodes: List[KgNode])
 }

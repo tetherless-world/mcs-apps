@@ -130,7 +130,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         )
       ).map(source => (source.id, source)).toMap
 
-    final override def getNodeById(id: String): Option[KgNode] =
+    final override def getNode(id: String): Option[KgNode] =
       transaction.run(
         s"MATCH (node:${NodeLabel} {id: $$id}) RETURN ${nodePropertyNamesString};",
         toTransactionRunParameters(Map("id" -> id))
@@ -145,7 +145,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         toTransactionRunParameters(Map("label" -> label))
       ).toNodes
 
-    final override def getPathById(id: String): Option[KgPath] =
+    final override def getPath(id: String): Option[KgPath] =
       transaction.run(
         s"""MATCH (subjectNode:${NodeLabel})-[path:${PathRelationshipType} {id: $$id}]->(objectNode:${NodeLabel})
            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
@@ -158,7 +158,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
-    override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+    override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
       val edgeCypher = filterEdgesCypher(filters)
 
       val cypher = sort.field match {
@@ -333,9 +333,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       _.getEdges(filters, limit, offset, sort)
     }
 
-  final override def getNodeById(id: String): Option[KgNode] =
+  final override def getNode(id: String): Option[KgNode] =
     withReadTransaction {
-      _.getNodeById(id)
+      _.getNode(id)
     }
 
   final override def getNodesByLabel(label: String): List[KgNode] =
@@ -354,9 +354,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   //      }
   //    }
   //
-  override def getPathById(id: String): Option[KgPath] =
+  override def getPath(id: String): Option[KgPath] =
     withReadTransaction {
-      _.getPathById(id)
+      _.getPath(id)
     }
 
   final override def getRandomNode: KgNode =
@@ -369,9 +369,9 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       _.getSourcesById
     }
 
-  override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
+  override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
     withReadTransaction {
-      _.getTopEdges(filters, limit, sort)
+      _.getSubjectNodeContext(filters, limit, sort)
     }
 
   final override def getTotalEdgesCount: Int =

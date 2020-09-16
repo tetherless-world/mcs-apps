@@ -61,7 +61,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
     "get node by id" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
-        val actual = query.getNodeById(expected.id).get
+        val actual = query.getNode(expected.id).get
         equals(actual, expected) shouldEqual true
       }
     }
@@ -81,13 +81,13 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
     "get a path by id" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.paths(0)
-        query.getPathById(expected.id) should equal(Some(expected))
+        query.getPath(expected.id) should equal(Some(expected))
       }
     }
 
     "return None for a non-extant path" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.getPathById("nonextant") should equal(None)
+        query.getPath("nonextant") should equal(None)
       }
     }
   }
@@ -96,7 +96,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
     "get a random node" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = query.getRandomNode
-        val actual = query.getNodeById(expected.id).get
+        val actual = query.getNode(expected.id).get
         equals(actual, expected) shouldEqual true
       }
     }
@@ -117,7 +117,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val objectNodeId = TestKgData.nodes(0).id
-        val actual = query.getTopEdges(filters = KgEdgeFilters(objectId = Some(objectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))
+        val actual = query.getNodeContext(filters = KgEdgeFilters(objectId = Some(objectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))
 
         val objectEdges = TestKgData.edges.filter(_.`object` == objectNodeId)
         var partitionStart = 0
@@ -136,7 +136,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeId = TestKgData.nodes(0).id
-        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectId = Some(subjectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))
+        val actual = query.getNodeContext(filters = KgEdgeFilters(subjectId = Some(subjectNodeId)), limit = limit, sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectPageRank, SortDirection.Descending))
 
         val subjectEdges = TestKgData.edges.filter(_.subject == subjectNodeId)
         var partitionStart = 0
@@ -157,7 +157,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
         val objectNodeLabel = TestKgData.nodes(0).labels(0)
 
         val sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)
-        val actual = query.getTopEdges(filters = KgEdgeFilters(objectLabel = Some(objectNodeLabel)), limit = limit, sort = sort)
+        val actual = query.getNodeContext(filters = KgEdgeFilters(objectLabel = Some(objectNodeLabel)), limit = limit, sort = sort)
 
         val objectNodes = TestKgData.nodes.filter(_.labels.contains(objectNodeLabel))
         val objectEdges = TestKgData.edges.filter(edge => objectNodes.contains(TestKgData.nodesById(edge.`object`)))
@@ -191,7 +191,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
         val limit = 3
         val subjectNodeLabel = TestKgData.nodes(0).labels(0)
         val sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)
-        val actual = query.getTopEdges(filters = KgEdgeFilters(subjectLabel = Some(subjectNodeLabel)), limit = limit, sort = sort)
+        val actual = query.getNodeContext(filters = KgEdgeFilters(subjectLabel = Some(subjectNodeLabel)), limit = limit, sort = sort)
 
         val subjectNodes = TestKgData.nodes.filter(_.labels.contains(subjectNodeLabel))
         val subjectEdges = TestKgData.edges.filter(edge => subjectNodes.contains(TestKgData.nodesById(edge.subject)))
