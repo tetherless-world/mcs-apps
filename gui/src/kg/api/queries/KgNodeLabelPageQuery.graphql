@@ -1,4 +1,3 @@
-#import "./KgNodeFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
 query KgNodeLabelPageQuery(
