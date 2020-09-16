@@ -56,9 +56,10 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   ))
   // KgNodeLabel
   implicit lazy val KgNodeLabelType: ObjectType[KgGraphQlSchemaContext, KgNodeLabel] = ObjectType("KgNodeLabel", () => fields[KgGraphQlSchemaContext, KgNodeLabel](
-    Field("context", OptionType(KgNodeLabelContextType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabelContext(ctx.value.nodeLabel).get),
+    Field("context", KgNodeLabelContextType, resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabelContext(ctx.value.nodeLabel).get),
     Field("nodeLabel", StringType, resolve = _.value.nodeLabel),
     Field("nodes", ListType(KgNodeType), resolve = _.value.nodes),
+    Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
   ))
   // KgNodeLabelContext
@@ -84,7 +85,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   val KgSearchResultType = UnionType("KgSearchResult", types = List(KgEdgeSearchResultType, KgEdgeLabelSearchResultType, KgNodeLabelSearchResultType, KgNodeSearchResultType, KgSourceSearchResultType))
 
   // Input enum types
-  implicit val KgNodeSortableFieldType = KgSearchSortField.sangriaType
+  implicit val KgSearchSortFieldType = KgSearchSortField.sangriaType
   implicit val SortDirectionType = SortDirection.sangriaType
 
   // Input object decoders
