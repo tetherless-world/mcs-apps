@@ -97,18 +97,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     edges
   }
 
-  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] = {
-    val unsortedEdges = filterEdges(filters)
-    val sortedEdges: List[KgEdge] = sort.field match {
-      case KgEdgesSortField.Id =>
-        unsortedEdges.sortBy(edge => edge.id)(if (sort.direction == SortDirection.Ascending) Ordering.String else Ordering[String].reverse).toList
-      case KgEdgesSortField.ObjectPageRank =>
-        unsortedEdges.sortBy(edge => nodesById(edge.`object`).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).toList
-      case _ => throw new UnsupportedOperationException
-    }
-    sortedEdges.drop(offset).take(limit)
-  }
-
   final override def getNode(id: String): Option[KgNode] =
     nodesById.get(id)
 
