@@ -6,7 +6,7 @@
 // START Enums and Input Objects
 //==============================================================
 
-export enum KgNodeSortableField {
+export enum KgSearchSortField {
   Id = "Id",
   Labels = "Labels",
   PageRank = "PageRank",
@@ -28,7 +28,7 @@ export interface KgSearchQuery {
 }
 
 export interface KgSearchSort {
-  field: KgNodeSortableField;
+  field: KgSearchSortField;
   direction: SortDirection;
 }
 

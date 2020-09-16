@@ -7,11 +7,21 @@ query KgNodePageQuery(
   $nodeId: String!
 ) {
   kgById(id: $kgId) {
-    nodeById(id: $nodeId) {
-      ...KgNodeFragment
-      topSubjectOfEdges(limit: 100) {
-        ... KgEdgeObjectFragment
+    node(id: $nodeId) {
+      context {
+        relatedNodeLabels {
+          nodeLabel
+          nodes {
+            id
+            labels
+          }
+        }
+        topEdges {
+          object
+          predicate
+        }
       }
+      ...KgNodeFragment
     }
     sources {
       ... KgSourceFragment

@@ -1,9 +1,0 @@
-fragment KgEdgeObjectFragment on KgEdge {
-    object
-    objectNode {
-        id
-        label
-        pos
-    }
-    predicate
-}

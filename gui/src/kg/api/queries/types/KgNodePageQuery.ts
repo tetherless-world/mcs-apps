@@ -6,29 +6,39 @@
 // GraphQL query operation: KgNodePageQuery
 // ====================================================
 
-export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges_objectNode {
+export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels_nodes {
   __typename: "KgNode";
   id: string;
-  label: string | null;
-  pos: string | null;
+  labels: string[];
 }
 
-export interface KgNodePageQuery_kgById_nodeById_topSubjectOfEdges {
+export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels {
+  __typename: "KgNodeLabel";
+  nodeLabel: string;
+  nodes: KgNodePageQuery_kgById_node_context_relatedNodeLabels_nodes[];
+}
+
+export interface KgNodePageQuery_kgById_node_context_topEdges {
   __typename: "KgEdge";
   object: string;
-  objectNode: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges_objectNode | null;
   predicate: string;
 }
 
-export interface KgNodePageQuery_kgById_nodeById {
+export interface KgNodePageQuery_kgById_node_context {
+  __typename: "KgNodeContext";
+  relatedNodeLabels: KgNodePageQuery_kgById_node_context_relatedNodeLabels[];
+  topEdges: KgNodePageQuery_kgById_node_context_topEdges[];
+}
+
+export interface KgNodePageQuery_kgById_node {
   __typename: "KgNode";
+  context: KgNodePageQuery_kgById_node_context;
   aliases: string[] | null;
   id: string;
   label: string | null;
   pos: string | null;
   pageRank: number;
   sourceIds: string[];
-  topSubjectOfEdges: KgNodePageQuery_kgById_nodeById_topSubjectOfEdges[];
 }
 
 export interface KgNodePageQuery_kgById_sources {
@@ -39,7 +49,7 @@ export interface KgNodePageQuery_kgById_sources {
 
 export interface KgNodePageQuery_kgById {
   __typename: "Kg";
-  nodeById: KgNodePageQuery_kgById_nodeById | null;
+  node: KgNodePageQuery_kgById_node | null;
   sources: KgNodePageQuery_kgById_sources[];
 }
 

@@ -42,6 +42,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("context", KgNodeContextType, resolve = ctx => ctx.ctx.kgQueryStore.getNodeContext(ctx.value.id).get),
     Field("id", StringType, resolve = _.value.id),
     Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
+    Field("labels", ListType(StringType), resolve = _.value.labels),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("pos", OptionType(StringType), resolve = _.value.pos.map(_.toString)),
     Field("sourceIds", ListType(StringType), resolve = _.value.sourceIds),
@@ -56,6 +57,8 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   // KgNodeLabel
   implicit lazy val KgNodeLabelType: ObjectType[KgGraphQlSchemaContext, KgNodeLabel] = ObjectType("KgNodeLabel", () => fields[KgGraphQlSchemaContext, KgNodeLabel](
     Field("context", OptionType(KgNodeLabelContextType), resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabelContext(ctx.value.nodeLabel).get),
+    Field("nodeLabel", StringType, resolve = _.value.nodeLabel),
+    Field("nodes", ListType(KgNodeType), resolve = _.value.nodes),
     Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
   ))
   // KgNodeLabelContext
