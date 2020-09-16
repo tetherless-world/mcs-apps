@@ -78,7 +78,7 @@ object KgNodeIdParser {
         namespace match {
           case "at" | "fn" | "rg" | "wd" =>
           case "wn" => parsed = parseCskgWordNetNodeId(nodeId)
-          case _ => logger.warn("unrecognized node id format line {}: {}", lineIndex, nodeId)
+          case _ => logger.debug("unrecognized node id format line {}: {}", lineIndex, nodeId)
         }
       }
     }

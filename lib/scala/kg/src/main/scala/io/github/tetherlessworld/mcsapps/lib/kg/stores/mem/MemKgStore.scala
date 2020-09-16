@@ -14,6 +14,8 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class MemKgStore extends KgCommandStore with KgQueryStore {
+  private val NodeContextTopEdgesLimit = 10
+  private val NodeLabelContextTopEdgesLimit = 10
 
   private class MemKgCommandStoreTransaction extends KgCommandStoreTransaction {
     final override def clear(): Unit = {
@@ -83,13 +85,52 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   final override def getNode(id: String): Option[KgNode] =
     nodesById.get(id)
 
-  final override def getNodeContext(id: String): Option[KgNodeContext] = None
+  final override def getNodeContext(id: String): Option[KgNodeContext] = {
+    getNode(id).map(_ => {
+      // Group edges by predicate and take the top <limit> edges within each predicate group
+      val topEdges = edges.filter(_.subject == id).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(NodeContextTopEdgesLimit)).values.flatten.toList
+      KgNodeContext(
+        relatedNodeLabels =  topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).flatMap(getNodeLabel(_)),
+        topEdges = topEdges
+      )
+    })
+  }
 
   final override def getNodeLabel(label: String): Option[KgNodeLabel] = {
     nodeLabelsByLabel.get(label)
   }
 
-  final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
+  final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = {
+    getNodeLabel(label).map(_ => {
+      val topEdges =
+        // Group edges by predicate
+        edges.groupBy(_.predicate).mapValues(edgesWithPredicate => {
+          // Group edges by object label
+          // Since a node can have multiple labels, the same edge can be in multiple groups
+          // Each group should only have one reference to a unique edge, however, so we use a map.
+          val edgesByObjectLabels = new mutable.HashMap[String, mutable.HashMap[String, KgEdge]]
+          for (edge <- edgesWithPredicate) {
+            for (objectLabel <- nodesById(edge.`object`).labels) {
+              edgesByObjectLabels.getOrElseUpdate(objectLabel, new mutable.HashMap[String, KgEdge])(edge.id) = edge
+            }
+          }
+          // Calculate the PageRank of each object label group
+          // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
+          edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
+            // Label page rank = max of the constituent node page ranks
+            //            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
+            val objectLabelPageRank = nodeLabelsByLabel(objectLabel).pageRank.get
+
+            (objectLabel, edgesById.values.toList.sortBy(_.id), objectLabelPageRank)
+          }).toList.sortBy(_._1).sortBy(_._3)(Ordering[Double].reverse).map(_._2).take(NodeLabelContextTopEdgesLimit).flatten
+        }).values.flatten.toList
+
+      KgNodeLabelContext(
+        relatedNodeLabels = topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).flatMap(getNodeLabel(_)),
+        topEdges = topEdges
+      )
+    })
+  }
 
   final override def getPath(id: String): Option[KgPath] =
     pathsById.get(id)
@@ -99,38 +140,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getRandomNode: KgNode =
     nodesById.values.toList(random.nextInt(nodesById.size))
-
-//  final override def getNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
-//    val edges = filterEdges(filters)
-//    sort.field match {
-//      case KgTopEdgesSortField.ObjectPageRank =>
-//        // Group edges by predicate and take the top <limit> edges within each predicate group
-//        edges.groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).take(limit)).values.flatten.toList
-//      case KgTopEdgesSortField.ObjectLabelPageRank => {
-//        // Group edges by predicate
-//        edges.groupBy(_.predicate).mapValues(edgesWithPredicate => {
-//          // Group edges by object label
-//          // Since a node can have multiple labels, the same edge can be in multiple groups
-//          // Each group should only have one reference to a unique edge, however, so we use a map.
-//          val edgesByObjectLabels = new mutable.HashMap[String, mutable.HashMap[String, KgEdge]]
-//          for (edge <- edgesWithPredicate) {
-//            for (objectLabel <- nodesById(edge.`object`).labels) {
-//              edgesByObjectLabels.getOrElseUpdate(objectLabel, new mutable.HashMap[String, KgEdge])(edge.id) = edge
-//            }
-//          }
-//          // Calculate the PageRank of each object label group
-//          // Take the top <limit> groups by PageRank and return all of the edges in each group (i.e., all edges with the same label)
-//          edgesByObjectLabels.map({ case (objectLabel, edgesById) =>
-//            // Label page rank = max of the constituent node page ranks
-//            //            val objectLabelPageRank = KgNodeLabelPageRankCalculator(edgesById.values.map(edge => nodesById(edge.`object`)))
-//            val objectLabelPageRank = nodeLabelsByLabel(objectLabel).pageRank.get
-//
-//            (objectLabel, edgesById.values.toList.sortBy(_.id), objectLabelPageRank)
-//          }).toList.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse).map(_._2).take(limit).flatten
-//        }).values.flatten.toList
-//      }
-//    }
-//  }
 
   final override def getTotalEdgesCount: Int =
     edges.size
