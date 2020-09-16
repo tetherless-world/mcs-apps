@@ -12,14 +12,18 @@ query KgNodeLabelPageQuery(
           nodeLabel
           nodes {
             id
-            labels
             pos
           }
+          sourceIds
         }
         topEdges {
           object
           predicate
         }
+      }
+      nodes {
+        id
+        pos
       }
       sourceIds
     }

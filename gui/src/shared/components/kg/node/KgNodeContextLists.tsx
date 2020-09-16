@@ -1,13 +1,11 @@
 import {
   Card,
   CardContent,
-  List,
-  ListItem,
   createStyles,
+  List,
   makeStyles,
 } from "@material-ui/core";
 import * as React from "react";
-import {KgNodeLink} from "./KgNodeLink";
 import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
@@ -37,12 +35,12 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export const KgEdgeObjectsLists: React.FunctionComponent<{
+export const KgNodeContextLists: React.FunctionComponent<{
+  allSources: readonly KgSource[];
   edgeObjectsByPredicate: {
     [predicate: string]: KgEdgeObject[];
   };
-  sources: KgSource[];
-}> = ({edgeObjectsByPredicate, sources}) => {
+}> = ({edgeObjectsByPredicate, allSources}) => {
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -58,9 +56,10 @@ export const KgEdgeObjectsLists: React.FunctionComponent<{
             </div>
             <List>
               {edgeObjectsByPredicate[predicate]!.map((edge) => (
-                <ListItem data-cy="edge" key={edge.object}>
-                  <KgNodeLink node={{...edge.objectNode!, sources}} />
-                </ListItem>
+                <div></div>
+                // <ListItem data-cy="edge" key={edge.object}>
+                //   <KgNodeLink node={{...edge.objectNode!, allSources}} />
+                // </ListItem>
               ))}
             </List>
           </CardContent>

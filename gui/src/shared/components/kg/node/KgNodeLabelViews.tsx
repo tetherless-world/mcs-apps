@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useRouteMatch} from "react-router-dom";
 import {Grid} from "@material-ui/core";
-import {KgEdgeObjectsGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
-import {KgEdgeObjectsLists} from "shared/components/kg/node/KgEdgeObjectsLists";
+import {KgNodeContextGrid} from "shared/components/kg/node/KgEdgeObjectsGrid";
+import {KgNodeContextLists} from "shared/components/kg/node/KgEdgeObjectsLists";
 import {KgEdgeObject} from "shared/models/kg/node/KgEdgeObject";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
@@ -10,30 +10,29 @@ import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
 import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
 import {indexKgEdgeObjectsByPredicate} from "shared/models/kg/node/indexKgEdgeObjectsByPredicate";
+import {KgNodeLabel} from "shared/models/kg/node/KgNodeLabel";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import {KgNodeLabelContext} from "shared/models/kg/node/KgNodeLabelContext";
 
 export const KgNodeLabelViews: React.FunctionComponent<{
   allSources: readonly KgSource[];
-  nodeLabel: string;
-  sourceIds: readonly string[];
-  topSubjectOfEdges: readonly KgEdgeObject[];
-}> = ({allSources, nodeLabel, sourceIds, topSubjectOfEdges}) => {
+  nodeLabel: KgNodeLabel & {
+    context: KgNodeLabelContext;
+    sourceIds: readonly string[];
+  };
+}> = ({allSources, nodeLabel}) => {
   const routeMatch = useRouteMatch();
 
   const edgeObjectsByPredicate = indexKgEdgeObjectsByPredicate(
-    topSubjectOfEdges
-  );
-
-  const sources = sourceIds.map((sourceId) =>
-    resolveSourceId({allSources, sourceId})
+    nodeLabel.topEdges
   );
 
   const tabRoutes = {
     grid: new TabRoute({
       content: (
-        <KgEdgeObjectsGrid
+        <KgNodeContextGrid
+          allSources={allSources}
           edgeObjectsByPredicate={edgeObjectsByPredicate}
-          sources={sources}
         />
       ),
       relPath: "",
@@ -43,9 +42,9 @@ export const KgNodeLabelViews: React.FunctionComponent<{
     }),
     list: new TabRoute({
       content: (
-        <KgEdgeObjectsLists
+        <KgNodeContextLists
+          allSources={allSources}
           edgeObjectsByPredicate={edgeObjectsByPredicate}
-          sources={sources}
         />
       ),
       relPath: "/list",
@@ -68,7 +67,11 @@ export const KgNodeLabelViews: React.FunctionComponent<{
         <Grid item xs={2}>
           <Grid container direction="column" spacing={6}>
             <Grid item>
-              <KgNodeSourcesCard nodeSources={sources} />
+              <KgNodeSourcesCard
+                nodeSources={nodeLabel.sourceIds.map((sourceId) =>
+                  resolveSourceId({allSources, sourceId})
+                )}
+              />
             </Grid>
           </Grid>
         </Grid>

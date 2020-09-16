@@ -13,8 +13,9 @@ query KgNodePageQuery(
           nodeLabel
           nodes {
             id
-            labels
+            pos
           }
+          sourceIds
         }
         topEdges {
           object

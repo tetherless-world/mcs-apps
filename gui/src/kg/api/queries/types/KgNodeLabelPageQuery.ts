@@ -33,7 +33,7 @@ export interface KgNodeLabelPageQuery_kgById_nodeLabel_context {
 
 export interface KgNodeLabelPageQuery_kgById_nodeLabel {
   __typename: "KgNodeLabel";
-  context: KgNodeLabelPageQuery_kgById_nodeLabel_context | null;
+  context: KgNodeLabelPageQuery_kgById_nodeLabel_context;
   sourceIds: string[];
 }
 

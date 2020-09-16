@@ -6,9 +6,9 @@ import {useApolloClient} from "@apollo/react-hooks";
 import * as KgSearchResultsPageFacetsQueryDocument from "kg/api/queries/KgSearchResultsPageFacetsQuery.graphql";
 import * as KgSearchResultsPageResultsQueryDocument from "kg/api/queries/KgSearchResultsPageResultsQuery.graphql";
 import {
-  KgNodeSortableField,
   KgSearchQuery,
   KgSearchSort,
+  KgSearchSortField,
   SortDirection,
 } from "kg/api/graphqlGlobalTypes";
 import {kgId} from "shared/api/kgId";
@@ -321,20 +321,20 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
                   ) => {
                     const sorts = sortsQueryParam?.concat() ?? [];
 
-                    let sortField: KgNodeSortableField;
+                    let sortField: KgSearchSortField;
 
                     switch (changedColumn) {
                       // case "id":
-                      //   sortField = KgNodeSortableField.Id;
+                      //   sortField = KgSearchSortField.Id;
                       //   break;
                       case "label":
-                        sortField = KgNodeSortableField.Labels;
+                        sortField = KgSearchSortField.Labels;
                         break;
                       case "sources":
-                        sortField = KgNodeSortableField.Sources;
+                        sortField = KgSearchSortField.Sources;
                         break;
                       case "pageRank":
-                        sortField = KgNodeSortableField.PageRank;
+                        sortField = KgSearchSortField.PageRank;
                         break;
                       default:
                         throw new Error("Changed column not supported");
