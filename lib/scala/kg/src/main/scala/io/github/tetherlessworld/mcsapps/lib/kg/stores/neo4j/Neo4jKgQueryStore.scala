@@ -1,7 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 
 import com.google.inject.Inject
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
 import org.neo4j.driver._
@@ -117,14 +117,27 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         toTransactionRunParameters(Map("id" -> id))
       ).toNodes.headOption
 
-    override def getNodesByLabel(label: String): List[KgNode] =
-      transaction.run(
-        s"""
-           |MATCH (label:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
-           |RETURN ${nodePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map("label" -> label))
-      ).toNodes
+    final override def getNodeContext(id: String): Option[KgNodeContext] = None
+
+    final override def getNodeLabel(label: String): Option[KgNodeLabel] = {
+      val results =
+        transaction.run(
+          s"""
+             |MATCH (label:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
+             |RETURN label.pageRank, ${nodePropertyNamesString}
+             |""".stripMargin,
+          toTransactionRunParameters(Map("label" -> label))
+        )
+      val records = results.asScala.toList
+      if (records.isEmpty) {
+        return None
+      }
+      val nodes = records.map(_.toNode)
+      val labelPageRank = records(0).get("label.pageRank").asDouble()
+      Some(KgNodeLabel(nodeLabel = label, nodes = nodes, pageRank = Some(labelPageRank)))
+    }
+
+    final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
 
     final override def getPath(id: String): Option[KgPath] =
       transaction.run(
@@ -139,40 +152,39 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
-    override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
-      val edgeCypher = filterEdgesCypher(filters)
-
-      val cypher = sort.field match {
-        case KgTopEdgesSortField.ObjectLabelPageRank =>
-          s"""
-             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id
-             |WITH type(edge) as relation, collect(distinct objectLabel)[0 .. ${limit}] as distinctObjectLabelsByRelation
-             |UNWIND distinctObjectLabelsByRelation as objectLabel
-             |MATCH ${filters.subjectLabel.map(_ => s"(:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-").getOrElse("")}
-             |(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
-             |WHERE type(edge) = relation
-             |WITH edge, subject, object, objectLabel
-             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
-             |""".stripMargin
-        case KgTopEdgesSortField.ObjectPageRank =>
-          s"""
-             |ORDER BY object.pageRank DESC
-             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-             |UNWIND groupByRelation as group
-             |WITH group[0] as edge, group[1] as subject, group[2] as object
-             |""".stripMargin
-      }
-
-      transaction.run(
-        s"""
-           |${edgeCypher}
-           |${cypher}
-           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(caseClassToMap(filters))
-      ).toEdges
-    }
-
+//    override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
+//      val edgeCypher = filterEdgesCypher(filters)
+//
+//      val cypher = sort.field match {
+//        case KgTopEdgesSortField.ObjectLabelPageRank =>
+//          s"""
+//             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id
+//             |WITH type(edge) as relation, collect(distinct objectLabel)[0 .. ${limit}] as distinctObjectLabelsByRelation
+//             |UNWIND distinctObjectLabelsByRelation as objectLabel
+//             |MATCH ${filters.subjectLabel.map(_ => s"(:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-").getOrElse("")}
+//             |(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
+//             |WHERE type(edge) = relation
+//             |WITH edge, subject, object, objectLabel
+//             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
+//             |""".stripMargin
+//        case KgTopEdgesSortField.ObjectPageRank =>
+//          s"""
+//             |ORDER BY object.pageRank DESC
+//             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
+//             |UNWIND groupByRelation as group
+//             |WITH group[0] as edge, group[1] as subject, group[2] as object
+//             |""".stripMargin
+//      }
+//
+//      transaction.run(
+//        s"""
+//           |${edgeCypher}
+//           |${cypher}
+//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+//           |""".stripMargin,
+//        toTransactionRunParameters(caseClassToMap(filters))
+//      ).toEdges
+//    }
 
     final override def getTotalEdgesCount: Int =
       transaction.run(
@@ -248,28 +260,28 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     // filters out None values and calls get on Some values
     private def caseClassToMap(cc: Product) = cc.getClass.getDeclaredFields.map( _.getName ).zip( cc.productIterator.to ).filter((mapping) => !mapping._2.isInstanceOf[Option[Any]] || mapping._2.asInstanceOf[Option[Any]].isDefined).map(mapping => if (mapping._2.isInstanceOf[Option[Any]]) (mapping._1, mapping._2.asInstanceOf[Option[Any]].get) else mapping).toMap
 
-    private def filterEdgesCypher(filters: KgEdgeFilters): String = {
-      var matchCypher: String = ""
-
-      if (filters.objectId.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
-      } else if (filters.objectLabel.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(:${LabelLabel} {id: $$objectLabel}) " +
-          s"MATCH (object)-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
-      } else if (filters.subjectId.isDefined) {
-        matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
-      } else if (filters.subjectLabel.isDefined) {
-        matchCypher = s"MATCH (subjectLabel:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
-      } else {
-        throw new UnsupportedOperationException
-      }
-
-      s"""
-         |${matchCypher}
-         |WHERE type(edge)<>"${PathRelationshipType}"
-         |WITH edge, subject, object${if (filters.objectLabel.isDefined || filters.subjectLabel.isDefined) ", objectLabel" else ""}
-         |""".stripMargin
-    }
+//    private def filterEdgesCypher(filters: KgEdgeFilters): String = {
+//      var matchCypher: String = ""
+//
+//      if (filters.objectId.isDefined) {
+//        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
+//      } else if (filters.objectLabel.isDefined) {
+//        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(:${LabelLabel} {id: $$objectLabel}) " +
+//          s"MATCH (object)-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
+//      } else if (filters.subjectId.isDefined) {
+//        matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
+//      } else if (filters.subjectLabel.isDefined) {
+//        matchCypher = s"MATCH (subjectLabel:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
+//      } else {
+//        throw new UnsupportedOperationException
+//      }
+//
+//      s"""
+//         |${matchCypher}
+//         |WHERE type(edge)<>"${PathRelationshipType}"
+//         |WITH edge, subject, object${if (filters.objectLabel.isDefined || filters.subjectLabel.isDefined) ", objectLabel" else ""}
+//         |""".stripMargin
+//    }
 
     private final case class KgNodeQueryFulltextCypher(
                                                 bindings: Map[String, Any],
@@ -309,19 +321,24 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
   }
 
-  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] =
-    withReadTransaction {
-      _.getEdges(filters, limit, offset, sort)
-    }
-
   final override def getNode(id: String): Option[KgNode] =
     withReadTransaction {
       _.getNode(id)
     }
 
-  final override def getNodesByLabel(label: String): List[KgNode] =
+  final override def getNodeContext(id: String): Option[KgNodeContext] =
     withReadTransaction {
-      _.getNodesByLabel(label)
+      _.getNodeContext(id)
+    }
+
+  final override def getNodeLabel(label: String): Option[KgNodeLabel] =
+    withReadTransaction {
+      _.getNodeLabel(label)
+    }
+
+  final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] =
+    withReadTransaction {
+      _.getNodeLabelContext(label)
     }
 
   //  override def getPaths: List[KgPath] =
@@ -348,11 +365,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getSourcesById: Map[String, KgSource] =
     withReadTransaction {
       _.getSourcesById
-    }
-
-  override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] =
-    withReadTransaction {
-      _.getSubjectNodeContext(filters, limit, sort)
     }
 
   final override def getTotalEdgesCount: Int =

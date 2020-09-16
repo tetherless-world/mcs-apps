@@ -10,6 +10,7 @@ trait KgQueryStore {
 
   /**
    * Get a node's context, for the node page.
+   * The context is as seen from the node as a subject.
    */
   def getNodeContext(id: String): Option[KgNodeContext]
 
@@ -20,6 +21,7 @@ trait KgQueryStore {
 
   /**
    * Get a node label's context, for the node label page.
+   * The context is as seen from the node label as a subject.
    */
   def getNodeLabelContext(label: String): Option[KgNodeLabelContext]
 
