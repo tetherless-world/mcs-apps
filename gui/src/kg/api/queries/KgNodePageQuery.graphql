@@ -13,6 +13,7 @@ query KgNodePageQuery(
             id
             pos
           }
+          pageRank
           sourceIds
         }
         topEdges {

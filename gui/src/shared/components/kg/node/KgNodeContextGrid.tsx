@@ -1,4 +1,12 @@
-import {Card, CardContent, CardHeader, Grid, List} from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
 import * as React from "react";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
@@ -25,7 +33,13 @@ export const KgNodeContextGrid: React.FunctionComponent<{
             <CardContent>
               <List>
                 {nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => {
-                  return <KgNodeLabelLink {...nodeLabel} />;
+                  return (
+                    <ListItem key={nodeLabel.nodeLabel}>
+                      <ListItemText>
+                        <KgNodeLabelLink {...nodeLabel} />
+                      </ListItemText>
+                    </ListItem>
+                  );
                 })}
               </List>
             </CardContent>

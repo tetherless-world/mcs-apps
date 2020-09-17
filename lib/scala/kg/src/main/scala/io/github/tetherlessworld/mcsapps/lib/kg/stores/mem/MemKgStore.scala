@@ -126,7 +126,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
         }).values.flatten.toList
 
       KgNodeLabelContext(
-        relatedNodeLabels = topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).flatMap(getNodeLabel(_)),
+        relatedNodeLabels = topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).distinct.flatMap(getNodeLabel(_)).sortBy(_.nodeLabel),
         topEdges = topEdges
       )
     })

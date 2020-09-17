@@ -16,6 +16,7 @@ export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels {
   __typename: "KgNodeLabel";
   nodeLabel: string;
   nodes: KgNodePageQuery_kgById_node_context_relatedNodeLabels_nodes[];
+  pageRank: number;
   sourceIds: string[];
 }
 

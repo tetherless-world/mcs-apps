@@ -26,9 +26,22 @@ export const indexNodeContextByTopEdgePredicate = (
       predicateNodeLabels = result[topEdge.predicate] = [];
     }
     const objectNodeLabels = relatedNodeLabelsByNodeId[topEdge.object];
-    if (objectNodeLabels) {
-      predicateNodeLabels.push(...objectNodeLabels);
+    if (!objectNodeLabels) {
+      continue;
     }
+    for (const objectNodeLabel of objectNodeLabels) {
+      if (
+        predicateNodeLabels.some(
+          (predicateNodeLabel) =>
+            predicateNodeLabel.nodeLabel == objectNodeLabel.nodeLabel
+        )
+      ) {
+        // Ignore duplicates
+        continue;
+      }
+      predicateNodeLabels.push(objectNodeLabel);
+    }
+    predicateNodeLabels.sort((left, right) => left.pageRank - right.pageRank);
   }
 
   return result;
