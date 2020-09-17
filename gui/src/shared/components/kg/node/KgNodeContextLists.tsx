@@ -4,12 +4,15 @@ import {
   createStyles,
   List,
   ListItem,
+  ListItemText,
   makeStyles,
 } from "@material-ui/core";
 import * as React from "react";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 import {indexNodeContextByTopEdgePredicate} from "shared/models/kg/node/indexNodeContextByTopEdgePredicate";
+import {KgNodeLabelLink} from "shared/components/kg/node/KgNodeLabelLink";
+import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -61,8 +64,17 @@ export const KgNodeContextLists: React.FunctionComponent<{
             <List>
               {nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => (
                 <ListItem data-cy="edge" key={nodeLabel.nodeLabel}>
-                  {nodeLabel.nodeLabel}
-                  {/*<KgNodeLink node={{...edge.objectNode!, allSources}} />*/}
+                  <ListItemText>
+                    <KgNodeLabelLink
+                      nodeLabel={{
+                        ...nodeLabel,
+                        sources: resolveSourceIds({
+                          allSources,
+                          sourceIds: nodeLabel.sourceIds,
+                        }),
+                      }}
+                    />
+                  </ListItemText>
                 </ListItem>
               ))}
             </List>

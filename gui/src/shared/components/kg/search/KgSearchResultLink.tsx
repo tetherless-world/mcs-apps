@@ -15,14 +15,14 @@ export const KgSearchResultLink: React.FunctionComponent<{
     case "KgNodeLabelSearchResult": {
       return (
         <KgNodeLabelLink
-          nodeLabel={result.nodeLabel}
-          sources={
-            includeSources
+          nodeLabel={{
+            nodeLabel: result.nodeLabel,
+            sources: includeSources
               ? result.sourceIds.map((sourceId) =>
                   resolveSourceId({allSources, sourceId})
                 )
-              : undefined
-          }
+              : undefined,
+          }}
         >
           Node label: {result.nodeLabel}
         </KgNodeLabelLink>
