@@ -1,47 +1,56 @@
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {KgSource} from "shared/models/kg/source/KgSource";
-import {KgNodeLink} from "shared/components/kg/node/KgNodeLink";
 import * as React from "react";
 import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
+import {Link} from "react-router-dom";
+import {Hrefs} from "shared/Hrefs";
+import {kgId} from "shared/api/kgId";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
-import {KgNodeLabelLink} from "shared/components/kg/node/KgNodeLabelLink";
 
 export const KgSearchResultLink: React.FunctionComponent<{
   allSources: readonly KgSource[];
-  includeSources?: boolean;
   result: KgSearchResult;
-}> = ({allSources, includeSources, result}) => {
+}> = ({allSources, result}) => {
   switch (result.__typename) {
     case "KgNodeLabelSearchResult": {
       return (
-        <KgNodeLabelLink
-          nodeLabel={{
-            nodeLabel: result.nodeLabel,
-            sources: includeSources
-              ? result.sourceIds.map((sourceId) =>
-                  resolveSourceId({allSources, sourceId})
-                )
-              : undefined,
-          }}
+        <Link
+          data-cy="node-label-link"
+          title={result.nodeLabel}
+          to={Hrefs.kg({id: kgId}).nodeLabel({label: result.nodeLabel})}
         >
-          Node label: {result.nodeLabel}
-        </KgNodeLabelLink>
+          <span style={{marginRight: "5px"}}>
+            Node label: {result.nodeLabel}
+          </span>
+        </Link>
       );
     }
     case "KgNodeSearchResult": {
       return (
-        <KgNodeLink
-          node={{
-            ...result.node,
-            sources: includeSources
-              ? result.node.sourceIds.map((sourceId) =>
-                  resolveSourceId({allSources, sourceId})
-                )
-              : undefined,
-          }}
+        <Link
+          data-cy="node-link"
+          title={result.node.id}
+          to={Hrefs.kg({id: kgId}).node({id: result.node.id})}
         >
-          Node: {result.node.label ?? result.node.id}
-        </KgNodeLink>
+          {result.node.label ?? result.node.id}
+        </Link>
+      );
+    }
+    case "KgSourceSearchResult": {
+      const source = resolveSourceId({allSources, sourceId: result.sourceId});
+      return (
+        <Link
+          data-cy="source-link"
+          title={source.label}
+          to={Hrefs.kg({id: kgId}).search({
+            __typename: "KgSearchVariables",
+            query: {
+              filters: {sourceIds: {include: [source.id]}},
+            },
+          })}
+        >
+          Source: {source.label}
+        </Link>
       );
     }
     default:
