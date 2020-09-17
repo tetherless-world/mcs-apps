@@ -70,6 +70,13 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     def toEdges: List[KgEdge] =
       result.asScala.toList.map(record => record.toEdge)
 
+    def toNodeLabels: List[KgNodeLabel] =
+      result.asScala.toList.groupBy(_.get("label.id").asString).mapValues(records => KgNodeLabel(
+        nodeLabel = records.head.get("label.id").asString,
+        nodes = records.map(_.toNode),
+        pageRank = Try(records.head.get("label.pageRank").asDouble).toOption
+      )).values.toList
+
     def toNodes: List[KgNode] =
       result.asScala.toList.map(record => record.toNode)
 
@@ -117,7 +124,44 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         toTransactionRunParameters(Map("id" -> id))
       ).toNodes.headOption
 
-    final override def getNodeContext(id: String): Option[KgNodeContext] = None
+    final override def getNodeContext(id: String): Option[KgNodeContext] = {
+      val relatedNodeLabels = transaction.run(
+        s"""
+           |MATCH (:${NodeLabel} {id: $$id})-->(:${NodeLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel})
+           |WITH distinct label as label
+           |MATCH (label)<-[:${LabelRelationshipType}]-(node:${NodeLabel})
+           |RETURN label.id, label.pageRank, ${nodePropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "id" -> id
+        ))
+      ).toNodeLabels
+
+      if (relatedNodeLabels.isEmpty) {
+        return None
+      }
+
+      val topEdges = transaction.run(
+        s"""
+           |MATCH (subject:${NodeLabel} {id: $$id})-[edge]->(object:${NodeLabel})
+           |WHERE type(edge)<>"${PathRelationshipType}"
+           |WITH edge, subject, object
+           |ORDER BY object.pageRank DESC
+           |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${NodeContextTopEdgesLimit}] as groupByRelation
+           |UNWIND groupByRelation as group
+           |WITH group[0] as edge, group[1] as subject, group[2] as object
+           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "id" -> id
+        ))
+      ).toEdges
+
+      Some(KgNodeContext(
+        relatedNodeLabels = relatedNodeLabels,
+        topEdges = topEdges
+      ))
+    }
 
     final override def getNodeLabel(label: String): Option[KgNodeLabel] = {
       val results =
@@ -137,7 +181,43 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       Some(KgNodeLabel(nodeLabel = label, nodes = nodes, pageRank = Some(labelPageRank)))
     }
 
-    final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
+    final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = {
+      val relatedNodeLabels = transaction.run(
+        s"""MATCH (:${LabelLabel} {id: $$label})-[:${LabelEdgeRelationshipType}]->(label:${LabelLabel})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
+           |RETURN label.id, label.pageRank, ${nodePropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "label" -> label
+        ))
+      ).toNodeLabels
+
+      if (relatedNodeLabels.isEmpty) {
+        return None
+      }
+
+      val topEdges = transaction.run(
+        s"""MATCH (:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})
+           |WHERE type(edge)<>"${PathRelationshipType}"
+           |WITH edge, subject, object, objectLabel
+           |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id
+           |WITH type(edge) as relation, collect(distinct objectLabel)[0 .. ${NodeLabelContextTopEdgesLimit}] as distinctObjectLabelsByRelation
+           |UNWIND distinctObjectLabelsByRelation as objectLabel
+           |MATCH (:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
+           |WHERE type(edge) = relation
+           |WITH edge, subject, object, objectLabel
+           |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
+           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
+           |""".stripMargin,
+        toTransactionRunParameters(Map(
+          "label" -> label
+        ))
+      ).toEdges
+
+      Some(KgNodeLabelContext(
+        relatedNodeLabels = relatedNodeLabels,
+        topEdges = topEdges
+      ))
+    }
 
     final override def getPath(id: String): Option[KgPath] =
       transaction.run(

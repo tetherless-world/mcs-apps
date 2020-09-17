@@ -16,6 +16,9 @@ abstract class AbstractNeo4jKgStore(protected val configuration: Neo4jStoreConfi
   protected val LabelRelationshipType = "LABEL"
   protected val LabelEdgeRelationshipType = "LABELEDGE"
 
+  protected val NodeContextTopEdgesLimit = 10
+  protected val NodeLabelContextTopEdgesLimit = 10
+
   private val driver = GraphDatabase.driver(configuration.uri, AuthTokens.basic(configuration.user, configuration.password))
 
   protected final def toTransactionRunParameters(map: Map[String, Any]) =
