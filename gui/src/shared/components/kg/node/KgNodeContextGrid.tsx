@@ -11,7 +11,7 @@ import * as React from "react";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 import {indexNodeContextByTopEdgePredicate} from "shared/models/kg/node/indexNodeContextByTopEdgePredicate";
-import {KgNodeLabelLink} from "shared/components/kg/node/KgNodeLabelLink";
+import {KgNodeLabelLinks} from "shared/components/kg/node/KgNodeLabelLinks";
 import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
 
 export const KgNodeContextGrid: React.FunctionComponent<{
@@ -37,8 +37,8 @@ export const KgNodeContextGrid: React.FunctionComponent<{
                   return (
                     <ListItem key={nodeLabel.nodeLabel}>
                       <ListItemText>
-                        <KgNodeLabelLink
-                          nodeLabel={{
+                        <KgNodeLabelLinks
+                          {...{
                             ...nodeLabel,
                             sources: resolveSourceIds({
                               allSources,

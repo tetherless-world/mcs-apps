@@ -42,12 +42,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
         <Link
           data-cy="source-link"
           title={source.label}
-          to={Hrefs.kg({id: kgId}).search({
-            __typename: "KgSearchVariables",
-            query: {
-              filters: {sourceIds: {include: [source.id]}},
-            },
-          })}
+          to={Hrefs.kg({id: kgId}).source({sourceId: source.id})}
         >
           Source: {source.label}
         </Link>
