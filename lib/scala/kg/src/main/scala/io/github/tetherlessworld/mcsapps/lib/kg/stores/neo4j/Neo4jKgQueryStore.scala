@@ -232,40 +232,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
       ).toNodes.head
 
-//    override def getSubjectNodeContext(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = {
-//      val edgeCypher = filterEdgesCypher(filters)
-//
-//      val cypher = sort.field match {
-//        case KgTopEdgesSortField.ObjectLabelPageRank =>
-//          s"""
-//             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id
-//             |WITH type(edge) as relation, collect(distinct objectLabel)[0 .. ${limit}] as distinctObjectLabelsByRelation
-//             |UNWIND distinctObjectLabelsByRelation as objectLabel
-//             |MATCH ${filters.subjectLabel.map(_ => s"(:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-").getOrElse("")}
-//             |(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel)
-//             |WHERE type(edge) = relation
-//             |WITH edge, subject, object, objectLabel
-//             |ORDER BY type(edge), objectLabel.pageRank desc, objectLabel.id, object.id
-//             |""".stripMargin
-//        case KgTopEdgesSortField.ObjectPageRank =>
-//          s"""
-//             |ORDER BY object.pageRank DESC
-//             |WITH type(edge) as relation, collect([edge, subject, object])[0 .. ${limit}] as groupByRelation
-//             |UNWIND groupByRelation as group
-//             |WITH group[0] as edge, group[1] as subject, group[2] as object
-//             |""".stripMargin
-//      }
-//
-//      transaction.run(
-//        s"""
-//           |${edgeCypher}
-//           |${cypher}
-//           |RETURN type(edge), subject.id, object.id, ${edgePropertyNamesString}
-//           |""".stripMargin,
-//        toTransactionRunParameters(caseClassToMap(filters))
-//      ).toEdges
-//    }
-
     final override def getTotalEdgesCount: Int =
       transaction.run(
         s"""
@@ -339,29 +305,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
     // https://stackoverflow.com/questions/1226555/case-class-to-map-in-scala
     // filters out None values and calls get on Some values
     private def caseClassToMap(cc: Product) = cc.getClass.getDeclaredFields.map( _.getName ).zip( cc.productIterator.to ).filter((mapping) => !mapping._2.isInstanceOf[Option[Any]] || mapping._2.asInstanceOf[Option[Any]].isDefined).map(mapping => if (mapping._2.isInstanceOf[Option[Any]]) (mapping._1, mapping._2.asInstanceOf[Option[Any]].get) else mapping).toMap
-
-//    private def filterEdgesCypher(filters: KgEdgeFilters): String = {
-//      var matchCypher: String = ""
-//
-//      if (filters.objectId.isDefined) {
-//        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel} {id: $$objectId})"
-//      } else if (filters.objectLabel.isDefined) {
-//        matchCypher = s"MATCH (subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(:${LabelLabel} {id: $$objectLabel}) " +
-//          s"MATCH (object)-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
-//      } else if (filters.subjectId.isDefined) {
-//        matchCypher = s"MATCH (subject:${NodeLabel} {id: $$subjectId})-[edge]->(object:${NodeLabel})"
-//      } else if (filters.subjectLabel.isDefined) {
-//        matchCypher = s"MATCH (subjectLabel:${LabelLabel} {id: $$subjectLabel})<-[:${LabelRelationshipType}]-(subject:${NodeLabel})-[edge]->(object:${NodeLabel})-[:${LabelRelationshipType}]->(objectLabel:${LabelLabel})"
-//      } else {
-//        throw new UnsupportedOperationException
-//      }
-//
-//      s"""
-//         |${matchCypher}
-//         |WHERE type(edge)<>"${PathRelationshipType}"
-//         |WITH edge, subject, object${if (filters.objectLabel.isDefined || filters.subjectLabel.isDefined) ", objectLabel" else ""}
-//         |""".stripMargin
-//    }
 
     private final case class KgNodeQueryFulltextCypher(
                                                 bindings: Map[String, Any],
