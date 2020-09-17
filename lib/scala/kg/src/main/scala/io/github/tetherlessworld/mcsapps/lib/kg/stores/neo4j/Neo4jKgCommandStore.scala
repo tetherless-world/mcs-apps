@@ -28,7 +28,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         override def close(): Unit = {}
 
-        final def putEdge(edge: KgEdge) =
+        final def putEdge(edge: KgEdge) = {
           transaction.run(
             s"""MATCH (subject:${NodeLabel} {id: $$subject}), (object:${NodeLabel} {id: $$object})
               |CALL apoc.create.relationship(subject, $$predicate, {id: $$id, labels: $$labels, sentences: $$sentences, sources: $$sources}, object) YIELD rel
@@ -44,6 +44,19 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               "subject" -> edge.subject,
             ))
           )
+
+          transaction.run(
+            s"""
+               |MATCH (subject:${NodeLabel} {id: $$subject}), (object:${NodeLabel} {id: $$object})
+               |MATCH (subjectLabel:${LabelLabel})<-[:${LabelRelationshipType}]-(subject), (objectLabel:${LabelLabel})<-[:${LabelRelationshipType}]-(object)
+               |MERGE (subjectLabel)-[:${LabelEdgeRelationshipType}]->(objectLabel)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "object" -> edge.`object`,
+              "subject" -> edge.subject
+            ))
+          )
+        }
 
         final override def putEdges(edges: Iterator[KgEdge]): Unit = {
           // The putEdges, putNodes, et al. methods assume that the iterator is small enough to buffer.
@@ -113,17 +126,6 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
               ))
             )
           }
-
-          transaction.run(
-            s"""
-               |MATCH (node:${NodeLabel} {id:$$nodeId})
-               |MATCH (s:${LabelLabel})<-[:${LabelRelationshipType}]-(node)-[:${LabelRelationshipType}]->(t:${LabelLabel})
-               |MERGE (s)-[:${LabelEdgeRelationshipType}]-(t)
-               |""".stripMargin,
-            toTransactionRunParameters(Map(
-              "nodeId" -> node.id
-            ))
-          )
         }
 
         final override def putNodes(nodes: Iterator[KgNode]): Unit = {
