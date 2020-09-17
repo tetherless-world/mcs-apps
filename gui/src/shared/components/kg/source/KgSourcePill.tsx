@@ -21,16 +21,7 @@ export const KgSourcePill: React.FunctionComponent<
       label={source.label}
       variant="outlined"
       onClick={() => {
-        history.push(
-          Hrefs.kg({id: kgId}).search({
-            query: {
-              filters: {
-                sourceIds: {include: [source.id]},
-              },
-            },
-            __typename: "KgSearchVariables",
-          })
-        );
+        history.push(Hrefs.kg({id: kgId}).source({sourceId: source.id}));
       }}
       style={{color, borderColor: color, margin: "2px"}}
       {...chipProps}

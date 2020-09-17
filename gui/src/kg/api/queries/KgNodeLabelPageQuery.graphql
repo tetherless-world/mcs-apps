@@ -1,5 +1,3 @@
-#import "./KgEdgeObjectFragment.graphql"
-#import "./KgNodeFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
 query KgNodeLabelPageQuery(
@@ -7,14 +5,29 @@ query KgNodeLabelPageQuery(
   $nodeLabel: String!
 ) {
   kgById(id: $kgId) {
-    nodesByLabel(label: $nodeLabel) {
+    nodeLabel(label: $nodeLabel) {
+      context {
+        relatedNodeLabels {
+          nodeLabel
+          nodes {
+            id
+            pos
+          }
+          pageRank
+          sourceIds
+        }
+        topEdges {
+          object
+          predicate
+        }
+      }
+      nodeLabel
       nodes {
-        ... KgNodeFragment
+        id
+        pos
       }
+      pageRank
       sourceIds
-      topSubjectOfEdges(limit: 100) {
-        ... KgEdgeObjectFragment
-      }
     }
     sources {
       ... KgSourceFragment

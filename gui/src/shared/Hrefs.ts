@@ -58,6 +58,17 @@ export class Hrefs {
           )
         );
       },
+
+      source(kwds: {sourceId: string}) {
+        return this.search({
+          query: {
+            filters: {
+              sourceIds: {include: [kwds.sourceId]},
+            },
+          },
+          __typename: "KgSearchVariables",
+        });
+      },
     };
   }
 }

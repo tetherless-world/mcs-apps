@@ -6,35 +6,44 @@
 // GraphQL query operation: KgNodeLabelPageQuery
 // ====================================================
 
-export interface KgNodeLabelPageQuery_kgById_nodesByLabel_nodes {
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels_nodes {
   __typename: "KgNode";
-  aliases: string[] | null;
   id: string;
-  label: string | null;
   pos: string | null;
+}
+
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels {
+  __typename: "KgNodeLabel";
+  nodeLabel: string;
+  nodes: KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels_nodes[];
   pageRank: number;
   sourceIds: string[];
 }
 
-export interface KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges_objectNode {
-  __typename: "KgNode";
-  id: string;
-  label: string | null;
-  pos: string | null;
-}
-
-export interface KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges {
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_topEdges {
   __typename: "KgEdge";
   object: string;
-  objectNode: KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges_objectNode | null;
   predicate: string;
 }
 
-export interface KgNodeLabelPageQuery_kgById_nodesByLabel {
-  __typename: "KgNodesByLabel";
-  nodes: KgNodeLabelPageQuery_kgById_nodesByLabel_nodes[];
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_context {
+  __typename: "KgNodeLabelContext";
+  relatedNodeLabels: KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels[];
+  topEdges: KgNodeLabelPageQuery_kgById_nodeLabel_context_topEdges[];
+}
+
+export interface KgNodeLabelPageQuery_kgById_nodeLabel_nodes {
+  __typename: "KgNode";
+  id: string;
+  pos: string | null;
+}
+
+export interface KgNodeLabelPageQuery_kgById_nodeLabel {
+  __typename: "KgNodeLabel";
+  context: KgNodeLabelPageQuery_kgById_nodeLabel_context;
+  nodeLabel: string;
+  nodes: KgNodeLabelPageQuery_kgById_nodeLabel_nodes[];
   sourceIds: string[];
-  topSubjectOfEdges: KgNodeLabelPageQuery_kgById_nodesByLabel_topSubjectOfEdges[];
 }
 
 export interface KgNodeLabelPageQuery_kgById_sources {
@@ -45,7 +54,7 @@ export interface KgNodeLabelPageQuery_kgById_sources {
 
 export interface KgNodeLabelPageQuery_kgById {
   __typename: "Kg";
-  nodesByLabel: KgNodeLabelPageQuery_kgById_nodesByLabel;
+  nodeLabel: KgNodeLabelPageQuery_kgById_nodeLabel | null;
   sources: KgNodeLabelPageQuery_kgById_sources[];
 }
 

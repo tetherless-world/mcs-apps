@@ -17,8 +17,6 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
   private def equals(left: KgNode, right: KgNode) =
     left.id == right.id && abs(left.pageRank.getOrElse(-1.0) - right.pageRank.getOrElse(-1.0)) < 0.1 && left.sourceIds == right.sourceIds && left.labels == right.labels && left.pos == right.pos
 
-  private val KgEdgesSortByIdAsc = KgEdgesSort(KgEdgesSortField.Id, SortDirection.Ascending)
-
   protected def testSearch(storeFactory: KgStoreFactory): Unit = {
     "search fulltext for a label" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>

@@ -23,12 +23,12 @@ export const KgNodePage: React.FunctionComponent = () => {
   return (
     <KgFrame<KgNodePageQuery> {...query}>
       {({data}) => {
-        const node = data.kgById.nodeById;
+        const node = data.kgById.node;
         if (!node) {
           return <NotFound label={nodeId} />;
         }
 
-        return <KgNodeViews node={{...node, sources: data.kgById.sources}} />;
+        return <KgNodeViews allSources={data.kgById.sources} node={node} />;
       }}
     </KgFrame>
   );

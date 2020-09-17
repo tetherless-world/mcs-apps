@@ -1,8 +1,8 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.empty
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, KgEdgeFilters, KgEdgesSort, KgQueryStore, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgTopEdgesSort}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg._
+import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 /**
  * Store implementation that is always empty and discards all writes to it.
@@ -46,19 +46,19 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
     }
   }
 
-  final override def getEdges(filters: KgEdgeFilters, limit: Int, offset: Int, sort: KgEdgesSort): List[KgEdge] = List()
+  final override def getNode(id: String): Option[KgNode] = None
 
-  final override def getSourcesById: Map[String, KgSource] = Map()
+  final override def getNodeContext(id: String): Option[KgNodeContext] = None
 
-  final override def getNodeById(id: String): Option[KgNode] = None
+  final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
 
-  final override def getNodesByLabel(label: String): List[KgNode] = List()
+  final override def getNodeLabel(label: String): Option[KgNodeLabel] = None
 
-  final override def getPathById(id: String): Option[KgPath] = None
+  final override def getPath(id: String): Option[KgPath] = None
 
   final override def getRandomNode: KgNode = throw new NoSuchElementException
 
-  final override def getTopEdges(filters: KgEdgeFilters, limit: Int, sort: KgTopEdgesSort): List[KgEdge] = List()
+  final override def getSourcesById: Map[String, KgSource] = Map()
 
   final override def getTotalEdgesCount: Int = 0
 

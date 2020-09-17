@@ -25,7 +25,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         graphql"""
          query KgNodeByIdQuery($$kgId: String!, $$nodeId: String!) {
            kgById(id: $$kgId) {
-             nodeById(id: $$nodeId) {
+             node(id: $$nodeId) {
               label
              }
            }
@@ -34,22 +34,24 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
 
       executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)) must be(Json.parse(
         s"""
-           |{"data":{"kgById":{"nodeById":{"label":"${node.labels(0)}"}}}}
+           |{"data":{"kgById":{"node":{"label":"${node.labels(0)}"}}}}
            |""".stripMargin))
     }
 
-    "get top KG edges the node is a subject of" in {
+    "get a node's context" in {
       val node = TestKgData.nodes(0)
       val query =
         graphql"""
          query KgEdgesQuery($$kgId: String!, $$nodeId: String!) {
            kgById(id: $$kgId) {
-             nodeById(id: $$nodeId) {
-               topSubjectOfEdges(limit: 10000) {
-                 predicate
-                 object
-                 objectNode {
-                   label
+             node(id: $$nodeId) {
+               context {
+                 topEdges {
+                   predicate
+                   object
+                   objectNode {
+                     label
+                   }
                  }
                }
              }
