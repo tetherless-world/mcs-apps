@@ -5,28 +5,33 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNod
 trait KgQueryStore {
   /**
    * Get a node by ID.
+   * @return the node if it exists, otherwise None
    */
   def getNode(id: String): Option[KgNode]
 
   /**
    * Get a node's context, for the node page.
    * The context is as seen from the node as a subject.
+   * @return the node context if the node exists, otherwise None; the lists in the context may be empty
    */
   def getNodeContext(id: String): Option[KgNodeContext]
 
   /**
    * Get a node label by label.
+   * @return the node label if it exists, otherwise None
    */
   def getNodeLabel(label: String): Option[KgNodeLabel]
 
   /**
    * Get a node label's context, for the node label page.
    * The context is as seen from the node label as a subject.
+   * @return the node label context if the node label exists, otherwise None; the lists in the context may be empty
    */
   def getNodeLabelContext(label: String): Option[KgNodeLabelContext]
 
   /**
    * Get a path by id.
+   * @return the path if it exists, otherwise None
    */
   def getPath(id: String): Option[KgPath]
 
