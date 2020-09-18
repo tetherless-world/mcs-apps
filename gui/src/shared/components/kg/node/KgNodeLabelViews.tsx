@@ -10,12 +10,20 @@ import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgNodeLabelContext} from "shared/models/kg/node/KgNodeLabelContext";
+import {KgNodesTable} from "shared/components/kg/node/KgNodesTable";
 
 export const KgNodeLabelViews: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeLabel: {
     context: KgNodeLabelContext;
     nodeLabel: string;
+    nodes: {
+      id: string;
+      labels: readonly string[];
+      pageRank: number;
+      pos: string | null;
+      sourceIds: readonly string[];
+    }[];
     sourceIds: readonly string[];
   };
 }> = ({allSources, nodeLabel}) => {
@@ -30,7 +38,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
         />
       ),
       relPath: "",
-      label: "Grid",
+      label: "Edges grid",
       dataCy: "edge-objects-grid",
       routeMatch,
     }),
@@ -42,8 +50,15 @@ export const KgNodeLabelViews: React.FunctionComponent<{
         />
       ),
       relPath: "/list",
-      label: "List",
+      label: "Edges list",
       dataCy: "edge-objects-list",
+      routeMatch,
+    }),
+    nodes: new TabRoute({
+      content: <KgNodesTable allSources={allSources} nodes={nodeLabel.nodes} />,
+      relPath: "/nodes",
+      label: "nodes",
+      dataCy: "nodes-table",
       routeMatch,
     }),
   };

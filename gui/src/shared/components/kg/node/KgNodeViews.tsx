@@ -42,7 +42,7 @@ export const KgNodeViews: React.FunctionComponent<{
         <KgNodeContextGrid allSources={allSources} nodeContext={node.context} />
       ),
       relPath: "",
-      label: "Grid",
+      label: "Edges grid",
       dataCy: "edge-objects-grid",
       routeMatch,
     }),
@@ -54,7 +54,7 @@ export const KgNodeViews: React.FunctionComponent<{
         />
       ),
       relPath: "/list",
-      label: "List",
+      label: "Edges list",
       dataCy: "edge-objects-list",
       routeMatch,
     }),

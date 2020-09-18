@@ -32,6 +32,7 @@ export interface KgNodeLabelPageQuery_kgById_nodeLabel_nodes {
   labels: string[];
   pageRank: number;
   pos: string | null;
+  sourceIds: string[];
 }
 
 export interface KgNodeLabelPageQuery_kgById_nodeLabel {
