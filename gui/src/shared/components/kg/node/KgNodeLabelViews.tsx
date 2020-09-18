@@ -39,7 +39,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       ),
       relPath: "",
       label: "Edges grid",
-      dataCy: "edge-objects-grid",
+      dataCy: "edges-grid",
       routeMatch,
     }),
     list: new TabRoute({
@@ -49,9 +49,9 @@ export const KgNodeLabelViews: React.FunctionComponent<{
           nodeContext={nodeLabel.context}
         />
       ),
-      relPath: "/list",
+      relPath: "/edges-list",
       label: "Edges list",
-      dataCy: "edge-objects-list",
+      dataCy: "edges-list",
       routeMatch,
     }),
     nodes: new TabRoute({
@@ -68,7 +68,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
       <Grid item>
         <TabRouteTabs tabRoutes={Object.values(tabRoutes)} />
       </Grid>
-      <Grid item container>
+      <Grid item container spacing={4}>
         <Grid item xs={10}>
           <h1 data-cy="node-title">Node label: {nodeLabel.nodeLabel}</h1>
           <TabRouteSwitch tabRoutes={Object.values(tabRoutes)} />

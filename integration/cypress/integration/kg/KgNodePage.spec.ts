@@ -37,17 +37,17 @@ context("KG node page", () => {
   });
 
   it("should have the grid tab selected by default", () => {
-    page.assertTabSelected(KgNodePageTab.EdgeObjectsGrid);
+    page.assertTabSelected(KgNodePageTab.EdgesGrid);
   });
 
   it("should route to the edge object list when the tab is clicked", () => {
-    page.selectTab(KgNodePageTab.EdgeObjectsList);
-    page.assertTabLoaded(KgNodePageTab.EdgeObjectsList);
+    page.selectTab(KgNodePageTab.EdgesList);
+    page.assertTabLoaded(KgNodePageTab.EdgesList);
   });
 
   it("should contain edge object lists in the list tab", () => {
     const edge = testNodeEdges[0];
-    page.visitTab(KgNodePageTab.EdgeObjectsList);
+    page.visitTab(KgNodePageTab.EdgesList);
     page.listEdgeList(edge.predicate).list.should("exist");
   });
 });

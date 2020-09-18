@@ -34,6 +34,24 @@ export const KgNodesTable: React.FunctionComponent<{
         },
       },
       {
+        name: "id",
+        label: "Identifier",
+        options: {
+          sort: true,
+          customBodyRender(id, tableMeta) {
+            return (
+              <Link
+                data-cy="node-link"
+                title={id}
+                to={Hrefs.kg({id: kgId}).node({id})}
+              >
+                {id}
+              </Link>
+            );
+          },
+        },
+      },
+      {
         name: "labels",
         label: "Labels",
         options: {
@@ -103,6 +121,7 @@ export const KgNodesTable: React.FunctionComponent<{
         data={nodes}
         options={{
           selectableRows: "none",
+          rowsPerPage: 15,
           setRowProps(_, rowIndex) {
             return {"data-cy": "node-" + rowIndex};
           },
