@@ -32,7 +32,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
           title={result.node.id}
           to={Hrefs.kg({id: kgId}).node({id: result.node.id})}
         >
-          {result.node.label ?? result.node.id}
+          {result.node ?? result.node.id}
         </Link>
       );
     }

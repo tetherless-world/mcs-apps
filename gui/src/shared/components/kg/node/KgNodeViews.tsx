@@ -21,17 +21,16 @@ import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 export const KgNodeViews: React.FunctionComponent<{
   allSources: readonly KgSource[];
   node: {
-    aliases: string[] | null;
     context: KgNodeContext;
     id: string;
-    label: string | null;
-    sourceIds: string[];
+    labels: readonly string[];
+    sourceIds: readonly string[];
     pos: string | null;
   };
 }> = ({allSources, node}) => {
   const routeMatch = useRouteMatch();
 
-  let title = node.label ? node.label : node.id;
+  let title = node.labels.length > 0 ? node.labels[0] : node.id;
   if (node.pos) {
     title += " (" + node.pos + ")";
   }
@@ -79,20 +78,18 @@ export const KgNodeViews: React.FunctionComponent<{
                 )}
               />
             </Grid>
-            {node.aliases ? (
-              <Grid item>
-                <Card>
-                  <CardHeader title="Aliases" />
-                  <CardContent>
-                    <List>
-                      {[...new Set(node.aliases)].map((alias) => (
-                        <ListItemText key={alias}>{alias}</ListItemText>
-                      ))}
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ) : null}
+            <Grid item>
+              <Card>
+                <CardHeader title="Labels" />
+                <CardContent>
+                  <List>
+                    {[...new Set(node.labels)].map((label) => (
+                      <ListItemText key={label}>{label}</ListItemText>
+                    ))}
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
