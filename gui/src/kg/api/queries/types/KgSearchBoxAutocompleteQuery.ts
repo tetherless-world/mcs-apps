@@ -17,7 +17,7 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeLabelSearchRes
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgEdgeSearchResult_edge {
   __typename: "KgEdge";
   id: string;
-  label: string | null;
+  labels: string[];
   sourceIds: string[];
 }
 
@@ -34,11 +34,9 @@ export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeLabelSearchRes
 
 export interface KgSearchBoxAutocompleteQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
-  aliases: string[] | null;
   id: string;
-  label: string | null;
+  labels: string[];
   pos: string | null;
-  pageRank: number;
   sourceIds: string[];
 }
 

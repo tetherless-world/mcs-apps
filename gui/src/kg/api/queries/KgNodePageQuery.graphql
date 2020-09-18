@@ -1,4 +1,3 @@
-#import "./KgNodeFragment.graphql"
 #import "./KgSourceFragment.graphql"
 
 query KgNodePageQuery(
@@ -9,11 +8,8 @@ query KgNodePageQuery(
     node(id: $nodeId) {
       context {
         relatedNodeLabels {
+          nodeIds
           nodeLabel
-          nodes {
-            id
-            pos
-          }
           pageRank
           sourceIds
         }
@@ -22,7 +18,10 @@ query KgNodePageQuery(
           predicate
         }
       }
-      ...KgNodeFragment
+      id
+      labels
+      pageRank
+      sourceIds
     }
     sources {
       ... KgSourceFragment
