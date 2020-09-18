@@ -27,7 +27,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   // KgEdge
   implicit lazy val KgEdgeType: ObjectType[KgGraphQlSchemaContext, KgEdge] = ObjectType("KgEdge", () => fields[KgGraphQlSchemaContext, KgEdge](
     Field("id", StringType, resolve = _.value.id),
-    Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
+    Field("labels", ListType(StringType), resolve = ctx => ctx.value.labels),
     Field("object", StringType, resolve = _.value.`object`),
     Field("objectNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.`object`)),
     Field("predicate", StringType, resolve = _.value.predicate),
@@ -38,10 +38,8 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   ))
   // KgNode
   implicit lazy val KgNodeType: ObjectType[KgGraphQlSchemaContext, KgNode] = ObjectType("KgNode", () => fields[KgGraphQlSchemaContext, KgNode](
-    Field("aliases", OptionType(ListType(StringType)), resolve = ctx => if (ctx.value.labels.size > 1) Some(ctx.value.labels.slice(1, ctx.value.labels.size)) else None),
     Field("context", KgNodeContextType, resolve = ctx => ctx.ctx.kgQueryStore.getNodeContext(ctx.value.id).get),
     Field("id", StringType, resolve = _.value.id),
-    Field("label", OptionType(StringType), resolve = ctx => ctx.value.labels.headOption),
     Field("labels", ListType(StringType), resolve = _.value.labels),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("pos", OptionType(StringType), resolve = _.value.pos.map(_.toString)),
@@ -58,6 +56,8 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   implicit lazy val KgNodeLabelType: ObjectType[KgGraphQlSchemaContext, KgNodeLabel] = ObjectType("KgNodeLabel", () => fields[KgGraphQlSchemaContext, KgNodeLabel](
     Field("context", KgNodeLabelContextType, resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabelContext(ctx.value.nodeLabel).get),
     Field("nodeLabel", StringType, resolve = _.value.nodeLabel),
+//    Field("nodeCount", IntType, resolve = _.value.nodes.size),
+    Field("nodeIds", ListType(StringType), resolve = _.value.nodes.map(_.id)),
     Field("nodes", ListType(KgNodeType), resolve = _.value.nodes),
     Field("pageRank", FloatType, resolve = _.value.pageRank.get),
     Field("sourceIds", ListType(StringType), resolve = ctx => ctx.value.nodes.flatMap(_.sourceIds).distinct)
