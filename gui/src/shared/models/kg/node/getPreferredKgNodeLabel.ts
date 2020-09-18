@@ -1,4 +1,4 @@
-export const getKgNodeLabel = (node: {
+export const getPreferredKgNodeLabel = (node: {
   id: string;
   labels: readonly string[];
 }) => {

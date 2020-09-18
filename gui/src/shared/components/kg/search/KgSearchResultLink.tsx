@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import {getPreferredKgNodeLabel} from "shared/models/kg/node/getPreferredKgNodeLabel";
 
 export const KgSearchResultLink: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -32,7 +33,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
           title={result.node.id}
           to={Hrefs.kg({id: kgId}).node({id: result.node.id})}
         >
-          {result.node ?? result.node.id}
+          {getPreferredKgNodeLabel(result.node)}
         </Link>
       );
     }

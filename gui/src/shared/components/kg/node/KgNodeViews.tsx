@@ -17,6 +17,7 @@ import {TabRouteSwitch} from "shared/components/route/TabRouteSwitch";
 import {KgNodeSourcesCard} from "shared/components/kg/node/KgNodeSourcesCard";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
+import {getPreferredKgNodeLabel} from "shared/models/kg/node/getPreferredKgNodeLabel";
 
 export const KgNodeViews: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -30,7 +31,7 @@ export const KgNodeViews: React.FunctionComponent<{
 }> = ({allSources, node}) => {
   const routeMatch = useRouteMatch();
 
-  let title = node.labels.length > 0 ? node.labels[0] : node.id;
+  let title = getPreferredKgNodeLabel(node);
   if (node.pos) {
     title += " (" + node.pos + ")";
   }
