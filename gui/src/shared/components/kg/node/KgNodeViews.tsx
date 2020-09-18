@@ -25,6 +25,7 @@ export const KgNodeViews: React.FunctionComponent<{
     context: KgNodeContext;
     id: string;
     labels: readonly string[];
+    pageRank: number;
     sourceIds: readonly string[];
     pos: string | null;
   };
@@ -73,13 +74,6 @@ export const KgNodeViews: React.FunctionComponent<{
         <Grid item xs={2}>
           <Grid container direction="column" spacing={6}>
             <Grid item>
-              <KgNodeSourcesCard
-                nodeSources={node.sourceIds.map((sourceId) =>
-                  resolveSourceId({allSources, sourceId})
-                )}
-              />
-            </Grid>
-            <Grid item>
               <Card>
                 <CardHeader title="Labels" />
                 <CardContent>
@@ -90,6 +84,19 @@ export const KgNodeViews: React.FunctionComponent<{
                   </List>
                 </CardContent>
               </Card>
+            </Grid>
+            <Grid item>
+              <Card>
+                <CardHeader title="PageRank"></CardHeader>
+                <CardContent>{node.pageRank.toFixed(3)}</CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <KgNodeSourcesCard
+                nodeSources={node.sourceIds.map((sourceId) =>
+                  resolveSourceId({allSources, sourceId})
+                )}
+              />
             </Grid>
           </Grid>
         </Grid>
