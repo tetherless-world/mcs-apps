@@ -32,6 +32,7 @@ export interface KgNodePageQuery_kgById_node {
   id: string;
   labels: string[];
   pageRank: number;
+  pos: string | null;
   sourceIds: string[];
 }
 

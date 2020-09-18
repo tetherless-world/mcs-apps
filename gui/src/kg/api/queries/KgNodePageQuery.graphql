@@ -21,6 +21,7 @@ query KgNodePageQuery(
       id
       labels
       pageRank
+      pos
       sourceIds
     }
     sources {

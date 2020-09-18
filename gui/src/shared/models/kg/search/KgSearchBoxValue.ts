@@ -9,7 +9,7 @@ export type KgSearchBoxValue =
       __typename: "KgEdgeSearchResult";
       edge: {
         id: string;
-        label: string | null;
+        labels: readonly string[];
       };
     }
   | {
@@ -20,7 +20,7 @@ export type KgSearchBoxValue =
       __typename: "KgNodeSearchResult";
       node: {
         id: string;
-        label: string | null;
+        labels: readonly string[];
       };
     }
   | {
