@@ -93,11 +93,11 @@ class BenchmarkGraphQlSchemaDefinitionSpec extends PlaySpec {
                       questionAnswerPaths {
                         endNode {
                           id
-                          label
+                          labels
                         }
                         startNode {
                           id
-                          label
+                          labels
                         }
                         paths {
                           edges {

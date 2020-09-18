@@ -8,11 +8,8 @@ query KgNodeLabelPageQuery(
     nodeLabel(label: $nodeLabel) {
       context {
         relatedNodeLabels {
+          nodeIds
           nodeLabel
-          nodes {
-            id
-            pos
-          }
           pageRank
           sourceIds
         }
@@ -24,7 +21,10 @@ query KgNodeLabelPageQuery(
       nodeLabel
       nodes {
         id
+        labels
+        pageRank
         pos
+        sourceIds
       }
       pageRank
       sourceIds

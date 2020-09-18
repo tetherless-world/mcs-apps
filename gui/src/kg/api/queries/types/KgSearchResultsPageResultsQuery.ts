@@ -11,7 +11,7 @@ import { KgSearchQuery, KgSearchSort } from "./../../graphqlGlobalTypes";
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult_edge {
   __typename: "KgEdge";
   id: string;
-  label: string | null;
+  labels: string[];
   sourceIds: string[];
 }
 
@@ -34,11 +34,9 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearch
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult_node {
   __typename: "KgNode";
-  aliases: string[] | null;
   id: string;
-  label: string | null;
+  labels: string[];
   pos: string | null;
-  pageRank: number;
   sourceIds: string[];
 }
 

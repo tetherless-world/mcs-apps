@@ -10,10 +10,10 @@ export const indexNodeContextByTopEdgePredicate = (
     [index: string]: KgNodeContextRelatedNodeLabel[];
   } = {};
   for (const relatedNodeLabel of nodeContext.relatedNodeLabels) {
-    for (const node of relatedNodeLabel.nodes) {
-      let relatedNodeLabels = relatedNodeLabelsByNodeId[node.id];
+    for (const nodeId of relatedNodeLabel.nodeIds) {
+      let relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId];
       if (!relatedNodeLabels) {
-        relatedNodeLabels = relatedNodeLabelsByNodeId[node.id] = [];
+        relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId] = [];
       }
       relatedNodeLabels.push(relatedNodeLabel);
     }

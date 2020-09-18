@@ -26,16 +26,16 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
          query KgNodeByIdQuery($$kgId: String!, $$nodeId: String!) {
            kgById(id: $$kgId) {
              node(id: $$nodeId) {
-              label
+              labels
              }
            }
          }
        """
 
-      executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)) must be(Json.parse(
-        s"""
-           |{"data":{"kgById":{"node":{"label":"${node.labels(0)}"}}}}
-           |""".stripMargin))
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "nodeId" -> node.id)))
+      for (label <- node.labels) {
+        result must include(label)
+      }
     }
 
     "get a node's context" in {
@@ -50,7 +50,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
                    predicate
                    object
                    objectNode {
-                     label
+                     labels
                    }
                  }
                }
@@ -93,7 +93,7 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
            kgById(id: $$kgId) {
              randomNode {
               id
-              label
+              labels
              }
            }
          }
@@ -214,11 +214,11 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
             pathById(id: $$pathId) {
               edges {
                 objectNode {
-                  label
+                  labels
                 }
                 predicate
                 subjectNode {
-                  label
+                  labels
                 }
               }
             }

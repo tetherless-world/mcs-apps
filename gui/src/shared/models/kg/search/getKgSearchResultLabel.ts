@@ -1,6 +1,8 @@
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import {getPreferredKgEdgeLabel} from "shared/models/kg/edge/getPreferredKgEdgeLabel";
+import {getPreferredKgNodeLabel} from "shared/models/kg/node/getPreferredKgNodeLabel";
 
 export const getKgSearchResultLabel = (kwds: {
   allSources: readonly KgSource[];
@@ -11,11 +13,11 @@ export const getKgSearchResultLabel = (kwds: {
     case "KgEdgeLabelSearchResult":
       return result.edgeLabel;
     case "KgEdgeSearchResult":
-      return result.edge.label ?? result.edge.id;
+      return getPreferredKgEdgeLabel(result.edge);
     case "KgNodeLabelSearchResult":
       return result.nodeLabel;
     case "KgNodeSearchResult":
-      return result.node.label ?? result.node.id;
+      return getPreferredKgNodeLabel(result.node);
     case "KgSourceSearchResult":
       return resolveSourceId({allSources, sourceId: result.sourceId}).label;
     default:

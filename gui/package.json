@@ -11,9 +11,9 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@tetherless-world/twxplore-base": "1.0.12",
     "@types/d3": "^5.7.2",
-    "@types/mui-datatables": "2.14.2",
+    "@types/mui-datatables": "^3.4.0",
     "d3": "^5.16.0",
-    "mui-datatables": "3.0.1",
+    "mui-datatables": "^3.4.1",
     "query-string": "^6.13.1",
     "use-query-params": "1.1.6"
   },

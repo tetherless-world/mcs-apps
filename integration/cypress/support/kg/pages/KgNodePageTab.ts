@@ -1,4 +1,4 @@
 export enum KgNodePageTab {
-  EdgeObjectsGrid = "edge-objects-grid",
-  EdgeObjectsList = "edge-objects-list",
+  EdgesGrid = "edges-grid",
+  EdgesList = "edges-list",
 }

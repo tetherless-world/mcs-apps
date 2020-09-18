@@ -330,14 +330,16 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
                       case "label":
                         sortField = KgSearchSortField.Labels;
                         break;
-                      case "sources":
+                      case "sourceIds":
                         sortField = KgSearchSortField.Sources;
                         break;
                       case "pageRank":
                         sortField = KgSearchSortField.PageRank;
                         break;
                       default:
-                        throw new Error("Changed column not supported");
+                        throw new Error(
+                          "Changed column not supported: " + changedColumn
+                        );
                     }
 
                     // const sortIndex = sorts.findIndex(

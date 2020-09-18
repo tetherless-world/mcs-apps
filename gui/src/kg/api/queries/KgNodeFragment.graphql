@@ -1,8 +1,0 @@
-fragment KgNodeFragment on KgNode {
-  aliases
-  id
-  label
-  pos
-  pageRank
-  sourceIds
-}
