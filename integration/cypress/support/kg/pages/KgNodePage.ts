@@ -11,9 +11,9 @@ export class KgNodePage extends TabbedPage<KgNodePageTab> {
   protected getTabPath(tab: KgNodePageTab): string {
     switch (tab) {
       case KgNodePageTab.EdgesGrid:
-        return "grid";
+        return "edges-grid";
       case KgNodePageTab.EdgesList:
-        return "list";
+        return "edges-list";
       default:
         throw new EvalError();
     }
