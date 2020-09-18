@@ -7,12 +7,8 @@ import {KgSourcePill} from "../source/KgSourcePill";
 
 export const KgNodeLabelLinks: React.FunctionComponent<{
   nodeLabel: string;
-  nodes: readonly {
-    id: string;
-    pos: string | null | undefined;
-  }[];
   sources: readonly KgSource[];
-}> = ({nodeLabel, nodes, sources}) => {
+}> = ({nodeLabel, sources}) => {
   return (
     <span>
       <Link

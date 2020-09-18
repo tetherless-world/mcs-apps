@@ -1,9 +1,6 @@
 export interface KgNodeContextRelatedNodeLabel {
+  nodeIds: readonly string[];
   nodeLabel: string;
-  nodes: readonly {
-    id: string;
-    pos: string | null | undefined;
-  }[];
   pageRank: number;
   sourceIds: readonly string[];
 }
