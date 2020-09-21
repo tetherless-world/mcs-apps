@@ -28,6 +28,7 @@ export const KgNodeViews: React.FunctionComponent<{
     pageRank: number;
     sourceIds: readonly string[];
     pos: string | null;
+    wordNetSenseNumber: number | null;
   };
 }> = ({allSources, node}) => {
   const routeMatch = useRouteMatch();
@@ -91,6 +92,14 @@ export const KgNodeViews: React.FunctionComponent<{
                 <CardContent>{node.pageRank.toFixed(3)}</CardContent>
               </Card>
             </Grid>
+            {node.wordNetSenseNumber != null ? (
+              <Grid item>
+                <Card>
+                  <CardHeader title="WordNet sense" />
+                  <CardContent>{node.wordNetSenseNumber}</CardContent>
+                </Card>
+              </Grid>
+            ) : null}
             <Grid item>
               <KgNodeSourcesCard
                 nodeSources={node.sourceIds.map((sourceId) =>
