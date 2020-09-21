@@ -5,18 +5,25 @@ import {StringFacetFilter} from "shared/models/StringFacetFilter";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgSourceSelect: React.FunctionComponent<{
+  containerClassName?: string;
   sources: KgSource[];
+  selectClassName?: string;
   value?: StringFacetFilter;
   onChange?: (datasourceFilters: StringFacetFilter) => void;
-  style?: React.CSSProperties;
-}> = ({sources, value, onChange, style}) => {
+}> = ({containerClassName, selectClassName, sources, value, onChange}) => {
   const [selectedSource, setSelectedSource] = React.useState<string>(
     value?.include?.[0] || ""
   );
 
   return (
-    <Paper variant="outlined" square style={style} data-cy="sourceSelect">
+    <Paper
+      className={containerClassName}
+      variant="outlined"
+      square
+      data-cy="sourceSelect"
+    >
       <Select
+        className={selectClassName}
         displayEmpty
         value={selectedSource}
         onChange={(event: React.ChangeEvent<{value: unknown}>) => {
