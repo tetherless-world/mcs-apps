@@ -37,6 +37,14 @@ const useStyles = makeStyles((theme) =>
     container: {
       paddingTop: theme.spacing(5),
     },
+    sourceSelectContainer: {
+      display: "inline-flex",
+      verticalAlign: "top",
+    },
+    sourceSelectSelect: {
+      paddingLeft: "1em",
+      width: "24em",
+    },
     title: {
       fontFamily: "Hiragino Maru Gothic Pro",
     },
@@ -99,9 +107,10 @@ export const KgHomePage: React.FunctionComponent = () => {
                     </Grid>
                     <Grid item>
                       <KgSourceSelect
+                        containerClassName={classes.sourceSelectContainer}
                         onChange={setSourcesFilter}
+                        selectClassName={classes.sourceSelectSelect}
                         sources={sources}
-                        style={{display: "inline-flex", verticalAlign: "top"}}
                         value={sourcesFilter || undefined}
                       ></KgSourceSelect>
                     </Grid>
