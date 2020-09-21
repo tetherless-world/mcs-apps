@@ -7,12 +7,14 @@ import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
+import javax.inject.Singleton
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
+@Singleton
 class MemKgStore extends KgCommandStore with KgQueryStore {
   private val NodeContextTopEdgesLimit = 10
   private val NodeLabelContextTopEdgesLimit = 10

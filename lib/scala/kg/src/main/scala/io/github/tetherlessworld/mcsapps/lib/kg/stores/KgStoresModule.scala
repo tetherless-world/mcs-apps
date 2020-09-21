@@ -34,7 +34,6 @@ final class KgStoresModule(environment: Environment, configuration: Configuratio
     }
 
     kgStoreName match {
-      case "mem" =>
       case "test" =>
       case _ =>
         bind(classOf[KgDataDirectoryLoader]).asEagerSingleton()

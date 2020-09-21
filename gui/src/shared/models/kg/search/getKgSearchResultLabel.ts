@@ -17,7 +17,11 @@ export const getKgSearchResultLabel = (kwds: {
     case "KgNodeLabelSearchResult":
       return result.nodeLabel;
     case "KgNodeSearchResult":
-      return getPreferredKgNodeLabel(result.node);
+      let label = getPreferredKgNodeLabel(result.node);
+      if (result.node.pos) {
+        label += " (" + result.node.pos + ")";
+      }
+      return label;
     case "KgSourceSearchResult":
       return resolveSourceId({allSources, sourceId: result.sourceId}).label;
     default:

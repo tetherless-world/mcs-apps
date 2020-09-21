@@ -23,6 +23,7 @@ query KgNodePageQuery(
       pageRank
       pos
       sourceIds
+      wordNetSenseNumber
     }
     sources {
       ... KgSourceFragment

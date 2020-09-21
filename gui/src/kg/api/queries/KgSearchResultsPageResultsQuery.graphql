@@ -1,3 +1,5 @@
+#import "./KgSearchResultFragment.graphql"
+
 query KgSearchResultsPageResultsQuery(
   $kgId: String!
   $limit: Int!
@@ -12,32 +14,7 @@ query KgSearchResultsPageResultsQuery(
       query: $query
       sorts: $sorts
     ) {
-      ... on KgEdgeSearchResult {
-        edge {
-          id
-          labels
-          sourceIds
-        }
-      }
-      ... on KgEdgeLabelSearchResult {
-        edgeLabel
-        sourceIds
-      }
-      ... on KgNodeLabelSearchResult {
-        nodeLabel
-        sourceIds
-      }
-      ... on KgNodeSearchResult {
-        node {
-          id
-          labels
-          pos
-          sourceIds
-        }
-      }
-      ... on KgSourceSearchResult {
-        sourceId
-      }
+      ... KgSearchResultFragment
     }
   }
 }

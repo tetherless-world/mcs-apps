@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Grid,
+  Link,
   List,
   ListItemText,
 } from "@material-ui/core";
@@ -28,6 +29,7 @@ export const KgNodeViews: React.FunctionComponent<{
     pageRank: number;
     sourceIds: readonly string[];
     pos: string | null;
+    wordNetSenseNumber: number | null;
   };
 }> = ({allSources, node}) => {
   const routeMatch = useRouteMatch();
@@ -91,6 +93,20 @@ export const KgNodeViews: React.FunctionComponent<{
                 <CardContent>{node.pageRank.toFixed(3)}</CardContent>
               </Card>
             </Grid>
+            {node.pos != null && node.wordNetSenseNumber != null ? (
+              <Grid item>
+                <Card>
+                  <CardHeader title="WordNet sense" />
+                  <CardContent>
+                    <Link
+                      href={`http://wordnetweb.princeton.edu/perl/webwn?o2=&o0=1&o8=1&o1=1&o7=&o5=&o9=&o6=&o3=&o4=&s=${node.labels[0]}&i=0&h=0#c`}
+                    >
+                      {node.pos}&nbsp;{node.wordNetSenseNumber}
+                    </Link>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ) : null}
             <Grid item>
               <KgNodeSourcesCard
                 nodeSources={node.sourceIds.map((sourceId) =>

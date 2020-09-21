@@ -34,6 +34,7 @@ export interface KgNodePageQuery_kgById_node {
   pageRank: number;
   pos: string | null;
   sourceIds: string[];
+  wordNetSenseNumber: number | null;
 }
 
 export interface KgNodePageQuery_kgById_sources {
