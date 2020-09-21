@@ -1,0 +1,28 @@
+fragment KgSearchResultFragment on KgSearchResult {
+    ... on KgEdgeLabelSearchResult {
+        edgeLabel
+        sourceIds
+    }
+    ... on KgEdgeSearchResult {
+        edge {
+            id
+            labels
+            sourceIds
+        }
+    }
+    ... on KgNodeLabelSearchResult {
+        nodeLabel
+        sourceIds
+    }
+    ... on KgNodeSearchResult {
+        node {
+            id
+            labels
+            pos
+            sourceIds
+        }
+    }
+    ... on KgSourceSearchResult {
+        sourceId
+    }
+}

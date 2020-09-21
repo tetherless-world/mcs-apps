@@ -8,6 +8,12 @@ import { KgSearchQuery, KgSearchSort } from "./../../graphqlGlobalTypes";
 // GraphQL query operation: KgSearchResultsPageResultsQuery
 // ====================================================
 
+export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeLabelSearchResult {
+  __typename: "KgEdgeLabelSearchResult";
+  edgeLabel: string;
+  sourceIds: string[];
+}
+
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult_edge {
   __typename: "KgEdge";
   id: string;
@@ -18,12 +24,6 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResul
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult {
   __typename: "KgEdgeSearchResult";
   edge: KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult_edge;
-}
-
-export interface KgSearchResultsPageResultsQuery_kgById_search_KgEdgeLabelSearchResult {
-  __typename: "KgEdgeLabelSearchResult";
-  edgeLabel: string;
-  sourceIds: string[];
 }
 
 export interface KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearchResult {
@@ -50,7 +50,7 @@ export interface KgSearchResultsPageResultsQuery_kgById_search_KgSourceSearchRes
   sourceId: string;
 }
 
-export type KgSearchResultsPageResultsQuery_kgById_search = KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgEdgeLabelSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgSourceSearchResult;
+export type KgSearchResultsPageResultsQuery_kgById_search = KgSearchResultsPageResultsQuery_kgById_search_KgEdgeLabelSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgEdgeSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgNodeLabelSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgNodeSearchResult | KgSearchResultsPageResultsQuery_kgById_search_KgSourceSearchResult;
 
 export interface KgSearchResultsPageResultsQuery_kgById {
   __typename: "Kg";
