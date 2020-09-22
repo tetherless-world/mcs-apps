@@ -1,12 +1,12 @@
 import * as React from "react";
-import {StringFacetFilter} from "shared/models/StringFacetFilter";
+import {StringFilter} from "shared/models/kg/search/StringFilter";
 import * as _ from "lodash";
 import {invariant} from "ts-invariant";
 import {Checkbox, FormControlLabel, List, ListItem} from "@material-ui/core";
 
 export const StringFacetForm: React.FunctionComponent<{
-  currentState?: StringFacetFilter; // value id's only
-  onChange: (newState?: StringFacetFilter) => void;
+  currentState?: StringFilter; // value id's only
+  onChange: (newState?: StringFilter) => void;
   valueUniverse: {[index: string]: string}; // value id: value label
 }> = ({currentState, onChange, valueUniverse}) => {
   if (_.isEmpty(valueUniverse)) {

@@ -79,7 +79,9 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     )
   )
   // Search
-  implicit val StringFacetObjectType = deriveObjectType[KgGraphQlSchemaContext, StringFacetValue]()
+  implicit val kgSearchResultTypeEnumType = KgSearchResultType.sangriaType
+  implicit val KgSearchResultTypeFacetObjectType = deriveObjectType[KgGraphQlSchemaContext, KgSearchResultTypeFacet]()
+  implicit val StringFacetObjectType = deriveObjectType[KgGraphQlSchemaContext, StringFacet]()
   val KgSearchFacetsObjectType = deriveObjectType[KgGraphQlSchemaContext, KgSearchFacets]()
   implicit val KgEdgeSearchResultObjectType = deriveObjectType[KgGraphQlSchemaContext, KgEdgeSearchResult]()
   implicit val KgEdgeLabelSearchResultObjectType = deriveObjectType[KgGraphQlSchemaContext, KgEdgeLabelSearchResult]()
@@ -93,12 +95,15 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   implicit val SortDirectionEnumType = SortDirection.sangriaType
 
   // Input object decoders
-  implicit val stringFilterDecoder: Decoder[StringFacetFilter] = deriveDecoder
+  implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
+  implicit val kgSearchResultTypeFilterDecoder: Decoder[KgSearchResultTypeFilter] = deriveDecoder
   implicit val kgSearchFiltersDecoder: Decoder[KgSearchFilters] = deriveDecoder
   implicit val kgSearchQueryDecoder: Decoder[KgSearchQuery] = deriveDecoder
+  implicit val kgSearchResultTypeDecoder: Decoder[KgSearchResultType] = deriveDecoder
   implicit val kgSearchSortDecoder: Decoder[KgSearchSort] = deriveDecoder
   // Input object types
-  implicit val StringFacetFilterInputObjectType = deriveInputObjectType[StringFacetFilter]()
+  implicit val StringFacetFilterInputObjectType = deriveInputObjectType[StringFilter]()
+  implicit val KgSearchResultTypeFilterInputObjectType = deriveInputObjectType[KgSearchResultTypeFilter]()
   implicit val KgSearchFiltersInputObjectType = deriveInputObjectType[KgSearchFilters]()
   implicit val KgSearchQueryInputObjectType = deriveInputObjectType[KgSearchQuery]()
   implicit val KgSearchSortInputObjectType = deriveInputObjectType[KgSearchSort]()

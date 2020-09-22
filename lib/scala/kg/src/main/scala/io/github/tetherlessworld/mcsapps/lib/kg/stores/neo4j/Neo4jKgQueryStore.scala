@@ -5,7 +5,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.{SortDirection, node}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
-import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacetValue}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacet}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
@@ -304,7 +304,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         ).asScala.map(record => record.get("source.id").asString()).toSet.toList
 
       KgSearchFacets(
-        sourceIds = sourceIds.map(sourceId => StringFacetValue(count = 1, value = sourceId))
+        sourceIds = sourceIds.map(sourceId => StringFacet(count = 1, value = sourceId)),
+        types = List()
       )
     }
 

@@ -1,15 +1,15 @@
 import * as React from "react";
 
 import {Select, MenuItem, Paper} from "@material-ui/core";
-import {StringFacetFilter} from "shared/models/StringFacetFilter";
+import {StringFilter} from "shared/models/kg/search/StringFilter";
 import {KgSource} from "shared/models/kg/source/KgSource";
 
 export const KgSourceSelect: React.FunctionComponent<{
   containerClassName?: string;
   sources: KgSource[];
   selectClassName?: string;
-  value?: StringFacetFilter;
-  onChange?: (datasourceFilters: StringFacetFilter) => void;
+  value?: StringFilter;
+  onChange?: (datasourceFilters: StringFilter) => void;
 }> = ({containerClassName, selectClassName, sources, value, onChange}) => {
   const [selectedSource, setSelectedSource] = React.useState<string>(
     value?.include?.[0] || ""

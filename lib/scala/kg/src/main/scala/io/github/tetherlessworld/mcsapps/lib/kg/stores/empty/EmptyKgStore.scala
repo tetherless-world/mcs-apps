@@ -74,5 +74,5 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
 
   final override def searchCount(query: KgSearchQuery): Int = 0
 
-  final override def searchFacets(query: KgSearchQuery): KgSearchFacets = KgSearchFacets(List())
+  final override def searchFacets(query: KgSearchQuery): KgSearchFacets = KgSearchFacets(List(), List())
 }
