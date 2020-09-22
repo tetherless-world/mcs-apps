@@ -4,12 +4,12 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.graphql.{AbstractKgGraphQ
 import sangria.schema.{Field, ObjectType, Schema, fields}
 
 object KgGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinition {
-  val RootQueryType = ObjectType("RootQuery",  fields[KgGraphQlSchemaContext, Unit](
-    Field("kgById", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
+  val RootQueryObjectType = ObjectType("RootQuery",  fields[KgGraphQlSchemaContext, Unit](
+    Field("kgById", KgQueryObjectType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
   ))
 
   // Schema
   val schema = Schema(
-    RootQueryType
+    RootQueryObjectType
   )
 }

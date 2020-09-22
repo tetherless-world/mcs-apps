@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 
 final case class Neo4jKgPathRecord(
                                     sources: List[String],

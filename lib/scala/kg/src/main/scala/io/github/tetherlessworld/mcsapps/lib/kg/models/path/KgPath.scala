@@ -1,4 +1,6 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.models.kg
+package io.github.tetherlessworld.mcsapps.lib.kg.models.path
+
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 
 /**
  * A path through the graph. The path list is

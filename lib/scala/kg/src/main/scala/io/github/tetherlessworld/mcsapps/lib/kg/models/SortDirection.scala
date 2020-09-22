@@ -1,4 +1,4 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.stores
+package io.github.tetherlessworld.mcsapps.lib.kg.models
 
 import enumeratum.values.{StringCirceEnum, StringEnum, StringEnumEntry}
 import sangria.macros.derive.deriveEnumType

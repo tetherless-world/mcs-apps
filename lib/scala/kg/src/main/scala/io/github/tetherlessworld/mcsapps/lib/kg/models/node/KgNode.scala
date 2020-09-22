@@ -1,4 +1,4 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.models.kg
+package io.github.tetherlessworld.mcsapps.lib.kg.models.node
 
 final case class KgNode(
                          id: String,
@@ -7,4 +7,4 @@ final case class KgNode(
                          pos: Option[Char],
                          sourceIds: List[String],
                          wordNetSenseNumber: Option[Int]
-                     )
+                       )

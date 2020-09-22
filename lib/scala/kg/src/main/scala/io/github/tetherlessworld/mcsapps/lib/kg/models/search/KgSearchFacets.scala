@@ -1,3 +1,3 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.stores
+package io.github.tetherlessworld.mcsapps.lib.kg.models.search
 
 final case class KgSearchFacets(sourceIds: List[StringFacetValue])

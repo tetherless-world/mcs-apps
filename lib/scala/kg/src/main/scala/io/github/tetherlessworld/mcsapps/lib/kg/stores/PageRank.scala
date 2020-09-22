@@ -1,6 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
 
 import scala.annotation.tailrec
 import scala.collection.{GenSeq, mutable}

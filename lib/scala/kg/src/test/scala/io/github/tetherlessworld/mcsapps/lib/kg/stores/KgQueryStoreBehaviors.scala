@@ -1,7 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.math.abs
@@ -158,7 +158,6 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val limit = 3
         val subjectNodeLabel = TestKgData.nodes(0).labels(0)
-        val sort = KgTopEdgesSort(KgTopEdgesSortField.ObjectLabelPageRank, SortDirection.Descending)
         val actual = query.getNodeLabelContext(subjectNodeLabel).get
 
         val subjectNodes = TestKgData.nodes.filter(_.labels.contains(subjectNodeLabel))
@@ -173,7 +172,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
             (label, edges, pageRank)
           })
 
-          val sortedEdges = edgesByLabel.sortBy(_._1).sortBy(_._3)(if (sort.direction == SortDirection.Ascending) Ordering.Double else Ordering[Double].reverse)
+          val sortedEdges = edgesByLabel.sortBy(_._1).sortBy(_._3)(Ordering[Double].reverse)
           sortedEdges.map(_._2).take(limit).flatten
         })
 

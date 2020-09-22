@@ -2,7 +2,10 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 
 import com.google.inject.Inject
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
+import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, Neo4jStoreConfiguration}
 import javax.inject.Singleton
 import org.neo4j.driver._

@@ -2,7 +2,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.data
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.{KgtkEdgeWithNodes, KgtkEdgesTsvIterator}
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.path.KgPathsJsonlIterator
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgPath
+import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 
 class KgtkDataResources(
