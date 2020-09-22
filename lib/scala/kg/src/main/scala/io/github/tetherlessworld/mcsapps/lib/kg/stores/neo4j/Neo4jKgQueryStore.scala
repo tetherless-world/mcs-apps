@@ -304,7 +304,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         ).asScala.map(record => record.get("source.id").asString()).toSet.toList
 
       KgSearchFacets(
-        sourceIds = sourceIds.map(sourceId => StringFacet(count = 1, value = sourceId))
+        sourceIds = sourceIds.map(sourceId => StringFacet(count = 1, value = sourceId)),
+        types = List()
       )
     }
 
