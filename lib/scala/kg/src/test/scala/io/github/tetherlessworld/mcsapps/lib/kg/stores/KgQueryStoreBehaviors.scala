@@ -11,7 +11,7 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
 
   private def equals(left: KgNode, right: KgNode) =
     left.id == right.id && abs(left.pageRank.getOrElse(-1.0) - right.pageRank.getOrElse(-1.0)) < 0.1 && left.sourceIds == right.sourceIds && left.labels == right.labels && left.pos == right.pos
-ø
+
 //  private val KgEdgesSortByIdAsc = KgEdgesSort(KgEdgesSortField.Id, SortDirection.Ascending)
 
 //  private def testGetEdges(storeFactory: KgStoreFactory): Unit = {
