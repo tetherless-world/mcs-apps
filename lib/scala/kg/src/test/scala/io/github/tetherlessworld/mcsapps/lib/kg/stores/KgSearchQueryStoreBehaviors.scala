@@ -2,7 +2,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
-import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFilters, KgSearchQuery, StringFacetFilter}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFilters, KgSearchQuery, StringFilter}
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
@@ -130,13 +130,13 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
 
     "search results count with no text search but with include filters" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(nodeLabelsCount + nodesCount + sourcesCount - 3)
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFilter(exclude = None, include = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(nodeLabelsCount + nodesCount + sourcesCount - 3)
       }
     }
 
     "search results count with no text search but with exclude filters" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(sourcesCount - 1)
+        query.searchCount(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))))))), text = None)) should equal(sourcesCount - 1)
       }
     }
 
@@ -146,7 +146,7 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
         val countBeforeFilters = query.searchCount(query = KgSearchQuery(filters = None, text = Some(text)))
         countBeforeFilters should be > 0
         val actualCount = query.searchCount(query = KgSearchQuery(
-          filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))), include = None)))),
+          filters = Some(KgSearchFilters(sourceIds = Some(StringFilter(exclude = Some(List(TestKgData.nodes(0).sourceIds(0))), include = None)))),
           text = Some("Test")
         ))
         actualCount should equal(sourcesCount - 1)
@@ -166,7 +166,7 @@ trait KgSearchQueryStoreBehaviors extends Matchers {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
         val expected = TestKgData.nodes(0)
         // Only include the "secondary" source of the node
-        val facets = query.searchFacets(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFacetFilter(exclude = Some(List(expected.sourceIds(1))), include = None)))), text = None))
+        val facets = query.searchFacets(query = KgSearchQuery(filters = Some(KgSearchFilters(sourceIds = Some(StringFilter(exclude = Some(List(expected.sourceIds(1))), include = None)))), text = None))
         facets.sourceIds.size should be < TestKgData.sources.size
         facets.sourceIds.map(_.value) should not contain(expected.sourceIds(1))
       }

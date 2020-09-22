@@ -6,7 +6,7 @@ import com.outr.lucene4s.query._
 import com.outr.lucene4s.{DirectLucene, any, drillDown, grouped, string2ParsableSearchTerm}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.SortDirection
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchFilters, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacetFilter, StringFacetValue}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchFilters, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFilter, StringFacet}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
@@ -97,7 +97,7 @@ final class MemKgIndex {
     }
   }
 
-  private def addLuceneSearchFacets(field: FacetField, queryBuilder: QueryBuilder[SearchResult], stringFilter: StringFacetFilter): QueryBuilder[SearchResult] =
+  private def addLuceneSearchFacets(field: FacetField, queryBuilder: QueryBuilder[SearchResult], stringFilter: StringFilter): QueryBuilder[SearchResult] =
     stringFilter.include.getOrElse(List()).foldLeft(queryBuilder)((queryBuilder, include) => queryBuilder.facet(field, path = List(include)))
 
   final def clear(): Unit = {
@@ -147,7 +147,7 @@ final class MemKgIndex {
     val results = addLuceneSearchFacets(query.filters, lucene.query()).filter(toLuceneSearchTerms(query):_*).facet(LuceneFacets.source, limit = 100).search()
     // The facet result also has a count per value, which we're ignoring
     KgSearchFacets(
-      sourceIds = results.facet(LuceneFacets.source).map(_.values.map(value => StringFacetValue(count = value.count, value = value.value)).toList).getOrElse(List())
+      sourceIds = results.facet(LuceneFacets.source).map(_.values.map(value => StringFacet(count = value.count, value = value.value)).toList).getOrElse(List())
     )
   }
 
@@ -207,7 +207,7 @@ final class MemKgIndex {
     filters.sourceIds.map(source => toLuceneSearchTerms(LuceneFacets.source, source)).getOrElse(List())
   }
 
-  private def toLuceneSearchTerms(field: FacetField, stringFilter: StringFacetFilter): List[(SearchTerm, Condition)] = {
+  private def toLuceneSearchTerms(field: FacetField, stringFilter: StringFilter): List[(SearchTerm, Condition)] = {
     stringFilter.exclude.getOrElse(List()).map(exclude => drillDown(field(exclude)) -> Condition.MustNot) ++
       stringFilter.include.getOrElse(List()).map(include => drillDown(field(include)) -> Condition.Must)
   }
