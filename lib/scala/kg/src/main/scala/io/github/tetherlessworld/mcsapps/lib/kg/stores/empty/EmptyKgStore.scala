@@ -1,9 +1,11 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.empty
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg._
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 /**

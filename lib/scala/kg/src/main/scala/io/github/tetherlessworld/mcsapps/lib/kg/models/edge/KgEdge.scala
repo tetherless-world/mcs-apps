@@ -1,4 +1,4 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.models.kg
+package io.github.tetherlessworld.mcsapps.lib.kg.models.edge
 
 final case class KgEdge(
                          id: String,

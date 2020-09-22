@@ -4,10 +4,10 @@ import com.outr.lucene4s.facet.{FacetField, FacetValue}
 import com.outr.lucene4s.field.value.FieldAndValue
 import com.outr.lucene4s.query._
 import com.outr.lucene4s.{DirectLucene, any, drillDown, grouped, string2ParsableSearchTerm}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.{SortDirection, StringFacetFilter, StringFacetValue}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgSource
+import io.github.tetherlessworld.mcsapps.lib.kg.models.SortDirection
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchFilters, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchFilters, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacetFilter, StringFacetValue}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 
 import scala.annotation.tailrec

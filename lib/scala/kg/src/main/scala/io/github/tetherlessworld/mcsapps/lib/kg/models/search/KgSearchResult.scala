@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.models.search
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 
 sealed trait KgSearchResult

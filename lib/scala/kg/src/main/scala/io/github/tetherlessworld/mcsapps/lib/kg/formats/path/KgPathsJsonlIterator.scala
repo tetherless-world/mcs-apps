@@ -5,7 +5,7 @@ import java.io.InputStream
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.JsonlIterator
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgPath
+import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 
 import scala.io.Source
 

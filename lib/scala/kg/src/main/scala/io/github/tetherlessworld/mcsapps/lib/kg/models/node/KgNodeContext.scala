@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.models.node
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 
 /**
  * Node context data structure for the node page.

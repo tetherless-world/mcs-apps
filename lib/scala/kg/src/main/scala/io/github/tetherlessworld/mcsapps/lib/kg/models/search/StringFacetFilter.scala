@@ -1,3 +1,3 @@
-package io.github.tetherlessworld.mcsapps.lib.kg.models
+package io.github.tetherlessworld.mcsapps.lib.kg.models.search
 
 final case class StringFacetFilter(exclude: Option[List[String]] = None, include: Option[List[String]] = None)
