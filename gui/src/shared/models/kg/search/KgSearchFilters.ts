@@ -1,5 +1,5 @@
-import {StringFacetFilter} from "shared/models/StringFacetFilter";
+import {StringFilter} from "shared/models/kg/search/StringFilter";
 
 export interface KgSearchFilters {
-  sourceIds?: StringFacetFilter | null;
+  sourceIds?: StringFilter | null;
 }
