@@ -6,7 +6,8 @@ import java.nio.file.Path
 import java.util.NoSuchElementException
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 import org.apache.commons.compress.compressors.{CompressorException, CompressorStreamFactory}
 import org.apache.commons.io.{Charsets, IOUtils}
 import org.apache.commons.lang3.StringUtils

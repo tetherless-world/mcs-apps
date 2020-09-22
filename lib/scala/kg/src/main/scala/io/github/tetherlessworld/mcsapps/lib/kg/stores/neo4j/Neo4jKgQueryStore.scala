@@ -1,7 +1,10 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 
 import com.google.inject.Inject
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.{SortDirection, StringFacetValue, node}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
 import org.neo4j.driver._
@@ -155,7 +158,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         ).toEdges
         else List()
 
-        KgNodeContext(
+        node.KgNodeContext(
           relatedNodeLabels = relatedNodeLabels,
           topEdges = topEdges
         )

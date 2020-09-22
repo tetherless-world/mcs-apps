@@ -2,7 +2,8 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.KgData
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 
 trait KgCommandStoreTransaction extends AutoCloseable {
   /**

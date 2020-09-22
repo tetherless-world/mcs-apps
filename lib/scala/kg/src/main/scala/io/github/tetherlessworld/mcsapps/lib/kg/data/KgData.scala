@@ -1,9 +1,10 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.data
 
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgPath, KgSource}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.PageRank
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgSource
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 
 import scala.collection.mutable.HashMap
 

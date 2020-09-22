@@ -1,6 +1,8 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgNode, KgNodeLabel, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.{KgEdge, KgPath, KgSource}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
 
 trait KgQueryStore {
   /**

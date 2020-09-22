@@ -3,7 +3,9 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.mcsapps.lib.kg.models.kg._
-import io.github.tetherlessworld.mcsapps.lib.kg.stores._
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search._
+import io.github.tetherlessworld.mcsapps.lib.kg.models.{SortDirection, StringFacetFilter, StringFacetValue}
 import io.github.tetherlessworld.twxplore.lib.base.models.graphql.BaseGraphQlSchemaDefinition
 import sangria.macros.derive.{AddFields, deriveInputObjectType, deriveObjectType}
 import sangria.marshalling.circe._

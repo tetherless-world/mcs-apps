@@ -1,7 +1,9 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
-import io.github.tetherlessworld.mcsapps.lib.kg.models.kg.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.StringFacetFilter
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFilters, KgSearchQuery}
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.scalatest.{Matchers, WordSpec}
 
