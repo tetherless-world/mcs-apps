@@ -8,13 +8,13 @@ import sangria.schema.{Field, IntType, ListType, ObjectType, OptionType, Schema,
 object BenchmarkGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinition {
   implicit val BenchmarkQuestionAnswerPath = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionAnswerPath](
     AddFields(
-      Field("edges", ListType(KgEdgeType), resolve = _.value.edges)
+      Field("edges", ListType(KgEdgeObjectType), resolve = _.value.edges)
     )
   )
   implicit val BenchmarkQuestionAnswerPaths = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionAnswerPaths](
     AddFields(
-      Field("endNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.endNodeId)),
-      Field("startNode", OptionType(KgNodeType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.startNodeId)),
+      Field("endNode", OptionType(KgNodeObjectType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.endNodeId)),
+      Field("startNode", OptionType(KgNodeObjectType), resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.value.startNodeId)),
     )
   )
   implicit val BenchmarkQuestionChoiceAnalysis = deriveObjectType[BenchmarkGraphQlSchemaContext, BenchmarkQuestionChoiceAnalysis]()
@@ -126,7 +126,7 @@ object BenchmarkGraphQlSchemaDefinition extends AbstractKgGraphQlSchemaDefinitio
   val RootQueryType = ObjectType("RootQuery",  fields[BenchmarkGraphQlSchemaContext, Unit](
     Field("benchmarks", ListType(BenchmarkType), resolve = _.ctx.benchmarkStore.getBenchmarks),
     Field("benchmarkById", OptionType(BenchmarkType), arguments = IdArgument :: Nil,resolve = ctx => ctx.ctx.benchmarkStore.getBenchmarkById(ctx.args.arg(IdArgument))),
-    Field("kgById", KgQueryType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
+    Field("kgById", KgQueryObjectType, arguments = IdArgument :: Nil, resolve = _.args.arg(IdArgument))
   ))
 
   // Schema
