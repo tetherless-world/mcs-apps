@@ -313,15 +313,14 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
              |RETURN labels(node)[0] AS type, COUNT(*) AS count
              |""".stripMargin,
           toTransactionRunParameters(cypher.bindings)
-        ).asScala.map(record => KgSearchResultTypeFacet(
-          count = record.get("count").asInt,
-          value = record.get("type").asString match {
-            case NodeLabel => KgSearchResultType.Node
-            case SourceLabel => KgSearchResultType.Source
-            case LabelLabel => KgSearchResultType.NodeLabel
-            case _ => throw new Exception("Unknown facet type")
-          }
-        )).toList
+        ).asScala.map(record => {
+          val recordType = record.get("type").asString
+          KgSearchResultTypeFacet(
+            count = record.get("count").asInt,
+            // LabelLabel != KgSearchResultType.NodeLabel.value
+            value = KgSearchResultType.values.find(_.value == recordType).getOrElse(KgSearchResultType.NodeLabel)
+          )
+        }).toList
 
       KgSearchFacets(
         sourceIds = sourceIdStringFacets,
