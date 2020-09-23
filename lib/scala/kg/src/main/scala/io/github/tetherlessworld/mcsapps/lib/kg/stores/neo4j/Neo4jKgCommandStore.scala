@@ -89,12 +89,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final def putNode(node: KgNode): Unit = {
           transaction.run(
-            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources });",
+            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources, wordNetSenseNumber: $$wordNetSenseNumber });",
             toTransactionRunParameters(Map(
               "id" -> node.id,
               "labels" -> node.labels.mkString(ListDelimString),
               "pos" -> node.pos.getOrElse(null),
               "sources" -> node.sourceIds.mkString(ListDelimString),
+              "wordNetSenseNumber" -> node.wordNetSenseNumber.getOrElse(null)
             ))
           )
           // Store sources as a delimited list on the node so they can be retrieved accurately
