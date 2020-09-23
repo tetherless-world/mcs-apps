@@ -317,8 +317,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
           val recordType = record.get("type").asString
           KgSearchResultTypeFacet(
             count = record.get("count").asInt,
-            // LabelLabel != KgSearchResultType.NodeLabel.value
-            value = KgSearchResultType.values.find(_.value == recordType).getOrElse(KgSearchResultType.NodeLabel)
+            value = KgSearchResultType.values.find(_.value == recordType).getOrElse(throw new Exception("Unknown search result type"))
           )
         }).toList
 

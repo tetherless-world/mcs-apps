@@ -3,16 +3,17 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j
 import io.github.tetherlessworld.twxplore.lib.base.WithResource
 import org.neo4j.driver.{AuthTokens, GraphDatabase, Session, Transaction}
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.Neo4jStoreConfiguration
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.KgSearchResultType
 import scala.collection.JavaConverters._
 
 abstract class AbstractNeo4jKgStore(protected val configuration: Neo4jStoreConfiguration) extends WithResource {
   protected val ListDelimChar = '|'
   protected val ListDelimString = ListDelimChar.toString
-  protected val NodeLabel = "Node"
+  protected val NodeLabel = KgSearchResultType.Node.value
   protected val PathRelationshipType = "PATH"
-  protected val SourceLabel = "Source"
+  protected val SourceLabel = KgSearchResultType.Source.value
   protected val SourceRelationshipType = "SOURCE"
-  protected val LabelLabel = "Label"
+  protected val LabelLabel = KgSearchResultType.NodeLabel.value
   protected val LabelRelationshipType = "LABEL"
   protected val LabelEdgeRelationshipType = "LABELEDGE"
 
