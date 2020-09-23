@@ -5,7 +5,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.{SortDirection, node}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
-import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacet}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgNodeLabelSearchResult, KgNodeSearchResult, KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchResultType, KgSearchResultTypeFacet, KgSearchSort, KgSearchSortField, KgSourceSearchResult, StringFacet}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
@@ -293,19 +293,37 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       val cypher = KgNodeQueryFulltextCypher(query)
 
       // Get sources
-      val sourceIds =
+      val sourceIdStringFacets =
         transaction.run(
           s"""
              |${cypher}
              |MATCH (node)-[:${SourceRelationshipType}]->(source:${SourceLabel})
-             |RETURN DISTINCT source.id
+             |RETURN DISTINCT source.id, COUNT(*) AS count
              |""".stripMargin,
           toTransactionRunParameters(cypher.bindings)
-        ).asScala.map(record => record.get("source.id").asString()).toSet.toList
+        ).asScala.map(record => StringFacet(
+          count = record.get("count").asInt,
+          value = record.get("source.id").asString
+        )).toList
+
+      val searchResultTypeFacets =
+        transaction.run(
+          s"""
+             |${cypher}
+             |RETURN labels(node)[0] AS type, COUNT(*) AS count
+             |""".stripMargin,
+          toTransactionRunParameters(cypher.bindings)
+        ).asScala.map(record => {
+          val recordType = record.get("type").asString
+          KgSearchResultTypeFacet(
+            count = record.get("count").asInt,
+            value = KgSearchResultType.values.find(_.value == recordType).getOrElse(throw new Exception("Unknown search result type"))
+          )
+        }).toList
 
       KgSearchFacets(
-        sourceIds = sourceIds.map(sourceId => StringFacet(count = 1, value = sourceId)),
-        types = List()
+        sourceIds = sourceIdStringFacets,
+        types = searchResultTypeFacets
       )
     }
 
