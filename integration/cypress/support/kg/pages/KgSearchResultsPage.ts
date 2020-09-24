@@ -16,6 +16,7 @@ class StringFacetForm {
 
 class KgSearchFacets {
   readonly sources = new StringFacetForm("[data-cy=sources-facet]");
+  readonly types = new StringFacetForm("[data-cy=types-facet]");
 }
 
 class KgSearchResultsTable extends MuiDataTable {

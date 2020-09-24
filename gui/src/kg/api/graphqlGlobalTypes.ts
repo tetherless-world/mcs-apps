@@ -6,6 +6,14 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum KgSearchResultType {
+  Edge = "Edge",
+  EdgeLabel = "EdgeLabel",
+  Node = "Node",
+  NodeLabel = "NodeLabel",
+  Source = "Source",
+}
+
 export enum KgSearchSortField {
   Id = "Id",
   Labels = "Labels",
@@ -19,7 +27,8 @@ export enum SortDirection {
 }
 
 export interface KgSearchFilters {
-  sourceIds?: StringFacetFilter | null;
+  sourceIds?: StringFilter | null;
+  types?: KgSearchResultTypeFilter | null;
 }
 
 export interface KgSearchQuery {
@@ -27,12 +36,17 @@ export interface KgSearchQuery {
   text?: string | null;
 }
 
+export interface KgSearchResultTypeFilter {
+  exclude?: KgSearchResultType[] | null;
+  include?: KgSearchResultType[] | null;
+}
+
 export interface KgSearchSort {
   field: KgSearchSortField;
   direction: SortDirection;
 }
 
-export interface StringFacetFilter {
+export interface StringFilter {
   exclude?: string[] | null;
   include?: string[] | null;
 }

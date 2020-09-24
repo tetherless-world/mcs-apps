@@ -125,6 +125,26 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
       result must include(label)
     }
 
+    "search KG with a type filtering" in {
+      val label = TestKgData.nodeLabelsByLabel.keys.head
+      val query =
+        graphql"""
+         query KgSourceSearchQuery($$kgId: String!, $$text: String!) {
+           kgById(id: $$kgId) {
+             search(query: {filters: {types: {exclude: [Node]}}, text: $$text}, limit: 10, offset: 0) {
+                __typename
+                  ... on KgNodeLabelSearchResult {
+                    nodeLabel
+                  }
+             }
+           }
+         }
+       """
+
+      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "text" -> s"""label:"${label}"""")))
+      result must include(label)
+    }
+
     "search KG nodes" in {
       val node = TestKgData.nodes(0)
       val query =

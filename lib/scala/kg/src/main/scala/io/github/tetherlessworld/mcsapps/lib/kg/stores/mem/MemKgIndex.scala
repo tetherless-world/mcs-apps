@@ -144,7 +144,12 @@ final class MemKgIndex {
   }
 
   final def searchFacets(query: KgSearchQuery): KgSearchFacets = {
-    val results = addLuceneSearchFacets(query.filters, lucene.query()).filter(toLuceneSearchTerms(query):_*).facet(LuceneFacets.source, limit = 100).search()
+    val results =
+      addLuceneSearchFacets(query.filters, lucene.query())
+        .filter(toLuceneSearchTerms(query):_*)
+        .facet(LuceneFacets.source, limit = 100)
+        .facet(LuceneFacets.`type`, limit = KgSearchResultType.values.length)
+        .search()
     // The facet result also has a count per value, which we're ignoring
     KgSearchFacets(
       sourceIds = results.facet(LuceneFacets.source).map(_.values.map(value => StringFacet(count = value.count, value = value.value)).toList).getOrElse(List()),

@@ -1,15 +1,18 @@
 import * as React from "react";
 import {StringFilter} from "shared/models/kg/search/StringFilter";
-import * as _ from "lodash";
 import {invariant} from "ts-invariant";
 import {Checkbox, FormControlLabel, List, ListItem} from "@material-ui/core";
 
 export const StringFacetForm: React.FunctionComponent<{
   currentState?: StringFilter; // value id's only
   onChange: (newState?: StringFilter) => void;
-  valueUniverse: {[index: string]: string}; // value id: value label
+  valueUniverse: readonly {
+    count: number;
+    id: string;
+    label: string;
+  }[];
 }> = ({currentState, onChange, valueUniverse}) => {
-  if (_.isEmpty(valueUniverse)) {
+  if (valueUniverse.length === 0) {
     return null;
   }
 
@@ -24,24 +27,23 @@ export const StringFacetForm: React.FunctionComponent<{
       : new Set();
 
   // If a value is not in one of the sets it's implicitly included.
-  Object.keys(valueUniverse).forEach((valueId) => {
-    if (excludeValueIdSet.has(valueId)) {
+  for (const value of valueUniverse) {
+    if (excludeValueIdSet.has(value.id)) {
       invariant(
-        !includeValueIdSet.has(valueId),
+        !includeValueIdSet.has(value.id),
         "value both included and excluded"
       );
-    } else if (includeValueIdSet.has(valueId)) {
+    } else if (includeValueIdSet.has(value.id)) {
     } else if (currentState?.include && currentState.include.length > 0) {
       // If the current state explicitly included something then everything not explicitly included is excluded
-      excludeValueIdSet.add(valueId);
+      excludeValueIdSet.add(value.id);
     } else {
       // If the current state explicitly excluded something then everything not explicitly excluded is included
-      includeValueIdSet.add(valueId);
+      includeValueIdSet.add(value.id);
     }
-  });
+  }
   invariant(
-    includeValueIdSet.size + excludeValueIdSet.size ===
-      Object.keys(valueUniverse).length,
+    includeValueIdSet.size + excludeValueIdSet.size === valueUniverse.length,
     "sets should account for all values"
   );
   // console.info("Exclude: " + [...excludeValueIdSet]);
@@ -49,32 +51,28 @@ export const StringFacetForm: React.FunctionComponent<{
 
   return (
     <List>
-      {Object.keys(valueUniverse).map((valueId) => {
-        const valueLabel = valueUniverse[valueId];
-
+      {valueUniverse.map((value) => {
         const onChangeValue = (
           e: React.ChangeEvent<HTMLInputElement>
         ): void => {
           const newChecked = e.target.checked;
-          excludeValueIdSet.delete(valueId);
-          includeValueIdSet.delete(valueId);
+          excludeValueIdSet.delete(value.id);
+          includeValueIdSet.delete(value.id);
           if (newChecked) {
-            includeValueIdSet.add(valueId);
+            includeValueIdSet.add(value.id);
           } else {
-            excludeValueIdSet.add(valueId);
+            excludeValueIdSet.add(value.id);
           }
 
           invariant(
             includeValueIdSet.size + excludeValueIdSet.size ===
-              Object.keys(valueUniverse).length,
+              valueUniverse.length,
             "sets should account for all values"
           );
 
-          if (includeValueIdSet.size === Object.keys(valueUniverse).length) {
+          if (includeValueIdSet.size === valueUniverse.length) {
             onChange(undefined); // Implicitly includeValueIdSet all values
-          } else if (
-            excludeValueIdSet.size === Object.keys(valueUniverse).length
-          ) {
+          } else if (excludeValueIdSet.size === valueUniverse.length) {
             onChange({exclude: [...excludeValueIdSet]}); // Explicitly excludeValueIdSet all values
           } else if (includeValueIdSet.size >= excludeValueIdSet.size) {
             invariant(
@@ -94,16 +92,16 @@ export const StringFacetForm: React.FunctionComponent<{
         };
 
         return (
-          <ListItem className="w-100" key={valueId}>
+          <ListItem className="w-100" key={value.id}>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={includeValueIdSet.has(valueId)}
+                  checked={includeValueIdSet.has(value.id)}
                   onChange={onChangeValue}
                 />
               }
-              data-cy={"facet-value-" + valueId}
-              label={valueLabel}
+              data-cy={"facet-value-" + value.id}
+              label={value.label}
             />
           </ListItem>
         );
