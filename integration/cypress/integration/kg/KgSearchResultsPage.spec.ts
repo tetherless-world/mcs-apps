@@ -60,7 +60,7 @@ context("KgSearchResultsPage", () => {
     page.resultsTable.title.queryText.should("contain", nodeLabel);
   });
 
-  it("should exclude some results by faceted search", () => {
+  it("should exclude some results by excluding a source facet", () => {
     const page = new KgSearchResultsPage("");
     page.visit();
     page.resultsTable.title.count.should(
@@ -77,6 +77,22 @@ context("KgSearchResultsPage", () => {
       "contain",
       "Portal test data secondary 0"
     );
+  });
+
+  it("should exclude some results by excluding a type facet", () => {
+    const page = new KgSearchResultsPage("");
+    page.visit();
+    page.resultsTable.title.count.should(
+      "contain",
+      totalSearchResults.toString()
+    );
+    page.facets.types.disclose();
+    page.facets.types.valueCheckbox("Node").click();
+    page.resultsTable.title.count.should(
+      "not.contain",
+      totalSearchResults.toString()
+    );
+    page.resultsTable.title.filters.should("contain", "Node");
   });
 
   it("should sort by label descending", () => {

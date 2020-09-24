@@ -30,6 +30,8 @@ import * as ReactLoader from "react-loader";
 import {KgSearchResultsTable} from "kg/components/kg/search/KgSearchResultsTable";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import {StringFilter} from "shared/models/kg/search/StringFilter";
+import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
 
 const LIMIT_DEFAULT = 10;
 const OFFSET_DEFAULT = 0;
@@ -89,39 +91,54 @@ const makeTitle = (kwds: {
   }
 
   if (query && query.filters) {
-    const filterRepresentations = [];
-    if (query.filters.sourceIds) {
-      const {
-        exclude: excludeSourceIds,
-        include: includeSourceIds,
-      } = query.filters.sourceIds;
+    const filterRepresentations: React.ReactNode[] = [];
 
-      const sourceLabels = (sourceIds: readonly string[]) =>
-        sourceIds.map(
-          (sourceId) => resolveSourceId({allSources, sourceId}).label
-        );
+    const addStringFilterRepresentations = (
+      filtersAttribute: keyof KgSearchFilters,
+      getValueLabel: (valueId: string) => string
+    ) => {
+      if (!query || !query.filters) {
+        return;
+      }
+      const filter = query.filters[filtersAttribute] as StringFilter;
+      if (!filter) {
+        return;
+      }
+      const {exclude, include} = filter;
 
-      if (excludeSourceIds) {
+      if (exclude) {
         filterRepresentations.push(
-          <React.Fragment key="exclude-sources">
+          <React.Fragment key={`exclude-${filtersAttribute}`}>
             not in&nbsp;
-            <span data-cy="exclude-source-labels">
-              {sourceLabels(excludeSourceIds).join(", ")}
+            <span data-cy={`exclude-${filtersAttribute}-labels`}>
+              {exclude
+                .map((valueId: string) => getValueLabel(valueId))
+                .join(", ")}
             </span>
           </React.Fragment>
         );
       }
-      if (includeSourceIds) {
+
+      if (include) {
         filterRepresentations.push(
-          <React.Fragment key="include-sources">
+          <React.Fragment key={`include-${filtersAttribute}`}>
             in&nbsp;
-            <span data-cy="include-source-labels">
-              {sourceLabels(includeSourceIds).join(", ")}
+            <span data-cy={`include-${filtersAttribute}-labels`}>
+              {include
+                .map((valueId: string) => getValueLabel(valueId))
+                .join(", ")}
             </span>
           </React.Fragment>
         );
       }
-    }
+    };
+
+    addStringFilterRepresentations(
+      "sourceIds",
+      (sourceId) => resolveSourceId({allSources, sourceId}).label
+    );
+    addStringFilterRepresentations("types", (type) => type);
+
     switch (filterRepresentations.length) {
       case 0:
         break;
