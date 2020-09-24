@@ -96,7 +96,6 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
-  implicit val kgSearchResultTypeDecoder: Decoder[KgSearchResultType] = deriveDecoder
   implicit val kgSearchResultTypeFilterDecoder: Decoder[KgSearchResultTypeFilter] = deriveDecoder
   implicit val kgSearchFiltersDecoder: Decoder[KgSearchFilters] = deriveDecoder
   implicit val kgSearchQueryDecoder: Decoder[KgSearchQuery] = deriveDecoder
