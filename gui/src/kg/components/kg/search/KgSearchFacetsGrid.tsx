@@ -1,14 +1,40 @@
 import * as React from "react";
 import * as _ from "lodash";
-import {Grid} from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+} from "@material-ui/core";
 import {StringFilter} from "shared/models/kg/search/StringFilter";
 import {KgSearchFacetsFragment} from "kg/api/queries/types/KgSearchFacetsFragment";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
-import {KgSearchQuery} from "kg/api/graphqlGlobalTypes";
+import {
+  KgSearchQuery,
+  KgSearchResultType,
+  KgSearchResultTypeFilter,
+} from "kg/api/graphqlGlobalTypes";
 import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
-import {FacetExpansionPanel} from "kg/components/kg/search/FacetExpansionPanel";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
+const FacetAccordion: React.FunctionComponent<{
+  children: React.ReactNode;
+  id: string;
+  title: string;
+}> = ({children, id, title}) => {
+  return (
+    <Grid item className="facet" data-cy={id + "-facet"}>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          {title}
+        </AccordionSummary>
+        <AccordionDetails>{children}</AccordionDetails>
+      </Accordion>
+    </Grid>
+  );
+};
 
 export const KgSearchFacetsGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -17,7 +43,7 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
   query: KgSearchQuery;
 }> = ({allSources, facets, onChange, query}) => {
   const isStringFilterEmpty = (
-    filter: StringFilter | null | undefined
+    filter: KgSearchResultTypeFilter | StringFilter | null | undefined
   ): boolean => {
     if (!filter) {
       return true;
@@ -35,49 +61,78 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
     if (!isStringFilterEmpty(filters.sourceIds)) {
       return false;
     }
+    if (!isStringFilterEmpty(filters.types)) {
+      return false;
+    }
     return true;
   };
 
-  const onChangeStringFilter = (
-    attribute: keyof KgSearchFilters,
-    newState?: StringFilter
-  ) => {
+  const onChangeFilter = (changeFilter: (filters: KgSearchFilters) => void) => {
     const newQuery: KgSearchQuery = _.cloneDeep(query);
     if (!newQuery.filters) {
       newQuery.filters = {};
     }
-    newQuery.filters[attribute] = newState;
+    changeFilter(newQuery.filters!);
     if (isFiltersEmpty(newQuery.filters)) {
       newQuery.filters = undefined;
     }
     onChange(newQuery);
   };
 
-  const onChangeSourceIds = (newState?: StringFilter) =>
-    onChangeStringFilter("sourceIds", newState);
-
   return (
-    <Grid container direction="column">
-      <FacetExpansionPanel id="sources" title="Sources">
-        <StringFacetForm
-          currentState={
-            query.filters && query.filters.sourceIds
-              ? query.filters.sourceIds
-              : undefined
-          }
-          onChange={onChangeSourceIds}
-          valueUniverse={facets.sourceIds.reduce(
-            (map: {[index: string]: string}, sourceId) => {
-              map[sourceId.value] = resolveSourceId({
-                allSources,
-                sourceId: sourceId.value,
-              }).label;
-              return map;
-            },
-            {}
-          )}
-        />
-      </FacetExpansionPanel>
+    <Grid container direction="column" spacing={4}>
+      <Grid item>
+        <FacetAccordion id="types" title="Types">
+          <StringFacetForm
+            currentState={
+              query.filters && query.filters.types
+                ? query.filters.types
+                : undefined
+            }
+            onChange={(newState) =>
+              onChangeFilter((filters) => {
+                if (isStringFilterEmpty(newState)) {
+                  filters.types = undefined;
+                  return;
+                }
+                filters.types = {
+                  exclude: newState?.exclude?.map(
+                    (value) => value as KgSearchResultType
+                  ),
+                  include: newState?.include?.map(
+                    (value) => value as KgSearchResultType
+                  ),
+                };
+              })
+            }
+            valueUniverse={facets.types.map((type) => ({
+              count: type.count,
+              id: type.value,
+              label: type.value,
+            }))}
+          />
+        </FacetAccordion>
+      </Grid>
+      <Grid item>
+        <FacetAccordion id="sources" title="Sources">
+          <StringFacetForm
+            currentState={
+              query.filters && query.filters.sourceIds
+                ? query.filters.sourceIds
+                : undefined
+            }
+            onChange={(newState) =>
+              onChangeFilter((filters) => (filters.sourceIds = newState))
+            }
+            valueUniverse={facets.sourceIds.map((sourceId) => ({
+              count: sourceId.count,
+              id: sourceId.value,
+              label: resolveSourceId({allSources, sourceId: sourceId.value})
+                .label,
+            }))}
+          />
+        </FacetAccordion>
+      </Grid>
     </Grid>
   );
 };

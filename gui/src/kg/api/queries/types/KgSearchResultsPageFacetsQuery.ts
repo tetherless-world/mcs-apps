@@ -2,21 +2,28 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { KgSearchQuery } from "./../../graphqlGlobalTypes";
+import { KgSearchQuery, KgSearchResultType } from "./../../graphqlGlobalTypes";
 
 // ====================================================
 // GraphQL query operation: KgSearchResultsPageFacetsQuery
 // ====================================================
 
 export interface KgSearchResultsPageFacetsQuery_kgById_searchFacets_sourceIds {
-  __typename: "StringFacetValue";
+  __typename: "StringFacet";
   count: number;
   value: string;
+}
+
+export interface KgSearchResultsPageFacetsQuery_kgById_searchFacets_types {
+  __typename: "KgSearchResultTypeFacet";
+  count: number;
+  value: KgSearchResultType;
 }
 
 export interface KgSearchResultsPageFacetsQuery_kgById_searchFacets {
   __typename: "KgSearchFacets";
   sourceIds: KgSearchResultsPageFacetsQuery_kgById_searchFacets_sourceIds[];
+  types: KgSearchResultsPageFacetsQuery_kgById_searchFacets_types[];
 }
 
 export interface KgSearchResultsPageFacetsQuery_kgById_sources {

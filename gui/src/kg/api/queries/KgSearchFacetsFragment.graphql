@@ -3,4 +3,8 @@ fragment KgSearchFacetsFragment on KgSearchFacets {
     count
     value
   }
+  types {
+    count
+    value
+  }
 }
