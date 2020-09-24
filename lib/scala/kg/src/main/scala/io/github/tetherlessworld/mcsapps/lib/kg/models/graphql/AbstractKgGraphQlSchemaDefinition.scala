@@ -79,7 +79,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     )
   )
   // Search
-  implicit val kgSearchResultTypeEnumType = KgSearchResultType.sangriaType
+  implicit val KgSearchResultTypeEnumType = KgSearchResultType.sangriaType
   implicit val KgSearchResultTypeFacetObjectType = deriveObjectType[KgGraphQlSchemaContext, KgSearchResultTypeFacet]()
   implicit val StringFacetObjectType = deriveObjectType[KgGraphQlSchemaContext, StringFacet]()
   val KgSearchFacetsObjectType = deriveObjectType[KgGraphQlSchemaContext, KgSearchFacets]()
@@ -96,10 +96,10 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
 
   // Input object decoders
   implicit val stringFilterDecoder: Decoder[StringFilter] = deriveDecoder
+  implicit val kgSearchResultTypeDecoder: Decoder[KgSearchResultType] = deriveDecoder
   implicit val kgSearchResultTypeFilterDecoder: Decoder[KgSearchResultTypeFilter] = deriveDecoder
   implicit val kgSearchFiltersDecoder: Decoder[KgSearchFilters] = deriveDecoder
   implicit val kgSearchQueryDecoder: Decoder[KgSearchQuery] = deriveDecoder
-  implicit val kgSearchResultTypeDecoder: Decoder[KgSearchResultType] = deriveDecoder
   implicit val kgSearchSortDecoder: Decoder[KgSearchSort] = deriveDecoder
   // Input object types
   implicit val StringFacetFilterInputObjectType = deriveInputObjectType[StringFilter]()
