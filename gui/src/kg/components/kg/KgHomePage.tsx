@@ -24,7 +24,7 @@ import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
 import * as KgHomePageQueryDocument from "kg/api/queries/KgHomePageQuery.graphql";
 import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
-import {KgSearchQuery, StringFacetFilter} from "kg/api/graphqlGlobalTypes";
+import {KgSearchQuery, StringFilter} from "kg/api/graphqlGlobalTypes";
 import {KgSearchLink} from "shared/components/kg/search/KgSearchLink";
 import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 
@@ -73,10 +73,9 @@ export const KgHomePage: React.FunctionComponent = () => {
     variables: {kgId},
   });
 
-  const [
-    sourcesFilter,
-    setSourcesFilter,
-  ] = React.useState<StringFacetFilter | null>(null);
+  const [sourcesFilter, setSourcesFilter] = React.useState<StringFilter | null>(
+    null
+  );
   const [searchBoxValue, setSearchBoxValue] = React.useState<KgSearchBoxValue>(
     null
   );
