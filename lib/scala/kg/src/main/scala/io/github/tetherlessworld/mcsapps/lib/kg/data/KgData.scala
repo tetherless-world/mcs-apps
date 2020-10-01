@@ -92,7 +92,9 @@ object KgData {
   def mergeNodes(node1: KgNode, node2: KgNode) =
     KgNode(
       id = node1.id, // should be equal
+      inDegree = None,
       labels = node1.labels ::: node2.labels distinct,
+      outDegree = None,
       pos = node1.pos,
       sourceIds = node1.sourceIds ::: node2.sourceIds distinct,
       pageRank = None, // should not be initialized yet,

@@ -123,7 +123,9 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       ),
       node1 = KgNode(
         id = node1.get,
+        inDegree = None,
         labels = row.getList("node1;label"),
+        outDegree = None,
         pos = node1Parsed.pos,
         sourceIds = sources,
         pageRank = None,
@@ -131,7 +133,9 @@ final class KgtkEdgesTsvIterator(inputStream: InputStream) extends AutoCloseable
       ),
       node2 = KgNode(
         id = node2.get,
+        inDegree = None,
         labels = row.getList("node2;label"),
+        outDegree = None,
         pos = node2Parsed.pos,
         sourceIds = sources,
         pageRank = None,
