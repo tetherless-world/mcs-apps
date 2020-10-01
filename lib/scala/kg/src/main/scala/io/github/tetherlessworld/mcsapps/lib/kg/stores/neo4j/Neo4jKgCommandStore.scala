@@ -217,7 +217,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             s"""
                |CALL gds.alpha.degree.write({
                |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
-               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[r]->(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[edge]->(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
                |writeProperty: 'outDegree'
                |})
                |""".stripMargin
@@ -227,7 +227,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             s"""
                |CALL gds.alpha.degree.write({
                |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
-               |relationshipQuery: 'MATCH (source: ${NodeLabel})<-[r]-(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})<-[edge]-(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
                |writeProperty: 'inDegree'
                |})
                |""".stripMargin
