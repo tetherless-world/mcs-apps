@@ -18,7 +18,7 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
   val paths = validatePaths(edges, nodesByIdUnranked, pathsUnsorted)
   val sourcesById = (nodesByIdUnranked.flatMap(_._2.sourceIds) ++ edges.flatMap(_.sourceIds)).map(KgSource(_)).map(source => (source.id, source)).toMap
   val sources = sourcesById.values.toList
-  val nodes = PageRank.calculateNodePageRanks(nodesByIdUnranked.values.toList.sortBy(_.id), edges)
+  val nodes = writeNodeDegrees(PageRank.calculateNodePageRanks(nodesByIdUnranked.values.toList.sortBy(_.id), edges), edgesByObjectId, edgesBySubjectId)
   val nodesById = nodes.map{node => (node.id, node)}.toMap
   val nodeLabelsByLabel = PageRank.calculateNodeLabelPageRanks(nodesById, edges).map(nodeLabel => (nodeLabel.nodeLabel, nodeLabel)).toMap
 
@@ -57,6 +57,9 @@ abstract class KgData(edgesUnsorted: List[KgEdge], nodesUnsorted: List[KgNode], 
 
   private def sortEdges(edges: List[KgEdge]) =
     edges.sortBy(edge => (edge.subject, edge.predicate, edge.`object`))
+
+  private def writeNodeDegrees(nodes: List[KgNode], edgesByObjectId: Map[String, List[KgEdge]], edgesBySubjectId: Map[String, List[KgEdge]]) =
+    nodes.map(node => node.copy(inDegree = Some(edgesByObjectId(node.id).length), outDegree = Some(edgesBySubjectId(node.id).length)))
 
   private def validatePaths(edges: List[KgEdge], nodesById: Map[String, KgNode], paths: List[KgPath]): List[KgPath] = {
     paths.map(path => {
