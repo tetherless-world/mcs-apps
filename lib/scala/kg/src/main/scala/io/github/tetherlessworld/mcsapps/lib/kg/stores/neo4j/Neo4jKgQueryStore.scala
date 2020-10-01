@@ -345,24 +345,21 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
 
         val luceneSearchTerms =
           List("id:*") ++
-            query.text.map(text => List(s"(${text})")).getOrElse(List()) ++ {
-            if (query.filters.isDefined && query.filters.get.sourceIds.isDefined) {
-              query.filters.get.sourceIds.get.exclude.toList.flatMap(
-                _.map(excludeSourceId => s"NOT sources:${excludeSourceId}"
-                )) ++
-                query.filters.get.sourceIds.get.include.toList.flatMap(
-                  _.map(includeSourceId => s"sources:${includeSourceId}"
-                  ))
-            } else {
-              List()
-            }
-          }
+            query.text.map(text => List(s"(${text})")).getOrElse(List()) ++
+            query.filters.map(filters =>
+              filters.sourceIds.map(sourceIds =>
+                sourceIds.exclude.toList.flatMap(_.map(excludeSourceId => s"NOT sources:${excludeSourceId}")) ++
+                  sourceIds.include.toList.flatMap(_.map(includeSourceId => s"sources:${includeSourceId}"))).getOrElse(List()) ++
+                filters.types.map(resultTypes =>
+                  resultTypes.exclude.toList.flatMap(_.map(excludeSourceId => s"NOT type:${excludeSourceId}")) ++
+                    resultTypes.include.toList.flatMap(_.map(includeSourceId => s"type:${includeSourceId}")))).getOrElse(List())
 
         KgNodeQueryFulltextCypher(
           bindings = List("text" -> luceneSearchTerms.mkString(" AND ")).toMap,
           fulltextCall = """CALL db.index.fulltext.queryNodes("node", $text) YIELD node, score""",
         )
       }
+
     }
 
     private def toTransactionRunParameters(map: Map[String, Any]) =

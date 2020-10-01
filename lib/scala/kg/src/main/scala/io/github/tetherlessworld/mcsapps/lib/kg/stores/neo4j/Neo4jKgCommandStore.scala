@@ -5,6 +5,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
+import io.github.tetherlessworld.mcsapps.lib.kg.models.search.KgSearchResultType
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction, Neo4jStoreConfiguration}
 import javax.inject.Singleton
@@ -89,12 +90,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
         final def putNode(node: KgNode): Unit = {
           transaction.run(
-            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources, wordNetSenseNumber: $$wordNetSenseNumber });",
+            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources, type: $$type, wordNetSenseNumber: $$wordNetSenseNumber });",
             toTransactionRunParameters(Map(
               "id" -> node.id,
               "labels" -> node.labels.mkString(ListDelimString),
               "pos" -> node.pos.getOrElse(null),
               "sources" -> node.sourceIds.mkString(ListDelimString),
+              "type" -> KgSearchResultType.Node.value,
               "wordNetSenseNumber" -> node.wordNetSenseNumber.getOrElse(null)
             ))
           )
@@ -121,12 +123,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             transaction.run(
               s"""
                  |MATCH (node:${NodeLabel} {id:$$nodeId})
-                 |MERGE (label:${LabelLabel} {id:$$labelId, label:$$labelId, labels:$$labelId})
+                 |MERGE (label:${LabelLabel} {id:$$labelId, label:$$labelId, labels:$$labelId, type:$$type})
                  |MERGE (node)-[:${LabelRelationshipType}]->(label)
                  |""".stripMargin,
               toTransactionRunParameters(Map(
                 "labelId" -> label,
-                "nodeId" -> node.id
+                "nodeId" -> node.id,
+                "type" -> KgSearchResultType.NodeLabel.value
               ))
             )
           }
@@ -166,11 +169,12 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           for (source <- sources) {
             transaction.run(
               s"""
-                 |MERGE (:${SourceLabel} { id: $$id, label: $$label, labels: $$label, sources: $$id })
+                 |MERGE (:${SourceLabel} { id: $$id, label: $$label, labels: $$label, sources: $$id, type: $$type })
                  |""".stripMargin,
               toTransactionRunParameters(Map(
                 "id" -> source.id,
-                "label" -> source.label
+                "label" -> source.label,
+                "type" -> KgSearchResultType.Source.value
               ))
             )
           }
@@ -398,7 +402,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         logger.info("bootstrapping neo4j indices")
 
         val bootstrapCypherStatements = List(
-          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}", "${SourceLabel}", "${LabelLabel}"],["id", "label", "labels", "sources"]);""",
+          s"""CALL db.index.fulltext.createNodeIndex("node",["${NodeLabel}", "${SourceLabel}", "${LabelLabel}"],["id", "label", "labels", "sources", "type"]);""",
           s"""CREATE CONSTRAINT node_id_constraint ON (node:${NodeLabel}) ASSERT node.id IS UNIQUE;""",
           s"""CREATE CONSTRAINT source_id_constraint ON (source:${SourceLabel}) ASSERT source.id IS UNIQUE;""",
           s"""CREATE CONSTRAINT label_id_constraint ON (label:${LabelLabel}) ASSERT label.id IS UNIQUE;"""
