@@ -85,7 +85,9 @@ object PageRank {
     val nodeLabelNodes = nodeLabels.map(nodeLabel =>
       KgNode(
         id = nodeLabel.nodeLabel,
+        inDegree = None,
         labels = List(),
+        outDegree = None,
         pageRank = None,
         pos = None,
         sourceIds = List(),

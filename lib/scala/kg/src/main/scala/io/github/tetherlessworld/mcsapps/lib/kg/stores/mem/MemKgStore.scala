@@ -38,6 +38,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     override def close(): Unit = {
       nodesById = PageRank.calculateNodePageRanks(nodesById.values.toList.sortBy(_.id), edges).map(node => (node.id, node)).toMap
 
+      nodesById = nodesById.mapValues(node => node.copy(inDegree = Some(edges.count(_.`object` == node.id)), outDegree = Some(edges.count(_.subject == node.id))))
+
       val nodeLabels = PageRank.calculateNodeLabelPageRanks(nodesById = nodesById, edges = edges)
       nodeLabelsByLabel = nodeLabels.map(nodeLabel => (nodeLabel.nodeLabel, nodeLabel)).toMap
 

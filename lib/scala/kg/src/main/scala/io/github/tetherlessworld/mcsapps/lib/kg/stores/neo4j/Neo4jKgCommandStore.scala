@@ -208,6 +208,32 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
+        final def writeNodeDegrees: Unit = {
+          if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""
+               |CALL gds.alpha.degree.write({
+               |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})-[edge]->(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |writeProperty: 'outDegree'
+               |})
+               |""".stripMargin
+          )
+
+          transaction.run(
+            s"""
+               |CALL gds.alpha.degree.write({
+               |nodeQuery: 'MATCH (n: ${NodeLabel}) RETURN id(n) as id',
+               |relationshipQuery: 'MATCH (source: ${NodeLabel})<-[edge]-(target: ${NodeLabel}) WHERE TYPE(edge)<>"${PathRelationshipType}" RETURN id(source) as source, id(target) as target',
+               |writeProperty: 'inDegree'
+               |})
+               |""".stripMargin
+          )
+        }
+
         final def writeNodePageRanks: Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
@@ -241,6 +267,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     }
 
     final override def close(): Unit = {
+      writeNodeDegrees
       writeNodePageRanks
       writeLabelPageRanks
       writeLabelSources
@@ -327,6 +354,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     private def writeLabelSources: Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelSources
+        transaction.commit()
+      }
+    }
+
+    private def writeNodeDegrees: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeNodeDegrees
         transaction.commit()
       }
     }
