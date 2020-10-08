@@ -1,9 +1,11 @@
 import * as React from "react";
-import {BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts} from "benchmark/api/queries/types/BenchmarkAnswerPageQuery";
 import {BenchmarkQuestionPromptType} from "benchmark/api/graphqlGlobalTypes";
 
 export const BenchmarkQuestionText: React.FunctionComponent<{
-  prompts: BenchmarkAnswerPageQuery_benchmarkById_datasetById_questionById_prompts[];
+  prompts: readonly {
+    text: string;
+    type: BenchmarkQuestionPromptType;
+  }[];
   questionStyle?: React.CSSProperties;
 }> = ({prompts, questionStyle}) => {
   const goals = prompts.filter(
