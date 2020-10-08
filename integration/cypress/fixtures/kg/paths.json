@@ -2,9 +2,9 @@
     {
         "id": "portal_test_data_path_0",
         "path": [
-            "portal_test_data:0",
+            "P0:0",
             "/r/Antonym",
-            "portal_test_data:1"
+            "P0:1"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -13,11 +13,11 @@
     {
         "id": "portal_test_data_path_1",
         "path": [
-            "portal_test_data:5",
+            "P0:5",
             "/r/Antonym",
-            "portal_test_data:6",
+            "P0:6",
             "/r/AtLocation",
-            "portal_test_data:7"
+            "P0:7"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -26,13 +26,13 @@
     {
         "id": "portal_test_data_path_2",
         "path": [
-            "portal_test_data:10",
+            "P0:10",
             "/r/Antonym",
-            "portal_test_data:11",
+            "P0:11",
             "/r/CapableOf",
-            "portal_test_data:12",
+            "P0:12",
             "/r/CausesDesire",
-            "portal_test_data:13"
+            "P0:13"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -41,15 +41,15 @@
     {
         "id": "portal_test_data_path_3",
         "path": [
-            "portal_test_data:15",
+            "P0:15",
             "/r/Antonym",
-            "portal_test_data:16",
+            "P0:16",
             "/r/Causes",
-            "portal_test_data:17",
+            "P0:17",
             "/r/DefinedAs",
-            "portal_test_data:18",
+            "P0:18",
             "/r/DistinctFrom",
-            "portal_test_data:19"
+            "P0:19"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -58,17 +58,17 @@
     {
         "id": "portal_test_data_path_4",
         "path": [
-            "portal_test_data:20",
+            "P0:20",
             "/r/Antonym",
-            "portal_test_data:21",
+            "P0:21",
             "/r/CausesDesire",
-            "portal_test_data:22",
+            "P0:22",
             "/r/Desires",
-            "portal_test_data:23",
+            "P0:23",
             "/r/ExternalURL",
-            "portal_test_data:24",
+            "P0:24",
             "/r/HasFirstSubevent",
-            "portal_test_data:25"
+            "P0:25"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -77,19 +77,19 @@
     {
         "id": "portal_test_data_path_5",
         "path": [
-            "portal_test_data:25",
+            "P0:25",
             "/r/Antonym",
-            "portal_test_data:26",
+            "P0:26",
             "/r/CreatedBy",
-            "portal_test_data:27",
+            "P0:27",
             "/r/EtymologicallyDerivedFrom",
-            "portal_test_data:28",
+            "P0:28",
             "/r/HasContext",
-            "portal_test_data:29",
+            "P0:29",
             "/r/HasSubevent",
-            "portal_test_data:30",
+            "P0:30",
             "/r/MotivatedByGoal",
-            "portal_test_data:31"
+            "P0:31"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -98,21 +98,21 @@
     {
         "id": "portal_test_data_path_6",
         "path": [
-            "portal_test_data:30",
+            "P0:30",
             "/r/Antonym",
-            "portal_test_data:31",
+            "P0:31",
             "/r/DefinedAs",
-            "portal_test_data:32",
+            "P0:32",
             "/r/CapableOf",
-            "portal_test_data:33",
+            "P0:33",
             "/r/Desires",
-            "portal_test_data:34",
+            "P0:34",
             "/r/CausesDesire",
-            "portal_test_data:35",
+            "P0:35",
             "/r/Antonym",
-            "portal_test_data:36",
+            "P0:36",
             "/r/DefinedAs",
-            "portal_test_data:37"
+            "P0:37"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -121,23 +121,23 @@
     {
         "id": "portal_test_data_path_7",
         "path": [
-            "portal_test_data:35",
+            "P0:35",
             "/r/Antonym",
-            "portal_test_data:36",
+            "P0:36",
             "/r/DerivedFrom",
-            "portal_test_data:37",
+            "P0:37",
             "/r/CausesDesire",
-            "portal_test_data:38",
+            "P0:38",
             "/r/AtLocation",
-            "portal_test_data:39",
+            "P0:39",
             "/r/Desires",
-            "portal_test_data:40",
+            "P0:40",
             "/r/CreatedBy",
-            "portal_test_data:41",
+            "P0:41",
             "/r/CapableOf",
-            "portal_test_data:42",
+            "P0:42",
             "/r/DistinctFrom",
-            "portal_test_data:43"
+            "P0:43"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -146,25 +146,25 @@
     {
         "id": "portal_test_data_path_8",
         "path": [
-            "portal_test_data:40",
+            "P0:40",
             "/r/Antonym",
-            "portal_test_data:41",
+            "P0:41",
             "/r/Desires",
-            "portal_test_data:42",
+            "P0:42",
             "/r/DefinedAs",
-            "portal_test_data:43",
+            "P0:43",
             "/r/CausesDesire",
-            "portal_test_data:44",
+            "P0:44",
             "/r/CapableOf",
-            "portal_test_data:45",
+            "P0:45",
             "/r/Antonym",
-            "portal_test_data:46",
+            "P0:46",
             "/r/Desires",
-            "portal_test_data:47",
+            "P0:47",
             "/r/DefinedAs",
-            "portal_test_data:48",
+            "P0:48",
             "/r/CausesDesire",
-            "portal_test_data:49"
+            "P0:49"
         ],
         "sourceIds": [
             "portal_test_data"
@@ -173,27 +173,27 @@
     {
         "id": "portal_test_data_path_9",
         "path": [
-            "portal_test_data:45",
+            "P0:45",
             "/r/Antonym",
-            "portal_test_data:46",
+            "P0:46",
             "/r/DistinctFrom",
-            "portal_test_data:47",
+            "P0:47",
             "/r/Desires",
-            "portal_test_data:48",
+            "P0:48",
             "/r/DerivedFrom",
-            "portal_test_data:49",
+            "P0:49",
             "/r/DefinedAs",
-            "portal_test_data:50",
+            "P0:50",
             "/r/CreatedBy",
-            "portal_test_data:51",
+            "P0:51",
             "/r/CausesDesire",
-            "portal_test_data:52",
+            "P0:52",
             "/r/Causes",
-            "portal_test_data:53",
+            "P0:53",
             "/r/CapableOf",
-            "portal_test_data:54",
+            "P0:54",
             "/r/AtLocation",
-            "portal_test_data:55"
+            "P0:55"
         ],
         "sourceIds": [
             "portal_test_data"
