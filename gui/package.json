@@ -13,7 +13,7 @@
     "@types/d3": "^5.7.2",
     "@types/mui-datatables": "^3.4.0",
     "d3": "^5.16.0",
-    "mui-datatables": "^3.4.1",
+    "mui-datatables": "3.5.0",
     "query-string": "^6.13.1",
     "use-query-params": "1.1.6"
   },
