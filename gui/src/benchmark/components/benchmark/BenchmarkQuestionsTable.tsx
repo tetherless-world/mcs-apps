@@ -27,6 +27,58 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   submissionId,
   submissions,
 }) => {
+  // Do a first pass over questions to index them and gather the answer submission id's
+  const answerSubmissionIds: string[] = []; // No flatMap until ES2019
+  let includeCategoriesColumn: boolean = false;
+  let includeConceptColumn: boolean = false;
+  let includeTypeColumn: boolean = false;
+  const questionsById: {[index: string]: BenchmarkQuestion} = {};
+  for (const question of questions) {
+    questionsById[question.id] = question;
+
+    if (question.answers) {
+      for (const answer of question.answers) {
+        if (
+          !answerSubmissionIds.some(
+            (submissionId) => submissionId === answer.submissionId
+          )
+        ) {
+          answerSubmissionIds.push(answer.submissionId);
+        }
+      }
+    }
+
+    if (question.categories) {
+      includeCategoriesColumn = true;
+    }
+
+    if (question.concept) {
+      includeConceptColumn = true;
+    }
+
+    if (question.type !== null) {
+      includeTypeColumn = true;
+    }
+  }
+
+  // Do a second pass to create the row data.
+  // Need to do two passes because we don't know how many answer columns there will be until we do a pass.
+  // Have to do any because there can be an arbitrary number of  answerSubmissionId's columns attached to the row.
+  const data: any[] = questions.map((question) => {
+    const row: any = {
+      categories: question.categories?.join("|"),
+      id: question.id,
+      prompts: "",
+      type: question.type,
+    };
+    if (question.answers) {
+      for (const answer of question.answers) {
+        row[answer.submissionId] = "";
+      }
+    }
+    return row;
+  });
+
   const getRowQuestionId = (rowData: any[]) => rowData[0];
 
   const columns: MUIDataTableColumnDef[] = [];
@@ -40,7 +92,10 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
     name: "prompts",
     label: "Text",
     options: {
-      customBodyRender: (prompts, tableMeta) => {
+      customBodyRender: (_, tableMeta) => {
+        const questionId = getRowQuestionId(tableMeta.rowData);
+        const question = questionsById[questionId];
+        const prompts = question.prompts;
         return (
           <span data-cy="question-text">
             {submissionId ? (
@@ -50,7 +105,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
                   .dataset({id: datasetId})
                   .submission({id: submissionId})
                   .question({
-                    id: getRowQuestionId(tableMeta.rowData),
+                    id: questionId,
                   })}
               >
                 <BenchmarkQuestionText prompts={prompts} />
@@ -63,7 +118,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
       },
     },
   });
-  if (questions.some((question) => question.type !== null)) {
+  if (includeTypeColumn) {
     columns.push({
       name: "type",
       label: "Type",
@@ -81,19 +136,16 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
       },
     });
   }
-  if (questions.some((question) => question.categories)) {
+  if (includeCategoriesColumn) {
     columns.push({
       name: "categories",
       label: "Categories",
       options: {
-        customBodyRender: (
-          categories: string[] | undefined,
-          tableMeta: any
-        ) => {
+        customBodyRender: (categories: string, tableMeta: any) => {
           if (categories) {
             return (
               <List>
-                {categories.map((category) => (
+                {categories.split("|").map((category) => (
                   <ListItemText key={category}>{category}</ListItemText>
                 ))}
               </List>
@@ -105,67 +157,51 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
       },
     });
   }
-  if (questions.some((question) => question.concept)) {
+  if (includeConceptColumn) {
     columns.push({name: "concept", label: "Concept"});
   }
-  if (questions.some((question) => question.answers)) {
-    const answerSubmissionIds: string[] = []; // No flatMap until ES2019
-    for (const question of questions) {
-      if (question.answers) {
-        for (const answer of question.answers) {
-          if (
-            !answerSubmissionIds.some(
-              (submissionId) => submissionId === answer.submissionId
-            )
-          ) {
-            answerSubmissionIds.push(answer.submissionId);
-          }
-        }
-      }
-    }
-    for (const answerSubmissionId of answerSubmissionIds) {
-      const submission = submissions?.find(
-        (submission) => submission.id === answerSubmissionId
-      );
-      const submissionName = submission ? submission.name : answerSubmissionId;
-      columns.push({
-        label: submissionName,
-        name: answerSubmissionId,
-        options: {
-          empty: true,
-          customBodyRender: (value, tableMeta) => {
-            const question = questions[tableMeta.rowIndex];
-            const answer = question.answers!.find(
-              (answer) => answer.submissionId === tableMeta.columnData.name
-            )!;
-            const correct = answer.choiceId === question.correctChoiceId;
-            return (
-              <Link
-                to={BenchmarkHrefs.benchmark({id: benchmarkId})
-                  .dataset({id: datasetId})
-                  .submission({id: answer.submissionId})
-                  .question({
-                    id: getRowQuestionId(tableMeta.rowData),
-                  })}
-              >
-                {correct ? (
-                  <FontAwesomeIcon icon={faCheck} color="green" />
-                ) : (
-                  <FontAwesomeIcon icon={faTimes} color="red" />
-                )}
-              </Link>
-            );
-          },
+  for (const answerSubmissionId of answerSubmissionIds) {
+    const submission = submissions?.find(
+      (submission) => submission.id === answerSubmissionId
+    );
+    const submissionName = submission ? submission.name : answerSubmissionId;
+    columns.push({
+      label: submissionName,
+      name: answerSubmissionId,
+      options: {
+        empty: true,
+        customBodyRender: (_, tableMeta) => {
+          const question = questions[tableMeta.rowIndex];
+          const answer = question.answers!.find(
+            (answer) => answer.submissionId === tableMeta.columnData.name
+          )!;
+          const correct = answer.choiceId === question.correctChoiceId;
+          return (
+            <Link
+              to={BenchmarkHrefs.benchmark({id: benchmarkId})
+                .dataset({id: datasetId})
+                .submission({id: answer.submissionId})
+                .question({
+                  id: getRowQuestionId(tableMeta.rowData),
+                })}
+            >
+              {correct ? (
+                <FontAwesomeIcon icon={faCheck} color="green" />
+              ) : (
+                <FontAwesomeIcon icon={faTimes} color="red" />
+              )}
+            </Link>
+          );
         },
-      });
-    }
+      },
+    });
   }
 
   return (
     <div data-cy="benchmark-questions">
       <MUIDataTable
         columns={columns}
-        data={questions}
+        data={data}
         options={{
           count: questionsTotal,
           filter: false,

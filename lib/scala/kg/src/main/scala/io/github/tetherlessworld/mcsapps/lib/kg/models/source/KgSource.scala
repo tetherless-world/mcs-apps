@@ -11,10 +11,10 @@ object KgSource {
     "VG" -> "Visual Genome",
     "WD" -> "Wikidata",
     "WN" -> "WordNet",
-    "portal_test_data" -> "Portal test data",
-    "portal_test_data_secondary_0" -> "Portal test data secondary 0",
-    "portal_test_data_secondary_1" -> "Portal test data secondary 1",
-    "portal_test_data_secondary_2" -> "Portal test data secondary 2"
+    "P0" -> "Test data 0",
+    "P1" -> "Test data 1",
+    "P2" -> "Test data 2",
+    "P3" -> "Test data 3"
   ).map(entry => (entry._1, KgSource(id = entry._1, label = entry._2)))
 
   def apply(id: String): KgSource =

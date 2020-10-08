@@ -61,13 +61,6 @@ export const KgSearchResultsTable: React.FunctionComponent<{
     }
   };
 
-  interface KgSearchResultsTableRowData {
-    // aliases?: readonly string[];
-    label: string;
-    sourceIds: readonly string[];
-    typeLabel: string;
-  }
-
   const data = React.useMemo(() => {
     const getResultTypeLabel = (result: KgSearchResult): string => {
       switch (result.__typename) {
@@ -86,11 +79,15 @@ export const KgSearchResultsTable: React.FunctionComponent<{
       }
     };
 
-    const rows: KgSearchResultsTableRowData[] = [];
+    const rows: {
+      label: string;
+      sourceIds: string;
+      typeLabel: string;
+    }[] = [];
     for (const result of results) {
       rows.push({
         label: getKgSearchResultLabel({allSources, result}),
-        sourceIds: getKgSearchResultSourceIds({result}),
+        sourceIds: getKgSearchResultSourceIds({result}).join("|"),
         typeLabel: getResultTypeLabel(result),
       });
     }
@@ -151,7 +148,8 @@ export const KgSearchResultsTable: React.FunctionComponent<{
           sort: true,
           customBodyRender(sourceIds, tableMeta) {
             return sourceIds
-              ? (sourceIds as string[])
+              ? sourceIds
+                  .split("|")
                   .map((sourceId) => resolveSourceId({allSources, sourceId}))
                   .map((source, sourceIndex) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
