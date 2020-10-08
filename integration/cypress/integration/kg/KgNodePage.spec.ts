@@ -33,7 +33,7 @@ context("KG node page", () => {
   });
 
   it("should show the node source", () => {
-    page.source.should("contain", "Portal test data");
+    page.source.should("contain", KgTestData.kgSources[0].label);
   });
 
   it("should have the grid tab selected by default", () => {
