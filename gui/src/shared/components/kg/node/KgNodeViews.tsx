@@ -9,7 +9,7 @@ import {
   List,
   ListItemText,
 } from "@material-ui/core";
-import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
+import {KgNodeContextEdgesGrid} from "shared/components/kg/node/KgNodeContextEdgesGrid";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
@@ -41,7 +41,10 @@ export const KgNodeViews: React.FunctionComponent<{
   const tabRoutes = {
     grid: new TabRoute({
       content: (
-        <KgNodeContextGrid allSources={allSources} nodeContext={node.context} />
+        <KgNodeContextEdgesGrid
+          allSources={allSources}
+          nodeContext={node.context}
+        />
       ),
       relPath: "",
       label: "Edges",

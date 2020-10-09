@@ -17,7 +17,7 @@ import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
-export const KgNodeContextGrid: React.FunctionComponent<{
+export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useRouteMatch} from "react-router-dom";
 import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
-import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
+import {KgNodeContextEdgesGrid} from "shared/components/kg/node/KgNodeContextEdgesGrid";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
@@ -32,7 +32,7 @@ export const KgNodeLabelViews: React.FunctionComponent<{
   const tabRoutes = {
     grid: new TabRoute({
       content: (
-        <KgNodeContextGrid
+        <KgNodeContextEdgesGrid
           allSources={allSources}
           nodeContext={nodeLabel.context}
         />
