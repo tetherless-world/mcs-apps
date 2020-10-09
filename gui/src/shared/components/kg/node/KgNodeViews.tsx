@@ -77,12 +77,6 @@ export const KgNodeViews: React.FunctionComponent<{
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item>
-              <Card>
-                <CardHeader title="PageRank"></CardHeader>
-                <CardContent>{node.pageRank.toFixed(3)}</CardContent>
-              </Card>
-            </Grid>
             {node.pos != null && node.wordNetSenseNumber != null ? (
               <Grid item>
                 <Card>

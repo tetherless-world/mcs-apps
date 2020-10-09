@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useRouteMatch} from "react-router-dom";
-import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {KgNodeContextEdgesGrid} from "shared/components/kg/node/KgNodeContextEdgesGrid";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
@@ -63,12 +63,6 @@ export const KgNodeLabelViews: React.FunctionComponent<{
         </Grid>
         <Grid item xs={2}>
           <Grid container direction="column" spacing={6}>
-            <Grid item>
-              <Card>
-                <CardHeader title="PageRank"></CardHeader>
-                <CardContent>{nodeLabel.pageRank.toFixed(3)}</CardContent>
-              </Card>
-            </Grid>
             <Grid item>
               <KgNodeSourcesCard
                 nodeSources={nodeLabel.sourceIds.map((sourceId) =>
