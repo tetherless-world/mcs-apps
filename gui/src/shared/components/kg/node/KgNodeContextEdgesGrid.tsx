@@ -83,6 +83,14 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
     nodeContext
   );
 
+  const predicateLabelMappings = nodeContext.predicateLabelMappings.reduce(
+    (map, mapping) => {
+      map[mapping.predicate] = mapping.label;
+      return map;
+    },
+    {} as {[index: string]: string}
+  );
+
   const topEdgeColumns: MUIDataTableColumnDef[] = [
     {
       name: "nodeLabel",
@@ -134,42 +142,44 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
 
   return (
     <Grid container spacing={4}>
-      {Object.keys(nodeLabelsByTopEdgePredicate).map((predicate) => {
-        const data: {
-          nodeLabel: string;
-          sourceIds: string;
-        }[] = nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => ({
-          nodeLabel: nodeLabel.nodeLabel,
-          sourceIds: nodeLabel.sourceIds.join("|"),
-        }));
+      {Object.keys(nodeLabelsByTopEdgePredicate)
+        .sort()
+        .map((predicate) => {
+          const data: {
+            nodeLabel: string;
+            sourceIds: string;
+          }[] = nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => ({
+            nodeLabel: nodeLabel.nodeLabel,
+            sourceIds: nodeLabel.sourceIds.join("|"),
+          }));
 
-        return (
-          <Grid item key={predicate} data-cy={`grid-${predicate}-edges`}>
-            <Card>
-              <CardHeader
-                data-cy="edge-list-title"
-                title={predicate}
-                style={{textAlign: "center"}}
-              />
-              <CardContent>
-                <ThemeProvider theme={theme}>
-                  <MUIDataTable
-                    columns={topEdgeColumns}
-                    data={data}
-                    options={{
-                      fixedHeader: false,
-                      fixedSelectColumn: false,
-                      pagination: data.length > 10,
-                      selectableRows: "none",
-                    }}
-                    title={""}
-                  />
-                </ThemeProvider>
-              </CardContent>
-            </Card>
-          </Grid>
-        );
-      })}
+          return (
+            <Grid item key={predicate} data-cy={`grid-${predicate}-edges`}>
+              <Card>
+                <CardHeader
+                  data-cy="edge-list-title"
+                  title={predicateLabelMappings[predicate] ?? predicate}
+                  style={{textAlign: "center"}}
+                />
+                <CardContent>
+                  <ThemeProvider theme={theme}>
+                    <MUIDataTable
+                      columns={topEdgeColumns}
+                      data={data}
+                      options={{
+                        fixedHeader: false,
+                        fixedSelectColumn: false,
+                        pagination: data.length > 10,
+                        selectableRows: "none",
+                      }}
+                      title={""}
+                    />
+                  </ThemeProvider>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
     </Grid>
   );
 };
