@@ -9,7 +9,11 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.{KgEdge, KgPredicate
  * @param relatedNodeLabels related node labels, should contain all subject/object's of topEdges
  * @param topEdges          top edges connected to this node (as subject or object), sorted by PageRank descending
  */
-final case class KgNodeContext(relatedNodeLabels: List[KgNodeLabel], predicateLabelMappings: List[KgPredicateLabelMapping], topEdges: List[KgEdge])
+final case class KgNodeContext(
+                                predicateLabelMappings: List[KgPredicateLabelMapping],
+                                relatedNodeLabels: List[KgNodeLabel],
+                                topEdges: List[KgEdge]
+                              )
 
 object KgNodeContext {
   def apply(relatedNodeLabels: List[KgNodeLabel], topEdges: List[KgEdge]): KgNodeContext =

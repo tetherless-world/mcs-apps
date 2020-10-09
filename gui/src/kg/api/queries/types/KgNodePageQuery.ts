@@ -6,6 +6,12 @@
 // GraphQL query operation: KgNodePageQuery
 // ====================================================
 
+export interface KgNodePageQuery_kgById_node_context_predicateLabelMappings {
+  __typename: "KgPredicateLabelMapping";
+  label: string;
+  predicate: string;
+}
+
 export interface KgNodePageQuery_kgById_node_context_relatedNodeLabels {
   __typename: "KgNodeLabel";
   nodeIds: string[];
@@ -22,6 +28,7 @@ export interface KgNodePageQuery_kgById_node_context_topEdges {
 
 export interface KgNodePageQuery_kgById_node_context {
   __typename: "KgNodeContext";
+  predicateLabelMappings: KgNodePageQuery_kgById_node_context_predicateLabelMappings[];
   relatedNodeLabels: KgNodePageQuery_kgById_node_context_relatedNodeLabels[];
   topEdges: KgNodePageQuery_kgById_node_context_topEdges[];
 }
