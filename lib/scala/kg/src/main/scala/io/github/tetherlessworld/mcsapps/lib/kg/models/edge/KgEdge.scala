@@ -12,11 +12,12 @@ final case class KgEdge(
 
 object KgEdge {
   def mapPredicatesToLabels(edges: List[KgEdge]): List[KgPredicateLabelMapping] = {
-    edges.map(edge => {
-      if (edge.labels.length != 1) {
-        throw new IllegalArgumentException("multiple edge labels: " + edge.labels)
+    edges.flatMap(edge => {
+      edge.labels.length match {
+        case 0 => None
+        case 1 => Some((edge.predicate, edge.labels(0)))
+        case _ => throw new IllegalArgumentException("multiple edge labels: " + edge.labels)
       }
-      (edge.predicate, edge.labels(0))
     }).toMap.toList
       .map({ case (predicate, label) => KgPredicateLabelMapping(label = label, predicate = predicate) })
   }

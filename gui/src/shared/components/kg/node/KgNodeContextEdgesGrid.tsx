@@ -83,6 +83,14 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
     nodeContext
   );
 
+  const predicateLabelMappings = nodeContext.predicateLabelMappings.reduce(
+    (map, mapping) => {
+      map[mapping.predicate] = mapping.label;
+      return map;
+    },
+    {} as {[index: string]: string}
+  );
+
   const topEdgeColumns: MUIDataTableColumnDef[] = [
     {
       name: "nodeLabel",
@@ -148,7 +156,7 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
             <Card>
               <CardHeader
                 data-cy="edge-list-title"
-                title={predicate}
+                title={predicateLabelMappings[predicate] ?? predicate}
                 style={{textAlign: "center"}}
               />
               <CardContent>
