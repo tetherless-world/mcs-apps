@@ -11,8 +11,11 @@ import * as React from "react";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgNodeContext} from "shared/models/kg/node/KgNodeContext";
 import {indexNodeContextByTopEdgePredicate} from "shared/models/kg/node/indexNodeContextByTopEdgePredicate";
-import {KgNodeLabelLinks} from "shared/components/kg/node/KgNodeLabelLinks";
 import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
+import {Link} from "react-router-dom";
+import {Hrefs} from "shared/Hrefs";
+import {kgId} from "shared/api/kgId";
+import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
 export const KgNodeContextGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -37,15 +40,28 @@ export const KgNodeContextGrid: React.FunctionComponent<{
                   return (
                     <ListItem key={nodeLabel.nodeLabel}>
                       <ListItemText>
-                        <KgNodeLabelLinks
-                          {...{
-                            ...nodeLabel,
-                            sources: resolveSourceIds({
-                              allSources,
-                              sourceIds: nodeLabel.sourceIds,
-                            }),
-                          }}
-                        />
+                        <Link
+                          data-cy="node-label-link"
+                          title={nodeLabel.nodeLabel}
+                          to={Hrefs.kg({id: kgId}).nodeLabel({
+                            label: nodeLabel.nodeLabel,
+                          })}
+                        >
+                          <span style={{marginRight: "5px"}}>
+                            {nodeLabel.nodeLabel}
+                          </span>
+                        </Link>
+                        {resolveSourceIds({
+                          allSources,
+                          sourceIds: nodeLabel.sourceIds,
+                        }).map((source) => (
+                          <KgSourcePill
+                            idOnly={true}
+                            key={source.id}
+                            source={source}
+                            size="small"
+                          />
+                        ))}
                       </ListItemText>
                     </ListItem>
                   );

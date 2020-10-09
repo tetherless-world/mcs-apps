@@ -10,7 +10,6 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
-import {KgNodeContextLists} from "shared/components/kg/node/KgNodeContextLists";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
@@ -45,20 +44,8 @@ export const KgNodeViews: React.FunctionComponent<{
         <KgNodeContextGrid allSources={allSources} nodeContext={node.context} />
       ),
       relPath: "",
-      label: "Edges grid",
-      dataCy: "edges-grid",
-      routeMatch,
-    }),
-    list: new TabRoute({
-      content: (
-        <KgNodeContextLists
-          allSources={allSources}
-          nodeContext={node.context}
-        />
-      ),
-      relPath: "/edges-list",
-      label: "Edges list",
-      dataCy: "edges-list",
+      label: "Edges",
+      dataCy: "edges",
       routeMatch,
     }),
   };

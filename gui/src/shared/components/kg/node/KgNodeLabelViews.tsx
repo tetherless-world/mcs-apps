@@ -2,7 +2,6 @@ import * as React from "react";
 import {useRouteMatch} from "react-router-dom";
 import {Card, CardContent, CardHeader, Grid} from "@material-ui/core";
 import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
-import {KgNodeContextLists} from "shared/components/kg/node/KgNodeContextLists";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
@@ -39,27 +38,15 @@ export const KgNodeLabelViews: React.FunctionComponent<{
         />
       ),
       relPath: "",
-      label: "Edges grid",
-      dataCy: "edges-grid",
-      routeMatch,
-    }),
-    list: new TabRoute({
-      content: (
-        <KgNodeContextLists
-          allSources={allSources}
-          nodeContext={nodeLabel.context}
-        />
-      ),
-      relPath: "/edges-list",
-      label: "Edges list",
-      dataCy: "edges-list",
+      label: "Edges",
+      dataCy: "edges",
       routeMatch,
     }),
     nodes: new TabRoute({
       content: <KgNodesTable allSources={allSources} nodes={nodeLabel.nodes} />,
       relPath: "/nodes",
       label: "nodes",
-      dataCy: "nodes-table",
+      dataCy: "nodes",
       routeMatch,
     }),
   };
