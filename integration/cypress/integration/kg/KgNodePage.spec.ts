@@ -36,18 +36,7 @@ context("KG node page", () => {
     page.source.should("contain", KgTestData.kgSources[0].label);
   });
 
-  it("should have the grid tab selected by default", () => {
-    page.assertTabSelected(KgNodePageTab.EdgesGrid);
-  });
-
-  it("should route to the edge object list when the tab is clicked", () => {
-    page.selectTab(KgNodePageTab.EdgesList);
-    page.assertTabLoaded(KgNodePageTab.EdgesList);
-  });
-
-  it("should contain edge object lists in the list tab", () => {
-    const edge = testNodeEdges[0];
-    page.visitTab(KgNodePageTab.EdgesList);
-    page.listEdgeList(edge.predicate).list.should("exist");
+  it("should have the edges tab selected by default", () => {
+    page.assertTabSelected(KgNodePageTab.Edges);
   });
 });
