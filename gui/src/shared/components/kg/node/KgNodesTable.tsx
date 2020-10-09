@@ -80,6 +80,9 @@ export const KgNodesTable: React.FunctionComponent<{
       {
         name: "pos",
         label: "Part of speech",
+        options: {
+          display: nodes.some((node) => !!node.pos),
+        },
       },
       {
         name: "pageRank",
@@ -139,7 +142,7 @@ export const KgNodesTable: React.FunctionComponent<{
             return {"data-cy": "node-" + rowIndex};
           },
         }}
-        title={"Nodes"}
+        title={""}
       />
     </div>
   );
