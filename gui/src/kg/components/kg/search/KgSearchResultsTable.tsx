@@ -196,12 +196,13 @@ export const KgSearchResultsTable: React.FunctionComponent<{
         data={data}
         options={{
           count,
-          serverSide: true,
+          download: false,
           filter: false,
-          selectableRows: "none",
           onChangePage,
           onChangeRowsPerPage,
           onColumnSortChange,
+          selectableRows: "none",
+          serverSide: true,
           setRowProps(_, rowIndex) {
             return {"data-cy": "search-result-" + rowIndex};
           },

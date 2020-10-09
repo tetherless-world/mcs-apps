@@ -204,6 +204,7 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
         data={data}
         options={{
           count: questionsTotal,
+          download: false,
           filter: false,
           onTableChange: (action, tableState) => {
             switch (action) {
