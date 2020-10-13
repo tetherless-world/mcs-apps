@@ -203,7 +203,9 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           transaction.run(
             s"""
                |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(:${NodeLabel})-[:${SourceRelationshipType}]->(source:${SourceLabel})
-               |WITH label, collect(distinct source.id) AS sourceIds
+               |WITH label, DISTINCT source
+               |MERGE (label)-[:${SourceRelationshipType}]->(source)
+               |WITH label, collect(source.id) AS sourceIds
                |SET label.sources = apoc.text.join(sourceIds, $$listDelim)
                |""".stripMargin,
             toTransactionRunParameters(Map(
