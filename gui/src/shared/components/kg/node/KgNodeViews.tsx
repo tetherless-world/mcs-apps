@@ -9,8 +9,7 @@ import {
   List,
   ListItemText,
 } from "@material-ui/core";
-import {KgNodeContextGrid} from "shared/components/kg/node/KgNodeContextGrid";
-import {KgNodeContextLists} from "shared/components/kg/node/KgNodeContextLists";
+import {KgNodeContextEdgesGrid} from "shared/components/kg/node/KgNodeContextEdgesGrid";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {TabRoute} from "shared/components/route/TabRoute";
 import {TabRouteTabs} from "shared/components/route/TabRouteTabs";
@@ -42,23 +41,14 @@ export const KgNodeViews: React.FunctionComponent<{
   const tabRoutes = {
     grid: new TabRoute({
       content: (
-        <KgNodeContextGrid allSources={allSources} nodeContext={node.context} />
-      ),
-      relPath: "",
-      label: "Edges grid",
-      dataCy: "edges-grid",
-      routeMatch,
-    }),
-    list: new TabRoute({
-      content: (
-        <KgNodeContextLists
+        <KgNodeContextEdgesGrid
           allSources={allSources}
           nodeContext={node.context}
         />
       ),
-      relPath: "/edges-list",
-      label: "Edges list",
-      dataCy: "edges-list",
+      relPath: "",
+      label: "Edges",
+      dataCy: "edges",
       routeMatch,
     }),
   };
@@ -85,12 +75,6 @@ export const KgNodeViews: React.FunctionComponent<{
                     ))}
                   </List>
                 </CardContent>
-              </Card>
-            </Grid>
-            <Grid item>
-              <Card>
-                <CardHeader title="PageRank"></CardHeader>
-                <CardContent>{node.pageRank.toFixed(3)}</CardContent>
               </Card>
             </Grid>
             {node.pos != null && node.wordNetSenseNumber != null ? (

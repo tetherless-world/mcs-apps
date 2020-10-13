@@ -68,14 +68,14 @@ context("KgSearchResultsPage", () => {
       totalSearchResults.toString()
     );
     page.facets.sources.disclose();
-    page.facets.sources.valueCheckbox("portal_test_data_secondary_0").click();
+    page.facets.sources.valueCheckbox(KgTestData.kgSources[1].id).click();
     page.resultsTable.title.count.should(
       "not.contain",
       totalSearchResults.toString()
     );
     page.resultsTable.title.filters.should(
       "contain",
-      "Portal test data secondary 0"
+      KgTestData.kgSources[1].label
     );
   });
 

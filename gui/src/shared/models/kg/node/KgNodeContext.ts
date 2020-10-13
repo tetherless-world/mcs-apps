@@ -10,7 +10,13 @@ interface KgNodeContextTopEdge {
   predicate: string;
 }
 
+interface KgPredicateLabelMapping {
+  label: string;
+  predicate: string;
+}
+
 export interface KgNodeContext {
+  predicateLabelMappings: readonly KgPredicateLabelMapping[];
   relatedNodeLabels: readonly KgNodeContextRelatedNodeLabel[];
   topEdges: readonly KgNodeContextTopEdge[];
 }

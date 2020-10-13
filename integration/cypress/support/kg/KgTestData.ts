@@ -30,9 +30,9 @@ export class KgTestData {
   }
 
   static readonly kgSources = [
-    {id: "portal_test_data", label: "Portal test data"},
-    {id: "portal_test_data_secondary_0", label: "Portal test data secondary 0"},
-    {id: "portal_test_data_secondary_1", label: "Portal test data secondary 1"},
-    {id: "portal_test_data_secondary_2", label: "Portal test data secondary 2"},
+    {id: "P0", label: "Test data 0"},
+    {id: "P1", label: "Test data 1"},
+    {id: "P2", label: "Test data 2"},
+    {id: "P3", label: "Test data 3"},
   ];
 }

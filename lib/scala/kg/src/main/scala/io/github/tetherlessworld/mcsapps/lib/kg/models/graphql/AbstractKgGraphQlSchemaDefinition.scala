@@ -3,7 +3,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.graphql
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 import io.github.tetherlessworld.mcsapps.lib.kg.models.SortDirection
-import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.{KgEdge, KgPredicateLabelMapping}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search._
@@ -51,8 +51,11 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("sources", ListType(KgSourceObjectType), resolve = ctx => mapSources(ctx.value.sourceIds, ctx.ctx.kgQueryStore.getSourcesById)),
     Field("wordNetSenseNumber", OptionType(IntType), resolve = _.value.wordNetSenseNumber),
   ))
+  // KgPredicateLabelMappingObjectType
+  implicit val KgPredicateLabelMappingObjectType = deriveObjectType[KgGraphQlSchemaContext, KgPredicateLabelMapping]()
   // KgNodeContext
   implicit lazy val KgNodeContextObjectType: ObjectType[KgGraphQlSchemaContext, KgNodeContext] = ObjectType("KgNodeContext", () => fields[KgGraphQlSchemaContext, KgNodeContext](
+    Field("predicateLabelMappings", ListType(KgPredicateLabelMappingObjectType), resolve = _.value.predicateLabelMappings),
     Field("relatedNodeLabels", ListType(KgNodeLabelObjectType), resolve = _.value.relatedNodeLabels),
     Field("topEdges", ListType(KgEdgeObjectType), resolve = _.value.topEdges)
   ))
@@ -68,6 +71,7 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
   ))
   // KgNodeLabelContext
   implicit lazy val KgNodeLabelContextObjectType: ObjectType[KgGraphQlSchemaContext, KgNodeLabelContext] = ObjectType("KgNodeLabelContext", () => fields[KgGraphQlSchemaContext, KgNodeLabelContext](
+    Field("predicateLabelMappings", ListType(KgPredicateLabelMappingObjectType), resolve = _.value.predicateLabelMappings),
     Field("relatedNodeLabels", ListType(KgNodeLabelObjectType), resolve = _.value.relatedNodeLabels),
     Field("topEdges", ListType(KgEdgeObjectType), resolve = _.value.topEdges)
   ))

@@ -7,6 +7,10 @@ query KgNodeLabelPageQuery(
   kgById(id: $kgId) {
     nodeLabel(label: $nodeLabel) {
       context {
+        predicateLabelMappings {
+          label
+          predicate
+        }
         relatedNodeLabels {
           nodeIds
           nodeLabel

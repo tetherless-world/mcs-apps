@@ -59,7 +59,7 @@ export const KgNodesTable: React.FunctionComponent<{
           customBodyRender(labels, tableMeta) {
             return (
               <List>
-                {(labels as string[]).map((label) => (
+                {labels.split("|").map((label) => (
                   <ListItem key={label}>
                     <ListItemText>
                       <Link
@@ -80,15 +80,15 @@ export const KgNodesTable: React.FunctionComponent<{
       {
         name: "pos",
         label: "Part of speech",
+        options: {
+          display: nodes.some((node) => !!node.pos),
+        },
       },
       {
         name: "pageRank",
         label: "PageRank",
         options: {
           sort: true,
-          customBodyRender(pageRank) {
-            return (pageRank as number).toFixed(3);
-          },
         },
       },
       {
@@ -98,7 +98,8 @@ export const KgNodesTable: React.FunctionComponent<{
           sort: true,
           customBodyRender(sourceIds, tableMeta) {
             return sourceIds
-              ? (sourceIds as string[])
+              ? sourceIds
+                  .split("|")
                   .map((sourceId) => resolveSourceId({allSources, sourceId}))
                   .map((source, sourceIndex) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
@@ -114,19 +115,34 @@ export const KgNodesTable: React.FunctionComponent<{
     [allSources, nodes]
   );
 
+  const data: {
+    id: string;
+    labels: string;
+    pageRank: string;
+    pos: string | null;
+    sourceIds: string;
+  }[] = nodes.map((node) => ({
+    id: node.id,
+    labels: node.labels.join("|"),
+    pageRank: node.pageRank.toFixed(2),
+    pos: node.pos,
+    sourceIds: node.sourceIds.join("|"),
+  }));
+
   return (
     <div data-cy="nodes-table">
       <MUIDataTable
         columns={columns}
-        data={nodes}
+        data={data}
         options={{
-          selectableRows: "none",
+          download: false,
           rowsPerPage: 15,
+          selectableRows: "none",
           setRowProps(_, rowIndex) {
             return {"data-cy": "node-" + rowIndex};
           },
         }}
-        title={"Nodes"}
+        title={""}
       />
     </div>
   );
