@@ -2,7 +2,7 @@ package io.github.tetherlessworld.mcsapps.lib.kg.models.node
 
 import scala.collection.mutable
 
-final case class KgNodeLabel(nodeLabel: String, nodes: List[KgNode], pageRank: Option[Double])
+final case class KgNodeLabel(nodeLabel: String, nodes: List[KgNode], pageRank: Option[Double], sourceIds: List[String])
 
 object KgNodeLabel {
   def fromNodes(nodes: Iterable[KgNode]): List[KgNodeLabel] = {
@@ -13,7 +13,7 @@ object KgNodeLabel {
       }
     }
     nodesByLabel.map({ case (nodeLabel, nodesById) =>
-      KgNodeLabel(nodeLabel, nodesById.values.toList.sortBy(_.id), pageRank = None)
+      KgNodeLabel(nodeLabel, nodesById.values.toList.sortBy(_.id), pageRank = None, sourceIds = nodesById.values.flatMap(_.sourceIds).toList.distinct)
     }).toList
   }
 }

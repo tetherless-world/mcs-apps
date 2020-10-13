@@ -6,7 +6,6 @@ import com.outr.lucene4s.query._
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
-import io.github.tetherlessworld.mcsapps.lib.kg.models.node
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
@@ -95,11 +94,12 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     nodesById.get(id)
 
   final override def getNodeContext(id: String): Option[KgNodeContext] = {
-    getNode(id).map(_ => {
+    getNode(id).map(node => {
       // Group edges by predicate and take the top <limit> edges within each predicate group
       val topEdges = edges.filter(_.subject == id).groupBy(_.predicate).mapValues(_.sortBy(edge => nodesById(edge.subject).pageRank.get)(Ordering[Double].reverse).take(NodeContextTopEdgesLimit)).values.flatten.toList
-      node.KgNodeContext(
-        relatedNodeLabels =  topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).flatMap(getNodeLabel(_)),
+      KgNodeContext(
+        // override sourceIds for nodeLabels to be intersection of node.sourceIds and nodeLabel.sourceIds
+        relatedNodeLabels = topEdges.map(_.`object`).distinct.flatMap(getNode(_)).flatMap(_.labels).flatMap(getNodeLabel(_)).map(nodeLabel => nodeLabel.copy(sourceIds = nodeLabel.sourceIds.intersect(node.sourceIds))),
         topEdges = topEdges
       )
     })
