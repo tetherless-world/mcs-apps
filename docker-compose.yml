@@ -34,8 +34,8 @@ services:
     environment:
       NEO4J_AUTH: "neo4j/nC1aB4mji623s2Zs"
       NEO4JLABS_PLUGINS: "[\"apoc\",\"graph-data-science\"]"
-      NEO4J_dbms_memory_pagecache_size: "4G"
-      NEO4J_dbms_memory_heap_max__size: "4G"
+      NEO4J_dbms_memory_pagecache_size: "8G"
+      NEO4J_dbms_memory_heap_max__size: "8G"
     image: library/neo4j:4.0.4
     networks:
       - mcs
