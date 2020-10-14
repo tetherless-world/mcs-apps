@@ -16,7 +16,7 @@ object KgEdge {
       edge.labels.length match {
         case 0 => None
         case 1 => Some((edge.predicate, edge.labels(0)))
-        case _ => throw new IllegalArgumentException("multiple edge labels: " + edge.labels)
+        case _ => Some((edge.predicate, edge.labels.mkString(" / ")))
       }
     }).toMap.toList
       .map({ case (predicate, label) => KgPredicateLabelMapping(label = label, predicate = predicate) })
