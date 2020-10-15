@@ -17,13 +17,13 @@ export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_relatedNodeLabels
   nodeIds: string[];
   nodeLabel: string;
   pageRank: number;
-  sourceIds: string[];
 }
 
 export interface KgNodeLabelPageQuery_kgById_nodeLabel_context_topEdges {
   __typename: "KgEdge";
   object: string;
   predicate: string;
+  sourceIds: string[];
 }
 
 export interface KgNodeLabelPageQuery_kgById_nodeLabel_context {
