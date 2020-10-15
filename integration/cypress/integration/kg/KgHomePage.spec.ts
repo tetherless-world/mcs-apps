@@ -40,17 +40,22 @@ context("KG Home Page", () => {
 
     page.search.suggestion(0).get().click();
 
-    const nodeLabelPage = new KgNodeLabelPage(nodeLabel);
-    nodeLabelPage.assertLoaded();
+    new KgNodeLabelPage(nodeLabel).assertLoaded();
   });
 
-  it("should show node search results page after searching for text", () => {
+  it("should show node label page after searching for text that matches a node label exactly", () => {
     page.search.get().type(node.labels[0]);
 
     page.search.enter();
 
-    const nodeSearchResultsPage = new KgSearchResultsPage(node.labels[0]);
+    new KgNodeLabelPage(node.labels[0]).assertLoaded();
+  });
 
-    nodeSearchResultsPage.assertLoaded();
+  it("should show node search results page after searching for text that doesn't match a node label exactly", () => {
+    page.search.get().type("Shared node");
+
+    page.search.enter();
+
+    new KgSearchResultsPage("Shared node").assertLoaded();
   });
 });
