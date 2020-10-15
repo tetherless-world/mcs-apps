@@ -81,7 +81,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       result.asScala.toList.groupBy(_.get("label.id").asString).mapValues(records => KgNodeLabel(
         nodeLabel = records.head.get("label.id").asString,
         nodes = records.map(_.toNode),
-        pageRank = Try(records.head.get("label.pageRank").asDouble).toOption
+        pageRank = Try(records.head.get("label.pageRank").asDouble).toOption,
+        sourceIds = records.head.get("sources").asString.split(ListDelimChar).toList
       )).values.toList
 
     def toNodes: List[KgNode] =
@@ -135,10 +136,11 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       getNode(id).map({ _ =>
         val relatedNodeLabels = transaction.run(
           s"""
-             |MATCH (:${NodeLabel} {id: $$id})-->(:${NodeLabel})-[:${LabelRelationshipType}]->(label:${LabelLabel})
-             |WITH distinct label as label
+             |MATCH (:${NodeLabel} {id: $$id})-[:${LabelRelationshipType}]->(:${LabelLabel})-[labelEdge:${LabelEdgeRelationshipType}]->(label:${LabelLabel})
+             |WITH labelEdge, COLLECT(DISTINCT label) AS labels
+             |UNWIND labels AS label
              |MATCH (label)<-[:${LabelRelationshipType}]-(node:${NodeLabel})
-             |RETURN label.id, label.pageRank, ${nodePropertyNamesString}
+             |RETURN label.id, label.pageRank, labelEdge.sources as sources, ${nodePropertyNamesString}
              |""".stripMargin,
           toTransactionRunParameters(Map(
             "id" -> id
@@ -174,7 +176,7 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
         transaction.run(
           s"""
              |MATCH (label:${LabelLabel} {id: $$label})<-[:${LabelRelationshipType}]-(node:${NodeLabel})
-             |RETURN label.pageRank, ${nodePropertyNamesString}
+             |RETURN label.pageRank, label.sources, ${nodePropertyNamesString}
              |""".stripMargin,
           toTransactionRunParameters(Map("label" -> label))
         )
@@ -184,7 +186,8 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       }
       val nodes = records.map(_.toNode)
       val labelPageRank = records(0).get("label.pageRank").asDouble()
-      Some(KgNodeLabel(nodeLabel = label, nodes = nodes, pageRank = Some(labelPageRank)))
+      val sourceIds = records(0).get("label.sources").asString.split(ListDelimChar).toList
+      Some(KgNodeLabel(nodeLabel = label, nodes = nodes, pageRank = Some(labelPageRank), sourceIds = sourceIds))
     }
 
     final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = {
