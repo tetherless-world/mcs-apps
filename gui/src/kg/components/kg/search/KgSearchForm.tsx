@@ -5,11 +5,9 @@ import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {useApolloClient} from "@apollo/react-hooks";
 import * as KgSearchFormNodeLabelQueryDocument from "kg/api/queries/KgSearchFormNodeLabelQuery.graphql";
-import {ApolloError} from "apollo-boost";
-import * as ReactDOM from "react-dom";
 import {
   KgSearchFormNodeLabelQuery,
-  KgSearchFormNodeLabelQueryVariables
+  KgSearchFormNodeLabelQueryVariables,
 } from "kg/api/queries/types/KgSearchFormNodeLabelQuery";
 
 export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
@@ -66,49 +64,49 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
         // The user can also get to the node label page by selecting an autocomplete, but this allows typing and hitting enter.
 
         apolloClient
-            .query<
-                KgSearchFormNodeLabelQuery,
-                KgSearchFormNodeLabelQueryVariables
-                >({
-              fetchPolicy: "no-cache",
-              query: KgSearchFormNodeLabelQueryDocument,
-              variables: {
-                kgId,
-                nodeLabel: searchBoxValueText
-              },
-            })
-            .then(({data, errors, loading}) => {
-              if (loading) {
+          .query<
+            KgSearchFormNodeLabelQuery,
+            KgSearchFormNodeLabelQueryVariables
+          >({
+            fetchPolicy: "no-cache",
+            query: KgSearchFormNodeLabelQueryDocument,
+            variables: {
+              kgId,
+              nodeLabel: searchBoxValueText,
+            },
+          })
+          .then(({data, errors, loading}) => {
+            if (loading) {
+              return;
+            }
+
+            if (data) {
+              if (data.kgById.nodeLabel) {
+                // Exact node label match, go to node label page
+                history.push(
+                  Hrefs.kg({id: kgId}).nodeLabel({
+                    label: data.kgById.nodeLabel.nodeLabel,
+                  })
+                );
                 return;
               }
+              // else drop down to go to search results page
+            } else if (errors) {
+              // Drop down to go to search results page
+            } else {
+              throw new EvalError();
+            }
 
-              if (data) {
-                if (data.kgById.nodeLabel) {
-                  // Exact node label match, go to node label page
-                  history.push(
-                      Hrefs.kg({id: kgId}).nodeLabel({label: data.kgById.nodeLabel.nodeLabel})
-                  );
-                  return;
-                }
-                // else drop down to go to search results page
-              } else if (errors) {
-                // Drop down to go to search results page
-              } else {
-                throw new EvalError();
-              }
-
-              history.push(
-                  Hrefs.kg({id: kgId}).search({
-                    __typename: "KgSearchVariables",
-                    query: {
-                      filters: searchBoxValue.filters,
-                      text: searchBoxValueText,
-                    },
-                  })
-              );
-            });
-
-
+            history.push(
+              Hrefs.kg({id: kgId}).search({
+                __typename: "KgSearchVariables",
+                query: {
+                  filters: searchBoxValue.filters,
+                  text: searchBoxValueText,
+                },
+              })
+            );
+          });
 
         break;
       }
@@ -117,7 +115,7 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
         _exhaustiveCheck;
       }
     }
-  }, [searchBoxValue];
+  }, [searchBoxValue]);
 
   return (
     <form
