@@ -4,7 +4,6 @@ import {IconButton, InputAdornment, InputBase, Paper} from "@material-ui/core";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
 import {GraphQLError} from "graphql";
 import {
   KgSearchBoxAutocompleteQuery,
@@ -16,7 +15,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {KgSearchBoxValue} from "shared/models/kg/search/KgSearchBoxValue";
 import {kgId} from "shared/api/kgId";
 import {KgSearchFilters} from "shared/models/kg/search/KgSearchFilters";
-import {redirectToKgSearchBoxValue} from "kg/components/kg/search/redirecToKgSearchBoxValue";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
 import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
@@ -32,18 +30,17 @@ export const KgSearchBox: React.FunctionComponent<{
   autoFocus?: boolean;
   filters?: KgSearchFilters;
   placeholder?: string;
-  onChange?: (value: KgSearchBoxValue) => void;
-  value?: string;
+  onChange: (value: KgSearchBoxValue) => void;
+  onSubmit: () => void;
 }> = ({
   allSources,
   autocompleteStyle,
   autoFocus,
   filters,
   onChange,
+  onSubmit,
   placeholder,
 }) => {
-  const history = useHistory();
-
   const apolloClient = useApolloClient();
 
   // text being null or undefined causes the Autocomplete control to change its mode.
@@ -69,10 +66,6 @@ export const KgSearchBox: React.FunctionComponent<{
   // If onChange is provided, call with updates
   // to `search` and `selectedAutocompleteResult`
   React.useEffect(() => {
-    if (!onChange) {
-      return;
-    }
-
     // User highlight new autocomplete suggestion
     if (selectedAutocompleteResult) {
       onChange(selectedAutocompleteResult);
@@ -171,73 +164,51 @@ export const KgSearchBox: React.FunctionComponent<{
     return getKgSearchResultLabel({result: option, allSources});
   };
 
-  const handleSubmit = () => {
-    if (selectedAutocompleteResult) {
-      onSubmit(selectedAutocompleteResult);
-    } else if (text.length > 0) {
-      onSubmit({__typename: "text", text});
-    } else {
-      onSubmit(null);
-    }
-  };
-
-  const onSubmit = (value: KgSearchBoxValue) =>
-    redirectToKgSearchBoxValue(history, value);
-
   return (
-    <form
-      data-cy="nodeSearchBox"
-      onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        handleSubmit();
+    <Autocomplete
+      disablePortal
+      freeSolo
+      getOptionLabel={getOptionLabel}
+      includeInputInList
+      inputValue={text}
+      loading={isLoading}
+      noOptionsText="No results"
+      onInputChange={(_, newInputValue: string) => setText(newInputValue)}
+      onHighlightChange={(_, option: KgSearchResult | null) => {
+        setSelectedAutocompleteResult(option);
       }}
-    >
-      <Autocomplete
-        disablePortal
-        freeSolo
-        getOptionLabel={getOptionLabel}
-        includeInputInList
-        inputValue={text}
-        loading={isLoading}
-        noOptionsText="No results"
-        onInputChange={(_, newInputValue: string) => setText(newInputValue)}
-        onHighlightChange={(_, option: KgSearchResult | null) => {
-          setSelectedAutocompleteResult(option);
-        }}
-        options={autocompleteResults}
-        renderInput={(params) => (
-          <Paper variant="outlined" square>
-            <InputBase
-              autoFocus={autoFocus}
-              inputProps={{
-                "data-cy": "searchTextInput",
-                style: {paddingLeft: "5px", width: "32em"},
-                ...params.inputProps,
-              }}
-              ref={params.InputProps.ref}
-              placeholder={placeholder}
-              fullWidth
-              startAdornment={
-                <InputAdornment position="end" style={{marginRight: "8px"}}>
-                  <IconButton
-                    color="primary"
-                    size="small"
-                    onClick={() => handleSubmit()}
-                  >
-                    <FontAwesomeIcon icon={faSearch} />
-                  </IconButton>
-                </InputAdornment>
-              }
-              error={searchErrors !== undefined}
-            ></InputBase>
-          </Paper>
-        )}
-        renderOption={(option) => (
-          <KgSearchResultLink result={option} allSources={allSources} />
-        )}
-        style={{verticalAlign: "top", ...autocompleteStyle}}
-      ></Autocomplete>
-    </form>
+      options={autocompleteResults}
+      renderInput={(params) => (
+        <Paper variant="outlined" square>
+          <InputBase
+            autoFocus={autoFocus}
+            inputProps={{
+              "data-cy": "searchTextInput",
+              style: {paddingLeft: "5px", width: "32em"},
+              ...params.inputProps,
+            }}
+            ref={params.InputProps.ref}
+            placeholder={placeholder}
+            fullWidth
+            startAdornment={
+              <InputAdornment position="end" style={{marginRight: "8px"}}>
+                <IconButton
+                  color="primary"
+                  size="small"
+                  onClick={() => onSubmit()}
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                </IconButton>
+              </InputAdornment>
+            }
+            error={searchErrors !== undefined}
+          ></InputBase>
+        </Paper>
+      )}
+      renderOption={(option) => (
+        <KgSearchResultLink result={option} allSources={allSources} />
+      )}
+      style={{verticalAlign: "top", ...autocompleteStyle}}
+    ></Autocomplete>
   );
 };
