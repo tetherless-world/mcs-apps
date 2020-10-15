@@ -95,7 +95,11 @@ export const KgHomePage: React.FunctionComponent = () => {
                           <KgSearchBox
                             allSources={data.kgById.sources}
                             autoFocus
-                            filters={{sourceIds: sourcesFilter}}
+                            filters={
+                              sourcesFilter
+                                ? {sourceIds: sourcesFilter}
+                                : undefined
+                            }
                             onChange={onChangeSearchBoxValue}
                             onSubmit={onSubmit}
                             placeholder="Search a word or try a query"
