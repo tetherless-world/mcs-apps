@@ -1,0 +1,10 @@
+query KgSearchFormNodeLabelQuery(
+  $kgId: String!
+  $nodeLabel: String!
+) {
+  kgById(id: $kgId) {
+    nodeLabel(label: $nodeLabel) {
+      nodeLabel
+    }
+  }
+}
