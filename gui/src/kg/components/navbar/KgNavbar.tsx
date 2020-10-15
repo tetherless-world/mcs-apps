@@ -13,6 +13,7 @@ import {KgHrefs} from "kg/KgHrefs";
 import {Link} from "react-router-dom";
 import {KgSearchBox} from "../kg/search/KgSearchBox";
 import {KgSource} from "shared/models/kg/source/KgSource";
+import {KgSearchForm} from "kg/components/kg/search/KgSearchForm";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -45,11 +46,17 @@ export const KgNavbar: React.FunctionComponent<{
           <Typography variant="h5">CSKG</Typography>
         </Button>
         {!hideNavbarSearchBox ? (
-          <KgSearchBox
-            allSources={allSources}
-            autocompleteStyle={{display: "inline-block"}}
-            placeholder="Search a word"
-          />
+          <KgSearchForm>
+            {({onChangeSearchBoxValue, onSubmit}) => (
+              <KgSearchBox
+                allSources={allSources}
+                autocompleteStyle={{display: "inline-block"}}
+                onChange={onChangeSearchBoxValue}
+                onSubmit={onSubmit}
+                placeholder="Search a word"
+              />
+            )}
+          </KgSearchForm>
         ) : null}
       </Toolbar>
     </AppBar>

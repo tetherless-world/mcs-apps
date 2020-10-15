@@ -206,7 +206,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
   const [results, setResults] = React.useState<KgSearchResult[]>();
 
   React.useEffect(() => {
-    console.info("Running facets query");
+    console.debug("Running facets query");
     setLoadingFacets(true);
     apolloClient
       .query<
@@ -245,7 +245,7 @@ export const KgSearchResultsPage: React.FunctionComponent = () => {
   }, [queryQueryParam]);
 
   React.useEffect(() => {
-    console.info("Running results query");
+    console.debug("Running results query");
     setLoadingResults(true);
     const limit = limitQueryParam ?? LIMIT_DEFAULT;
     const offset = offsetQueryParam ?? OFFSET_DEFAULT;
