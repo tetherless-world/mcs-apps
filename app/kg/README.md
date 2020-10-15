@@ -14,7 +14,7 @@ Currently the data must be in in [KGTK](https://github.com/usc-isi-i2/kgtk) edge
 
     mv ~/cskg.tsv ./data/kg
 
-Progress messages will be printed to the application console as the data loads asynchronously.
+Progress messages will be printed to the application console as the data loads asynchronously. The loading process currently (20201015) takes around 50 minutes.
 
 ## Downloading the application
 
