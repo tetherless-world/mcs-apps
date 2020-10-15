@@ -13,6 +13,7 @@ import {KgSource} from "shared/models/kg/source/KgSource";
 import {
   KgNodeContext,
   KgNodeContextRelatedNodeLabel,
+  KgNodeContextTopEdge,
 } from "shared/models/kg/node/KgNodeContext";
 import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
 import {Link} from "react-router-dom";
@@ -20,50 +21,6 @@ import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
-
-const indexNodeContextByTopEdgePredicate = (
-  nodeContext: KgNodeContext
-): {[index: string]: readonly KgNodeContextRelatedNodeLabel[]} => {
-  const relatedNodeLabelsByNodeId: {
-    [index: string]: KgNodeContextRelatedNodeLabel[];
-  } = {};
-  for (const relatedNodeLabel of nodeContext.relatedNodeLabels) {
-    for (const nodeId of relatedNodeLabel.nodeIds) {
-      let relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId];
-      if (!relatedNodeLabels) {
-        relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId] = [];
-      }
-      relatedNodeLabels.push(relatedNodeLabel);
-    }
-  }
-
-  const result: {[index: string]: KgNodeContextRelatedNodeLabel[]} = {};
-  for (const topEdge of nodeContext.topEdges) {
-    let predicateNodeLabels = result[topEdge.predicate];
-    if (!predicateNodeLabels) {
-      predicateNodeLabels = result[topEdge.predicate] = [];
-    }
-    const objectNodeLabels = relatedNodeLabelsByNodeId[topEdge.object];
-    if (!objectNodeLabels) {
-      continue;
-    }
-    for (const objectNodeLabel of objectNodeLabels) {
-      if (
-        predicateNodeLabels.some(
-          (predicateNodeLabel) =>
-            predicateNodeLabel.nodeLabel == objectNodeLabel.nodeLabel
-        )
-      ) {
-        // Ignore duplicates
-        continue;
-      }
-      predicateNodeLabels.push(objectNodeLabel);
-    }
-    predicateNodeLabels.sort((left, right) => left.pageRank - right.pageRank);
-  }
-
-  return result;
-};
 
 const theme = createMuiTheme({
   overrides: {
@@ -75,13 +32,57 @@ const theme = createMuiTheme({
   } as any,
 });
 
+// for (const objectNodeLabel of objectNodeLabels) {
+//   if (
+//     predicateNodeLabels.some(
+//       (predicateNodeLabel) =>
+//         predicateNodeLabel.nodeLabel == objectNodeLabel.nodeLabel
+//     )
+//   ) {
+//     // Ignore duplicates
+//     continue;
+//   }
+//   predicateNodeLabels.push(objectNodeLabel);
+// }
+// predicateNodeLabels.sort((left, right) => left.pageRank - right.pageRank);
+
 export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {
-  const nodeLabelsByTopEdgePredicate = indexNodeContextByTopEdgePredicate(
-    nodeContext
-  );
+  const relatedNodeLabelsByNodeId: {
+    [index: string]: KgNodeContextRelatedNodeLabel[];
+  } = React.useMemo(() => {
+    const relatedNodeLabelsByNodeId: {
+      [index: string]: KgNodeContextRelatedNodeLabel[];
+    } = {};
+    for (const relatedNodeLabel of nodeContext.relatedNodeLabels) {
+      for (const nodeId of relatedNodeLabel.nodeIds) {
+        let relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId];
+        if (!relatedNodeLabels) {
+          relatedNodeLabels = relatedNodeLabelsByNodeId[nodeId] = [];
+        }
+        relatedNodeLabels.push(relatedNodeLabel);
+      }
+    }
+    return relatedNodeLabelsByNodeId;
+  }, [nodeContext]);
+
+  const topEdgesByPredicate: {
+    [index: string]: KgNodeContextTopEdge[];
+  } = React.useMemo(() => {
+    const topEdgesByPredicate: {
+      [index: string]: KgNodeContextTopEdge[];
+    } = {};
+    for (const topEdge of nodeContext.topEdges) {
+      let topEdges = topEdgesByPredicate[topEdge.predicate];
+      if (!topEdges) {
+        topEdges = topEdgesByPredicate[topEdge.predicate] = [];
+      }
+      topEdges.push(topEdge);
+    }
+    return topEdgesByPredicate;
+  }, [nodeContext]);
 
   const predicateLabelMappings = nodeContext.predicateLabelMappings.reduce(
     (map, mapping) => {
@@ -142,16 +143,41 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
 
   return (
     <Grid container spacing={4}>
-      {Object.keys(nodeLabelsByTopEdgePredicate)
+      {Object.keys(topEdgesByPredicate)
         .sort()
         .map((predicate) => {
           const data: {
             nodeLabel: string;
+            nodeLabelPageRank: number;
             sourceIds: string;
-          }[] = nodeLabelsByTopEdgePredicate[predicate]!.map((nodeLabel) => ({
-            nodeLabel: nodeLabel.nodeLabel,
-            sourceIds: nodeLabel.sourceIds.join("|"),
-          }));
+          }[] = [];
+
+          for (const topEdge of topEdgesByPredicate[predicate]) {
+            const nodeLabels = relatedNodeLabelsByNodeId[topEdge.object];
+            if (!nodeLabels) {
+              console.error("no node label for node id " + topEdge.object);
+              continue;
+            }
+
+            for (const nodeLabel of nodeLabels) {
+              if (
+                data.some((datum) => datum.nodeLabel === nodeLabel.nodeLabel)
+              ) {
+                // Don't add the same node label twice.
+                continue;
+              }
+
+              data.push({
+                nodeLabel: nodeLabel.nodeLabel,
+                nodeLabelPageRank: nodeLabel.pageRank,
+                sourceIds: topEdge.sourceIds.join("|"),
+              });
+            }
+          }
+
+          data.sort(
+            (left, right) => left.nodeLabelPageRank - right.nodeLabelPageRank
+          );
 
           return (
             <Grid item key={predicate} data-cy={`grid-${predicate}-edges`}>

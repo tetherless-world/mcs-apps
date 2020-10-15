@@ -179,6 +179,23 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             )
           }
 
+        final def writeLabelEdgeSources: Unit = {
+          if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""MATCH (label1: ${LabelLabel})-[labelEdge:${LabelEdgeRelationshipType}]-(label2: ${LabelLabel})
+               |MATCH (label1)-[:${SourceRelationshipType}]->(source: ${SourceLabel})<-[:${SourceRelationshipType}]-(label2)
+               |WITH label1, labelEdge, label2, COLLECT(DISTINCT source.id) AS sourceIds
+               |SET labelEdge.sources = apoc.text.join(sourceIds, $$listDelim)
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "listDelim" -> ListDelimString
+            ))
+          )
+        }
+
         final def writeLabelPageRanks: Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
@@ -203,7 +220,10 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           transaction.run(
             s"""
                |MATCH (label:${LabelLabel})<-[:${LabelRelationshipType}]-(:${NodeLabel})-[:${SourceRelationshipType}]->(source:${SourceLabel})
-               |WITH label, collect(distinct source.id) AS sourceIds
+               |WITH label, COLLECT(DISTINCT source) AS sources
+               |UNWIND sources AS source
+               |MERGE (label)-[:${SourceRelationshipType}]->(source)
+               |WITH label, collect(source.id) AS sourceIds
                |SET label.sources = apoc.text.join(sourceIds, $$listDelim)
                |""".stripMargin,
             toTransactionRunParameters(Map(
@@ -275,6 +295,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
       writeNodePageRanks
       writeLabelPageRanks
       writeLabelSources
+      writeLabelEdgeSources
     }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
@@ -347,6 +368,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         transaction.putSources(sources)
         transaction.commit()
       }
+
+    private def writeLabelEdgeSources: Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeLabelEdgeSources
+        transaction.commit()
+      }
+    }
 
     private def writeLabelPageRanks: Unit = {
       withWriteTransaction { transaction =>
