@@ -21,7 +21,7 @@ RUN npm run build-benchmark
 FROM ubuntu:18.04
 
 # Install packages
-RUN apt-get update && apt-get install -y curl default-jre-headless nginx unzip
+RUN apt-get update && apt-get install -y curl default-jre-headless unzip
 
 # Copy in app
 COPY --from=build-app /build/app/benchmark/target/universal/mcs-benchmark-app-1.0.0-SNAPSHOT.zip /
