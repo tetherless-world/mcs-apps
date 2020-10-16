@@ -53,14 +53,24 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
       val edgesWithNodesList = edgesWithNodes.toList
       val uniqueEdges = edgesWithNodesList.map(edgeWithNodes => (edgeWithNodes.edge.id, edgeWithNodes.edge)).toMap.values.toList
-      val uniqueNodes = edgesWithNodesList.flatMap(edgeWithNodes => List((edgeWithNodes.node1.id, edgeWithNodes.node1), (edgeWithNodes.node2.id, edgeWithNodes.node2))).toMap.values.toList
-      putNodes(uniqueNodes)
+      val nodes = edgesWithNodesList.flatMap(edgeWithNodes => List(edgeWithNodes.node1, edgeWithNodes.node2))
+
+      putNodes(nodes)
       putEdges(uniqueEdges)
     }
 
-    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit = {
-      nodesById ++= nodesIterator.map(node => (node.id, node)).toList
+    final def putNode(node: KgNode): Unit = {
+      val existingNode = nodesById.get(node.id)
+
+      nodesById = nodesById + (node.id -> { if (existingNode.isDefined) {
+        existingNode.get.copy(sourceIds = existingNode.get.sourceIds.union(node.sourceIds))
+      } else {
+        node
+      }})
     }
+
+    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit =
+      nodesIterator.foreach(putNode)
 
     final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
       pathsById ++= pathsIterator.map(path => (path.id, path)).toMap
