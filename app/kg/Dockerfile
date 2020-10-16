@@ -16,7 +16,6 @@ COPY /app/kg/conf ./app/kg/conf
 COPY /lib/scala ./lib/scala
 COPY /project ./project
 COPY --from=build-gui /build/dist/kg ./app/kg/public
-RUN find .
 RUN sbt "project kgApp" playUpdateSecret dist
 
 # Deployment

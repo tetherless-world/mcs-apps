@@ -16,7 +16,6 @@ COPY /app/benchmark/conf ./app/benchmark/conf
 COPY /lib/scala ./lib/scala
 COPY /project ./project
 COPY --from=build-gui /build/dist/benchmark ./app/benchmark/public
-RUN find .
 RUN sbt "project benchmarkApp" playUpdateSecret dist
 
 # Deployment
