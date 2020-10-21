@@ -50,7 +50,10 @@ lazy val kgLib =
         "io.github.tetherless-world" %% "twxplore-base" % twxploreVersion,
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
         "me.tongfei" % "progressbar" % "0.8.1",
-        "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1"
+        "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1",
+        "com.typesafe.play" %% "play-slick" % "5.0.0",
+        "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+        "org.postgresql" % "postgresql" % "42.2.18"
       ),
       maintainer := maintainerValue,
       name := "mcs-kg-lib"
