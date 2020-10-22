@@ -20,7 +20,6 @@ export const Footer: React.FunctionComponent = () => {
         program.
       </p>
       <p className={classes.footerParagraph}>
-        <a href={Hrefs.contact}>Contact</a>&nbsp;|&nbsp;
         <a href={Hrefs.gitHub}>GitHub</a>
       </p>
     </footer>
