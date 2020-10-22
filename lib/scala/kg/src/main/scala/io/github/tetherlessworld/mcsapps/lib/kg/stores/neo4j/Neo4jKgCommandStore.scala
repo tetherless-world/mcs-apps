@@ -299,9 +299,13 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
 
     final override def close(): Unit = {
       writeNodeSources
-      writeNodeDegrees
-      writeNodePageRanks
-      writeLabelPageRanks
+      if (configuration.enableDegreeCalculation) {
+        writeNodeDegrees
+      }
+      if (configuration.enablePageRankCalculation) {
+        writeNodePageRanks
+        writeLabelPageRanks
+      }
       writeLabelSources
       writeLabelEdgeSources
     }
