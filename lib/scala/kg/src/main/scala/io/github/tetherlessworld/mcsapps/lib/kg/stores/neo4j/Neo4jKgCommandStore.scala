@@ -169,7 +169,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             )
           }
 
-        final def writeLabelEdgeSources: Unit = {
+        final def writeLabelEdgeSources(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -186,7 +186,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeLabelPageRanks: Unit = {
+        final def writeLabelPageRanks(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -202,7 +202,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeLabelSources: Unit = {
+        final def writeLabelSources(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -222,7 +222,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeNodeDegrees: Unit = {
+        final def writeNodeDegrees(): Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -248,7 +248,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeNodePageRanks: Unit = {
+        final def writeNodePageRanks(): Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -265,7 +265,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         }
 
         // Store sources as a delimited list on the node so they can be retrieved accurately
-        final def writeNodeSources: Unit = {
+        final def writeNodeSources(): Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -298,16 +298,16 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     }
 
     final override def close(): Unit = {
-      writeNodeSources
+      writeNodeSources()
       if (configuration.enableDegreeCalculation) {
-        writeNodeDegrees
+        writeNodeDegrees()
       }
       if (configuration.enablePageRankCalculation) {
-        writeNodePageRanks
-        writeLabelPageRanks
+        writeNodePageRanks()
+        writeLabelPageRanks()
       }
-      writeLabelSources
-      writeLabelEdgeSources
+      writeLabelSources()
+      writeLabelEdgeSources()
     }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
@@ -381,42 +381,42 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         transaction.commit()
       }
 
-    private def writeLabelEdgeSources: Unit = {
+    private def writeLabelEdgeSources(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelEdgeSources
         transaction.commit()
       }
     }
 
-    private def writeLabelPageRanks: Unit = {
+    private def writeLabelPageRanks(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelPageRanks
         transaction.commit()
       }
     }
 
-    private def writeLabelSources: Unit = {
+    private def writeLabelSources(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelSources
         transaction.commit()
       }
     }
 
-    private def writeNodeDegrees: Unit = {
+    private def writeNodeDegrees(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodeDegrees
         transaction.commit()
       }
     }
 
-    private def writeNodePageRanks: Unit = {
+    private def writeNodePageRanks(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodePageRanks
         transaction.commit()
       }
     }
 
-    private def writeNodeSources: Unit = {
+    private def writeNodeSources(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodeSources
         transaction.commit()
@@ -467,7 +467,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     }
   }
 
-  override def beginTransaction: KgCommandStoreTransaction =
+  override def beginTransaction(): KgCommandStoreTransaction =
     new Neo4jKgCommandStoreTransaction
 
   private def withWriteTransaction[V](f: Transaction => V): V =

@@ -97,7 +97,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
-  final override def beginTransaction: KgCommandStoreTransaction =
+  final override def beginTransaction(): KgCommandStoreTransaction =
     new MemKgCommandStoreTransaction
 
   final override def getNode(id: String): Option[KgNode] =
