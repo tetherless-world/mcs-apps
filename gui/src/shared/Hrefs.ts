@@ -2,10 +2,10 @@ import * as qs from "qs";
 import {KgSearchVariables} from "shared/models/kg/search/KgSearchVariables";
 import * as _ from "lodash";
 
-declare var KG_BASE_HREF: string;
-
 export class Hrefs {
-  constructor(readonly base: string) {}
+  constructor(readonly base: string) {
+    console.info("using base href", base);
+  }
 
   readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
 
