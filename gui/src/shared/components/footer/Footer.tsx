@@ -1,6 +1,5 @@
 import * as React from "react";
 import {makeStyles} from "@material-ui/core";
-import {Hrefs} from "shared/Hrefs";
 
 const useStyles = makeStyles((theme) => ({
   footerParagraph: {
@@ -18,9 +17,6 @@ export const Footer: React.FunctionComponent = () => {
           DARPA Machine Common Sense (MCS)
         </a>{" "}
         program.
-      </p>
-      <p className={classes.footerParagraph}>
-        <a href={Hrefs.gitHub}>GitHub</a>
       </p>
     </footer>
   );

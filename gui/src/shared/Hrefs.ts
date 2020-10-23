@@ -5,12 +5,12 @@ import * as _ from "lodash";
 declare var KG_BASE_HREF: string;
 
 export class Hrefs {
-  constructor(protected readonly baseHref: string) {}
+  constructor(readonly base: string) {}
 
   readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
 
   kg(kwds: {id: string; idEncoded?: boolean}) {
-    const kgPrefix = `${this.baseHref}kg/${
+    const kgPrefix = `${this.base}kg/${
       kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id)
     }/`;
     return {

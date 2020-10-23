@@ -10,36 +10,43 @@ import {kgId} from "shared/api/kgId";
 import {QueryParamProvider} from "use-query-params";
 import {KgNodeLabelPage} from "kg/components/kg/node/KgNodeLabelPage";
 
-export const KgRoutes: React.FunctionComponent = () => (
-  <BrowserRouter>
-    <QueryParamProvider ReactRouterRoute={Route}>
-      <Switch>
-        <Route exact path={KgHrefs.home} component={KgHomePage} />
+export const KgRoutes: React.FunctionComponent = () => {
+  const hrefs = new KgHrefs();
+  return (
+    <BrowserRouter>
+      <QueryParamProvider ReactRouterRoute={Route}>
+        <Switch>
+          <Route
+            exact
+            path={hrefs.kg({id: kgId}).home}
+            component={KgHomePage}
+          />
 
-        <Route
-          path={KgHrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
-          component={KgNodePage}
-        />
-        <Route
-          path={KgHrefs.kg({id: kgId}).nodeLabel({
-            label: ":nodeLabel",
-            labelEncoded: true,
-          })}
-          component={KgNodeLabelPage}
-        />
-        <Route
-          exact
-          path={KgHrefs.kg({id: kgId}).randomNode}
-          component={RandomKgNodePage}
-        />
-        <Route
-          exact
-          path={KgHrefs.kg({id: kgId}).search()}
-          component={KgSearchResultsPage}
-        />
+          <Route
+            path={hrefs.kg({id: kgId}).node({id: ":nodeId", idEncoded: true})}
+            component={KgNodePage}
+          />
+          <Route
+            path={hrefs.kg({id: kgId}).nodeLabel({
+              label: ":nodeLabel",
+              labelEncoded: true,
+            })}
+            component={KgNodeLabelPage}
+          />
+          <Route
+            exact
+            path={hrefs.kg({id: kgId}).randomNode}
+            component={RandomKgNodePage}
+          />
+          <Route
+            exact
+            path={hrefs.kg({id: kgId}).search()}
+            component={KgSearchResultsPage}
+          />
 
-        <Route component={KgNoRoute} />
-      </Switch>
-    </QueryParamProvider>
-  </BrowserRouter>
-);
+          <Route component={KgNoRoute} />
+        </Switch>
+      </QueryParamProvider>
+    </BrowserRouter>
+  );
+};
