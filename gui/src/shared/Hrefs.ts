@@ -2,12 +2,15 @@ import * as qs from "qs";
 import {KgSearchVariables} from "shared/models/kg/search/KgSearchVariables";
 import * as _ from "lodash";
 
+declare var KG_BASE_HREF: string;
+
 export class Hrefs {
-  static readonly contact = "mailto:gordom6@rpi.edu";
-  static readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
-  static readonly home = "/";
-  static kg(kwds: {id: string; idEncoded?: boolean}) {
-    const kgPrefix = `/kg/${
+  constructor(protected readonly baseHref: string) {}
+
+  readonly gitHub = "https://github.com/tetherless-world/mcs-apps";
+
+  kg(kwds: {id: string; idEncoded?: boolean}) {
+    const kgPrefix = `${this.baseHref}kg/${
       kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id)
     }/`;
     return {
