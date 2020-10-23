@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.empty.EmptyKgStore
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.mem.MemKgStore
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.neo4j.{Neo4jKgCommandStore, Neo4jKgQueryStore}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres.PostgresKgQueryStore
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.test.TestKgStore
 import org.slf4j.LoggerFactory
 import play.api.{Configuration, Environment}
@@ -26,6 +27,9 @@ final class KgStoresModule(environment: Environment, configuration: Configuratio
         logger.info("using test stores")
         bind(classOf[KgCommandStore]).to(classOf[TestKgStore])
         bind(classOf[KgQueryStore]).to(classOf[TestKgStore])
+      }
+      case "postgres" => {
+        bind(classOf[KgQueryStore]).to(classOf[PostgresKgQueryStore])
       }
       case _ => {
         bind(classOf[KgCommandStore]).to(classOf[Neo4jKgCommandStore])
