@@ -9,8 +9,8 @@ import * as d3 from "d3";
 const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 export const KgSourcePill: React.FunctionComponent<
-  {idOnly?: boolean; source: KgSource} & ChipProps
-> = ({idOnly, source, ...chipProps}) => {
+  {hrefs: Hrefs; idOnly?: boolean; source: KgSource} & ChipProps
+> = ({hrefs, idOnly, source, ...chipProps}) => {
   const history = useHistory();
 
   const color = colors(source.id);
@@ -21,7 +21,7 @@ export const KgSourcePill: React.FunctionComponent<
       label={idOnly ? source.id : `${source.id}: ${source.label}`}
       variant="outlined"
       onClick={() => {
-        history.push(Hrefs.kg({id: kgId}).source({sourceId: source.id}));
+        history.push(hrefs.kg({id: kgId}).source({sourceId: source.id}));
       }}
       style={{color, borderColor: color, margin: "2px"}}
       {...chipProps}
