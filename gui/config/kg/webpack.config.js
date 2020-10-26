@@ -15,10 +15,22 @@ module.exports = function (env, argv) {
   const baseHref =
     process.env && process.env.BASE_HREF ? process.env.BASE_HREF : "/";
   console.info("using base href", baseHref);
+
+  const devServerProxy = {};
+  devServerProxy[baseHref + "api"] = {
+    target: {
+      host: "localhost",
+      protocol: "http:",
+      port: 9000,
+    },
+    secure: false,
+  };
+
   return merge(configBase(env, argv), configDevServer(distPath), {
     context: path.join(__dirname, "..", "..", "src"),
     devServer: {
       publicPath: baseHref,
+      proxy: devServerProxy,
     },
     // devtool: "source-map",
     entry: {
