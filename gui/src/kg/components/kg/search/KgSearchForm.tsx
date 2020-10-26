@@ -9,16 +9,17 @@ import {
   KgSearchFormNodeLabelQuery,
   KgSearchFormNodeLabelQueryVariables,
 } from "kg/api/queries/types/KgSearchFormNodeLabelQuery";
+import {HrefsContext} from "shared/HrefsContext";
 
-export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
+export const KgSearchForm: React.FunctionComponent<{
   children: (props: {
     onChangeSearchBoxValue: (value: KgSearchBoxValue | null) => void;
     onSubmit: () => void;
   }) => React.ReactNode;
-}>> = ({children}) => {
+}> = ({children}) => {
   const apolloClient = useApolloClient();
-
   const history = useHistory();
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   // text being null or undefined causes the Autocomplete control to change its mode.
   const [
@@ -29,11 +30,11 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
   const onSubmit = React.useCallback(() => {
     if (searchBoxValue === null) {
       // No text entered but form submitted, consider this a match-all search.
-      history.push(Hrefs.kg({id: kgId}).search());
+      history.push(hrefs.kg({id: kgId}).search());
       return;
     }
 
-    const kgHrefs = Hrefs.kg({id: kgId});
+    const kgHrefs = hrefs.kg({id: kgId});
 
     switch (searchBoxValue.__typename) {
       case "KgEdgeLabelSearchResult":
@@ -55,7 +56,7 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
 
         if (searchBoxValueText.length === 0) {
           // Text was empty, consider this a match-all search.
-          history.push(Hrefs.kg({id: kgId}).search());
+          history.push(kgHrefs.search());
           return;
         }
 
@@ -84,7 +85,7 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
               if (data.kgById.nodeLabel) {
                 // Exact node label match, go to node label page
                 history.push(
-                  Hrefs.kg({id: kgId}).nodeLabel({
+                  kgHrefs.nodeLabel({
                     label: data.kgById.nodeLabel.nodeLabel,
                   })
                 );
@@ -98,7 +99,7 @@ export const KgSearchForm: React.FunctionComponent<React.PropsWithChildren<{
             }
 
             history.push(
-              Hrefs.kg({id: kgId}).search({
+              kgHrefs.search({
                 __typename: "KgSearchVariables",
                 query: {
                   filters: searchBoxValue.filters,

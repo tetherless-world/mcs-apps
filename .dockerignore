@@ -1,14 +1,14 @@
 /app/benchmark/test/
-/app/kg/data/
-/app/kg/test/
 /.circleci/
 /.git/
+/data/
 **/.DS_Store
 **/dist/
 /.idea/
 /integration/
 LICENSE/
 **/*.log
+**/public/
 README.md
 **/node_modules/
 **/target/

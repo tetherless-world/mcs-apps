@@ -21,6 +21,7 @@ import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
+import {HrefsContext} from "shared/HrefsContext";
 
 const theme = createMuiTheme({
   overrides: {
@@ -50,6 +51,8 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   const relatedNodeLabelsByNodeId: {
     [index: string]: KgNodeContextRelatedNodeLabel[];
   } = React.useMemo(() => {
@@ -101,7 +104,7 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
             <Link
               data-cy="node-label-link"
               title={nodeLabel}
-              to={Hrefs.kg({id: kgId}).nodeLabel({
+              to={hrefs.kg({id: kgId}).nodeLabel({
                 label: nodeLabel,
               })}
             >

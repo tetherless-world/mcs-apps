@@ -1,16 +1,17 @@
 import * as React from "react";
 
 import {
-  Typography,
   AppBar,
-  Toolbar,
-  makeStyles,
-  createStyles,
   Button,
+  createStyles,
+  makeStyles,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
 
 import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {Link, useLocation} from "react-router-dom";
+import {BenchmarkHrefsContext} from "benchmark/BenchmarkHrefsContext";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -37,11 +38,11 @@ type TopLevelPath = {
 
 export const BenchmarkNavbar: React.FunctionComponent<{}> = () => {
   const classes = useStyles();
-
   const location = useLocation();
+  const hrefs = React.useContext<BenchmarkHrefs>(BenchmarkHrefsContext);
 
   const topLevelPaths: TopLevelPath[] = [
-    {path: BenchmarkHrefs.benchmarks, label: "Benchmarks"},
+    {path: hrefs.benchmarks, label: "Benchmarks"},
   ];
 
   function normalizePath(path: string) {
@@ -65,10 +66,10 @@ export const BenchmarkNavbar: React.FunctionComponent<{}> = () => {
       <Toolbar>
         <Button
           component={Link}
-          to={BenchmarkHrefs.home}
+          to={hrefs.benchmarks}
           className={classes.brand}
         >
-          <Typography variant="h5">MCS</Typography>
+          <Typography variant="h5">MCS Benchmarks</Typography>
         </Button>
         {topLevelPaths.map((tlp) => (
           <Button

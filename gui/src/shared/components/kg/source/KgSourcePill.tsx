@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import * as d3 from "d3";
+import {HrefsContext} from "shared/HrefsContext";
 
 const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -12,6 +13,7 @@ export const KgSourcePill: React.FunctionComponent<
   {idOnly?: boolean; source: KgSource} & ChipProps
 > = ({idOnly, source, ...chipProps}) => {
   const history = useHistory();
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   const color = colors(source.id);
 
@@ -21,7 +23,7 @@ export const KgSourcePill: React.FunctionComponent<
       label={idOnly ? source.id : `${source.id}: ${source.label}`}
       variant="outlined"
       onClick={() => {
-        history.push(Hrefs.kg({id: kgId}).source({sourceId: source.id}));
+        history.push(hrefs.kg({id: kgId}).source({sourceId: source.id}));
       }}
       style={{color, borderColor: color, margin: "2px"}}
       {...chipProps}

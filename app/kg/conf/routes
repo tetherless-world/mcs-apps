@@ -4,5 +4,4 @@ POST        /api/graphql                    controllers.graphql.KgGraphQlControl
 GET         /api/graphql-schema             controllers.graphql.KgGraphQlController.renderSchema
 
 # Assets
-GET         /             controllers.Assets.at(path="/public", file="index.html")
-GET         /$path<.*>    controllers.assets.KgAssetsController.frontEndPath(path)
+GET         /$path<.*>    controllers.assets.KgGuiAssetsController.frontEndPath(path)

@@ -3,12 +3,13 @@ import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
 import {Link} from "react-router-dom";
 import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {BenchmarkQuestionText} from "benchmark/components/benchmark/BenchmarkQuestionText";
-import {List, Typography, ListItemText} from "@material-ui/core";
+import {List, ListItemText, Typography} from "@material-ui/core";
 import {BenchmarkQuestion} from "benchmark/models/benchmark/BenchmarkQuestion";
 import {BenchmarkQuestionType} from "benchmark/api/graphqlGlobalTypes";
 import {BenchmarkSubmission} from "benchmark/models/benchmark/BenchmarkSubmission";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {BenchmarkHrefsContext} from "benchmark/BenchmarkHrefsContext";
 
 export const BenchmarkQuestionsTable: React.FunctionComponent<{
   benchmarkId: string;
@@ -27,6 +28,8 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
   submissionId,
   submissions,
 }) => {
+  const hrefs = React.useContext<BenchmarkHrefs>(BenchmarkHrefsContext);
+
   // Do a first pass over questions to index them and gather the answer submission id's
   const answerSubmissionIds: string[] = []; // No flatMap until ES2019
   let includeCategoriesColumn: boolean = false;
@@ -101,7 +104,8 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
             {submissionId ? (
               <Link
                 data-cy="question-text"
-                to={BenchmarkHrefs.benchmark({id: benchmarkId})
+                to={hrefs
+                  .benchmark({id: benchmarkId})
                   .dataset({id: datasetId})
                   .submission({id: submissionId})
                   .question({
@@ -178,7 +182,8 @@ export const BenchmarkQuestionsTable: React.FunctionComponent<{
           const correct = answer.choiceId === question.correctChoiceId;
           return (
             <Link
-              to={BenchmarkHrefs.benchmark({id: benchmarkId})
+              to={hrefs
+                .benchmark({id: benchmarkId})
                 .dataset({id: datasetId})
                 .submission({id: answer.submissionId})
                 .question({

@@ -7,18 +7,21 @@ import {kgId} from "shared/api/kgId";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {getPreferredKgNodeLabel} from "shared/models/kg/node/getPreferredKgNodeLabel";
 import {KgSearchResult} from "shared/models/kg/search/KgSearchResult";
+import {HrefsContext} from "shared/HrefsContext";
 
 export const KgSearchResultLink: React.FunctionComponent<{
   allSources: readonly KgSource[];
   result: KgSearchResult;
 }> = ({allSources, result}) => {
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   switch (result.__typename) {
     case "KgNodeLabelSearchResult": {
       return (
         <Link
           data-cy="node-label-link"
           title={result.nodeLabel}
-          to={Hrefs.kg({id: kgId}).nodeLabel({label: result.nodeLabel})}
+          to={hrefs.kg({id: kgId}).nodeLabel({label: result.nodeLabel})}
         >
           <span style={{marginRight: "5px"}}>
             Node label: {result.nodeLabel}
@@ -31,7 +34,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
         <Link
           data-cy="node-link"
           title={result.node.id}
-          to={Hrefs.kg({id: kgId}).node({id: result.node.id})}
+          to={hrefs.kg({id: kgId}).node({id: result.node.id})}
         >
           Node: {getPreferredKgNodeLabel(result.node)}
         </Link>
@@ -43,7 +46,7 @@ export const KgSearchResultLink: React.FunctionComponent<{
         <Link
           data-cy="source-link"
           title={source.label}
-          to={Hrefs.kg({id: kgId}).source({sourceId: source.id})}
+          to={hrefs.kg({id: kgId}).source({sourceId: source.id})}
         >
           Source: {source.label}
         </Link>

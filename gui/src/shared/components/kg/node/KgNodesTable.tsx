@@ -7,6 +7,7 @@ import {List, ListItem, ListItemText} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
+import {HrefsContext} from "shared/HrefsContext";
 
 export const KgNodesTable: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -18,6 +19,8 @@ export const KgNodesTable: React.FunctionComponent<{
     sourceIds: readonly string[];
   }[];
 }> = ({allSources, nodes}) => {
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   const columns: MUIDataTableColumn[] = React.useMemo(
     () => [
       {
@@ -43,7 +46,7 @@ export const KgNodesTable: React.FunctionComponent<{
               <Link
                 data-cy="node-link"
                 title={id}
-                to={Hrefs.kg({id: kgId}).node({id})}
+                to={hrefs.kg({id: kgId}).node({id})}
               >
                 {id}
               </Link>
@@ -65,7 +68,7 @@ export const KgNodesTable: React.FunctionComponent<{
                       <Link
                         data-cy="node-label-link"
                         title={label}
-                        to={Hrefs.kg({id: kgId}).nodeLabel({label})}
+                        to={hrefs.kg({id: kgId}).nodeLabel({label})}
                       >
                         {label}
                       </Link>

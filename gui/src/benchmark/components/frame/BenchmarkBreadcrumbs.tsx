@@ -13,6 +13,7 @@ import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import DoneIcon from "@material-ui/icons/Done";
 import ShutterSpeedIcon from "@material-ui/icons/ShutterSpeed";
 import {BenchmarkBreadcrumbsProps} from "benchmark/components/frame/BenchmarkBreadcrumbsProps";
+import {BenchmarkHrefsContext} from "benchmark/BenchmarkHrefsContext";
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -36,12 +37,14 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
   question,
   submission,
 }) => {
+  const hrefs = React.useContext<BenchmarkHrefs>(BenchmarkHrefsContext);
+
   const breadcrumbsChildren: React.ReactNode = (() => {
     const breadcrumbs: React.ReactNodeArray = [
       <StyledBreadcrumb
         component="a"
         data-cy="benchmarks"
-        href={BenchmarkHrefs.benchmarks}
+        href={hrefs.benchmarks}
         icon={<HomeIcon />}
         key="benchmarks"
         label="Benchmarks"
@@ -52,7 +55,7 @@ export const BenchmarkBreadcrumbs: React.FunctionComponent<BenchmarkBreadcrumbsP
       return breadcrumbs;
     }
 
-    const benchmarkHrefs = BenchmarkHrefs.benchmark({id: benchmark.id});
+    const benchmarkHrefs = hrefs.benchmark({id: benchmark.id});
     breadcrumbs.push(
       <StyledBreadcrumb
         component="a"
