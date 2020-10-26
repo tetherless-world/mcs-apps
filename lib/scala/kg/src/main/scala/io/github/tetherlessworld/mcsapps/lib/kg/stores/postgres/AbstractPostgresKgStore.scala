@@ -1,8 +1,5 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
-import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
-import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
-import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.PostgresProfile
 
@@ -14,78 +11,54 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
   lazy val KgEdges = TableQuery[KgEdgeTable]
   lazy val KgSources = TableQuery[KgSourceTable]
 
-  private class KgNodeTable(tag: Tag) extends Table[KgNode](tag, "KgNodes") {
-    def id = column[String]("ID", O.PrimaryKey)
+  private class KgNodeTable(tag: Tag) extends Table[(String, Option[Char], Option[Int])](tag, "kg_node") {
+
+    def id = column[String]("id", O.PrimaryKey)
 
     //    def inDegree = column[Option[Int]]("IN_DEGREE")
     //    def labels = column[String]("LABELS")
     //    def outDegree = column[Option[Int]]("OUT_DEGREE")
     //    def pageRank = column[Option[Double]]("PAGERANK")
-    def pos = column[Option[Char]]("POS")
+    def pos = column[Option[Char]]("pos")
 
     //    def sourceIds = column[String]("SOURCE_IDS")
-    def wordNetSenseNumber = column[Option[Int]]("WORD_NET_SENSE_NUMBER")
+    def wordNetSenseNumber = column[Option[Int]]("word_net_sense_number")
 
-    type KgNodeTableColumnTypes = (String, Option[Char], Option[Int])
-
-    def * = (id, pos, wordNetSenseNumber) <> (create, extract.lift)
-
-    private def create: KgNodeTableColumnTypes => KgNode = {
-      case (id, pos, wordNetSenseNumber) =>
-        KgNode(id, None, List(), None, None, pos, List(), wordNetSenseNumber)
-    }
-
-    private def extract: PartialFunction[KgNode, KgNodeTableColumnTypes] = {
-      case KgNode(id, inDegree, labels, outDegree, pageRank, pos, sourceIds, wordNetSenseNumber) =>
-        (id, pos, wordNetSenseNumber)
-    }
+    def * = (id, pos, wordNetSenseNumber)
   }
 
-  class KgEdgeTable(tag: Tag) extends Table[KgEdge](tag, "KgEdges") {
-    def id = column[String]("ID", O.PrimaryKey)
+  private class KgEdgeTable(tag: Tag) extends Table[(String, String, String, String)](tag, "kg_edge") {
+    def id = column[String]("id", O.PrimaryKey)
 //    labels: List[String],
-    def objectNodeId = column[String]("OBJECT_NODE_ID")
-    def predicate = column[String]("PREDICATE")
+    def objectNodeId = column[String]("object_node_id")
+    def predicate = column[String]("predicate")
 //    sentences: List[String],
 //    sourceIds: List[String],
-    def subjectNodeId = column[String]("SUBJECT_NODE_ID")
+    def subjectNodeId = column[String]("subject_node_id")
 
-    type KgEdgeTableColumnTypes = (String, String, String, String)
+    def * = (id, objectNodeId, predicate, subjectNodeId)
 
-    def objectNode = foreignKey("OBJECT_NODE_FK", objectNodeId, KgNodes)(_.id)
-    def subjectNode = foreignKey("SUBJECT_NODE_FK", subjectNodeId, KgNodes)(_.id)
+    def objectNode = foreignKey("object_node_fk", objectNodeId, KgNodes)(_.id)
+    def subjectNode = foreignKey("subject_node_fk", subjectNodeId, KgNodes)(_.id)
 
-    def * = (id, objectNodeId, predicate, subjectNodeId) <> (create, extract.lift)
-
-    private def create: KgEdgeTableColumnTypes => KgEdge = {
-      case (id, objectNodeId, predicate, subjectNodeId) =>
-        KgEdge(id, List(), objectNodeId, predicate, List(), List(), subjectNodeId)
-    }
-
-    private def extract: PartialFunction[KgEdge, KgEdgeTableColumnTypes] = {
-      case KgEdge(id, labels, object_, predicate, sentences, sourceIds, subject) =>
-        (id, object_, predicate, subject)
-    }
   }
 
-  class KgSourceTable(tag: Tag) extends Table[KgSource](tag, "KgSources") {
-    def id = column[String]("ID", O.PrimaryKey)
-    def label = column[String]("LABEL")
+  private class KgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_source") {
+    def id = column[String]("id", O.PrimaryKey)
+    def label = column[String]("label")
 
-    type KgSourceTableColumnTypes = (String, String)
-
-    def * = (id, label) <> ((KgSource.apply _).tupled, KgSource.unapply)
+    def * = (id, label)
   }
 
-  class KgNodeKgSource(tag: Tag) extends Table[(Int, String, String)](tag, "KgNodeKgSource") {
-    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
+  private class KgNodeKgSource(tag: Tag) extends Table[(Int, String, String)](tag, "kg_node_kg_source") {
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def kgNodeId = column[String]("KG_Node_ID")
-    def kgSourceId = column[String]("KG_SOURCE_ID")
+    def kgNodeId = column[String]("kg_node_id")
+    def kgSourceId = column[String]("kg_source_id")
 
     def * = (id, kgNodeId, kgSourceId)
 
-    def kgNode = foreignKey("KG_Node_FK", kgNodeId, KgNodes)(_.id)
-    def kgSource = foreignKey("KG_SOURCE_FK", kgSourceId, KgSources)(_.id)
+    def kgNode = foreignKey("kg_node_fk", kgNodeId, KgNodes)(_.id)
+    def kgSource = foreignKey("kg_source_fk", kgSourceId, KgSources)(_.id)
   }
 }
