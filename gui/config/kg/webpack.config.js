@@ -12,13 +12,13 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = function (env, argv) {
-  const kgBaseHref =
-    process.env && process.env.KG_BASE_HREF ? process.env.KG_BASE_HREF : "/";
-  console.info("using KG base href", kgBaseHref);
+  const baseHref =
+    process.env && process.env.BASE_HREF ? process.env.BASE_HREF : "/";
+  console.info("using base href", baseHref);
   return merge(configBase(env, argv), configDevServer(distPath), {
     context: path.join(__dirname, "..", "..", "src"),
     devServer: {
-      publicPath: kgBaseHref,
+      publicPath: baseHref,
     },
     // devtool: "source-map",
     entry: {
@@ -32,11 +32,11 @@ module.exports = function (env, argv) {
     plugins: [
       new CopyWebpackPlugin([{from: "shared/robots.txt", to: "robots.txt"}]),
       new webpack.DefinePlugin({
-        KG_BASE_HREF: `"${kgBaseHref}"`,
+        BASE_HREF: `"${baseHref}"`,
       }),
       new HtmlWebpackPlugin({
+        baseHref,
         hash: true,
-        kgBaseHref,
         template: "kg/index.html",
       }),
     ],

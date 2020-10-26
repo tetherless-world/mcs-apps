@@ -1,5 +1,6 @@
 # Build GUI
 FROM node:12 as build-gui
+ARG BASE_HREF
 WORKDIR /build
 COPY /gui/package.json .
 RUN npm install
@@ -8,6 +9,7 @@ RUN npm run build-kg
 
 # Build app
 FROM hseeberger/scala-sbt:11.0.5_1.3.7_2.12.10 as build-app
+ARG BASE_HREF
 WORKDIR /build
 # The root of the repository is the context
 COPY /build.sbt .

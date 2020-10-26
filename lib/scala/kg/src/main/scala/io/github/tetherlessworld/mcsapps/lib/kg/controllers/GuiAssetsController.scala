@@ -2,21 +2,22 @@ package io.github.tetherlessworld.mcsapps.lib.kg.controllers
 
 import controllers.Assets
 import org.slf4j.LoggerFactory
+import play.api.Configuration
 import play.api.mvc.{Action, AnyContent, InjectedController}
 
-abstract class GuiAssetsController(baseHref: Option[String], assets: Assets) extends InjectedController {
+abstract class GuiAssetsController(assets: Assets, configuration: Configuration) extends InjectedController {
   private val logger = LoggerFactory.getLogger(classOf[GuiAssetsController])
-  private val baseHrefPrivate = baseHref.getOrElse(GuiAssetsController.BaseHrefDefault)
-  logger.info("using base href {}", baseHrefPrivate)
+  private val baseHref = configuration.getOptional[String]("baseHref").getOrElse(GuiAssetsController.BaseHrefDefault)
+  logger.info("using base href {}", baseHref)
 
-  if (!baseHrefPrivate.startsWith("/")) {
+  if (!baseHref.startsWith("/")) {
     throw new IllegalArgumentException("base href must start with /")
   }
 
   final def frontEndPath(path: String): Action[AnyContent] = {
     val fullPath = "/" + path // The leading / is stripped by the router, restore it here
-    if (fullPath.startsWith(baseHrefPrivate)) {
-      val relativePath = fullPath.substring(baseHrefPrivate.length)
+    if (fullPath.startsWith(baseHref)) {
+      val relativePath = fullPath.substring(baseHref.length)
       logger.debug("resolved path {} to relative {}", fullPath.asInstanceOf[Any], relativePath.asInstanceOf[Any])
 
       // If the path has a file extension, assume it's a file and not a React URL

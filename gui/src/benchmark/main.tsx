@@ -9,7 +9,7 @@ import {HrefsContext} from "shared/HrefsContext";
 import {BenchmarkHrefs} from "benchmark/BenchmarkHrefs";
 import {BenchmarkHrefsContext} from "benchmark/BenchmarkHrefsContext";
 
-const hrefs = new BenchmarkHrefs("/");
+const hrefs = new BenchmarkHrefs();
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>

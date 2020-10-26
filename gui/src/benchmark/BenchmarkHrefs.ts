@@ -1,10 +1,6 @@
 import {Hrefs as SharedHrefs} from "shared/Hrefs";
 
 export class BenchmarkHrefs extends SharedHrefs {
-  constructor(base: string) {
-    super(base);
-  }
-
   readonly benchmarks = `${this.base}benchmark/`;
   benchmark(kwds: {id: string; idEncoded?: boolean}) {
     const benchmarkId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
