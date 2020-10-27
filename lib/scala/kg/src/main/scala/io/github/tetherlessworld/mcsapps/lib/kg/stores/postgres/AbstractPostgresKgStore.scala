@@ -12,6 +12,9 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
   lazy val kgEdgeKgSources = TableQuery[KgEdgeKgSourceTable]
   lazy val kgNodes = TableQuery[KgNodeTable]
   lazy val kgNodeLabels = TableQuery[KgNodeLabelTable]
+  lazy val kgNodeLabelEdges = TableQuery[KgNodeLabelEdgeTable]
+  lazy val kgNodeLabelEdgeKgSources = TableQuery[KgNodeLabelEdgeKgSourceTable]
+  lazy val kgNodeLabelKgSource = TableQuery[KgNodeLabelKgSourceTable]
   lazy val kgNodeKgSources = TableQuery[KgNodeKgSourceTable]
   lazy val kgSources = TableQuery[KgSourceTable]
 
@@ -63,7 +66,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def * = (id, inDegree, outDegree, pageRank, pos, wordNetSenseNumber)
   }
 
-  private class KgNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "kg_node_label") {
+  private class KgNodeKgNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "kg_node_kg_node_label") {
     def kgNodeId = column[String]("kg_node_id")
     def label = column[String]("label")
 
@@ -84,6 +87,50 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
 
     def pk = primaryKey("pk_kg_node_kg_source", (kgNodeId, kgSourceId))
+  }
+
+  private class KgNodeLabelTable(tag: Tag) extends Table[(String, Option[Double])](tag, "kg_node_label") {
+    def label = column[String]("label", O.PrimaryKey)
+    def pageRank = column[Option[Double]]("page_rank")
+
+    def * = (label, pageRank)
+  }
+
+  private class KgNodeLabelEdgeTable(tag: Tag) extends Table[(Int, String, String)](tag, "kg_node_label_edge") {
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def objectKgNodeLabelLabel = column[String]("object_kg_node_label_label")
+    def subjectKgNodeLabelLabel = column[String]("subject_kg_node_label_label")
+
+    def * = (id, objectKgNodeLabelLabel, subjectKgNodeLabelLabel)
+
+    def objectKgNodeLabel = foreignKey("object_kg_node_label_fk", objectKgNodeLabelLabel, kgNodeLabels)(_.label)
+    def subjectKgNodeLabel = foreignKey("subject_kg_node_label_fk", subjectKgNodeLabelLabel, kgNodeLabels)(_.label)
+
+    def unique_constraint = index("idx_kg_node_label_edge_unique", (objectKgNodeLabelLabel, subjectKgNodeLabelLabel), unique = true)
+  }
+
+  private class KgNodeLabelEdgeKgSourceTable(tag: Tag) extends Table[(Int, String)](tag, "kg_node_label_edge_kg_source") {
+    def kgNodeLabelEdgeId = column[Int]("kg_node_label_edge_id")
+    def kgSourceId = column[String]("kg_source_id")
+
+    def * = (kgNodeLabelEdgeId, kgSourceId)
+
+    def kgNodeLabelEdge = foreignKey("kg_node_label_edge_fk", kgNodeLabelEdgeId, kgNodeLabelEdges)(_.id)
+    def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
+
+    def pk = primaryKey("pk_kg_node_label_edge_kg_source", (kgNodeLabelEdgeId, kgSourceId))
+  }
+
+  private class KgNodeLabelKgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_node_label_kg_source") {
+    def kgNodeLabelLabel = column[String]("kg_node_label_label")
+    def kgSourceId = column[String]("kg_source_id")
+
+    def * = (kgNodeLabelLabel, kgSourceId)
+
+    def kgNodeLabel = foreignKey("kg_node_label_fk", kgNodeLabelLabel, kgNodeLabels)(_.label)
+    def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
+
+    def pk = primaryKey("pk_kg_node_label_kg_source", (kgNodeLabelLabel, kgSourceId))
   }
 
   private class KgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_source") {
