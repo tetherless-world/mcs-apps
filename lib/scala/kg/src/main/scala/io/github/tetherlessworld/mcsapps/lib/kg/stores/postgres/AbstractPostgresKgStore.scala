@@ -6,7 +6,7 @@ import slick.jdbc.PostgresProfile
 
 abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[PostgresProfile] {
   import profile.api._
-  
+
   lazy val kgEdges = TableQuery[KgEdgeTable]
   lazy val kgEdgeLabels = TableQuery[KgEdgeLabelTable]
   lazy val kgEdgeKgSources = TableQuery[KgEdgeKgSourceTable]
@@ -24,8 +24,8 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def * = (id, objectNodeId, predicate, sentences, subjectNodeId)
 
-    def objectNode = foreignKey("object_node_fk", objectNodeId, KgNodes)(_.id)
-    def subjectNode = foreignKey("subject_node_fk", subjectNodeId, KgNodes)(_.id)
+    def objectNode = foreignKey("object_node_fk", objectNodeId, kgNodes)(_.id)
+    def subjectNode = foreignKey("subject_node_fk", subjectNodeId, kgNodes)(_.id)
 
     def unique_constraint = index("idx_kg_edge_unique", (objectNodeId, subjectNodeId, predicate), unique = true)
   }
@@ -36,7 +36,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def * = (kgEdgeId, label)
 
-    def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, KgEdges)(_.id)
+    def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, kgEdges)(_.id)
 
     def pk = primaryKey("pk_kg_edge_label", (kgEdgeId, label))
   }
@@ -47,18 +47,18 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def * = (kgEdgeId, kgSourceId)
 
-    def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, KgEdges)(_.id)
+    def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, kgEdges)(_.id)
 
     def pk = primaryKey("pk_kg_edge_kg_source", (kgEdgeId, kgSourceId))
   }
 
-  private class KgNodeTable(tag: Tag) extends Table[(String, Option[Int], Option[Int], Option[Double], Option[Char], Option[Int])](tag, "kg_node") {
+  private class KgNodeTable(tag: Tag) extends Table[(String, Option[Short], Option[Short], Option[Double], Option[Char], Option[Short])](tag, "kg_node") {
     def id = column[String]("id", O.PrimaryKey)
-    def inDegree = column[Option[Int]]("in_degree")
-    def outDegree = column[Option[Int]]("out_degree")
+    def inDegree = column[Option[Short]]("in_degree")
+    def outDegree = column[Option[Short]]("out_degree")
     def pageRank = column[Option[Double]]("page_rank")
-    def pos = column[Option[Char]]("pos")
-    def wordNetSenseNumber = column[Option[Int]]("word_net_sense_number")
+    def pos = column[Option[Char]]("pos", O.Length(1))
+    def wordNetSenseNumber = column[Option[Short]]("word_net_sense_number")
 
     def * = (id, inDegree, outDegree, pageRank, pos, wordNetSenseNumber)
   }
@@ -69,7 +69,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def * = (kgNodeId, label)
 
-    def kgNode = foreignKey("kg_node_fk", kgNodeId, KgNodes)(_.id)
+    def kgNode = foreignKey("kg_node_fk", kgNodeId, kgNodes)(_.id)
 
     def pk = primaryKey("pk_kg_node_label", (kgNodeId, label))
   }
@@ -80,8 +80,8 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def * = (kgNodeId, kgSourceId)
 
-    def kgNode = foreignKey("kg_node_fk", kgNodeId, KgNodes)(_.id)
-    def kgSource = foreignKey("kg_source_fk", kgSourceId, KgSources)(_.id)
+    def kgNode = foreignKey("kg_node_fk", kgNodeId, kgNodes)(_.id)
+    def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
 
     def pk = primaryKey("pk_kg_node_kg_source", (kgNodeId, kgSourceId))
   }
