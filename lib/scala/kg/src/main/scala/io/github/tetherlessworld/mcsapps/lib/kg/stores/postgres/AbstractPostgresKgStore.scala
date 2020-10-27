@@ -20,17 +20,17 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
   private class KgEdgeTable(tag: Tag) extends Table[(String, String, String, String, String)](tag, "kg_edge") {
     def id = column[String]("id", O.PrimaryKey)
-    def objectNodeId = column[String]("object_node_id")
+    def objectKgNodeId = column[String]("object_kg_node_id")
     def predicate = column[String]("predicate")
     def sentences = column[String]("sentences")
-    def subjectNodeId = column[String]("subject_node_id")
+    def subjectKgNodeId = column[String]("subject_node_id")
 
-    def * = (id, objectNodeId, predicate, sentences, subjectNodeId)
+    def * = (id, objectKgNodeId, predicate, sentences, subjectKgNodeId)
 
-    def objectNode = foreignKey("object_node_fk", objectNodeId, kgNodes)(_.id)
-    def subjectNode = foreignKey("subject_node_fk", subjectNodeId, kgNodes)(_.id)
+    def objectNode = foreignKey("object_kg_node_fk", objectKgNodeId, kgNodes)(_.id)
+    def subjectNode = foreignKey("subject_kg_node_fk", subjectKgNodeId, kgNodes)(_.id)
 
-    def unique_constraint = index("idx_kg_edge_unique", (objectNodeId, subjectNodeId, predicate), unique = true)
+    def unique_constraint = index("kg_edge_unique_idx", (objectKgNodeId, subjectKgNodeId, predicate), unique = true)
   }
 
   private class KgEdgeLabelTable(tag: Tag) extends Table[(String, String)](tag, "kg_edge_label") {
@@ -41,7 +41,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, kgEdges)(_.id)
 
-    def pk = primaryKey("pk_kg_edge_label", (kgEdgeId, label))
+    def pk = primaryKey("kg_edge_label_pk", (kgEdgeId, label))
   }
 
   private class KgEdgeKgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_edge_kg_source") {
@@ -52,7 +52,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def kgEdge = foreignKey("kg_edge_fk", kgEdgeId, kgEdges)(_.id)
 
-    def pk = primaryKey("pk_kg_edge_kg_source", (kgEdgeId, kgSourceId))
+    def pk = primaryKey("kg_edge_kg_source_pk", (kgEdgeId, kgSourceId))
   }
 
   private class KgNodeTable(tag: Tag) extends Table[(String, Option[Short], Option[Short], Option[Double], Option[Char], Option[Short])](tag, "kg_node") {
@@ -74,7 +74,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
 
     def kgNode = foreignKey("kg_node_fk", kgNodeId, kgNodes)(_.id)
 
-    def pk = primaryKey("pk_kg_node_label", (kgNodeId, label))
+    def pk = primaryKey("kg_node_label_pk", (kgNodeId, label))
   }
 
   private class KgNodeKgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_kg_node_source") {
@@ -86,7 +86,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def kgNode = foreignKey("kg_node_fk", kgNodeId, kgNodes)(_.id)
     def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
 
-    def pk = primaryKey("pk_kg_node_kg_source", (kgNodeId, kgSourceId))
+    def pk = primaryKey("kg_node_kg_source_pk", (kgNodeId, kgSourceId))
   }
 
   private class KgNodeLabelTable(tag: Tag) extends Table[(String, Option[Double])](tag, "kg_node_label") {
@@ -106,7 +106,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def objectKgNodeLabel = foreignKey("object_kg_node_label_fk", objectKgNodeLabelLabel, kgNodeLabels)(_.label)
     def subjectKgNodeLabel = foreignKey("subject_kg_node_label_fk", subjectKgNodeLabelLabel, kgNodeLabels)(_.label)
 
-    def unique_constraint = index("idx_kg_node_label_edge_unique", (objectKgNodeLabelLabel, subjectKgNodeLabelLabel), unique = true)
+    def unique_constraint = index("kg_node_label_edge_unique_idx", (objectKgNodeLabelLabel, subjectKgNodeLabelLabel), unique = true)
   }
 
   private class KgNodeLabelEdgeKgSourceTable(tag: Tag) extends Table[(Int, String)](tag, "kg_node_label_edge_kg_source") {
@@ -118,7 +118,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def kgNodeLabelEdge = foreignKey("kg_node_label_edge_fk", kgNodeLabelEdgeId, kgNodeLabelEdges)(_.id)
     def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
 
-    def pk = primaryKey("pk_kg_node_label_edge_kg_source", (kgNodeLabelEdgeId, kgSourceId))
+    def pk = primaryKey("kg_node_label_edge_kg_source_pk", (kgNodeLabelEdgeId, kgSourceId))
   }
 
   private class KgNodeLabelKgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_node_label_kg_source") {
@@ -130,7 +130,7 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def kgNodeLabel = foreignKey("kg_node_label_fk", kgNodeLabelLabel, kgNodeLabels)(_.label)
     def kgSource = foreignKey("kg_source_fk", kgSourceId, kgSources)(_.id)
 
-    def pk = primaryKey("pk_kg_node_label_kg_source", (kgNodeLabelLabel, kgSourceId))
+    def pk = primaryKey("kg_node_label_kg_source_pk", (kgNodeLabelLabel, kgSourceId))
   }
 
   private class KgSourceTable(tag: Tag) extends Table[(String, String)](tag, "kg_source") {
