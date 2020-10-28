@@ -55,11 +55,11 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def pk = primaryKey("kg_edge_kg_source_pk", (kgEdgeId, kgSourceId))
   }
 
-  private class KgNodeTable(tag: Tag) extends Table[(String, Option[Short], Option[Short], Option[Double], Option[Char], Option[Short])](tag, "kg_node") {
+  private class KgNodeTable(tag: Tag) extends Table[(String, Option[Short], Option[Short], Option[Float], Option[Char], Option[Short])](tag, "kg_node") {
     def id = column[String]("id", O.PrimaryKey)
     def inDegree = column[Option[Short]]("in_degree")
     def outDegree = column[Option[Short]]("out_degree")
-    def pageRank = column[Option[Double]]("page_rank")
+    def pageRank = column[Option[Float]]("page_rank")
     def pos = column[Option[Char]]("pos", O.Length(1))
     def wordNetSenseNumber = column[Option[Short]]("word_net_sense_number")
 
@@ -89,9 +89,9 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
     def pk = primaryKey("kg_node_kg_source_pk", (kgNodeId, kgSourceId))
   }
 
-  private class KgNodeLabelTable(tag: Tag) extends Table[(String, Option[Double])](tag, "kg_node_label") {
+  private class KgNodeLabelTable(tag: Tag) extends Table[(String, Option[Float])](tag, "kg_node_label") {
     def label = column[String]("label", O.PrimaryKey)
-    def pageRank = column[Option[Double]]("page_rank")
+    def pageRank = column[Option[Float]]("page_rank")
 
     def * = (label, pageRank)
   }
