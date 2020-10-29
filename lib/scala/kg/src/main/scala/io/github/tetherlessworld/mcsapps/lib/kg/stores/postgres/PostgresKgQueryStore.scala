@@ -10,16 +10,13 @@ import javax.inject.Singleton
 import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
-import scala.concurrent.Await
-import scala.concurrent.duration._
 
 @Singleton
 final class PostgresKgQueryStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(dbConfigProvider) with KgQueryStore {
   import profile.api._
 
   override def getNode(id: String): Option[KgNode] = {
-    Await.result(db.run((for { node <- KgNodes if node.id === id } yield node).result.headOption), 10 seconds)
+    runSyncTransaction((for { node <- kgNodes if node.id === id } yield node).result.headOption)
   }
 
   override def getNodeContext(id: String): Option[KgNodeContext] = None
