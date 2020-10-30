@@ -52,8 +52,6 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getNodeLabel(label: String): Option[KgNodeLabel] = None
 
-  final override def getRandomNode: KgNode = throw new NoSuchElementException
-
   final override def getSourcesById: Map[String, KgSource] = Map()
 
   final override def getTotalEdgesCount: Int = 0

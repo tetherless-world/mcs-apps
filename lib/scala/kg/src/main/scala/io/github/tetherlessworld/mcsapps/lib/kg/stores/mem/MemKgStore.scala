@@ -1,22 +1,14 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 
-import com.outr.lucene4s._
-import com.outr.lucene4s.facet.FacetField
-import com.outr.lucene4s.query._
-import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
 
-import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
 
 @Singleton
 class MemKgStore extends KgCommandStore with KgQueryStore {
@@ -88,7 +80,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private val index = new MemKgIndex()
   private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
   final override def beginTransaction(): KgCommandStoreTransaction =
@@ -147,9 +138,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getSourcesById: Map[String, KgSource] =
     sourcesById
-
-  final override def getRandomNode: KgNode =
-    nodesById.values.toList(random.nextInt(nodesById.size))
 
   final override def getTotalEdgesCount: Int =
     edges.size
