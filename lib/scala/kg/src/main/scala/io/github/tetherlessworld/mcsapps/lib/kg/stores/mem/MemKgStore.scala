@@ -88,7 +88,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private val index = new MemKgIndex()
   private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
   final override def beginTransaction(): KgCommandStoreTransaction =
@@ -147,9 +146,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
 
   final override def getSourcesById: Map[String, KgSource] =
     sourcesById
-
-  final override def getRandomNode: KgNode =
-    nodesById.values.toList(random.nextInt(nodesById.size))
 
   final override def getTotalEdgesCount: Int =
     edges.size

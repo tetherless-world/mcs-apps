@@ -230,11 +230,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       })
     }
 
-    final override def getRandomNode: KgNode =
-      transaction.run(
-        s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
-      ).toNodes.head
-
     final override def getTotalEdgesCount: Int =
       transaction.run(
         s"""
@@ -381,11 +376,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] =
     withReadTransaction {
       _.getNodeLabelContext(label)
-    }
-
-  final override def getRandomNode: KgNode =
-    withReadTransaction {
-      _.getRandomNode
     }
 
   final override def getSourcesById: Map[String, KgSource] =

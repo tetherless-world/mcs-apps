@@ -32,11 +32,6 @@ trait KgQueryStore {
   def getNodeLabelContext(label: String): Option[KgNodeLabelContext]
 
   /**
-   * Get a random node
-   */
-  def getRandomNode: KgNode
-
-  /**
    * Get all sources
    */
   final def getSources: List[KgSource] =

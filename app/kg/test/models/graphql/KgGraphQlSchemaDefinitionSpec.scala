@@ -86,23 +86,6 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
 //      result must include("""{"data":{"kgById":{"nodeById":{"objectOfEdges":[{"predicate"""")
 //    }
 
-    "get a random KG node" in {
-        val query =
-          graphql"""
-         query RandomKgNodeQuery($$kgId: String!) {
-           kgById(id: $$kgId) {
-             randomNode {
-              id
-              labels
-             }
-           }
-         }
-       """
-
-        val results = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId)))
-        results must include("""{"data":{"kgById":{"randomNode":{"id":"""")
-    }
-
     "search KG labels" in {
       val label = TestKgData.nodeLabelsByLabel.keys.head
       val query =

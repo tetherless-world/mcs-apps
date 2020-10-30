@@ -188,16 +188,6 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
     }
   }
 
-  private def testGetRandomNode(storeFactory: KgStoreFactory): Unit = {
-    "get a random node" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = query.getRandomNode
-        val actual = query.getNode(expected.id).get
-        equals(actual, expected) shouldEqual true
-      }
-    }
-  }
-
   private def testGetSources(storeFactory: KgStoreFactory): Unit = {
     "get sources" in {
       storeFactory(StoreTestMode.ReadWrite) { case (command, query) =>
@@ -243,7 +233,6 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
   def queryStore(storeFactory: KgStoreFactory) {
     behave like testGetNode(storeFactory)
     behave like testGetNodeLabel(storeFactory)
-    behave like testGetRandomNode(storeFactory)
     behave like testGetSources(storeFactory)
     behave like testGetNodeContext(storeFactory)
     behave like testGetTotalEdgesCount(storeFactory)
