@@ -206,58 +206,6 @@ class KgGraphQlSchemaDefinitionSpec extends PlaySpec {
         s"""{"data":{"kgById":{"totalNodesCount":${nodeCount},"totalEdgesCount":${edgeCount}}}}"""
       ))
     }
-
-    "get KG path by id" in {
-      val query =
-        graphql"""
-          query PathQuery($$kgId: String!, $$pathId: String!) {
-            kgById(id: $$kgId) {
-              pathById(id: $$pathId) {
-                  path
-              }
-            }
-          }
-        """
-
-      val path = TestKgData.paths(0)
-      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "pathId" -> path.id)))
-      for (pathComponent <- path.path) {
-        result must include(pathComponent)
-      }
-    }
-
-    "get KG path edges and their nodes" in {
-      val query =
-        graphql"""
-        query PathQuery($$kgId: String!, $$pathId: String!) {
-          kgById(id: $$kgId) {
-            pathById(id: $$pathId) {
-              edges {
-                objectNode {
-                  labels
-                }
-                predicate
-                subjectNode {
-                  labels
-                }
-              }
-            }
-          }
-        }
-      """
-
-      val path = TestKgData.paths(0)
-      val result = Json.stringify(executeQuery(query, vars = Json.obj("kgId" -> KgId, "pathId" -> path.id)))
-      for (pathEdge <- path.edges) {
-        val presentEdge = TestKgData.edges.find(edge => edge.subject == pathEdge.subject && edge.predicate == pathEdge.predicate && edge.`object` == pathEdge.`object`)
-        presentEdge must not be(None)
-        val subjectNode = TestKgData.nodesById(pathEdge.subject)
-        val objectNode = TestKgData.nodesById(pathEdge.`object`)
-        result must include(subjectNode.labels(0))
-        result must include(objectNode.labels(0))
-        result must include(pathEdge.predicate)
-      }
-    }
   }
 
   def executeQuery(query: Document, vars: JsObject = Json.obj()) = {

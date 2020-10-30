@@ -133,28 +133,6 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
         final override def putNodes(nodes: Iterator[KgNode]): Unit =
           nodes.foreach(putNode)
 
-        final override def putPaths(paths: Iterator[KgPath]): Unit =
-          for (path <- paths) {
-            for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-              val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-              transaction.run(
-                s"""
-                   |MATCH (subject:${NodeLabel}), (object: ${NodeLabel})
-                   |WHERE subject.id = $$subject AND object.id = $$object
-                   |CREATE (subject)-[path:${PathRelationshipType} {id: $$pathId, pathEdgeIndex: $$pathEdgeIndex, pathEdgePredicate: $$pathEdgePredicate, sources: $$sources}]->(object)
-                   |""".stripMargin,
-                toTransactionRunParameters(Map(
-                  "object" -> pathEdge.`object`,
-                  "pathEdgeIndex" -> pathEdgeIndex,
-                  "pathEdgePredicate" -> pathEdge.predicate,
-                  "pathId" -> path.id,
-                  "sources" -> path.sourceIds.mkString(ListDelimString),
-                  "subject" -> pathEdge.subject
-                ))
-              )
-            }
-          }
-
         final override def putSources(sources: Iterator[KgSource]): Unit =
           for (source <- sources) {
             transaction.run(
@@ -366,12 +344,6 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     final override def putNodes(nodes: Iterator[KgNode]): Unit =
       putModelsBatched(nodes) { (nodes, transaction) => {
         transaction.putNodes(nodes)
-      }
-      }
-
-    final override def putPaths(paths: Iterator[KgPath]): Unit =
-      putModelsBatched(paths) { (paths, transaction) => {
-        transaction.putPaths(paths)
       }
       }
 

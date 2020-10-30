@@ -230,14 +230,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
       })
     }
 
-    final override def getPath(id: String): Option[KgPath] =
-      transaction.run(
-        s"""MATCH (subjectNode:${NodeLabel})-[path:${PathRelationshipType} {id: $$id}]->(objectNode:${NodeLabel})
-           |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
-           |""".stripMargin,
-        toTransactionRunParameters(Map("id" -> id))
-      ).toPaths.headOption
-
     final override def getRandomNode: KgNode =
       transaction.run(
         s"MATCH (node:${NodeLabel}) RETURN ${nodePropertyNamesString}, rand() as rand ORDER BY rand ASC LIMIT 1"
@@ -389,22 +381,6 @@ final class Neo4jKgQueryStore @Inject()(configuration: Neo4jStoreConfiguration) 
   final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] =
     withReadTransaction {
       _.getNodeLabelContext(label)
-    }
-
-  //  override def getPaths: List[KgPath] =
-  //    withSession { session =>
-  //      session.readTransaction { transaction =>
-  //        transaction.run(
-  //          s"""MATCH (subjectNode:Node)-[path:PATH]->(objectNode:Node)
-  //            |RETURN objectNode.id, subjectNode.id, ${pathPropertyNamesString}
-  //            |""".stripMargin
-  //        ).toPaths
-  //      }
-  //    }
-  //
-  override def getPath(id: String): Option[KgPath] =
-    withReadTransaction {
-      _.getPath(id)
     }
 
   final override def getRandomNode: KgNode =

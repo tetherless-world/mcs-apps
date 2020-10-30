@@ -188,21 +188,6 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
     }
   }
 
-  private def testGetPath(storeFactory: KgStoreFactory): Unit = {
-    "get a path" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        val expected = TestKgData.paths(0)
-        query.getPath(expected.id) should equal(Some(expected))
-      }
-    }
-
-    "return None for a non-extant path" in {
-      storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
-        query.getPath("nonextant") should equal(None)
-      }
-    }
-  }
-
   private def testGetRandomNode(storeFactory: KgStoreFactory): Unit = {
     "get a random node" in {
       storeFactory(StoreTestMode.ReadOnly) { case (command, query) =>
@@ -258,7 +243,6 @@ trait KgQueryStoreBehaviors extends Matchers with KgSearchQueryStoreBehaviors {
   def queryStore(storeFactory: KgStoreFactory) {
     behave like testGetNode(storeFactory)
     behave like testGetNodeLabel(storeFactory)
-    behave like testGetPath(storeFactory)
     behave like testGetRandomNode(storeFactory)
     behave like testGetSources(storeFactory)
     behave like testGetNodeContext(storeFactory)

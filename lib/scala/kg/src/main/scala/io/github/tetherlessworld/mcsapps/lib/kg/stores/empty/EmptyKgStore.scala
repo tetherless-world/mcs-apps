@@ -37,12 +37,6 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
       }
     }
 
-    final override def putPaths(paths: Iterator[KgPath]): Unit = {
-      while (paths.hasNext) {
-        paths.next()
-      }
-    }
-
     final override def putSources(sources: Iterator[KgSource]): Unit = {
       while (sources.hasNext) {
         sources.next()
@@ -57,8 +51,6 @@ final class EmptyKgStore extends KgCommandStore with KgQueryStore {
   final override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
 
   final override def getNodeLabel(label: String): Option[KgNodeLabel] = None
-
-  final override def getPath(id: String): Option[KgPath] = None
 
   final override def getRandomNode: KgNode = throw new NoSuchElementException
 

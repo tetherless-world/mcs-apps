@@ -122,7 +122,6 @@ abstract class AbstractKgGraphQlSchemaDefinition extends BaseGraphQlSchemaDefini
     Field("searchFacets", KgSearchFacetsObjectType, arguments = KgSearchQueryArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.searchFacets(query = ctx.args.arg(KgSearchQueryArgument))),
     Field("node", OptionType(KgNodeObjectType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNode(ctx.args.arg(IdArgument))),
     Field("nodeLabel", OptionType(KgNodeLabelObjectType), arguments = LabelArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getNodeLabel(ctx.args.arg(LabelArgument))),
-    Field("pathById", OptionType(KgPathObjectType), arguments = IdArgument :: Nil, resolve = ctx => ctx.ctx.kgQueryStore.getPath(ctx.args.arg(IdArgument))),
     Field("randomNode", KgNodeObjectType, resolve = ctx => ctx.ctx.kgQueryStore.getRandomNode),
     Field("sources", ListType(KgSourceObjectType), resolve = ctx => ctx.ctx.kgQueryStore.getSources),
     Field("totalEdgesCount", IntType, resolve = ctx => ctx.ctx.kgQueryStore.getTotalEdgesCount),

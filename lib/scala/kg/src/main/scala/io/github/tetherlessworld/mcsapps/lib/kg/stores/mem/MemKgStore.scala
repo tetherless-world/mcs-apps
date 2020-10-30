@@ -28,7 +28,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       edges = List()
       nodeLabelsByLabel = Map()
       nodesById = Map()
-      pathsById = Map()
       sourcesById = Map()
 
       index.clear()
@@ -72,10 +71,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     final override def putNodes(nodesIterator: Iterator[KgNode]): Unit =
       nodesIterator.foreach(putNode)
 
-    final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
-      pathsById ++= pathsIterator.map(path => (path.id, path)).toMap
-    }
-
     private def putSourceIds(sourceIds: List[String]): Unit =
       putSources(sourceIds.map(KgSource(_)))
 
@@ -93,7 +88,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private val index = new MemKgIndex()
   private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private var pathsById: Map[String, KgPath] = Map()
   private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
@@ -151,9 +145,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     })
   }
 
-  final override def getPath(id: String): Option[KgPath] =
-    pathsById.get(id)
-
   final override def getSourcesById: Map[String, KgSource] =
     sourcesById
 
@@ -167,7 +158,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     nodesById.size
 
   override def isEmpty: Boolean =
-    edges.isEmpty && nodesById.isEmpty && pathsById.isEmpty
+    edges.isEmpty && nodesById.isEmpty
 
   final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] =
     index.search(limit = limit, offset = offset, query = query, sorts = sorts)
