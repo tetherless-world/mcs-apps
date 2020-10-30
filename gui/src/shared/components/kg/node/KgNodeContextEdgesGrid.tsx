@@ -22,6 +22,7 @@ import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
 import {HrefsContext} from "shared/HrefsContext";
+import {makeStyles} from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   overrides: {
@@ -32,6 +33,20 @@ const theme = createMuiTheme({
     },
   } as any,
 });
+
+const useStyles = makeStyles((theme) => ({
+  nodeLabelCell: {
+    marginBottom: "0 !important",
+    paddingBottom: "0 !important",
+    paddingRight: "0 !important",
+    paddingTop: "0 !important",
+  },
+  sourceIdsCell: {
+    marginBottom: "0 !important",
+    padding: "0 !important",
+    width: "auto",
+  },
+}));
 
 // for (const objectNodeLabel of objectNodeLabels) {
 //   if (
@@ -51,6 +66,7 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {
+  const classes = useStyles();
   const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   const relatedNodeLabelsByNodeId: {
@@ -108,11 +124,14 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
                 label: nodeLabel,
               })}
             >
-              <span style={{marginRight: "5px"}}>{nodeLabel}</span>
+              <span>{nodeLabel}</span>
             </Link>
           );
         },
         customHeadRender: () => null,
+        setCellProps: () => ({
+          className: classes.nodeLabelCell,
+        }),
       },
     },
     {
@@ -140,6 +159,9 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
           );
         },
         customHeadRender: () => null,
+        setCellProps: () => ({
+          className: classes.sourceIdsCell,
+        }),
       },
     },
   ];
@@ -199,7 +221,12 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
                         fixedHeader: false,
                         fixedSelectColumn: false,
                         pagination: data.length > 10,
+                        rowsPerPageOptions: [],
                         selectableRows: "none",
+                        setTableProps: () => ({
+                          // padding: "none",
+                          size: "small",
+                        }),
                       }}
                       title={""}
                     />
