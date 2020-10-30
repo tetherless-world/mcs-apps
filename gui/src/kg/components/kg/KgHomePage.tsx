@@ -14,8 +14,6 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-
-import {Link} from "react-router-dom";
 import {kgId} from "shared/api/kgId";
 import {useQuery} from "@apollo/react-hooks";
 import {KgHomePageQuery} from "kg/api/queries/types/KgHomePageQuery";
@@ -24,8 +22,6 @@ import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
 import {KgSearchQuery, StringFilter} from "kg/api/graphqlGlobalTypes";
 import {KgSearchLink} from "shared/components/kg/search/KgSearchLink";
 import {KgSearchForm} from "kg/components/kg/search/KgSearchForm";
-import {Hrefs} from "shared/Hrefs";
-import {HrefsContext} from "shared/HrefsContext";
 
 // Constants
 const CONCEPT_NET_SOURCE_ID = "CN";
@@ -65,7 +61,6 @@ const KgSearchListItem: React.FunctionComponent<React.PropsWithChildren<{
 
 export const KgHomePage: React.FunctionComponent = () => {
   const classes = useStyles();
-  const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   const query = useQuery<KgHomePageQuery>(KgHomePageQueryDocument, {
     variables: {kgId},
