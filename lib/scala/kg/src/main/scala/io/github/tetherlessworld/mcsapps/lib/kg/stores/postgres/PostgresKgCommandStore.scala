@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
-import com.google.inject.Inject
+import com.google.inject.{Inject, Singleton}
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
@@ -11,6 +11,7 @@ import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(dbConfigProvider) with KgCommandStore {
   import profile.api._
 
