@@ -25,11 +25,11 @@ abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseC
   lazy val nodeNodeLabels = TableQuery[NodeNodeLabelTable]
   lazy val sources = TableQuery[SourceTable]
 
-  protected def runTransaction[R](a: DBIOAction[R, NoStream, Nothing]): Future[R] = {
+  protected final def runTransaction[R](a: DBIOAction[R, NoStream, Nothing]): Future[R] = {
     db.run(a.transactionally)
   }
 
-  protected def runSyncTransaction[R](a: DBIOAction[R, NoStream, Nothing], duration: Duration = Duration.Inf): R = {
+  protected final def runSyncTransaction[R](a: DBIOAction[R, NoStream, Nothing], duration: Duration = Duration.Inf): R = {
     Await.result(runTransaction(a), duration)
   }
 
