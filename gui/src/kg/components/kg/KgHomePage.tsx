@@ -22,6 +22,9 @@ import {KgSourceSelect} from "kg/components/kg/search/KgSourceSelect";
 import {KgSearchQuery, StringFilter} from "kg/api/graphqlGlobalTypes";
 import {KgSearchLink} from "shared/components/kg/search/KgSearchLink";
 import {KgSearchForm} from "kg/components/kg/search/KgSearchForm";
+import {Link} from "react-router-dom";
+import {Hrefs} from "shared/Hrefs";
+import {HrefsContext} from "shared/HrefsContext";
 
 // Constants
 const CONCEPT_NET_SOURCE_ID = "CN";
@@ -49,7 +52,22 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const KgSearchListItem: React.FunctionComponent<React.PropsWithChildren<{
+const ExampleNodeLabelListItem: React.FunctionComponent<React.PropsWithChildren<{
+  nodeLabel: string;
+}>> = ({children, nodeLabel}) => {
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+  return (
+    <ListItem>
+      <ListItemText>
+        <Link to={hrefs.kg({id: kgId}).nodeLabel({label: nodeLabel})}>
+          {children}
+        </Link>
+      </ListItemText>
+    </ListItem>
+  );
+};
+
+const ExampleSearchListItem: React.FunctionComponent<React.PropsWithChildren<{
   query: KgSearchQuery;
 }>> = ({children, query}) => (
   <ListItem>
@@ -129,11 +147,19 @@ export const KgHomePage: React.FunctionComponent = () => {
                   <Grid item>
                     <h2>Examples:</h2>
                     <List>
-                      <KgSearchListItem query={{}}>All nodes</KgSearchListItem>
+                      <ExampleNodeLabelListItem nodeLabel="food">
+                        Nodes with the label "food"
+                      </ExampleNodeLabelListItem>
+                      <ExampleNodeLabelListItem nodeLabel="beer">
+                        Nodes with the label "beer"
+                      </ExampleNodeLabelListItem>
+                      <ExampleSearchListItem query={{text: "animal"}}>
+                        Nodes relating to "animal"
+                      </ExampleSearchListItem>
                       {sources.some(
                         (source) => source.id === CONCEPT_NET_SOURCE_ID
                       ) ? (
-                        <KgSearchListItem
+                        <ExampleSearchListItem
                           query={{
                             filters: {
                               sourceIds: {include: [CONCEPT_NET_SOURCE_ID]},
@@ -141,12 +167,12 @@ export const KgHomePage: React.FunctionComponent = () => {
                           }}
                         >
                           All nodes in ConceptNet
-                        </KgSearchListItem>
+                        </ExampleSearchListItem>
                       ) : null}
                       {sources.some(
                         (source) => source.id === WORD_NET_SOURCE_ID
                       ) ? (
-                        <KgSearchListItem
+                        <ExampleSearchListItem
                           query={{
                             filters: {
                               sourceIds: {include: [WORD_NET_SOURCE_ID]},
@@ -154,11 +180,8 @@ export const KgHomePage: React.FunctionComponent = () => {
                           }}
                         >
                           All nodes in WordNet
-                        </KgSearchListItem>
+                        </ExampleSearchListItem>
                       ) : null}
-                      <KgSearchListItem query={{text: "animal"}}>
-                        Nodes relating to "animal"
-                      </KgSearchListItem>
                     </List>
                   </Grid>
                 </Grid>
