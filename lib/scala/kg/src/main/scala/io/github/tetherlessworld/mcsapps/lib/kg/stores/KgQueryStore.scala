@@ -1,7 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 
@@ -31,12 +30,6 @@ trait KgQueryStore {
    * @return the node label context if the node label exists, otherwise None; the lists in the context may be empty
    */
   def getNodeLabelContext(label: String): Option[KgNodeLabelContext]
-
-  /**
-   * Get a path by id.
-   * @return the path if it exists, otherwise None
-   */
-  def getPath(id: String): Option[KgPath]
 
   /**
    * Get a random node
