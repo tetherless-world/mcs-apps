@@ -38,8 +38,6 @@ export class Hrefs {
         );
       },
 
-      randomNode: kgPrefix + "randomNode",
-
       search(kwds?: KgSearchVariables) {
         const href = kgPrefix + "search";
         if (!kwds) {

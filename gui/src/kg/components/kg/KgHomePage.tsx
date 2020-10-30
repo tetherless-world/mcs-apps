@@ -126,15 +126,6 @@ export const KgHomePage: React.FunctionComponent = () => {
                                 Search
                               </Button>
                             </Grid>
-                            <Grid item>
-                              <Button
-                                color="primary"
-                                component={Link}
-                                to={hrefs.kg({id: kgId}).randomNode}
-                              >
-                                Show me something interesting
-                              </Button>
-                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>

@@ -1,10 +1,9 @@
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import {KgSearchResultsPage} from "kg/components/kg/search/KgSearchResultsPage";
 import * as React from "react";
 import {KgNodePage} from "kg/components/kg/node/KgNodePage";
 import {KgNoRoute} from "kg/components/error/KgNoRoute";
 import {KgHomePage} from "kg/components/kg/KgHomePage";
-import {RandomKgNodePage} from "kg/components/kg/node/RandomKgNodePage";
 import {kgId} from "shared/api/kgId";
 import {QueryParamProvider} from "use-query-params";
 import {KgNodeLabelPage} from "kg/components/kg/node/KgNodeLabelPage";
@@ -41,11 +40,6 @@ export const KgRoutes: React.FunctionComponent = () => {
               labelEncoded: true,
             })}
             component={KgNodeLabelPage}
-          />
-          <Route
-            exact
-            path={hrefs.kg({id: kgId}).randomNode}
-            component={RandomKgNodePage}
           />
           <Route
             exact
