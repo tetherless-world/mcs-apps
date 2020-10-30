@@ -16,7 +16,7 @@ final class PostgresKgQueryStore @Inject()(dbConfigProvider: DatabaseConfigProvi
   import profile.api._
 
   override def getNode(id: String): Option[KgNode] = {
-    runSyncTransaction((for { node <- kgNodes if node.id === id } yield node).result.headOption)
+    runSyncTransaction((for { node <- nodes if node.id === id } yield node).result.headOption)
   }
 
   override def getNodeContext(id: String): Option[KgNodeContext] = None

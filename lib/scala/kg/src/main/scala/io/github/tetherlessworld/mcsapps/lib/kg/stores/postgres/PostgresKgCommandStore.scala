@@ -16,17 +16,17 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
 
   private final class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
     private final implicit class KgEdgeWrapper(edge: KgEdge) {
-      def toRow: KgEdgeRow = KgEdgeRow(
+      def toRow: EdgeRow = EdgeRow(
         id = edge.id,
-        objectKgNodeId = edge.`object`,
+        objectNodeId = edge.`object`,
         predicate = edge.predicate,
         sentences = edge.sentences.mkString(SentencesDelimString),
-        subjectKgNodeId = edge.subject
+        subjectNodeId = edge.subject
       )
     }
 
     private final implicit class KgNodeWrapper(node: KgNode) {
-      def toRow: KgNodeRow = KgNodeRow(
+      def toRow: NodeRow = NodeRow(
         id = node.id,
         inDegree = node.inDegree.map(_.toShort),
         outDegree = node.outDegree.map(_.toShort),
@@ -40,15 +40,18 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
 //      TODO
     }
 
-    final private def generateEdgeInsert(edge: KgEdge) =
-      List(kgEdges += edge.toRow) ++
-        edge.labels.map(label => kgEdgeLabels += (edge.id, label)) ++
-        edge.sourceIds.map(sourceId => kgEdgeKgSources += (edge.id, sourceId))
+    private def generateEdgeInsert(edge: KgEdge) =
+      List(edges += edge.toRow) ++
+        edge.labels.map(label => edgeLabels += (edge.id, label)) ++
+        edge.sourceIds.map(sourceId => edgeSources += (edge.id, sourceId))
 
-    final private def generateNodeInsert(node: KgNode) =
-      List(kgNodes += node.toRow) ++
-        node.labels.map(label => kgNodeKgNodeLabels += (node.id, label)) ++
-        node.sourceIds.map(sourceId => kgNodeKgSources += (node.id, sourceId))
+    private def generateNodeInsert(node: KgNode) =
+      List(nodes += node.toRow) ++
+        node.labels.map(label => nodeNodeLabels += (node.id, label)) ++
+        node.sourceIds.map(sourceId => nodeSources += (node.id, sourceId))
+
+    private def generateSourceInsert(source: KgSource) =
+      List(sources += (source.id, source.label))
 
     override def putEdges(edges: Iterator[KgEdge]) =
       runSyncTransaction(DBIO.sequence(edges.flatMap(generateEdgeInsert)))
@@ -64,14 +67,10 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
     override def putNodes(nodes: Iterator[KgNode]): Unit =
       runSyncTransaction(DBIO.sequence(nodes.flatMap(generateNodeInsert)))
 
-    override def putPaths(paths: Iterator[KgPath]): Unit = {
-//      TODO
-    }
+    override def putPaths(paths: Iterator[KgPath]): Unit = Unit
 
     override def putSources(sources: Iterator[KgSource]): Unit =
-      runSyncTransaction(DBIO.sequence(sources.map { source =>
-        kgSources += (source.id, source.label)
-      }))
+      runSyncTransaction(DBIO.sequence(sources.flatMap(generateSourceInsert)))
 
     override def close(): Unit = Unit
   }
