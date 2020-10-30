@@ -14,8 +14,8 @@ import scala.concurrent.ExecutionContext
 class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(dbConfigProvider) with KgCommandStore {
   import profile.api._
 
-  private final class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
-    private final implicit class KgEdgeWrapper(edge: KgEdge) {
+  private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
+    private implicit class KgEdgeWrapper(edge: KgEdge) {
       def toRow: EdgeRow = EdgeRow(
         id = edge.id,
         objectNodeId = edge.`object`,
@@ -25,7 +25,7 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
       )
     }
 
-    private final implicit class KgNodeWrapper(node: KgNode) {
+    private implicit class KgNodeWrapper(node: KgNode) {
       def toRow: NodeRow = NodeRow(
         id = node.id,
         inDegree = node.inDegree.map(_.toShort),
@@ -36,7 +36,7 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
       )
     }
 
-    override def clear(): Unit = {
+    override final def clear(): Unit = {
 //      TODO
     }
 
@@ -53,10 +53,10 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
     private def generateSourceInsert(source: KgSource) =
       List(sources += (source.id, source.label))
 
-    override def putEdges(edges: Iterator[KgEdge]) =
+    override final def putEdges(edges: Iterator[KgEdge]) =
       runSyncTransaction(DBIO.sequence(edges.flatMap(generateEdgeInsert)))
 
-    override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
+    override final def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
       runSyncTransaction(DBIO.sequence(
         edgesWithNodes.flatMap { edge =>
           edge.nodes.flatMap(generateNodeInsert) ++
@@ -64,17 +64,17 @@ class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
         }
       ))
 
-    override def putNodes(nodes: Iterator[KgNode]): Unit =
+    override final def putNodes(nodes: Iterator[KgNode]): Unit =
       runSyncTransaction(DBIO.sequence(nodes.flatMap(generateNodeInsert)))
 
-    override def putPaths(paths: Iterator[KgPath]): Unit = Unit
+    override final def putPaths(paths: Iterator[KgPath]): Unit = Unit
 
-    override def putSources(sources: Iterator[KgSource]): Unit =
+    override final def putSources(sources: Iterator[KgSource]): Unit =
       runSyncTransaction(DBIO.sequence(sources.flatMap(generateSourceInsert)))
 
-    override def close(): Unit = Unit
+    override final def close(): Unit = Unit
   }
 
-  override def beginTransaction: KgCommandStoreTransaction =
+  override final def beginTransaction: KgCommandStoreTransaction =
     new PostgresKgCommandStoreTransaction
 }
