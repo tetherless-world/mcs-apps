@@ -48,8 +48,24 @@ services:
       - neo4j-logs:/logs
       - neo4j-import:/var/lib/neo4j/import
       - neo4j-plugins:/plugins
+  postgres:
+    container_name: mcs-postgres
+    environment:
+      POSTGRES_USER: "mcs"
+      POSTGRES_PASSWORD: "7EAdu7jJvZNxxrNZ"
+      POSTGRES_DB: "kg"
+    image: library/postgres:12.4
+    networks:
+      - mcs
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
 volumes:
   neo4j-data:
   neo4j-import:
   neo4j-logs:
   neo4j-plugins:
+  postgres-data:
