@@ -7,12 +7,11 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction}
-import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class PostgresKgCommandStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(dbConfigProvider) with KgCommandStore {
+class PostgresKgCommandStore @Inject()(databaseConfigProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(databaseConfigProvider) with KgCommandStore {
   import profile.api._
 
   private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {

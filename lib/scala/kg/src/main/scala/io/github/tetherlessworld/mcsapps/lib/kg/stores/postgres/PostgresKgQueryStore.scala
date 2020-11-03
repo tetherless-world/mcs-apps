@@ -7,12 +7,11 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, K
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.KgQueryStore
 import javax.inject.Singleton
-import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
-final class PostgresKgQueryStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(dbConfigProvider) with KgQueryStore {
+final class PostgresKgQueryStore @Inject()(databaseConfigProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(databaseConfigProvider) with KgQueryStore {
   import profile.api._
 
   override def getNode(id: String): Option[KgNode] = {

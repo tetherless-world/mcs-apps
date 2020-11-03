@@ -1,13 +1,13 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.PostgresProfile
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{HasDatabaseConfigProvider, SlickDatabaseConfigProvider}
+import slick.jdbc.{PostgresProfile}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
 
-abstract class AbstractPostgresKgStore(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[PostgresProfile] {
+abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConfigProvider[PostgresProfile]) extends HasDatabaseConfigProvider[PostgresProfile] {
   import profile.api._
 
   protected val SentencesDelimChar = '|'
