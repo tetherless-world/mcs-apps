@@ -36,7 +36,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
   protected final case class EdgeRow(id: String, objectNodeId: String, predicate: String, sentences: String, subjectNodeId: String)
   protected final case class NodeRow(id: String, inDegree: Option[Short], outDegree: Option[Short], pageRank: Option[Float], pos: Option[Char], wordNetSenseNumber: Option[Short])
 
-  protected class EdgeTable(tag: Tag) extends Table[EdgeRow](tag, "edge") {
+  protected final class EdgeTable(tag: Tag) extends Table[EdgeRow](tag, "edge") {
     def id = column[String]("id", O.PrimaryKey)
     def objectNodeId = column[String]("object_node_id")
     def predicate = column[String]("predicate")
@@ -51,7 +51,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def unique_constraint = index("_edge_unique_idx", (objectNodeId, subjectNodeId, predicate), unique = true)
   }
 
-  protected class EdgeLabelTable(tag: Tag) extends Table[(String, String)](tag, "edge_label") {
+  protected final class EdgeLabelTable(tag: Tag) extends Table[(String, String)](tag, "edge_label") {
     def EdgeId = column[String]("edge_id")
     def label = column[String]("label")
 
@@ -62,7 +62,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("edge_label_pk", (EdgeId, label))
   }
 
-  protected class EdgeSourceTable(tag: Tag) extends Table[(String, String)](tag, "edge_x_source") {
+  protected final class EdgeSourceTable(tag: Tag) extends Table[(String, String)](tag, "edge_x_source") {
     def EdgeId = column[String]("edge_id")
     def SourceId = column[String]("source_id")
 
@@ -73,7 +73,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("edge_source_pk", (EdgeId, SourceId))
   }
 
-  protected class NodeTable(tag: Tag) extends Table[NodeRow](tag, "node") {
+  protected final class NodeTable(tag: Tag) extends Table[NodeRow](tag, "node") {
     def id = column[String]("id", O.PrimaryKey)
     def inDegree = column[Option[Short]]("in_degree")
     def outDegree = column[Option[Short]]("out_degree")
@@ -84,7 +84,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def * = (id, inDegree, outDegree, pageRank, pos, wordNetSenseNumber) <> (NodeRow.tupled, NodeRow.unapply)
   }
 
-  protected class NodeNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "node_x_node_label") {
+  protected final class NodeNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "node_x_node_label") {
     def NodeId = column[String]("node_id")
     def label = column[String]("label")
 
@@ -95,7 +95,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("node_label_pk", (NodeId, label))
   }
 
-  protected class NodeSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_x_source") {
+  protected final class NodeSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_x_source") {
     def NodeId = column[String]("node_id")
     def SourceId = column[String]("source_id")
 
@@ -107,14 +107,14 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("node_source_pk", (NodeId, SourceId))
   }
 
-  protected class NodeLabelTable(tag: Tag) extends Table[(String, Option[Float])](tag, "node_x_label") {
+  protected final class NodeLabelTable(tag: Tag) extends Table[(String, Option[Float])](tag, "node_x_label") {
     def label = column[String]("label", O.PrimaryKey)
     def pageRank = column[Option[Float]]("page_rank")
 
     def * = (label, pageRank)
   }
 
-  protected class NodeLabelEdgeTable(tag: Tag) extends Table[(Int, String, String)](tag, "node_label_edge") {
+  protected final class NodeLabelEdgeTable(tag: Tag) extends Table[(Int, String, String)](tag, "node_label_edge") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def objectNodeLabelLabel = column[String]("object_node_label_label")
     def subjectNodeLabelLabel = column[String]("subject_node_label_label")
@@ -127,7 +127,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def unique_constraint = index("node_label_edge_unique_idx", (objectNodeLabelLabel, subjectNodeLabelLabel), unique = true)
   }
 
-  protected class NodeLabelEdgeSourceTable(tag: Tag) extends Table[(Int, String)](tag, "node_label_edge_x_source") {
+  protected final class NodeLabelEdgeSourceTable(tag: Tag) extends Table[(Int, String)](tag, "node_label_edge_x_source") {
     def NodeLabelEdgeId = column[Int]("node_label_edge_id")
     def SourceId = column[String]("source_id")
 
@@ -139,7 +139,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("node_label_edge_source_pk", (NodeLabelEdgeId, SourceId))
   }
 
-  protected class NodeLabelSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_label_x_source") {
+  protected final class NodeLabelSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_label_x_source") {
     def NodeLabelLabel = column[String]("node_label_label")
     def SourceId = column[String]("source_id")
 
@@ -151,7 +151,7 @@ abstract class AbstractPostgresKgStore(databaseConfigProvider: SlickDatabaseConf
     def pk = primaryKey("node_label_source_pk", (NodeLabelLabel, SourceId))
   }
 
-  protected class SourceTable(tag: Tag) extends Table[(String, String)](tag, "source") {
+  protected final class SourceTable(tag: Tag) extends Table[(String, String)](tag, "source") {
     def id = column[String]("id", O.PrimaryKey)
     def label = column[String]("label")
 
