@@ -1,13 +1,13 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{HasDatabaseConfigProvider, SlickDatabaseConfigProvider}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{HasDatabaseConfigProvider}
 import slick.jdbc.PostgresProfile
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
 
-abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: SlickDatabaseConfigProvider[PostgresProfile]) extends HasDatabaseConfigProvider[PostgresProfile] {
+abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: PostgresStoreConfigProvider) extends HasDatabaseConfigProvider[PostgresProfile] {
   import profile.api._
 
   protected val SentencesDelimChar = '|'
@@ -24,6 +24,11 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Sli
   protected lazy val nodeSources = TableQuery[NodeSourceTable]
   protected lazy val nodeNodeLabels = TableQuery[NodeNodeLabelTable]
   protected lazy val sources = TableQuery[SourceTable]
+
+  private lazy val tables =
+    List(edges, edgeLabels, edgeSources, nodes, nodeLabels, nodeLabelEdges, nodeLabelEdgeSources, nodeLabelSource, nodeSources, nodeNodeLabels, sources)
+
+  protected lazy val tablesDdlObject = tables.map(_.schema).reduce((left, right) => left ++ right)
 
   protected final def runTransaction[R](a: DBIOAction[R, NoStream, Effect.All]): Future[R] = {
     db.run(a.transactionally)

@@ -14,6 +14,8 @@ import scala.concurrent.ExecutionContext
 class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(configProvider) with KgCommandStore {
   import profile.api._
 
+  private var bootstrapped: Boolean = false
+
   private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
     private implicit class KgEdgeWrapper(edge: KgEdge) {
       def toRow: EdgeRow = EdgeRow(
@@ -37,7 +39,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     }
 
     override final def clear(): Unit = {
-//      TODO
+      runSyncTransaction(tablesDdlObject.truncate)
     }
 
     private def generateEdgeInsert(edge: KgEdge) =
@@ -73,6 +75,25 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       runSyncTransaction(DBIO.sequence(sources.flatMap(generateSourceInsert)))
 
     override final def close(): Unit = Unit
+  }
+
+  bootstrapStore()
+
+  private def bootstrapStore(): Unit = {
+    this.synchronized {
+      if (bootstrapped) {
+        return
+      }
+
+      runSyncTransaction(
+        DBIO.sequence(
+          { if (databaseConfigProvider.dropTables) List(tablesDdlObject.drop) else List() } ++
+          List(tablesDdlObject.createIfNotExists)
+        )
+      )
+
+      bootstrapped = true
+    }
   }
 
   override final def beginTransaction: KgCommandStoreTransaction =
