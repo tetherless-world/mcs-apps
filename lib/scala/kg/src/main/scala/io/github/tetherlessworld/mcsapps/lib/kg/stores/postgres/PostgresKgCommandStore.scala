@@ -11,8 +11,8 @@ import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgComman
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class PostgresKgCommandStore @Inject()(databaseConfigProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(databaseConfigProvider) with KgCommandStore {
-  import profile.api._
+class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(configProvider) with KgCommandStore {
+  import databaseConfigProvider.databaseConfig.profile.api._
 
   private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
     private implicit class KgEdgeWrapper(edge: KgEdge) {

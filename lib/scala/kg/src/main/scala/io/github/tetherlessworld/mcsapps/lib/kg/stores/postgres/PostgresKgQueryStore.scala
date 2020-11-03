@@ -11,8 +11,8 @@ import javax.inject.Singleton
 import scala.concurrent.ExecutionContext
 
 @Singleton
-final class PostgresKgQueryStore @Inject()(databaseConfigProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(databaseConfigProvider) with KgQueryStore {
-  import profile.api._
+final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(configProvider) with KgQueryStore {
+  import databaseConfigProvider.databaseConfig.profile.api._
 
   override def getNode(id: String): Option[KgNode] = {
     runSyncTransaction((for { node <- nodes if node.id === id } yield node).result.headOption)

@@ -3,6 +3,8 @@ package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
 import slick.basic.{BasicProfile, DatabaseConfig}
 
+import scala.reflect.ClassTag
+
 trait HasDatabaseConfig[T <: BasicProfile] {
   val databaseConfig: DatabaseConfig[T]
 
@@ -16,7 +18,7 @@ trait HasDatabaseConfigProvider[T <: BasicProfile] extends HasDatabaseConfig[T] 
   val databaseConfig = databaseConfigProvider.databaseConfig
 }
 
-class SlickDatabaseConfigProvider[T <: BasicProfile](val databaseConfig: DatabaseConfig[T]) {
+class SlickDatabaseConfigProvider[T <: BasicProfile : ClassTag](val databaseConfig: DatabaseConfig[T]) {
   def this(path: String) =
     this(DatabaseConfig.forConfig[T](path))
 
