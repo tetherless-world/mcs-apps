@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 
 @Singleton
 class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(configProvider) with KgCommandStore {
-  import databaseConfigProvider.databaseConfig.profile.api._
+  import profile.api._
 
   private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
     private implicit class KgEdgeWrapper(edge: KgEdge) {

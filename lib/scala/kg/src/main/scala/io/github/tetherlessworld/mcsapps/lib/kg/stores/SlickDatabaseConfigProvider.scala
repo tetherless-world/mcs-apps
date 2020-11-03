@@ -6,16 +6,16 @@ import slick.basic.{BasicProfile, DatabaseConfig}
 import scala.reflect.ClassTag
 
 trait HasDatabaseConfig[T <: BasicProfile] {
-  val databaseConfig: DatabaseConfig[T]
+  protected val databaseConfig: DatabaseConfig[T]
 
-  val profile: T = databaseConfig.profile
-  val db: T#Backend#Database = databaseConfig.db
+  protected val profile: T = databaseConfig.profile
+  protected val db: T#Backend#Database = databaseConfig.db
 }
 
 trait HasDatabaseConfigProvider[T <: BasicProfile] extends HasDatabaseConfig[T] {
-  val databaseConfigProvider: SlickDatabaseConfigProvider[T]
+  protected val databaseConfigProvider: SlickDatabaseConfigProvider[T]
 
-  val databaseConfig = databaseConfigProvider.databaseConfig
+  protected val databaseConfig = databaseConfigProvider.databaseConfig
 }
 
 class SlickDatabaseConfigProvider[T <: BasicProfile : ClassTag](val databaseConfig: DatabaseConfig[T]) {
