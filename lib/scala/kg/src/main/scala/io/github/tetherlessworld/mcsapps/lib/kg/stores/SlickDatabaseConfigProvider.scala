@@ -8,8 +8,8 @@ import scala.reflect.ClassTag
 trait HasDatabaseConfig[T <: BasicProfile] {
   protected val databaseConfig: DatabaseConfig[T]
 
-  protected val profile: T = databaseConfig.profile
-  protected val db: T#Backend#Database = databaseConfig.db
+  protected lazy val profile: T = databaseConfig.profile
+  protected lazy val db: T#Backend#Database = databaseConfig.db
 }
 
 trait HasDatabaseConfigProvider[T <: BasicProfile] extends HasDatabaseConfig[T] {
