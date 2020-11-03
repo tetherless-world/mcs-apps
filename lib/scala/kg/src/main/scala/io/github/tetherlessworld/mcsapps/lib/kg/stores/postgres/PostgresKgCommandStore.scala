@@ -7,6 +7,7 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction}
+import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext
 
@@ -15,6 +16,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
   import profile.api._
 
   private var bootstrapped: Boolean = false
+  private val logger = LoggerFactory.getLogger(getClass)
 
   private class PostgresKgCommandStoreTransaction extends KgCommandStoreTransaction {
     private implicit class KgEdgeWrapper(edge: KgEdge) {
@@ -82,6 +84,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
   private def bootstrapStore(): Unit = {
     this.synchronized {
       if (bootstrapped) {
+        logger.info("Postgres store already bootstrapped, skipping...")
         return
       }
 
@@ -93,6 +96,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       )
 
       bootstrapped = true
+      logger.info("Postgres store bootstrapped")
     }
   }
 

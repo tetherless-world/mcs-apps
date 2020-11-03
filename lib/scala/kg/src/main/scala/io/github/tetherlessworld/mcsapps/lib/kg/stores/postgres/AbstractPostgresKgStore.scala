@@ -1,6 +1,8 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{HasDatabaseConfigProvider}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.HasDatabaseConfigProvider
 import slick.jdbc.PostgresProfile
 
 import scala.concurrent.duration.Duration
@@ -38,8 +40,29 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     Await.result(runTransaction(a), duration)
   }
 
-  protected final case class EdgeRow(id: String, objectNodeId: String, predicate: String, sentences: String, subjectNodeId: String)
-  protected final case class NodeRow(id: String, inDegree: Option[Short], outDegree: Option[Short], pageRank: Option[Float], pos: Option[Char], wordNetSenseNumber: Option[Short])
+  protected final case class EdgeRow(id: String, objectNodeId: String, predicate: String, sentences: String, subjectNodeId: String) {
+    def toKgEdge(labels: List[String], sourceIds: List[String]) = KgEdge(
+      id = id,
+      labels = labels,
+      `object` = objectNodeId,
+      predicate = predicate,
+      sentences = sentences.split(SentencesDelimChar).toList,
+      sourceIds = sourceIds,
+      subject = subjectNodeId
+    )
+  }
+  protected final case class NodeRow(id: String, inDegree: Option[Short], outDegree: Option[Short], pageRank: Option[Float], pos: Option[Char], wordNetSenseNumber: Option[Short]) {
+    def toKgNode(labels: List[String], sourceIds: List[String]) = KgNode(
+      id = id,
+      inDegree = inDegree.map(_.toInt),
+      labels = labels,
+      outDegree = outDegree.map(_.toInt),
+      pageRank = pageRank.map(_.toDouble),
+      pos = pos,
+      sourceIds = sourceIds,
+      wordNetSenseNumber = wordNetSenseNumber.map(_.toInt)
+    )
+  }
 
   protected final class EdgeTable(tag: Tag) extends Table[EdgeRow](tag, "edge") {
     def id = column[String]("id", O.PrimaryKey)

@@ -9,5 +9,5 @@ import slick.jdbc.PostgresProfile
 final class PostgresStoreConfigProvider(val dropTables: Boolean) extends SlickDatabaseConfigProvider[PostgresProfile]("postgres") {
   @Inject
   def this(configuration: Configuration) =
-    this(configuration.getOptional[Boolean]("drop").getOrElse(false))
+    this(configuration.getOptional[Boolean]("postgres.drop").getOrElse(false))
 }
