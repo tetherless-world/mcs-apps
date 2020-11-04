@@ -1,6 +1,7 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
 import com.google.inject.{Inject, Singleton}
+import io.github.tetherlessworld.mcsapps.lib.kg.data.KgData
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
@@ -56,6 +57,13 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     private def generateSourceInsert(source: KgSource) =
       List(sources += (source.id, source.label))
+
+    override final def putData(data: KgData) =
+      runSyncTransaction(DBIO.sequence(
+        data.sources.flatMap(generateSourceInsert) ++
+        data.nodesUnranked.flatMap(generateNodeInsert) ++
+        data.edges.flatMap(generateEdgeInsert)
+      ))
 
     override final def putEdges(edges: Iterator[KgEdge]) =
       runSyncTransaction(DBIO.sequence(edges.flatMap(generateEdgeInsert)))
