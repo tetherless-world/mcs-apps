@@ -88,12 +88,14 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
         return
       }
 
-      runSyncTransaction(
-        DBIO.sequence(
-          { if (databaseConfigProvider.dropTables) List(tablesDdlObject.drop) else List() } ++
-          List(tablesDdlObject.createIfNotExists)
-        )
-      )
+      val tableCount = runSyncTransaction(sql"SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema='public'".as[Int].head)
+
+      if (tableCount != 0) {
+        logger.info("Postgres database tables already created, skipping bootstrap...")
+        return
+      }
+
+      runSyncTransaction(tablesDdlObject.create)
 
       bootstrapped = true
       logger.info("Postgres store bootstrapped")
