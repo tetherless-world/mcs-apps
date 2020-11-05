@@ -3,17 +3,24 @@ import {StringFilter} from "shared/models/kg/search/StringFilter";
 import {invariant} from "ts-invariant";
 import {Checkbox, FormControlLabel, List, ListItem} from "@material-ui/core";
 
+interface StringFacetValue {
+  count: number;
+  id: string;
+  label: string;
+}
+
 export const StringFacetForm: React.FunctionComponent<{
   currentState?: StringFilter; // value id's only
   onChange: (newState?: StringFilter) => void;
-  valueUniverse: readonly {
-    count: number;
-    id: string;
-    label: string;
-  }[];
-}> = ({currentState, onChange, valueUniverse}) => {
+  renderValueLabel?: (value: StringFacetValue) => React.ReactNode;
+  valueUniverse: readonly StringFacetValue[];
+}> = ({currentState, onChange, renderValueLabel, valueUniverse}) => {
   if (valueUniverse.length === 0) {
     return null;
+  }
+
+  if (!renderValueLabel) {
+    renderValueLabel = (value) => value.label;
   }
 
   // Build sets of the excludeValueIdSet and includeValueIdSet values to avoid repeatedly iterating over the arrays.
@@ -101,7 +108,7 @@ export const StringFacetForm: React.FunctionComponent<{
                 />
               }
               data-cy={"facet-value-" + value.id}
-              label={value.label}
+              label={renderValueLabel!(value)}
             />
           </ListItem>
         );
