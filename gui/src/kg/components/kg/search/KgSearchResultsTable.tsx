@@ -215,6 +215,8 @@ export const KgSearchResultsTable: React.FunctionComponent<{
           onChangePage,
           onChangeRowsPerPage,
           onColumnSortChange,
+          print: false,
+          search: false,
           selectableRows: "none",
           serverSide: true,
           setRowProps(_, rowIndex) {

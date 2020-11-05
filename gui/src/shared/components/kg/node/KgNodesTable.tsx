@@ -146,8 +146,11 @@ export const KgNodesTable: React.FunctionComponent<{
         columns={columns}
         data={data}
         options={{
+          filter: false,
           download: false,
+          print: false,
           rowsPerPage: 15,
+          search: false,
           selectableRows: "none",
           setRowProps(_, rowIndex) {
             return {"data-cy": "node-" + rowIndex};
