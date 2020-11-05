@@ -4,7 +4,7 @@ import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {List, ListItem, ListItemText} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {HrefsContext} from "shared/HrefsContext";
@@ -19,6 +19,7 @@ export const KgNodesTable: React.FunctionComponent<{
     sourceIds: readonly string[];
   }[];
 }> = ({allSources, nodes}) => {
+  const history = useHistory();
   const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   const columns: MUIDataTableColumn[] = React.useMemo(
@@ -106,7 +107,14 @@ export const KgNodesTable: React.FunctionComponent<{
                   .map((sourceId) => resolveSourceId({allSources, sourceId}))
                   .map((source, sourceIndex) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
-                      <KgSourcePill source={source} />
+                      <KgSourcePill
+                        onClick={() => {
+                          history.push(
+                            hrefs.kg({id: kgId}).source({sourceId: source.id})
+                          );
+                        }}
+                        source={source}
+                      />
                       <br />
                     </span>
                   ))

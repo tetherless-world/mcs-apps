@@ -18,15 +18,17 @@ import {StringFacetForm} from "kg/components/kg/search/StringFacetForm";
 import {KgSource} from "shared/models/kg/source/KgSource";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 
 const FacetAccordion: React.FunctionComponent<{
   children: React.ReactNode;
+  defaultExpanded?: boolean;
   id: string;
   title: string;
-}> = ({children, id, title}) => {
+}> = ({children, defaultExpanded, id, title}) => {
   return (
     <Grid item className="facet" data-cy={id + "-facet"}>
-      <Accordion>
+      <Accordion defaultExpanded={defaultExpanded}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           {title}
         </AccordionSummary>
@@ -114,7 +116,7 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
         </FacetAccordion>
       </Grid>
       <Grid item>
-        <FacetAccordion id="sources" title="Sources">
+        <FacetAccordion defaultExpanded={true} id="sources" title="Sources">
           <StringFacetForm
             currentState={
               query.filters && query.filters.sourceIds
@@ -124,6 +126,7 @@ export const KgSearchFacetsGrid: React.FunctionComponent<{
             onChange={(newState) =>
               onChangeFilter((filters) => (filters.sourceIds = newState))
             }
+            renderValueLabel={(value) => <KgSourcePill source={value} />}
             valueUniverse={facets.sourceIds.map((sourceId) => ({
               count: sourceId.count,
               id: sourceId.value,

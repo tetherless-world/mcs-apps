@@ -16,7 +16,7 @@ import {
   KgNodeContextTopEdge,
 } from "shared/models/kg/node/KgNodeContext";
 import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
@@ -67,6 +67,7 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {
   const classes = useStyles();
+  const history = useHistory();
   const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   const relatedNodeLabelsByNodeId: {
@@ -150,6 +151,11 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
                   <KgSourcePill
                     idOnly={true}
                     key={source.id}
+                    onClick={() => {
+                      history.push(
+                        hrefs.kg({id: kgId}).source({sourceId: source.id})
+                      );
+                    }}
                     source={source}
                     size="small"
                   />
