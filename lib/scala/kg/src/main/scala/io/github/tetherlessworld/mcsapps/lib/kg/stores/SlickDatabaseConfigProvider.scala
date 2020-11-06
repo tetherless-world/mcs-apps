@@ -1,6 +1,6 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores
 
-
+import com.typesafe.config.Config
 import slick.basic.{BasicProfile, DatabaseConfig}
 
 import scala.reflect.ClassTag
@@ -22,4 +22,6 @@ class SlickDatabaseConfigProvider[T <: BasicProfile : ClassTag](val databaseConf
   def this(path: String) =
     this(DatabaseConfig.forConfig[T](path))
 
+  def this(path: String, config: Config) =
+    this(DatabaseConfig.forConfig[T](path, config))
 }
