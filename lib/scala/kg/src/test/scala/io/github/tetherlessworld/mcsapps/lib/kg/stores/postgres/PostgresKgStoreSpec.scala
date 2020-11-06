@@ -26,6 +26,10 @@ class PostgresKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommand
   val postgresHostAddress = InetAddress.getByName("mcs-postgres").getHostAddress
   val inTestingEnvironment = System.getenv("CI") != null || postgresHostAddress != "128.113.12.49"
 
+  override def afterAll(): Unit = {
+    configProvider.databaseConfig.db.close()
+  }
+
   override def beforeAll(): Unit = {
     if (!inTestingEnvironment) {
       return
