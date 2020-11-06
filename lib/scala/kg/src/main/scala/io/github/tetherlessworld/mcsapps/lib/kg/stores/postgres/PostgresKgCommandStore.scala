@@ -47,17 +47,17 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     }
 
     private def generateEdgeInsert(edge: KgEdge) =
-      List(edges += edge.toRow) ++
-        edge.labels.map(label => edgeLabels += (edge.id, label)) ++
-        edge.sourceIds.map(sourceId => edgeSources += (edge.id, sourceId))
+      List(edges.insertOrUpdate(edge.toRow)) ++
+        edge.labels.map(label => edgeLabels.insertOrUpdate((edge.id, label))) ++
+        edge.sourceIds.map(sourceId => edgeSources.insertOrUpdate((edge.id, sourceId)))
 
     private def generateNodeInsert(node: KgNode) =
-      List(nodes += node.toRow) ++
-        node.labels.map(label => nodeNodeLabels += (node.id, label)) ++
-        node.sourceIds.map(sourceId => nodeSources += (node.id, sourceId))
+      List(nodes.insertOrUpdate(node.toRow)) ++
+        node.labels.map(label => nodeNodeLabels.insertOrUpdate((node.id, label))) ++
+        node.sourceIds.map(sourceId => nodeSources.insertOrUpdate((node.id, sourceId)))
 
     private def generateSourceInsert(source: KgSource) =
-      List(sources += (source.id, source.label))
+      List(sources.insertOrUpdate(source.id, source.label))
 
     override final def putData(data: KgData) =
       runSyncTransaction(DBIO.sequence(
