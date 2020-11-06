@@ -42,7 +42,8 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     }
 
     override final def clear(): Unit = {
-      runSyncTransaction(tablesDdlObject.truncate)
+      val tableNames = tables.map(_.baseTableRow.tableName).mkString(",")
+      runSyncTransaction(sqlu"TRUNCATE #$tableNames;")
     }
 
     private def generateEdgeInsert(edge: KgEdge) =

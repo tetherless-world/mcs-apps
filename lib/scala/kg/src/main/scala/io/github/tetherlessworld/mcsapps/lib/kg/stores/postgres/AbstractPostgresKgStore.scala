@@ -27,7 +27,7 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   protected lazy val nodeNodeLabels = TableQuery[NodeNodeLabelTable]
   protected lazy val sources = TableQuery[SourceTable]
 
-  private lazy val tables =
+  protected lazy val tables =
     List(edges, edgeLabels, edgeSources, nodes, nodeLabels, nodeLabelEdges, nodeLabelEdgeSources, nodeLabelSource, nodeSources, nodeNodeLabels, sources)
 
   protected lazy val tablesDdlObject = tables.map(_.schema).reduce((left, right) => left ++ right)
