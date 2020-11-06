@@ -80,25 +80,25 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   }
 
   protected final class EdgeLabelTable(tag: Tag) extends Table[(String, String)](tag, "edge_label") {
-    def EdgeId = column[String]("edge_id")
+    def edgeId = column[String]("edge_id")
     def label = column[String]("label")
 
-    def * = (EdgeId, label)
+    def * = (edgeId, label)
 
-    def Edge = foreignKey("edge_fk", EdgeId, edges)(_.id)
+    def edge = foreignKey("edge_fk", edgeId, edges)(_.id)
 
-    def pk = primaryKey("edge_label_pk", (EdgeId, label))
+    def pk = primaryKey("edge_label_pk", (edgeId, label))
   }
 
   protected final class EdgeSourceTable(tag: Tag) extends Table[(String, String)](tag, "edge_x_source") {
-    def EdgeId = column[String]("edge_id")
-    def SourceId = column[String]("source_id")
+    def edgeId = column[String]("edge_id")
+    def sourceId = column[String]("source_id")
 
-    def * = (EdgeId, SourceId)
+    def * = (edgeId, sourceId)
 
-    def Edge = foreignKey("edge_fk", EdgeId, edges)(_.id)
+    def edge = foreignKey("edge_fk", edgeId, edges)(_.id)
 
-    def pk = primaryKey("edge_source_pk", (EdgeId, SourceId))
+    def pk = primaryKey("edge_source_pk", (edgeId, sourceId))
   }
 
   protected final class NodeTable(tag: Tag) extends Table[NodeRow](tag, "node") {
@@ -113,26 +113,26 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   }
 
   protected final class NodeNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "node_x_node_label") {
-    def NodeId = column[String]("node_id")
+    def nodeId = column[String]("node_id")
     def label = column[String]("label")
 
-    def * = (NodeId, label)
+    def * = (nodeId, label)
 
-    def Node = foreignKey("node_fk", NodeId, nodes)(_.id)
+    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
 
-    def pk = primaryKey("node_label_pk", (NodeId, label))
+    def pk = primaryKey("node_label_pk", (nodeId, label))
   }
 
   protected final class NodeSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_x_source") {
-    def NodeId = column[String]("node_id")
-    def SourceId = column[String]("source_id")
+    def nodeId = column[String]("node_id")
+    def sourceId = column[String]("source_id")
 
-    def * = (NodeId, SourceId)
+    def * = (nodeId, sourceId)
 
-    def Node = foreignKey("node_fk", NodeId, nodes)(_.id)
-    def Source = foreignKey("source_fk", SourceId, sources)(_.id)
+    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
+    def source = foreignKey("source_fk", sourceId, sources)(_.id)
 
-    def pk = primaryKey("node_source_pk", (NodeId, SourceId))
+    def pk = primaryKey("node_source_pk", (nodeId, sourceId))
   }
 
   protected final class NodeLabelTable(tag: Tag) extends Table[(String, Option[Float])](tag, "node_x_label") {
@@ -156,27 +156,27 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   }
 
   protected final class NodeLabelEdgeSourceTable(tag: Tag) extends Table[(Int, String)](tag, "node_label_edge_x_source") {
-    def NodeLabelEdgeId = column[Int]("node_label_edge_id")
-    def SourceId = column[String]("source_id")
+    def nodeLabelEdgeId = column[Int]("node_label_edge_id")
+    def sourceId = column[String]("source_id")
 
-    def * = (NodeLabelEdgeId, SourceId)
+    def * = (nodeLabelEdgeId, sourceId)
 
-    def NodeLabelEdge = foreignKey("node_label_edge_fk", NodeLabelEdgeId, nodeLabelEdges)(_.id)
-    def Source = foreignKey("source_fk", SourceId, sources)(_.id)
+    def nodeLabelEdge = foreignKey("node_label_edge_fk", nodeLabelEdgeId, nodeLabelEdges)(_.id)
+    def source = foreignKey("source_fk", sourceId, sources)(_.id)
 
-    def pk = primaryKey("node_label_edge_source_pk", (NodeLabelEdgeId, SourceId))
+    def pk = primaryKey("node_label_edge_source_pk", (nodeLabelEdgeId, sourceId))
   }
 
   protected final class NodeLabelSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_label_x_source") {
-    def NodeLabelLabel = column[String]("node_label_label")
-    def SourceId = column[String]("source_id")
+    def nodeLabelLabel = column[String]("node_label_label")
+    def sourceId = column[String]("source_id")
 
-    def * = (NodeLabelLabel, SourceId)
+    def * = (nodeLabelLabel, sourceId)
 
-    def NodeLabel = foreignKey("node_label_fk", NodeLabelLabel, nodeLabels)(_.label)
-    def Source = foreignKey("source_fk", SourceId, sources)(_.id)
+    def nodeLabel = foreignKey("node_label_fk", nodeLabelLabel, nodeLabels)(_.label)
+    def source = foreignKey("source_fk", sourceId, sources)(_.id)
 
-    def pk = primaryKey("node_label_source_pk", (NodeLabelLabel, SourceId))
+    def pk = primaryKey("node_label_source_pk", (nodeLabelLabel, sourceId))
   }
 
   protected final class SourceTable(tag: Tag) extends Table[(String, String)](tag, "source") {
