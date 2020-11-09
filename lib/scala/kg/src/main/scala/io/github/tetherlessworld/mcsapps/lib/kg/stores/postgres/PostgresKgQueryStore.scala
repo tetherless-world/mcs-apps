@@ -15,12 +15,51 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
   import profile.api._
 
   override def getNode(id: String): Option[KgNode] = {
-    runSyncTransaction((for { node <- nodes if node.id === id } yield node).result.headOption).map(_.toKgNode(List(), List()))
+    runSyncTransaction((for {
+      ((node, source), (_, nodeLabel)) <- nodes
+        .withSources
+        .join(nodes.withNodeLabels)
+        .on(_._1.id === _._1.id)
+        .filter(_._1._1.id === id)
+    } yield (node, nodeLabel.label, source.id)).result)
+      .groupBy(_._1.id)
+      .values
+      .map { rows =>
+        rows.head._1.toKgNode(
+          labels = rows.map(_._2).distinct.toList,
+          sourceIds = rows.map(_._3).distinct.toList
+        )
+      }
+      .headOption
   }
-
+  
   override def getNodeContext(id: String): Option[KgNodeContext] = None
 
-  override def getNodeLabel(label: String): Option[KgNodeLabel] = None
+  override def getNodeLabel(label: String): Option[KgNodeLabel] = {
+    runSyncTransaction((for {
+      nodeLabel <- nodeLabels if nodeLabel.label === label
+      nodeNodeLabel <- nodeNodeLabels if nodeNodeLabel.nodeLabelLabel === nodeLabel.label
+      nodeLabelSource <- nodeLabelSource if nodeLabelSource.nodeLabelLabel === nodeLabel.label
+      node <- nodeNodeLabel.node
+      source <- nodeLabelSource.source
+      nodeSource <- nodeSources if nodeSource.nodeId === node.id
+      nodeLabel <- nodeNodeLabel.nodeLabel
+      nodeSourceSource <- nodeSource.source
+    } yield (nodeLabel, source.id, node, nodeSourceSource.id, nodeLabel.label)).result)
+      .groupBy(_._1.label)
+      .values.map {
+        rows => rows.head._1.toKgNodeLabel(
+          sourceIds = rows.map(_._2).distinct.toList,
+          nodes = rows.groupBy(_._3.id).values.map {
+            nodeRows => nodeRows.head._3.toKgNode(
+              labels = nodeRows.map(_._4).distinct.toList,
+              sourceIds = nodeRows.map(_._5).distinct.toList
+            )
+          }.toList
+        )
+      }
+      .headOption
+  }
 
   override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
 
@@ -28,13 +67,15 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
 
   override def getRandomNode: KgNode = KgNode("", None, List(), None, None, None, List(), None)
 
-  override def getSourcesById: Map[String, KgSource] = Map()
+  override def getSourcesById: Map[String, KgSource] = {
+    runSyncTransaction(sources.result).map(source => (source.id, source.toKgSource)).toMap
+  }
 
-  override def getTotalEdgesCount: Int = 0
+  override def getTotalEdgesCount: Int = runSyncTransaction(edges.size.result)
 
-  override def getTotalNodesCount: Int = 0
+  override def getTotalNodesCount: Int = runSyncTransaction(nodes.size.result)
 
-  override def isEmpty: Boolean = true
+  override def isEmpty: Boolean = getTotalNodesCount == 0
 
   override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] = List()
 

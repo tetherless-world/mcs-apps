@@ -4,7 +4,7 @@ import com.google.inject.{Inject, Singleton}
 import io.github.tetherlessworld.mcsapps.lib.kg.data.KgData
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
-import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreTransaction}
@@ -41,6 +41,13 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       )
     }
 
+    private implicit class KgSourceWrapper(source: KgSource) {
+      def toRow: SourceRow = SourceRow(
+        id = source.id,
+        label = source.label
+      )
+    }
+
     override final def clear(): Unit = {
       val tableNames = tables.map(_.baseTableRow.tableName).mkString(",")
       runSyncTransaction(sqlu"TRUNCATE #$tableNames;")
@@ -53,11 +60,14 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     private def generateNodeInsert(node: KgNode) =
       List(nodes.insertOrUpdate(node.toRow)) ++
-        node.labels.map(label => nodeNodeLabels.insertOrUpdate((node.id, label))) ++
+        node.labels.flatMap { label => List(
+          nodeLabels.insertOrUpdate(NodeLabelRow(label, None)),
+          nodeNodeLabels.insertOrUpdate((node.id, label))
+        )} ++
         node.sourceIds.map(sourceId => nodeSources.insertOrUpdate((node.id, sourceId)))
 
     private def generateSourceInsert(source: KgSource) =
-      List(sources.insertOrUpdate(source.id, source.label))
+      List(sources.insertOrUpdate(source.toRow))
 
     override final def putData(data: KgData) =
       runSyncTransaction(DBIO.sequence(

@@ -1,7 +1,8 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres
 
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
-import io.github.tetherlessworld.mcsapps.lib.kg.models.node.KgNode
+import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
+import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.HasDatabaseConfigProvider
 import slick.jdbc.PostgresProfile
 
@@ -9,7 +10,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
 
-abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: PostgresStoreConfigProvider) extends HasDatabaseConfigProvider[PostgresProfile] {
+abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: PostgresStoreConfigProvider) extends HasDatabaseConfigProvider[ExtendedPostgresProfile] {
   import profile.api._
 
   protected val SentencesDelimChar = '|'
@@ -18,8 +19,26 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   protected lazy val edges = TableQuery[EdgeTable]
   protected lazy val edgeLabels = TableQuery[EdgeLabelTable]
   protected lazy val edgeSources = TableQuery[EdgeSourceTable]
-  protected lazy val nodes = TableQuery[NodeTable]
-  protected lazy val nodeLabels = TableQuery[NodeLabelTable]
+  protected object nodes extends TableQuery(new NodeTable(_)) {
+    def withNodeLabels = for {
+      ((node, _), nodeLabel) <- nodes
+        .join(nodeNodeLabels).on(_.id === _.nodeId)
+          .join(nodeLabels).on(_._2.nodeLabelLabel === _.label)
+    } yield (node, nodeLabel)
+
+    def withSources = for {
+      ((node, _), source) <- nodes
+          .join(nodeSources).on(_.id === _.nodeId)
+          .join(sources).on(_._2.sourceId === _.id)
+    } yield (node, source)
+  }
+  protected object nodeLabels extends TableQuery(new NodeLabelTable(_)) {
+    def withNodes = for {
+      ((nodeLabel, _), node) <- nodeLabels
+        .join(nodeNodeLabels).on(_.label === _.nodeLabelLabel)
+        .join(nodes).on(_._2.nodeId === _.id)
+    } yield (nodeLabel, node)
+  }
   protected lazy val nodeLabelEdges = TableQuery[NodeLabelEdgeTable]
   protected lazy val nodeLabelEdgeSources = TableQuery[NodeLabelEdgeSourceTable]
   protected lazy val nodeLabelSource = TableQuery[NodeLabelSourceTable]
@@ -62,6 +81,17 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
       sourceIds = sourceIds,
       wordNetSenseNumber = wordNetSenseNumber.map(_.toInt)
     )
+  }
+  protected final case class NodeLabelRow(label: String, pageRank: Option[Float]) {
+    def toKgNodeLabel(nodes: List[KgNode], sourceIds: List[String]) = KgNodeLabel(
+      nodeLabel = label,
+      nodes = nodes,
+      pageRank = pageRank.map(_.toDouble),
+      sourceIds = sourceIds
+    )
+  }
+  protected final case class SourceRow(id: String, label: String) {
+    def toKgSource = KgSource(id = id, label = label)
   }
 
   protected final class EdgeTable(tag: Tag) extends Table[EdgeRow](tag, "edge") {
@@ -114,13 +144,14 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
 
   protected final class NodeNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "node_x_node_label") {
     def nodeId = column[String]("node_id")
-    def label = column[String]("label")
+    def nodeLabelLabel = column[String]("label")
 
-    def * = (nodeId, label)
+    def * = (nodeId, nodeLabelLabel)
 
     def node = foreignKey("node_fk", nodeId, nodes)(_.id)
+    def nodeLabel = foreignKey("node_label_fk", nodeLabelLabel, nodeLabels)(_.label)
 
-    def pk = primaryKey("node_label_pk", (nodeId, label))
+    def pk = primaryKey("node_label_pk", (nodeId, nodeLabelLabel))
   }
 
   protected final class NodeSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_x_source") {
@@ -135,11 +166,11 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def pk = primaryKey("node_source_pk", (nodeId, sourceId))
   }
 
-  protected final class NodeLabelTable(tag: Tag) extends Table[(String, Option[Float])](tag, "node_x_label") {
+  protected final class NodeLabelTable(tag: Tag) extends Table[NodeLabelRow](tag, "node_label") {
     def label = column[String]("label", O.PrimaryKey)
     def pageRank = column[Option[Float]]("page_rank")
 
-    def * = (label, pageRank)
+    def * = (label, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
   }
 
   protected final class NodeLabelEdgeTable(tag: Tag) extends Table[(Int, String, String)](tag, "node_label_edge") {
@@ -179,10 +210,10 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def pk = primaryKey("node_label_source_pk", (nodeLabelLabel, sourceId))
   }
 
-  protected final class SourceTable(tag: Tag) extends Table[(String, String)](tag, "source") {
+  protected final class SourceTable(tag: Tag) extends Table[SourceRow](tag, "source") {
     def id = column[String]("id", O.PrimaryKey)
     def label = column[String]("label")
 
-    def * = (id, label)
+    def * = (id, label) <> (SourceRow.tupled, SourceRow.unapply)
   }
 }
