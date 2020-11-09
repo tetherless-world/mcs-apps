@@ -46,6 +46,7 @@ lazy val kgLib =
     .settings(
       libraryDependencies ++= Seq(
         // Implement search in the MemStore (and thus the TestStore)
+        "com.github.tminglei" %% "slick-pg" % "0.19.3",
         "com.outr" %% "lucene4s" % "1.9.1",
         "com.typesafe.slick" %% "slick" % "3.3.3",
         "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",

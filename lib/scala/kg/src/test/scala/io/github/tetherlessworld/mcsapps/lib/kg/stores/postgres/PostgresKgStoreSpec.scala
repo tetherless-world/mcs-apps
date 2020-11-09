@@ -4,15 +4,17 @@ import java.net.InetAddress
 
 import com.typesafe.config.ConfigFactory
 import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData
-import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreBehaviors, KgQueryStore, KgStoreFactory, StoreTestMode}
+import io.github.tetherlessworld.mcsapps.lib.kg.stores.{KgCommandStore, KgCommandStoreBehaviors, KgQueryStore, KgQueryStoreBehaviors, KgStoreFactory, StoreTestMode}
 import org.scalatest.{BeforeAndAfterAll, WordSpec}
+
 import scala.collection.JavaConverters.mapAsJavaMap
 
-class PostgresKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommandStoreBehaviors {
+class PostgresKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommandStoreBehaviors with KgQueryStoreBehaviors {
   import scala.concurrent.ExecutionContext.Implicits.global
 
   val testConfig = ConfigFactory.parseMap(mapAsJavaMap(Map(
-      "postgres.profile" -> "slick.jdbc.PostgresProfile$",
+//      "postgres.profile" -> "slick.jdbc.PostgresProfile$",
+      "postgres.profile" -> "io.github.tetherlessworld.mcsapps.lib.kg.stores.postgres.ExtendedPostgresProfile$",
       "postgres.db.connectionPool" -> "HikariCP",
       "postgres.db.driver" -> "org.postgresql.Driver",
       "postgres.db.password" -> "7EAdu7jJvZNxxrNZ",
@@ -59,7 +61,7 @@ class PostgresKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommand
   if (inTestingEnvironment) {
     "The postgres store" can {
       behave like commandStore(PostgresKgStoreFactory)
-//      behave like queryStore(PostgresKgStoreFactory)
+      behave like queryStore(PostgresKgStoreFactory)
     }
   }
 }
