@@ -60,10 +60,14 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     private def generateNodeInsert(node: KgNode) =
       List(nodes.insertOrUpdate(node.toRow)) ++
-        node.labels.flatMap { label => List(
-          nodeLabels.insertOrUpdate(NodeLabelRow(label, None)),
-          nodeNodeLabels.insertOrUpdate((node.id, label))
-        )} ++
+        node.labels.flatMap { label =>
+          List(
+            nodeLabels.insertOrUpdate(NodeLabelRow(label, None)),
+            nodeNodeLabels.insertOrUpdate((node.id, label))
+          ) ++ node.sourceIds.map(
+            sourceId => nodeLabelSources.insertOrUpdate((label, sourceId))
+          )
+        } ++
         node.sourceIds.map(sourceId => nodeSources.insertOrUpdate((node.id, sourceId)))
 
     private def generateSourceInsert(source: KgSource) =
