@@ -53,6 +53,11 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       runSyncTransaction(sqlu"TRUNCATE #$tableNames;")
     }
 
+    override final def close(): Unit = {
+      writeNodeLabelEdges
+      writeNodeLabelEdgeSources
+    }
+
     private def generateEdgeInsert(edge: KgEdge) =
       List(edges.insertOrUpdate(edge.toRow)) ++
         edge.labels.map(label => edgeLabels.insertOrUpdate((edge.id, label))) ++
@@ -99,7 +104,47 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     override final def putSources(sources: Iterator[KgSource]): Unit =
       runSyncTransaction(DBIO.sequence(sources.flatMap(generateSourceInsert)))
 
-    override final def close(): Unit = Unit
+    private def writeNodeLabelEdges: Unit = {
+      val nodeLabelEdgeNodeLabelsQuery = (for {
+        edge <- edges
+        objectNode <- edge.objectNode
+        subjectNode <- edge.subjectNode
+        objectNodeNodeLabel <- nodeNodeLabels if objectNodeNodeLabel.nodeId === objectNode.id
+        subjectNodeNodeLabel <- nodeNodeLabels if subjectNodeNodeLabel.nodeId === subjectNode.id
+        objectNodeLabel <- objectNodeNodeLabel.nodeLabel
+        subjectNodeLabel <- subjectNodeNodeLabel.nodeLabel
+      } yield (objectNodeLabel.label, subjectNodeLabel.label)).result
+
+      val nodeLabelEdgeInserts = runSyncTransaction(nodeLabelEdgeNodeLabelsQuery).map {
+        case (objectNodeLabelLabel, subjectNodeLabelLabel) =>
+          sqlu"INSERT INTO #${nodeLabelEdges.baseTableRow.tableName} (object_node_label_label, subject_node_label_label) VALUES ($objectNodeLabelLabel, $subjectNodeLabelLabel) ON CONFLICT DO NOTHING;"
+      }
+
+      runSyncTransaction(DBIO.sequence(nodeLabelEdgeInserts))
+    }
+
+    private def writeNodeLabelEdgeSources: Unit = {
+      val objectNodeLabelEdgeSourcesQuery = (for {
+        nodeLabelEdge <- nodeLabelEdges
+        objectNodeLabel <- nodeLabelEdge.objectNodeLabel
+        objectNodeLabelSourceSource <- nodeLabelSources if objectNodeLabelSourceSource.nodeLabelLabel === objectNodeLabel.label
+        objectNodeLabelSource <- objectNodeLabelSourceSource.source
+      } yield (nodeLabelEdge.id, objectNodeLabelSource.id))
+
+      val subjectNodeLabelEdgeSourcesQuery = (for {
+        nodeLabelEdge <- nodeLabelEdges
+        subjectNodeLabel <- nodeLabelEdge.subjectNodeLabel
+        subjectNodeLabelSourceSource <- nodeLabelSources if subjectNodeLabelSourceSource.nodeLabelLabel === subjectNodeLabel.label
+        subjectNodeLabelSource <- subjectNodeLabelSourceSource.source
+      } yield (nodeLabelEdge.id, subjectNodeLabelSource.id))
+
+      val nodeLabelEdgeSourcesAction = (objectNodeLabelEdgeSourcesQuery ++ subjectNodeLabelEdgeSourcesQuery).result
+
+      runSyncTransaction(for {
+        nodeLabelEdgeSourcesResult <- nodeLabelEdgeSourcesAction
+        _ <- nodeLabelEdgeSources.insertOrUpdateAll(nodeLabelEdgeSourcesResult)
+      } yield ())
+    }
   }
 
   bootstrapStore()

@@ -38,16 +38,22 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
         .join(nodeNodeLabels).on(_.label === _.nodeLabelLabel)
         .join(nodes).on(_._2.nodeId === _.id)
     } yield (nodeLabel, node)
+
+    def withSources = for {
+      ((nodeLabel, _), source) <- nodeLabels
+          .join(nodeLabelSources).on(_.label === _.nodeLabelLabel)
+          .join(sources).on(_._2.sourceId === _.id)
+    } yield (nodeLabel, source)
   }
   protected lazy val nodeLabelEdges = TableQuery[NodeLabelEdgeTable]
   protected lazy val nodeLabelEdgeSources = TableQuery[NodeLabelEdgeSourceTable]
-  protected lazy val nodeLabelSource = TableQuery[NodeLabelSourceTable]
+  protected lazy val nodeLabelSources = TableQuery[NodeLabelSourceTable]
   protected lazy val nodeSources = TableQuery[NodeSourceTable]
   protected lazy val nodeNodeLabels = TableQuery[NodeNodeLabelTable]
   protected lazy val sources = TableQuery[SourceTable]
 
   protected lazy val tables =
-    List(edges, edgeLabels, edgeSources, nodes, nodeLabels, nodeLabelEdges, nodeLabelEdgeSources, nodeLabelSource, nodeSources, nodeNodeLabels, sources)
+    List(edges, edgeLabels, edgeSources, nodes, nodeLabels, nodeLabelEdges, nodeLabelEdgeSources, nodeLabelSources, nodeSources, nodeNodeLabels, sources)
 
   protected lazy val tablesDdlObject = tables.map(_.schema).reduce((left, right) => left ++ right)
 
@@ -173,12 +179,12 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def * = (label, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
   }
 
-  protected final class NodeLabelEdgeTable(tag: Tag) extends Table[(Int, String, String)](tag, "node_label_edge") {
+  protected final class NodeLabelEdgeTable(tag: Tag) extends Table[(Option[Int], String, String)](tag, "node_label_edge") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def objectNodeLabelLabel = column[String]("object_node_label_label")
     def subjectNodeLabelLabel = column[String]("subject_node_label_label")
 
-    def * = (id, objectNodeLabelLabel, subjectNodeLabelLabel)
+    def * = (id.?, objectNodeLabelLabel, subjectNodeLabelLabel)
 
     def objectNodeLabel = foreignKey("object_node_label_fk", objectNodeLabelLabel, nodeLabels)(_.label)
     def subjectNodeLabel = foreignKey("subject_node_label_fk", subjectNodeLabelLabel, nodeLabels)(_.label)
