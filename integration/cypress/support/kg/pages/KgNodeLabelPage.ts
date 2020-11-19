@@ -7,7 +7,29 @@ export class KgNodeLabelPage extends TabbedPage<KgNodeLabelPageTab> {
     super();
   }
 
+  get nodesTable() {
+    const tableSelector = "[data-cy=nodes-table]";
+    return {
+      row(index: number) {
+        const rowSelector = `${tableSelector} [data-cy=node-row-${index}]`;
+        return {
+          get id() {
+            return cy.get(`${rowSelector} [data-cy=node-link]`);
+          },
+        };
+      },
+    };
+  }
+
+  get nodeLabelTitle() {
+    return cy.get(this.frame.selector + " [data-cy=node-label-title]");
+  }
+
   readonly relativeUrl = `/kg/${KgTestData.kgId}/nodeLabel/${encodeURIComponent(
     this.nodeLabel
   )}`;
+
+  source(id: string) {
+    return cy.get(`${this.frame.selector} [data-cy=node-source-${id}]`);
+  }
 }

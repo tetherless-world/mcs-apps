@@ -23,9 +23,9 @@ export const KgNodeSourcesCard: React.FunctionComponent<{
     <Card>
       <CardHeader title="Source(s)"></CardHeader>
       <CardContent>
-        <List>
+        <List data-cy="node-sources">
           {nodeSources.map((source) => (
-            <ListItemText data-cy="node-source" key={source.id}>
+            <ListItemText data-cy={`node-source-${source.id}`} key={source.id}>
               <KgSourcePill
                 onClick={() => {
                   history.push(
