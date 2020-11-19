@@ -7,7 +7,15 @@ export class KgNodeLabelPage extends TabbedPage<KgNodeLabelPageTab> {
     super();
   }
 
+  get nodeLabelTitle() {
+    return cy.get(this.frame.selector + " [data-cy=node-label-title]");
+  }
+
   readonly relativeUrl = `/kg/${KgTestData.kgId}/nodeLabel/${encodeURIComponent(
     this.nodeLabel
   )}`;
+
+  source(id: string) {
+    return cy.get(`${this.frame.selector} [data-cy=node-source-${id}]`);
+  }
 }
