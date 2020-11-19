@@ -63,7 +63,7 @@ export const KgNodesTable: React.FunctionComponent<{
           customBodyRender(labels, tableMeta) {
             return (
               <List data-cy="node-labels">
-                {labels.split("|").map((label) => (
+                {labels.split("|").map((label: string) => (
                   <ListItem key={label}>
                     <ListItemText>
                       <Link
@@ -104,8 +104,10 @@ export const KgNodesTable: React.FunctionComponent<{
             return sourceIds
               ? sourceIds
                   .split("|")
-                  .map((sourceId) => resolveSourceId({allSources, sourceId}))
-                  .map((source, sourceIndex) => (
+                  .map((sourceId: string) =>
+                    resolveSourceId({allSources, sourceId})
+                  )
+                  .map((source: KgSource, sourceIndex: number) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
                       <KgSourcePill
                         onClick={() => {
