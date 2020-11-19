@@ -2,6 +2,7 @@ import {KgNode} from "../../support/kg/models/KgNode";
 import {KgTestData} from "../../support/kg/KgTestData";
 import {KgNodeLabelPage} from "../../support/kg/pages/KgNodeLabelPage";
 import {KgNodeLabelPageTab} from "../../support/kg/pages/KgNodeLabelPageTab";
+import {KgNodePage} from "../../support/kg/pages/KgNodePage";
 
 context("KG node label page", () => {
   let page: KgNodeLabelPage;
@@ -48,5 +49,12 @@ context("KG node label page", () => {
     page.selectTab(KgNodeLabelPageTab.Nodes);
     page.assertTabLoaded(KgNodeLabelPageTab.Nodes);
     page.assertTabSelected(KgNodeLabelPageTab.Nodes);
+  });
+
+  it("should show the node in the node tab", () => {
+    page.selectTab(KgNodeLabelPageTab.Nodes);
+    page.nodesTable.row(0).id.should("have.text", node.id);
+    page.nodesTable.row(0).id.click();
+    new KgNodePage(node.id).assertLoaded();
   });
 });

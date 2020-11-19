@@ -62,7 +62,7 @@ export const KgNodesTable: React.FunctionComponent<{
           sort: true,
           customBodyRender(labels, tableMeta) {
             return (
-              <List>
+              <List data-cy="node-labels">
                 {labels.split("|").map((label) => (
                   <ListItem key={label}>
                     <ListItemText>
@@ -153,7 +153,7 @@ export const KgNodesTable: React.FunctionComponent<{
           search: false,
           selectableRows: "none",
           setRowProps(_, rowIndex) {
-            return {"data-cy": "node-" + rowIndex};
+            return {"data-cy": "node-row-" + rowIndex};
           },
         }}
         title={""}
