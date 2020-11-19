@@ -4,7 +4,7 @@
         "path": [
             "P0:0",
             "/r/Antonym",
-            "P0:1"
+            "P0:3"
         ],
         "sourceIds": [
             "P0"
@@ -15,9 +15,9 @@
         "path": [
             "P0:5",
             "/r/Antonym",
-            "P0:6",
+            "P0:8",
             "/r/AtLocation",
-            "P0:7"
+            "P0:11"
         ],
         "sourceIds": [
             "P0"
@@ -28,11 +28,11 @@
         "path": [
             "P0:10",
             "/r/Antonym",
-            "P0:11",
+            "P0:13",
             "/r/CapableOf",
-            "P0:12",
+            "P0:16",
             "/r/CausesDesire",
-            "P0:13"
+            "P0:19"
         ],
         "sourceIds": [
             "P0"
@@ -43,13 +43,13 @@
         "path": [
             "P0:15",
             "/r/Antonym",
-            "P0:16",
-            "/r/Causes",
-            "P0:17",
-            "/r/DefinedAs",
             "P0:18",
+            "/r/Causes",
+            "P0:21",
+            "/r/DefinedAs",
+            "P0:24",
             "/r/DistinctFrom",
-            "P0:19"
+            "P0:27"
         ],
         "sourceIds": [
             "P0"
@@ -60,15 +60,15 @@
         "path": [
             "P0:20",
             "/r/Antonym",
-            "P0:21",
-            "/r/CausesDesire",
-            "P0:22",
-            "/r/Desires",
             "P0:23",
+            "/r/CausesDesire",
+            "P0:26",
+            "/r/Desires",
+            "P0:29",
             "/r/ExternalURL",
-            "P0:24",
-            "/r/HasFirstSubevent",
-            "P0:25"
+            "P0:32",
+            "/r/DefinedAs",
+            "P0:35"
         ],
         "sourceIds": [
             "P0"
@@ -79,17 +79,17 @@
         "path": [
             "P0:25",
             "/r/Antonym",
-            "P0:26",
-            "/r/CreatedBy",
-            "P0:27",
-            "/r/EtymologicallyDerivedFrom",
             "P0:28",
-            "/r/HasContext",
-            "P0:29",
-            "/r/HasSubevent",
-            "P0:30",
-            "/r/MotivatedByGoal",
-            "P0:31"
+            "/r/CreatedBy",
+            "P0:31",
+            "/r/Antonym",
+            "P0:34",
+            "/r/CreatedBy",
+            "P0:37",
+            "/r/Antonym",
+            "P0:40",
+            "/r/CreatedBy",
+            "P0:43"
         ],
         "sourceIds": [
             "P0"
@@ -100,19 +100,19 @@
         "path": [
             "P0:30",
             "/r/Antonym",
-            "P0:31",
-            "/r/DefinedAs",
-            "P0:32",
-            "/r/CapableOf",
             "P0:33",
-            "/r/Desires",
-            "P0:34",
-            "/r/CausesDesire",
-            "P0:35",
-            "/r/Antonym",
-            "P0:36",
             "/r/DefinedAs",
-            "P0:37"
+            "P0:36",
+            "/r/CapableOf",
+            "P0:39",
+            "/r/Desires",
+            "P0:42",
+            "/r/CausesDesire",
+            "P0:45",
+            "/r/Antonym",
+            "P0:48",
+            "/r/DefinedAs",
+            "P0:51"
         ],
         "sourceIds": [
             "P0"
@@ -123,21 +123,21 @@
         "path": [
             "P0:35",
             "/r/Antonym",
-            "P0:36",
-            "/r/DerivedFrom",
-            "P0:37",
-            "/r/CausesDesire",
             "P0:38",
-            "/r/AtLocation",
-            "P0:39",
-            "/r/Desires",
-            "P0:40",
-            "/r/CreatedBy",
+            "/r/DerivedFrom",
             "P0:41",
+            "/r/CausesDesire",
+            "P0:44",
+            "/r/AtLocation",
+            "P0:47",
+            "/r/Desires",
+            "P0:50",
+            "/r/CreatedBy",
+            "P0:53",
             "/r/CapableOf",
-            "P0:42",
+            "P0:56",
             "/r/DistinctFrom",
-            "P0:43"
+            "P0:59"
         ],
         "sourceIds": [
             "P0"
@@ -148,23 +148,23 @@
         "path": [
             "P0:40",
             "/r/Antonym",
-            "P0:41",
-            "/r/Desires",
-            "P0:42",
-            "/r/DefinedAs",
             "P0:43",
-            "/r/CausesDesire",
-            "P0:44",
-            "/r/CapableOf",
-            "P0:45",
-            "/r/Antonym",
-            "P0:46",
             "/r/Desires",
-            "P0:47",
+            "P0:46",
             "/r/DefinedAs",
-            "P0:48",
+            "P0:49",
             "/r/CausesDesire",
-            "P0:49"
+            "P0:52",
+            "/r/CapableOf",
+            "P0:55",
+            "/r/Antonym",
+            "P0:58",
+            "/r/Desires",
+            "P0:61",
+            "/r/DefinedAs",
+            "P0:64",
+            "/r/CausesDesire",
+            "P0:67"
         ],
         "sourceIds": [
             "P0"
@@ -175,25 +175,25 @@
         "path": [
             "P0:45",
             "/r/Antonym",
-            "P0:46",
-            "/r/DistinctFrom",
-            "P0:47",
-            "/r/Desires",
             "P0:48",
-            "/r/DerivedFrom",
-            "P0:49",
-            "/r/DefinedAs",
-            "P0:50",
-            "/r/CreatedBy",
+            "/r/DistinctFrom",
             "P0:51",
-            "/r/CausesDesire",
-            "P0:52",
-            "/r/Causes",
-            "P0:53",
-            "/r/CapableOf",
+            "/r/Desires",
             "P0:54",
+            "/r/DerivedFrom",
+            "P0:57",
+            "/r/DefinedAs",
+            "P0:60",
+            "/r/CreatedBy",
+            "P0:63",
+            "/r/CausesDesire",
+            "P0:66",
+            "/r/Causes",
+            "P0:69",
+            "/r/CapableOf",
+            "P0:72",
             "/r/AtLocation",
-            "P0:55"
+            "P0:75"
         ],
         "sourceIds": [
             "P0"
