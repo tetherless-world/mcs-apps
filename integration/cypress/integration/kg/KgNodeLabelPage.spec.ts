@@ -27,19 +27,26 @@ context("KG node label page", () => {
   it("should have the node label in its card title", () => {
     page.nodeLabelTitle.should("contain", node.labels[0]);
   });
-  //
-  // it("should show edge objects by predicate", () => {
-  //   const edge = testNodeEdges[0];
-  //   page.gridEdgeList(edge.predicate).list.should("exist");
-  // });
 
   it("should show the node label sources", () => {
-    for (const source of KgTestData.kgSources) {
-      page.source(source.id).should("contain", source.label);
+    for (const sourceId of node.sourceIds) {
+      console.info("Node:", node);
+      page
+        .source(sourceId)
+        .should(
+          "contain",
+          KgTestData.kgSources.find((source) => source.id === sourceId)!.label
+        );
     }
   });
 
   it("should have the edges tab selected by default", () => {
     page.assertTabSelected(KgNodeLabelPageTab.Edges);
+  });
+
+  it("should allow selecting the node tab", () => {
+    page.selectTab(KgNodeLabelPageTab.Nodes);
+    page.assertTabLoaded(KgNodeLabelPageTab.Nodes);
+    page.assertTabSelected(KgNodeLabelPageTab.Nodes);
   });
 });
