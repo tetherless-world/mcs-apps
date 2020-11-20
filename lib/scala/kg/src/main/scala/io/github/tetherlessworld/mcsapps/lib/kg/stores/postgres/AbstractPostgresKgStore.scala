@@ -4,7 +4,6 @@ import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeLabel}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores.HasDatabaseConfigProvider
-import slick.jdbc.PostgresProfile
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -48,8 +47,8 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   protected lazy val nodeLabelEdges = TableQuery[NodeLabelEdgeTable]
   protected lazy val nodeLabelEdgeSources = TableQuery[NodeLabelEdgeSourceTable]
   protected lazy val nodeLabelSources = TableQuery[NodeLabelSourceTable]
-  protected lazy val nodeSources = TableQuery[NodeSourceTable]
   protected lazy val nodeNodeLabels = TableQuery[NodeNodeLabelTable]
+  protected lazy val nodeSources = TableQuery[NodeSourceTable]
   protected lazy val sources = TableQuery[SourceTable]
 
   protected lazy val tables =
@@ -65,6 +64,10 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     Await.result(runTransaction(a), duration)
   }
 
+  protected final def runSync[R](a: DBIOAction[R, NoStream, Effect.All], duration: Duration = Duration.Inf): R = {
+    Await.result(db.run(a), duration)
+  }
+
   protected final case class EdgeRow(id: String, objectNodeId: String, predicate: String, sentences: String, subjectNodeId: String) {
     def toKgEdge(labels: List[String], sourceIds: List[String]) = KgEdge(
       id = id,
@@ -76,30 +79,6 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
       subject = subjectNodeId
     )
   }
-  protected final case class NodeRow(id: String, inDegree: Option[Short], outDegree: Option[Short], pageRank: Option[Float], pos: Option[Char], wordNetSenseNumber: Option[Short]) {
-    def toKgNode(labels: List[String], sourceIds: List[String]) = KgNode(
-      id = id,
-      inDegree = inDegree.map(_.toInt),
-      labels = labels,
-      outDegree = outDegree.map(_.toInt),
-      pageRank = pageRank.map(_.toDouble),
-      pos = pos,
-      sourceIds = sourceIds,
-      wordNetSenseNumber = wordNetSenseNumber.map(_.toInt)
-    )
-  }
-  protected final case class NodeLabelRow(label: String, pageRank: Option[Float]) {
-    def toKgNodeLabel(nodes: List[KgNode], sourceIds: List[String]) = KgNodeLabel(
-      nodeLabel = label,
-      nodes = nodes,
-      pageRank = pageRank.map(_.toDouble),
-      sourceIds = sourceIds
-    )
-  }
-  protected final case class SourceRow(id: String, label: String) {
-    def toKgSource = KgSource(id = id, label = label)
-  }
-
   protected final class EdgeTable(tag: Tag) extends Table[EdgeRow](tag, "edge") {
     def id = column[String]("id", O.PrimaryKey)
     def objectNodeId = column[String]("object_node_id")
@@ -115,28 +94,42 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def unique_constraint = index("_edge_unique_idx", (objectNodeId, subjectNodeId, predicate), unique = true)
   }
 
-  protected final class EdgeLabelTable(tag: Tag) extends Table[(String, String)](tag, "edge_label") {
+  protected final case class EdgeLabelRow(edgeId: String, label: String)
+  protected final class EdgeLabelTable(tag: Tag) extends Table[EdgeLabelRow](tag, "edge_label") {
     def edgeId = column[String]("edge_id")
     def label = column[String]("label")
 
-    def * = (edgeId, label)
+    def * = (edgeId, label) <> (EdgeLabelRow.tupled, EdgeLabelRow.unapply)
 
     def edge = foreignKey("edge_fk", edgeId, edges)(_.id)
 
     def pk = primaryKey("edge_label_pk", (edgeId, label))
   }
 
-  protected final class EdgeSourceTable(tag: Tag) extends Table[(String, String)](tag, "edge_x_source") {
+  protected final case class EdgeSourceRow(edgeId: String, sourceId: String)
+  protected final class EdgeSourceTable(tag: Tag) extends Table[EdgeSourceRow](tag, "edge_x_source") {
     def edgeId = column[String]("edge_id")
     def sourceId = column[String]("source_id")
 
-    def * = (edgeId, sourceId)
+    def * = (edgeId, sourceId) <> (EdgeSourceRow.tupled, EdgeSourceRow.unapply)
 
     def edge = foreignKey("edge_fk", edgeId, edges)(_.id)
 
     def pk = primaryKey("edge_source_pk", (edgeId, sourceId))
   }
 
+  protected final case class NodeRow(id: String, inDegree: Option[Short], outDegree: Option[Short], pageRank: Option[Float], pos: Option[Char], wordNetSenseNumber: Option[Short]) {
+    def toKgNode(labels: List[String], sourceIds: List[String]) = KgNode(
+      id = id,
+      inDegree = inDegree.map(_.toInt),
+      labels = labels,
+      outDegree = outDegree.map(_.toInt),
+      pageRank = pageRank.map(_.toDouble),
+      pos = pos,
+      sourceIds = sourceIds,
+      wordNetSenseNumber = wordNetSenseNumber.map(_.toInt)
+    )
+  }
   protected final class NodeTable(tag: Tag) extends Table[NodeRow](tag, "node") {
     def id = column[String]("id", O.PrimaryKey)
     def inDegree = column[Option[Short]]("in_degree")
@@ -148,30 +141,14 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def * = (id, inDegree, outDegree, pageRank, pos, wordNetSenseNumber) <> (NodeRow.tupled, NodeRow.unapply)
   }
 
-  protected final class NodeNodeLabelTable(tag: Tag) extends Table[(String, String)](tag, "node_x_node_label") {
-    def nodeId = column[String]("node_id")
-    def nodeLabelLabel = column[String]("label")
-
-    def * = (nodeId, nodeLabelLabel)
-
-    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
-    def nodeLabel = foreignKey("node_label_fk", nodeLabelLabel, nodeLabels)(_.label)
-
-    def pk = primaryKey("node_label_pk", (nodeId, nodeLabelLabel))
+  protected final case class NodeLabelRow(label: String, pageRank: Option[Float]) {
+    def toKgNodeLabel(nodes: List[KgNode], sourceIds: List[String]) = KgNodeLabel(
+      nodeLabel = label,
+      nodes = nodes,
+      pageRank = pageRank.map(_.toDouble),
+      sourceIds = sourceIds
+    )
   }
-
-  protected final class NodeSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_x_source") {
-    def nodeId = column[String]("node_id")
-    def sourceId = column[String]("source_id")
-
-    def * = (nodeId, sourceId)
-
-    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
-    def source = foreignKey("source_fk", sourceId, sources)(_.id)
-
-    def pk = primaryKey("node_source_pk", (nodeId, sourceId))
-  }
-
   protected final class NodeLabelTable(tag: Tag) extends Table[NodeLabelRow](tag, "node_label") {
     def label = column[String]("label", O.PrimaryKey)
     def pageRank = column[Option[Float]]("page_rank")
@@ -179,12 +156,13 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def * = (label, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
   }
 
-  protected final class NodeLabelEdgeTable(tag: Tag) extends Table[(Option[Int], String, String)](tag, "node_label_edge") {
+  protected final case class NodeLabelEdgeRow(pageRank: Option[Int], objectNodeLabelLabel: String, subjectNodeLabelLabel: String)
+  protected final class NodeLabelEdgeTable(tag: Tag) extends Table[NodeLabelEdgeRow](tag, "node_label_edge") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def objectNodeLabelLabel = column[String]("object_node_label_label")
     def subjectNodeLabelLabel = column[String]("subject_node_label_label")
 
-    def * = (id.?, objectNodeLabelLabel, subjectNodeLabelLabel)
+    def * = (id.?, objectNodeLabelLabel, subjectNodeLabelLabel) <> (NodeLabelEdgeRow.tupled, NodeLabelEdgeRow.unapply)
 
     def objectNodeLabel = foreignKey("object_node_label_fk", objectNodeLabelLabel, nodeLabels)(_.label)
     def subjectNodeLabel = foreignKey("subject_node_label_fk", subjectNodeLabelLabel, nodeLabels)(_.label)
@@ -192,11 +170,12 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def unique_constraint = index("node_label_edge_unique_idx", (objectNodeLabelLabel, subjectNodeLabelLabel), unique = true)
   }
 
-  protected final class NodeLabelEdgeSourceTable(tag: Tag) extends Table[(Int, String)](tag, "node_label_edge_x_source") {
+  protected final case class NodeLabelEdgeSourceRow(nodeLabelEdgeId: Int, sourceId: String)
+  protected final class NodeLabelEdgeSourceTable(tag: Tag) extends Table[NodeLabelEdgeSourceRow](tag, "node_label_edge_x_source") {
     def nodeLabelEdgeId = column[Int]("node_label_edge_id")
     def sourceId = column[String]("source_id")
 
-    def * = (nodeLabelEdgeId, sourceId)
+    def * = (nodeLabelEdgeId, sourceId) <> (NodeLabelEdgeSourceRow.tupled, NodeLabelEdgeSourceRow.unapply)
 
     def nodeLabelEdge = foreignKey("node_label_edge_fk", nodeLabelEdgeId, nodeLabelEdges)(_.id)
     def source = foreignKey("source_fk", sourceId, sources)(_.id)
@@ -204,11 +183,12 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def pk = primaryKey("node_label_edge_source_pk", (nodeLabelEdgeId, sourceId))
   }
 
-  protected final class NodeLabelSourceTable(tag: Tag) extends Table[(String, String)](tag, "node_label_x_source") {
+  protected final case class NodeLabelSourceRow(nodeLabelLabel: String, sourceId: String)
+  protected final class NodeLabelSourceTable(tag: Tag) extends Table[NodeLabelSourceRow](tag, "node_label_x_source") {
     def nodeLabelLabel = column[String]("node_label_label")
     def sourceId = column[String]("source_id")
 
-    def * = (nodeLabelLabel, sourceId)
+    def * = (nodeLabelLabel, sourceId) <> (NodeLabelSourceRow.tupled, NodeLabelSourceRow.unapply)
 
     def nodeLabel = foreignKey("node_label_fk", nodeLabelLabel, nodeLabels)(_.label)
     def source = foreignKey("source_fk", sourceId, sources)(_.id)
@@ -216,6 +196,35 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def pk = primaryKey("node_label_source_pk", (nodeLabelLabel, sourceId))
   }
 
+  protected final case class NodeNodeLabelRow(nodeId: String, nodeLabelLabel: String)
+  protected final class NodeNodeLabelTable(tag: Tag) extends Table[NodeNodeLabelRow](tag, "node_x_node_label") {
+    def nodeId = column[String]("node_id")
+    def nodeLabelLabel = column[String]("label")
+
+    def * = (nodeId, nodeLabelLabel) <> (NodeNodeLabelRow.tupled, NodeNodeLabelRow.unapply)
+
+    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
+    def nodeLabel = foreignKey("node_label_fk", nodeLabelLabel, nodeLabels)(_.label)
+
+    def pk = primaryKey("node_label_pk", (nodeId, nodeLabelLabel))
+  }
+
+  protected final case class NodeSourceRow(nodeId: String, sourceId: String)
+  protected final class NodeSourceTable(tag: Tag) extends Table[NodeSourceRow](tag, "node_x_source") {
+    def nodeId = column[String]("node_id")
+    def sourceId = column[String]("source_id")
+
+    def * = (nodeId, sourceId) <> (NodeSourceRow.tupled, NodeSourceRow.unapply)
+
+    def node = foreignKey("node_fk", nodeId, nodes)(_.id)
+    def source = foreignKey("source_fk", sourceId, sources)(_.id)
+
+    def pk = primaryKey("node_source_pk", (nodeId, sourceId))
+  }
+
+  protected final case class SourceRow(id: String, label: String) {
+    def toKgSource = KgSource(id = id, label = label)
+  }
   protected final class SourceTable(tag: Tag) extends Table[SourceRow](tag, "source") {
     def id = column[String]("id", O.PrimaryKey)
     def label = column[String]("label")
