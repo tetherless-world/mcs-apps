@@ -48,102 +48,107 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       )
     }
 
+    private def batchedEdgeInserts(kgEdges: Iterator[KgEdge]) = {
+      val stream = kgEdges.toStream
+      List(
+        edges.insertOrUpdateAll(stream.map(_.toRow)),
+        edgeLabels.insertOrUpdateAll(stream.flatMap(edge => edge.labels.map(label => EdgeLabelRow(edge.id, label)))),
+        edgeSources.insertOrUpdateAll(stream.flatMap(edge => edge.sourceIds.map(sourceId => EdgeSourceRow(edge.id, sourceId))))
+      )
+    }
+
+    private def batchedNodeInserts(kgNodes: Iterator[KgNode]) = {
+      val stream = kgNodes.toStream
+      List(
+        nodes.insertOrUpdateAll(stream.map(_.toRow)),
+        nodeLabels.insertOrUpdateAll(stream.flatMap(_.labels.map(NodeLabelRow(_, None)))),
+        nodeNodeLabels.insertOrUpdateAll(stream.flatMap(node => node.labels.map(label => NodeNodeLabelRow(node.id, label)))),
+        nodeLabelSources.insertOrUpdateAll(stream.flatMap(node => node.labels.flatMap(label => node.sourceIds.map(NodeLabelSourceRow(label, _))))),
+        nodeSources.insertOrUpdateAll(stream.flatMap(node => node.sourceIds.map(NodeSourceRow(node.id, _))))
+      )
+    }
+
+    private def batchedSourceInserts(kgSources: Iterator[KgSource]) =
+      List(sources.insertOrUpdateAll(kgSources.map(_.toRow).toIterable))
+
     override final def clear(): Unit = {
       val tableNames = tables.map(_.baseTableRow.tableName).mkString(",")
       runSyncTransaction(sqlu"TRUNCATE #$tableNames;")
     }
 
     override final def close(): Unit = {
-      writeNodeLabelEdges
-      writeNodeLabelEdgeSources
+      runSyncTransaction(DBIO.seq(
+        writeNodeLabelEdgesAction,
+        writeNodeLabelEdgeSourcesAction
+      ))
     }
 
-    private def generateEdgeInsert(edge: KgEdge) =
-      List(edges.insertOrUpdate(edge.toRow)) ++
-        edge.labels.map(label => edgeLabels.insertOrUpdate((edge.id, label))) ++
-        edge.sourceIds.map(sourceId => edgeSources.insertOrUpdate((edge.id, sourceId)))
-
-    private def generateNodeInsert(node: KgNode) =
-      List(nodes.insertOrUpdate(node.toRow)) ++
-        node.labels.flatMap { label =>
-          List(
-            nodeLabels.insertOrUpdate(NodeLabelRow(label, None)),
-            nodeNodeLabels.insertOrUpdate((node.id, label))
-          ) ++ node.sourceIds.map(
-            sourceId => nodeLabelSources.insertOrUpdate((label, sourceId))
-          )
-        } ++
-        node.sourceIds.map(sourceId => nodeSources.insertOrUpdate((node.id, sourceId)))
-
-    private def generateSourceInsert(source: KgSource) =
-      List(sources.insertOrUpdate(source.toRow))
-
     override final def putData(data: KgData) =
-      runSyncTransaction(DBIO.sequence(
-        data.sources.flatMap(generateSourceInsert) ++
-        data.nodesUnranked.flatMap(generateNodeInsert) ++
-        data.edges.flatMap(generateEdgeInsert)
-      ))
+      runSyncTransaction(
+        DBIO.sequence(
+          batchedSourceInserts(data.sources.iterator) ++
+          batchedNodeInserts(data.nodesUnranked.iterator) ++
+          batchedEdgeInserts(data.edges.iterator)
+        )
+      )
 
-    override final def putEdges(edges: Iterator[KgEdge]) =
-      runSyncTransaction(DBIO.sequence(edges.flatMap(generateEdgeInsert)))
+    override final def putEdges(kgEdges: Iterator[KgEdge]) =
+      runSyncTransaction(DBIO.sequence(batchedEdgeInserts(kgEdges)))
 
     override final def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
       runSyncTransaction(DBIO.sequence(
-        edgesWithNodes.flatMap { edge =>
-          edge.nodes.flatMap(generateNodeInsert) ++
-          generateEdgeInsert(edge.edge)
-        }
+        batchedNodeInserts(edgesWithNodes.flatMap(_.nodes)) ++
+        batchedEdgeInserts(edgesWithNodes.map(_.edge))
       ))
 
     override final def putNodes(nodes: Iterator[KgNode]): Unit =
-      runSyncTransaction(DBIO.sequence(nodes.flatMap(generateNodeInsert)))
+      runSyncTransaction(DBIO.sequence(batchedNodeInserts(nodes)))
 
     override final def putPaths(paths: Iterator[KgPath]): Unit = Unit
 
     override final def putSources(sources: Iterator[KgSource]): Unit =
-      runSyncTransaction(DBIO.sequence(sources.flatMap(generateSourceInsert)))
+      runSyncTransaction(DBIO.sequence(batchedSourceInserts(sources)))
 
-    private def writeNodeLabelEdges: Unit = {
-      val nodeLabelEdgeNodeLabelsQuery = (for {
-        edge <- edges
+    private def writeNodeLabelEdgesAction = {
+      val nodeLabelEdgePairsAction = (for {
+        (subjectNodeLabel, node) <- nodeLabels.withNodes
+        edge <- edges if edge.subjectNodeId === node.id
         objectNode <- edge.objectNode
-        subjectNode <- edge.subjectNode
-        objectNodeNodeLabel <- nodeNodeLabels if objectNodeNodeLabel.nodeId === objectNode.id
-        subjectNodeNodeLabel <- nodeNodeLabels if subjectNodeNodeLabel.nodeId === subjectNode.id
+        objectNodeNodeLabel <- nodeNodeLabels if objectNodeNodeLabel.nodeId === objectNode.id && objectNodeNodeLabel.nodeLabelLabel =!= subjectNodeLabel.label
         objectNodeLabel <- objectNodeNodeLabel.nodeLabel
-        subjectNodeLabel <- subjectNodeNodeLabel.nodeLabel
-      } yield (objectNodeLabel.label, subjectNodeLabel.label)).result
+      } yield (subjectNodeLabel.label, objectNodeLabel.label)).result
 
-      val nodeLabelEdgeInserts = runSyncTransaction(nodeLabelEdgeNodeLabelsQuery).map {
-        case (objectNodeLabelLabel, subjectNodeLabelLabel) =>
-          sqlu"INSERT INTO #${nodeLabelEdges.baseTableRow.tableName} (object_node_label_label, subject_node_label_label) VALUES ($objectNodeLabelLabel, $subjectNodeLabelLabel) ON CONFLICT DO NOTHING;"
-      }
-
-      runSyncTransaction(DBIO.sequence(nodeLabelEdgeInserts))
+      for {
+        nodeLabelEdgePairs <- nodeLabelEdgePairsAction
+        _ <- nodeLabelEdges ++= nodeLabelEdgePairs.distinct.map { case (objectNodeLabelLabel, subjectNodeLabelLabel) =>
+          NodeLabelEdgeRow(Some(0), objectNodeLabelLabel, subjectNodeLabelLabel)
+        }
+      } yield ()
     }
 
-    private def writeNodeLabelEdgeSources: Unit = {
-      val objectNodeLabelEdgeSourcesQuery = (for {
+    private def writeNodeLabelEdgeSourcesAction = {
+      val objectNodeLabelEdgeSourcesQuery = for {
         nodeLabelEdge <- nodeLabelEdges
         objectNodeLabel <- nodeLabelEdge.objectNodeLabel
         objectNodeLabelSourceSource <- nodeLabelSources if objectNodeLabelSourceSource.nodeLabelLabel === objectNodeLabel.label
         objectNodeLabelSource <- objectNodeLabelSourceSource.source
-      } yield (nodeLabelEdge.id, objectNodeLabelSource.id))
+      } yield (nodeLabelEdge.id, objectNodeLabelSource.id)
 
-      val subjectNodeLabelEdgeSourcesQuery = (for {
+      val subjectNodeLabelEdgeSourcesQuery = for {
         nodeLabelEdge <- nodeLabelEdges
         subjectNodeLabel <- nodeLabelEdge.subjectNodeLabel
         subjectNodeLabelSourceSource <- nodeLabelSources if subjectNodeLabelSourceSource.nodeLabelLabel === subjectNodeLabel.label
         subjectNodeLabelSource <- subjectNodeLabelSourceSource.source
-      } yield (nodeLabelEdge.id, subjectNodeLabelSource.id))
+      } yield (nodeLabelEdge.id, subjectNodeLabelSource.id)
 
       val nodeLabelEdgeSourcesAction = (objectNodeLabelEdgeSourcesQuery ++ subjectNodeLabelEdgeSourcesQuery).result
 
-      runSyncTransaction(for {
+      for {
         nodeLabelEdgeSourcesResult <- nodeLabelEdgeSourcesAction
-        _ <- nodeLabelEdgeSources.insertOrUpdateAll(nodeLabelEdgeSourcesResult)
-      } yield ())
+        _ <- nodeLabelEdgeSources.insertOrUpdateAll(nodeLabelEdgeSourcesResult.map {
+          case (edgeId, sourceId) => NodeLabelEdgeSourceRow(edgeId, sourceId)
+        })
+      } yield ()
     }
   }
 
