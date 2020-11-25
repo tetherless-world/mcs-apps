@@ -133,13 +133,16 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
   override def getNodeLabel(label: String): Option[KgNodeLabel] = {
     val nodeLabelQuery = nodeLabels.filter(_.label === label)
 
-    val nodeLabelAction = nodeLabels.withNodeSource(nodeLabelQuery).result
+    val nodeLabelAction = nodeLabels.withSourceNode(nodeLabelQuery).map {
+      case (nodeLabel, source, nodeLabelNode, nodeLabelNodeSource, nodeLabelNodeLabel) =>
+        (nodeLabel, source.id, nodeLabelNode, nodeLabelNodeSource.id, nodeLabelNodeLabel.label)
+    }.result
 
     toKgNodeLabels(runSyncTransaction(nodeLabelAction)).headOption
   }
 
   override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
-  
+
   override def getSourcesById: Map[String, KgSource] = {
     runSyncTransaction(sources.result).map(source => (source.id, source.toKgSource)).toMap
   }
