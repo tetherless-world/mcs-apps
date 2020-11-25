@@ -139,11 +139,7 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
   }
 
   override def getNodeLabelContext(label: String): Option[KgNodeLabelContext] = None
-
-  override def getPath(id: String): Option[KgPath] = None
-
-  override def getRandomNode: KgNode = KgNode("", None, List(), None, None, None, List(), None)
-
+  
   override def getSourcesById: Map[String, KgSource] = {
     runSyncTransaction(sources.result).map(source => (source.id, source.toKgSource)).toMap
   }

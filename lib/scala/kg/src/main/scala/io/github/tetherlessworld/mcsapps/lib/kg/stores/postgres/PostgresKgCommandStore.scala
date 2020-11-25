@@ -104,8 +104,6 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     override final def putNodes(nodes: Iterator[KgNode]): Unit =
       runSyncTransaction(DBIO.sequence(batchedNodeInserts(nodes)))
 
-    override final def putPaths(paths: Iterator[KgPath]): Unit = Unit
-
     override final def putSources(sources: Iterator[KgSource]): Unit =
       runSyncTransaction(DBIO.sequence(batchedSourceInserts(sources)))
 
