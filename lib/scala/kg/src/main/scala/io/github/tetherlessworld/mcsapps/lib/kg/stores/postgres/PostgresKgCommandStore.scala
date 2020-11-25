@@ -111,7 +111,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     private def writeNodeLabelEdgesAction = {
       val nodeLabelEdgePairsAction = (for {
-        (subjectNodeLabel, node) <- nodeLabels.withNodes
+        (subjectNodeLabel, node) <- nodeLabels.withNodes()
         edge <- edges if edge.subjectNodeId === node.id
         objectNode <- edge.objectNode
         objectNodeNodeLabel <- nodeNodeLabels if objectNodeNodeLabel.nodeId === objectNode.id && objectNodeNodeLabel.nodeLabelLabel =!= subjectNodeLabel.label

@@ -15,34 +15,44 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
   protected val SentencesDelimChar = '|'
   protected val SentencesDelimString: String = SentencesDelimChar.toString
 
+  protected val NodeContextTopEdgesLimit = 10
+  protected val NodeLabelContextTopEdgesLimit = 10
+
   protected lazy val edges = TableQuery[EdgeTable]
   protected lazy val edgeLabels = TableQuery[EdgeLabelTable]
   protected lazy val edgeSources = TableQuery[EdgeSourceTable]
   protected object nodes extends TableQuery(new NodeTable(_)) {
-    def withNodeLabels = for {
-      ((node, _), nodeLabel) <- nodes
-        .join(nodeNodeLabels).on(_.id === _.nodeId)
-          .join(nodeLabels).on(_._2.nodeLabelLabel === _.label)
-    } yield (node, nodeLabel)
+    def getById(id: String) =
+      nodes.filter(_.id === id).result.headOption
 
-    def withSources = for {
-      ((node, _), source) <- nodes
-          .join(nodeSources).on(_.id === _.nodeId)
-          .join(sources).on(_._2.sourceId === _.id)
-    } yield (node, source)
+    def withLabelSource(nodeQuery: Query[NodeTable, NodeRow, Seq] = nodes) =
+      for {
+        node <- nodeQuery
+        nodeNodeLabel <- nodeNodeLabels if nodeNodeLabel.nodeId === node.id
+        nodeLabel <- nodeNodeLabel.nodeLabel
+        nodeSource <- nodeSources if nodeSource.nodeId === node.id
+        source <- nodeSource.source
+      } yield (node, nodeLabel, source)
+
   }
   protected object nodeLabels extends TableQuery(new NodeLabelTable(_)) {
-    def withNodes = for {
-      ((nodeLabel, _), node) <- nodeLabels
+    def withNodes(nodeLabelQuery: Query[NodeLabelTable, NodeLabelRow, Seq] = nodeLabels) = for {
+      ((nodeLabel, _), node) <- nodeLabelQuery
         .join(nodeNodeLabels).on(_.label === _.nodeLabelLabel)
         .join(nodes).on(_._2.nodeId === _.id)
     } yield (nodeLabel, node)
 
-    def withSources = for {
-      ((nodeLabel, _), source) <- nodeLabels
-          .join(nodeLabelSources).on(_.label === _.nodeLabelLabel)
-          .join(sources).on(_._2.sourceId === _.id)
-    } yield (nodeLabel, source)
+    def withSourceNode(nodeLabelQuery: Query[NodeLabelTable, NodeLabelRow, Seq] = nodeLabels) =
+      for {
+        nodeLabel <- nodeLabelQuery
+        nodeNodeLabel <- nodeNodeLabels if nodeNodeLabel.nodeLabelLabel === nodeLabel.label
+        nodeLabelSource <- nodeLabelSources if nodeLabelSource.nodeLabelLabel === nodeLabel.label
+        node <- nodeNodeLabel.node
+        source <- nodeLabelSource.source
+        nodeSource <- nodeSources if nodeSource.nodeId === node.id
+        nodeNodeLabel <- nodeNodeLabel.nodeLabel
+        nodeNodeSource <- nodeSource.source
+      } yield (nodeLabel, source, node, nodeNodeSource, nodeNodeLabel)
   }
   protected lazy val nodeLabelEdges = TableQuery[NodeLabelEdgeTable]
   protected lazy val nodeLabelEdgeSources = TableQuery[NodeLabelEdgeSourceTable]
