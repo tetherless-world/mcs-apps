@@ -1,22 +1,14 @@
 package io.github.tetherlessworld.mcsapps.lib.kg.stores.mem
 
-import com.outr.lucene4s._
-import com.outr.lucene4s.facet.FacetField
-import com.outr.lucene4s.query._
-import io.github.tetherlessworld.mcsapps.lib.kg.data.TestKgData.nodes
 import io.github.tetherlessworld.mcsapps.lib.kg.formats.kgtk.KgtkEdgeWithNodes
 import io.github.tetherlessworld.mcsapps.lib.kg.models.edge.KgEdge
 import io.github.tetherlessworld.mcsapps.lib.kg.models.node.{KgNode, KgNodeContext, KgNodeLabel, KgNodeLabelContext}
-import io.github.tetherlessworld.mcsapps.lib.kg.models.path.KgPath
 import io.github.tetherlessworld.mcsapps.lib.kg.models.search.{KgSearchFacets, KgSearchQuery, KgSearchResult, KgSearchSort}
 import io.github.tetherlessworld.mcsapps.lib.kg.models.source.KgSource
 import io.github.tetherlessworld.mcsapps.lib.kg.stores._
 import javax.inject.Singleton
 
-import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
 
 @Singleton
 class MemKgStore extends KgCommandStore with KgQueryStore {
@@ -28,7 +20,6 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
       edges = List()
       nodeLabelsByLabel = Map()
       nodesById = Map()
-      pathsById = Map()
       sourcesById = Map()
 
       index.clear()
@@ -53,18 +44,24 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
       val edgesWithNodesList = edgesWithNodes.toList
       val uniqueEdges = edgesWithNodesList.map(edgeWithNodes => (edgeWithNodes.edge.id, edgeWithNodes.edge)).toMap.values.toList
-      val uniqueNodes = edgesWithNodesList.flatMap(edgeWithNodes => List((edgeWithNodes.node1.id, edgeWithNodes.node1), (edgeWithNodes.node2.id, edgeWithNodes.node2))).toMap.values.toList
-      putNodes(uniqueNodes)
+      val nodes = edgesWithNodesList.flatMap(edgeWithNodes => List(edgeWithNodes.node1, edgeWithNodes.node2))
+
+      putNodes(nodes)
       putEdges(uniqueEdges)
     }
 
-    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit = {
-      nodesById ++= nodesIterator.map(node => (node.id, node)).toList
+    final def putNode(node: KgNode): Unit = {
+      val existingNode = nodesById.get(node.id)
+
+      nodesById = nodesById + (node.id -> { if (existingNode.isDefined) {
+        existingNode.get.copy(sourceIds = existingNode.get.sourceIds.union(node.sourceIds))
+      } else {
+        node
+      }})
     }
 
-    final override def putPaths(pathsIterator: Iterator[KgPath]): Unit = {
-      pathsById ++= pathsIterator.map(path => (path.id, path)).toMap
-    }
+    final override def putNodes(nodesIterator: Iterator[KgNode]): Unit =
+      nodesIterator.foreach(putNode)
 
     private def putSourceIds(sourceIds: List[String]): Unit =
       putSources(sourceIds.map(KgSource(_)))
@@ -83,11 +80,9 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
   private val index = new MemKgIndex()
   private var nodeLabelsByLabel: Map[String, KgNodeLabel] = Map()
   private var nodesById: Map[String, KgNode] = Map()
-  private var pathsById: Map[String, KgPath] = Map()
-  private val random = new Random()
   private var sourcesById: Map[String, KgSource] = Map()
 
-  final override def beginTransaction: KgCommandStoreTransaction =
+  final override def beginTransaction(): KgCommandStoreTransaction =
     new MemKgCommandStoreTransaction
 
   final override def getNode(id: String): Option[KgNode] =
@@ -141,14 +136,8 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     })
   }
 
-  final override def getPath(id: String): Option[KgPath] =
-    pathsById.get(id)
-
   final override def getSourcesById: Map[String, KgSource] =
     sourcesById
-
-  final override def getRandomNode: KgNode =
-    nodesById.values.toList(random.nextInt(nodesById.size))
 
   final override def getTotalEdgesCount: Int =
     edges.size
@@ -157,7 +146,7 @@ class MemKgStore extends KgCommandStore with KgQueryStore {
     nodesById.size
 
   override def isEmpty: Boolean =
-    edges.isEmpty && nodesById.isEmpty && pathsById.isEmpty
+    edges.isEmpty && nodesById.isEmpty
 
   final override def search(limit: Int, offset: Int, query: KgSearchQuery, sorts: Option[List[KgSearchSort]]): List[KgSearchResult] =
     index.search(limit = limit, offset = offset, query = query, sorts = sorts)

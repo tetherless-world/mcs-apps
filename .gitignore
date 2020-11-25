@@ -1,6 +1,8 @@
 *.bloop
+/app/benchmark/public/
 /app/kg/data/import/kg/kgtk/*.tsv
 /app/kg/data/import/kg/legacy/*.csv
+/app/kg/public/
 /data/kg/*
 !/data/kg/README.md
 node_modules/

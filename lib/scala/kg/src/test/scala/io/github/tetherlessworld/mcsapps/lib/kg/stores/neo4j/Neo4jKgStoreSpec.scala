@@ -9,7 +9,12 @@ import org.slf4j.LoggerFactory
 
 class Neo4jKgStoreSpec extends WordSpec with BeforeAndAfterAll with KgCommandStoreBehaviors with KgQueryStoreBehaviors {
   val logger = LoggerFactory.getLogger(getClass)
-  val configuration = new Neo4jStoreConfiguration(commitInterval = Neo4jStoreConfiguration.CommitIntervalDefault, password = "nC1aB4mji623s2Zs", uri = "bolt://mcs-neo4j:7687", user = "neo4j")
+  val configuration =
+    new Neo4jStoreConfiguration(
+      password = "nC1aB4mji623s2Zs",
+      uri = "bolt://mcs-neo4j:7687",
+      user = "neo4j"
+    )
   val command = new Neo4jKgCommandStore(configuration)
   val query = new Neo4jKgQueryStore(configuration)
   val neo4jHostAddress = InetAddress.getByName("mcs-neo4j").getHostAddress

@@ -10,24 +10,16 @@ export class KgNodePage extends TabbedPage<KgNodePageTab> {
 
   protected getTabPath(tab: KgNodePageTab): string {
     switch (tab) {
-      case KgNodePageTab.EdgesGrid:
-        return "edges-grid";
-      case KgNodePageTab.EdgesList:
-        return "edges-list";
+      case KgNodePageTab.Edges:
+        return "edges";
       default:
         throw new EvalError();
     }
   }
 
-  gridEdgeList(predicate: string) {
+  edges(predicate: string) {
     return new KgEdgeObjectsList(
       `${this.frame.selector} [data-cy="grid-${predicate}-edges"]`
-    );
-  }
-
-  listEdgeList(predicate: string) {
-    return new KgEdgeObjectsList(
-      `${this.frame.selector} [data-cy="list-${predicate}-edges"]`
     );
   }
 
@@ -39,7 +31,7 @@ export class KgNodePage extends TabbedPage<KgNodePageTab> {
     this.nodeId
   )}`;
 
-  get source() {
-    return cy.get(this.frame.selector + " [data-cy=node-source]");
+  source(id: string) {
+    return cy.get(`${this.frame.selector} [data-cy=node-source-${id}]`);
   }
 }

@@ -24,7 +24,6 @@ trait KgCommandStoreTransaction extends AutoCloseable {
     putSources(data.sources)
     putNodes(data.nodesUnranked)
     putEdges(data.edges)
-    putPaths(data.paths)
   }
 
   /**
@@ -53,14 +52,6 @@ trait KgCommandStoreTransaction extends AutoCloseable {
    * Put the given nodes to the store
    */
   def putNodes(nodes: Iterator[KgNode]): Unit
-
-  final def putPaths(paths: Iterable[KgPath]): Unit =
-    putPaths(paths.iterator)
-
-  /**
-   * Put the given paths to the store
-   */
-  def putPaths(paths: Iterator[KgPath]): Unit
 
   /**
    * Put the given sources to the store

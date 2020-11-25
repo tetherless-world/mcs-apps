@@ -29,6 +29,33 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/kg:/data
+  kg-app-isi:
+    build:
+      args:
+        BASE_HREF: "/mcs-cskg/"
+      context: .
+      dockerfile: app/kg/Dockerfile
+    container_name: mcs-kg-app
+    environment:
+      BASE_HREF: "/mcs-cskg/"
+    image: tetherlessworld/mcs-kg-app
+    networks:
+      - mcs
+    ports:
+      - 0.0.0.0:8383:80
+    restart: unless-stopped
+    volumes:
+      - ./data/kg:/data
+  nginx-isi:
+    build:
+      context: nginx-isi
+      dockerfile: Dockerfile
+    container_name: mcs-nginx-isi
+    networks:
+      - mcs
+    ports:
+      - 127.0.0.1:8081:80
+    restart: unless-stopped
   neo4j:
     container_name: mcs-neo4j
     environment:
@@ -36,7 +63,7 @@ services:
       NEO4JLABS_PLUGINS: "[\"apoc\",\"graph-data-science\"]"
       NEO4J_dbms_memory_pagecache_size: "8G"
       NEO4J_dbms_memory_heap_max__size: "8G"
-    image: library/neo4j:4.0.4
+    image: neo4j:4.0.4
     networks:
       - mcs
     ports:
@@ -45,9 +72,7 @@ services:
     restart: unless-stopped
     volumes:
       - neo4j-data:/data
-      - neo4j-logs:/logs
-      - neo4j-import:/var/lib/neo4j/import
-      - neo4j-plugins:/plugins
+
   postgres:
     container_name: mcs-postgres
     environment:
@@ -65,7 +90,3 @@ services:
 
 volumes:
   neo4j-data:
-  neo4j-import:
-  neo4j-logs:
-  neo4j-plugins:
-  postgres-data:

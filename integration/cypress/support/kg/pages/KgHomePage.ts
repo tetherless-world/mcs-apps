@@ -6,5 +6,5 @@ export class KgHomePage extends Page {
     return new KgSearchBox(this.frame.bodySelector);
   }
 
-  readonly relativeUrl: string = "/";
+  readonly relativeUrl: string = "/kg/cskg/";
 }

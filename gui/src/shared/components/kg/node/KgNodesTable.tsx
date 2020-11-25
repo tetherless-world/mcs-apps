@@ -4,9 +4,10 @@ import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import {List, ListItem, ListItemText} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
+import {HrefsContext} from "shared/HrefsContext";
 
 export const KgNodesTable: React.FunctionComponent<{
   allSources: readonly KgSource[];
@@ -18,6 +19,9 @@ export const KgNodesTable: React.FunctionComponent<{
     sourceIds: readonly string[];
   }[];
 }> = ({allSources, nodes}) => {
+  const history = useHistory();
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   const columns: MUIDataTableColumn[] = React.useMemo(
     () => [
       {
@@ -43,7 +47,7 @@ export const KgNodesTable: React.FunctionComponent<{
               <Link
                 data-cy="node-link"
                 title={id}
-                to={Hrefs.kg({id: kgId}).node({id})}
+                to={hrefs.kg({id: kgId}).node({id})}
               >
                 {id}
               </Link>
@@ -58,14 +62,14 @@ export const KgNodesTable: React.FunctionComponent<{
           sort: true,
           customBodyRender(labels, tableMeta) {
             return (
-              <List>
-                {labels.split("|").map((label) => (
+              <List data-cy="node-labels">
+                {labels.split("|").map((label: string) => (
                   <ListItem key={label}>
                     <ListItemText>
                       <Link
                         data-cy="node-label-link"
                         title={label}
-                        to={Hrefs.kg({id: kgId}).nodeLabel({label})}
+                        to={hrefs.kg({id: kgId}).nodeLabel({label})}
                       >
                         {label}
                       </Link>
@@ -100,10 +104,19 @@ export const KgNodesTable: React.FunctionComponent<{
             return sourceIds
               ? sourceIds
                   .split("|")
-                  .map((sourceId) => resolveSourceId({allSources, sourceId}))
-                  .map((source, sourceIndex) => (
+                  .map((sourceId: string) =>
+                    resolveSourceId({allSources, sourceId})
+                  )
+                  .map((source: KgSource, sourceIndex: number) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
-                      <KgSourcePill source={source} />
+                      <KgSourcePill
+                        onClick={() => {
+                          history.push(
+                            hrefs.kg({id: kgId}).source({sourceId: source.id})
+                          );
+                        }}
+                        source={source}
+                      />
                       <br />
                     </span>
                   ))
@@ -135,11 +148,14 @@ export const KgNodesTable: React.FunctionComponent<{
         columns={columns}
         data={data}
         options={{
+          filter: false,
           download: false,
+          print: false,
           rowsPerPage: 15,
+          search: false,
           selectableRows: "none",
           setRowProps(_, rowIndex) {
-            return {"data-cy": "node-" + rowIndex};
+            return {"data-cy": "node-row-" + rowIndex};
           },
         }}
         title={""}

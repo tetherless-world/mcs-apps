@@ -72,49 +72,43 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           }
         }
 
-        final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit = {
-          val edgesWithNodesList = edgesWithNodes.toList
-          // Neo4j doesn't tolerate duplicate nodes
-          val putNodeIds = new mutable.HashSet[String]
-          putSources(edgesWithNodesList.flatMap(_.sources).distinct.map(KgSource(_)))
-          for (edgeWithNodes <- edgesWithNodesList) {
-            if (putNodeIds.add(edgeWithNodes.node1.id)) {
-              putNode(edgeWithNodes.node1)
-            }
-            if (putNodeIds.add(edgeWithNodes.node2.id)) {
-              putNode(edgeWithNodes.node2)
-            }
+        final override def putKgtkEdgesWithNodes(edgesWithNodes: Iterator[KgtkEdgeWithNodes]): Unit =
+          edgesWithNodes.foreach { edgeWithNodes =>
+            putNode(edgeWithNodes.node1)
+            putNode(edgeWithNodes.node2)
             putEdge(edgeWithNodes.edge)
           }
-        }
 
         final def putNode(node: KgNode): Unit = {
           transaction.run(
-            s"CREATE (:${NodeLabel} { id: $$id, labels: $$labels, pos: $$pos, sources: $$sources, type: $$type, wordNetSenseNumber: $$wordNetSenseNumber });",
+            s"""MERGE (node:${NodeLabel} { id: $$id })
+               |ON CREATE SET node += { labels: $$labels, pos: $$pos, type: $$type, wordNetSenseNumber: $$wordNetSenseNumber };
+               |""".stripMargin,
             toTransactionRunParameters(Map(
               "id" -> node.id,
               "labels" -> node.labels.mkString(ListDelimString),
               "pos" -> node.pos.getOrElse(null),
-              "sources" -> node.sourceIds.mkString(ListDelimString),
               "type" -> KgSearchResultType.Node.value,
               "wordNetSenseNumber" -> node.wordNetSenseNumber.getOrElse(null)
             ))
           )
-          // Store sources as a delimited list on the node so they can be retrieved accurately
           // In order to do filtering on individual sources we need to break them out as nodes.
           // This is the standard way of doing multi-valued properties in neo4j: make the values
           // separate nodes and connect to them.
           // See #168.
-          for (sourceId <- node.sourceIds) {
+          for (source <- node.sourceIds.map(KgSource(_))) {
             transaction.run(
-              s"""
-                 |MATCH (source:${SourceLabel}), (node:${NodeLabel})
-                 |WHERE node.id = $$nodeId AND source.id = $$sourceId
-                 |CREATE (node)-[:${SourceRelationshipType}]->(source)
+              s"""MATCH (node:${NodeLabel} {id: $$nodeId})
+                 |MERGE (source:${SourceLabel} {id: $$sourceId})
+                 |ON CREATE SET source += { label: $$sourceLabel, labels: $$sourceLabel, sources: $$sourceId, type: $$sourceType }
+                 |MERGE (node)-[:${SourceRelationshipType}]->(source)
                  |""".stripMargin,
               toTransactionRunParameters(Map(
+                "listDelim" -> ListDelimString,
                 "nodeId" -> node.id,
-                "sourceId" -> sourceId
+                "sourceId" -> source.id,
+                "sourceLabel" -> source.label,
+                "sourceType" -> KgSearchResultType.Source.value
               ))
             )
           }
@@ -123,7 +117,8 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             transaction.run(
               s"""
                  |MATCH (node:${NodeLabel} {id:$$nodeId})
-                 |MERGE (label:${LabelLabel} {id:$$labelId, label:$$labelId, labels:$$labelId, type:$$type})
+                 |MERGE (label:${LabelLabel} {id:$$labelId})
+                 |ON CREATE SET label += { label: $$labelId, labels: $$labelId, type: $$type }
                  |MERGE (node)-[:${LabelRelationshipType}]->(label)
                  |""".stripMargin,
               toTransactionRunParameters(Map(
@@ -135,35 +130,8 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           }
         }
 
-        final override def putNodes(nodes: Iterator[KgNode]): Unit = {
-          val nodesList = nodes.toList
-          putSources(nodesList.flatMap(_.sourceIds).distinct.map(KgSource(_)))
-          for (node <- nodesList) {
-            putNode(node)
-          }
-        }
-
-        final override def putPaths(paths: Iterator[KgPath]): Unit =
-          for (path <- paths) {
-            for (pathEdgeWithIndex <- path.edges.zipWithIndex) {
-              val (pathEdge, pathEdgeIndex) = pathEdgeWithIndex
-              transaction.run(
-                s"""
-                   |MATCH (subject:${NodeLabel}), (object: ${NodeLabel})
-                   |WHERE subject.id = $$subject AND object.id = $$object
-                   |CREATE (subject)-[path:${PathRelationshipType} {id: $$pathId, pathEdgeIndex: $$pathEdgeIndex, pathEdgePredicate: $$pathEdgePredicate, sources: $$sources}]->(object)
-                   |""".stripMargin,
-                toTransactionRunParameters(Map(
-                  "object" -> pathEdge.`object`,
-                  "pathEdgeIndex" -> pathEdgeIndex,
-                  "pathEdgePredicate" -> pathEdge.predicate,
-                  "pathId" -> path.id,
-                  "sources" -> path.sourceIds.mkString(ListDelimString),
-                  "subject" -> pathEdge.subject
-                ))
-              )
-            }
-          }
+        final override def putNodes(nodes: Iterator[KgNode]): Unit =
+          nodes.foreach(putNode)
 
         final override def putSources(sources: Iterator[KgSource]): Unit =
           for (source <- sources) {
@@ -179,7 +147,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
             )
           }
 
-        final def writeLabelEdgeSources: Unit = {
+        final def writeLabelEdgeSources(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -196,7 +164,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeLabelPageRanks: Unit = {
+        final def writeLabelPageRanks(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -212,7 +180,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeLabelSources: Unit = {
+        final def writeLabelSources(): Unit = {
           if (!transaction.run(s"MATCH (n: ${LabelLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -232,7 +200,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeNodeDegrees: Unit = {
+        final def writeNodeDegrees(): Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -258,7 +226,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
           )
         }
 
-        final def writeNodePageRanks: Unit = {
+        final def writeNodePageRanks(): Unit = {
           if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
             return
           }
@@ -271,6 +239,23 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
                |writeProperty: 'pageRank'
                |})
                |""".stripMargin
+          )
+        }
+
+        // Store sources as a delimited list on the node so they can be retrieved accurately
+        final def writeNodeSources(): Unit = {
+          if (!transaction.run(s"MATCH (n: ${NodeLabel}) RETURN n LIMIT 1").hasNext) {
+            return
+          }
+
+          transaction.run(
+            s"""MATCH (node: ${NodeLabel})-[:${SourceRelationshipType}]->(source: ${SourceLabel})
+               |WITH node, COLLECT(DISTINCT source.id) as sources
+               |SET node.sources = apoc.text.join(sources, $$listDelim);
+               |""".stripMargin,
+            toTransactionRunParameters(Map(
+              "listDelim" -> ListDelimString
+            ))
           )
         }
       }
@@ -291,11 +276,16 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     }
 
     final override def close(): Unit = {
-      writeNodeDegrees
-      writeNodePageRanks
-      writeLabelPageRanks
-      writeLabelSources
-      writeLabelEdgeSources
+      writeNodeSources()
+      if (configuration.enableDegreeCalculation) {
+        writeNodeDegrees()
+      }
+      if (configuration.enablePageRankCalculation) {
+        writeNodePageRanks()
+        writeLabelPageRanks()
+      }
+      writeLabelSources()
+      writeLabelEdgeSources()
     }
 
     final override def putEdges(edges: Iterator[KgEdge]): Unit =
@@ -357,49 +347,50 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
       }
       }
 
-    final override def putPaths(paths: Iterator[KgPath]): Unit =
-      putModelsBatched(paths) { (paths, transaction) => {
-        transaction.putPaths(paths)
-      }
-      }
-
     final override def putSources(sources: Iterator[KgSource]): Unit =
       withWriteTransaction { transaction =>
         transaction.putSources(sources)
         transaction.commit()
       }
 
-    private def writeLabelEdgeSources: Unit = {
+    private def writeLabelEdgeSources(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelEdgeSources
         transaction.commit()
       }
     }
 
-    private def writeLabelPageRanks: Unit = {
+    private def writeLabelPageRanks(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelPageRanks
         transaction.commit()
       }
     }
 
-    private def writeLabelSources: Unit = {
+    private def writeLabelSources(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeLabelSources
         transaction.commit()
       }
     }
 
-    private def writeNodeDegrees: Unit = {
+    private def writeNodeDegrees(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodeDegrees
         transaction.commit()
       }
     }
 
-    private def writeNodePageRanks: Unit = {
+    private def writeNodePageRanks(): Unit = {
       withWriteTransaction { transaction =>
         transaction.writeNodePageRanks
+        transaction.commit()
+      }
+    }
+
+    private def writeNodeSources(): Unit = {
+      withWriteTransaction { transaction =>
+        transaction.writeNodeSources
         transaction.commit()
       }
     }
@@ -448,7 +439,7 @@ final class Neo4jKgCommandStore @Inject()(configuration: Neo4jStoreConfiguration
     }
   }
 
-  override def beginTransaction: KgCommandStoreTransaction =
+  override def beginTransaction(): KgCommandStoreTransaction =
     new Neo4jKgCommandStoreTransaction
 
   private def withWriteTransaction[V](f: Transaction => V): V =

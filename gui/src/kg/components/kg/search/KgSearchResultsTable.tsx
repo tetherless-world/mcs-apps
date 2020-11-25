@@ -10,6 +10,10 @@ import {KgSearchResultLink} from "shared/components/kg/search/KgSearchResultLink
 import {getKgSearchResultLabel} from "shared/models/kg/search/getKgSearchResultLabel";
 import {getKgSearchResultSourceIds} from "shared/models/kg/search/getKgSearchResultSourceIds";
 import {resolveSourceId} from "shared/models/kg/source/resolveSourceId";
+import {kgId} from "shared/api/kgId";
+import {useHistory} from "react-router-dom";
+import {Hrefs} from "shared/Hrefs";
+import {HrefsContext} from "shared/HrefsContext";
 
 // const showListAsColumn = (list: string[]) =>
 //   list.map((item) => (
@@ -40,6 +44,9 @@ export const KgSearchResultsTable: React.FunctionComponent<{
   rowsPerPage,
   title,
 }) => {
+  const history = useHistory();
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   // https://github.com/gregnb/mui-datatables/issues/756
   // Since the MUIDataTable has its own state, it ignores passed in values
   // for page and rowsPerPage
@@ -150,11 +157,20 @@ export const KgSearchResultsTable: React.FunctionComponent<{
             return sourceIds
               ? sourceIds
                   .split("|")
-                  .map((sourceId) => resolveSourceId({allSources, sourceId}))
-                  .map((source, sourceIndex) => (
+                  .map((sourceId: string) =>
+                    resolveSourceId({allSources, sourceId})
+                  )
+                  .map((source: KgSource, sourceIndex: number) => (
                     <span data-cy={`source-${sourceIndex}`} key={source.id}>
-                      <KgSourcePill source={source} />
-                      <br />
+                      <KgSourcePill
+                        idOnly={true}
+                        onClick={() => {
+                          history.push(
+                            hrefs.kg({id: kgId}).source({sourceId: source.id})
+                          );
+                        }}
+                        source={source}
+                      />
                     </span>
                   ))
               : null;
@@ -201,6 +217,8 @@ export const KgSearchResultsTable: React.FunctionComponent<{
           onChangePage,
           onChangeRowsPerPage,
           onColumnSortChange,
+          print: false,
+          search: false,
           selectableRows: "none",
           serverSide: true,
           setRowProps(_, rowIndex) {

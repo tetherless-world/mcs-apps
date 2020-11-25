@@ -1,10 +1,10 @@
 import {Hrefs as SharedHrefs} from "shared/Hrefs";
 
 export class BenchmarkHrefs extends SharedHrefs {
-  static benchmarks = `/benchmark/`;
-  static benchmark(kwds: {id: string; idEncoded?: boolean}) {
+  readonly benchmarks = `${this.base}benchmark/`;
+  benchmark(kwds: {id: string; idEncoded?: boolean}) {
     const benchmarkId = kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id);
-    const benchmarkPrefix = `${BenchmarkHrefs.benchmarks}${benchmarkId}/`;
+    const benchmarkPrefix = `${this.benchmarks}${benchmarkId}/`;
     return {
       get home() {
         return benchmarkPrefix;

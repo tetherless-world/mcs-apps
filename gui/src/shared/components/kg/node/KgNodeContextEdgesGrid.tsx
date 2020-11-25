@@ -16,11 +16,13 @@ import {
   KgNodeContextTopEdge,
 } from "shared/models/kg/node/KgNodeContext";
 import {resolveSourceIds} from "shared/models/kg/source/resolveSourceIds";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {Hrefs} from "shared/Hrefs";
 import {kgId} from "shared/api/kgId";
 import {KgSourcePill} from "shared/components/kg/source/KgSourcePill";
 import MUIDataTable, {MUIDataTableColumnDef} from "mui-datatables";
+import {HrefsContext} from "shared/HrefsContext";
+import {makeStyles} from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   overrides: {
@@ -31,6 +33,20 @@ const theme = createMuiTheme({
     },
   } as any,
 });
+
+const useStyles = makeStyles((theme) => ({
+  nodeLabelCell: {
+    marginBottom: "0 !important",
+    paddingBottom: "0 !important",
+    paddingRight: "0 !important",
+    paddingTop: "0 !important",
+  },
+  sourceIdsCell: {
+    marginBottom: "0 !important",
+    padding: "0 !important",
+    width: "auto",
+  },
+}));
 
 // for (const objectNodeLabel of objectNodeLabels) {
 //   if (
@@ -50,6 +66,10 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
   allSources: readonly KgSource[];
   nodeContext: KgNodeContext;
 }> = ({allSources, nodeContext}) => {
+  const classes = useStyles();
+  const history = useHistory();
+  const hrefs = React.useContext<Hrefs>(HrefsContext);
+
   const relatedNodeLabelsByNodeId: {
     [index: string]: KgNodeContextRelatedNodeLabel[];
   } = React.useMemo(() => {
@@ -101,15 +121,18 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
             <Link
               data-cy="node-label-link"
               title={nodeLabel}
-              to={Hrefs.kg({id: kgId}).nodeLabel({
+              to={hrefs.kg({id: kgId}).nodeLabel({
                 label: nodeLabel,
               })}
             >
-              <span style={{marginRight: "5px"}}>{nodeLabel}</span>
+              <span>{nodeLabel}</span>
             </Link>
           );
         },
         customHeadRender: () => null,
+        setCellProps: () => ({
+          className: classes.nodeLabelCell,
+        }),
       },
     },
     {
@@ -128,6 +151,11 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
                   <KgSourcePill
                     idOnly={true}
                     key={source.id}
+                    onClick={() => {
+                      history.push(
+                        hrefs.kg({id: kgId}).source({sourceId: source.id})
+                      );
+                    }}
                     source={source}
                     size="small"
                   />
@@ -137,6 +165,9 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
           );
         },
         customHeadRender: () => null,
+        setCellProps: () => ({
+          className: classes.sourceIdsCell,
+        }),
       },
     },
   ];
@@ -196,7 +227,12 @@ export const KgNodeContextEdgesGrid: React.FunctionComponent<{
                         fixedHeader: false,
                         fixedSelectColumn: false,
                         pagination: data.length > 10,
+                        rowsPerPageOptions: [],
                         selectableRows: "none",
+                        setTableProps: () => ({
+                          // padding: "none",
+                          size: "small",
+                        }),
                       }}
                       title={""}
                     />

@@ -2,17 +2,11 @@ import * as React from "react";
 
 import {useLocation} from "react-router-dom";
 
-import {KgFrame} from "kg/components/frame/KgFrame";
-
 export const KgNoRoute: React.FunctionComponent = () => {
   const location = useLocation();
   return (
-    <KgFrame data={{kgById: {sources: []}}} loading={false}>
-      {({data}) => (
-        <h3>
-          <code>{location.pathname}</code>
-        </h3>
-      )}
-    </KgFrame>
+    <h3>
+      No such page: <code>{location.pathname}</code>
+    </h3>
   );
 };

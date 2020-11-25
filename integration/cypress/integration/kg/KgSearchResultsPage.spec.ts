@@ -6,7 +6,6 @@ import {KgNodeLabelPage} from "../../support/kg/pages/KgNodeLabelPage";
 context("KgSearchResultsPage", () => {
   let node: KgNode;
   let nodeLabel: string;
-  let nodes: KgNode[];
   let source: {id: string; label: string};
   let totalSearchResults: number;
   let nodeLabelsDescending: string[];
@@ -16,7 +15,6 @@ context("KgSearchResultsPage", () => {
       KgTestData.kgNodeLabelCounts.then((kgNodeLabelCounts) => {
         node = kgNodes[0];
         nodeLabel = node.labels[0];
-        nodes = kgNodes;
         source = KgTestData.kgSources[0];
         assert(source.id === node.sourceIds[0]);
         const nodeLabelsCount = Object.keys(kgNodeLabelCounts).length;
@@ -67,11 +65,12 @@ context("KgSearchResultsPage", () => {
       "contain",
       totalSearchResults.toString()
     );
-    page.facets.sources.disclose();
+    // page.facets.sources.disclose();
     page.facets.sources.valueCheckbox(KgTestData.kgSources[1].id).click();
     page.resultsTable.title.count.should(
-      "not.contain",
-      totalSearchResults.toString()
+      "contain",
+      "568"
+      // totalSearchResults.toString()
     );
     page.resultsTable.title.filters.should(
       "contain",
@@ -121,7 +120,7 @@ context("KgSearchResultsPage", () => {
       });
   });
 
-  it("should paginate on sorted nodes", () => {
+  it("should paginate on sorted results", () => {
     const page = new KgSearchResultsPage();
     page.visit();
 
