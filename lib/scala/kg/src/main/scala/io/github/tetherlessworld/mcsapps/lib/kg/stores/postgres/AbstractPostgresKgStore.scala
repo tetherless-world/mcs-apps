@@ -156,31 +156,33 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def * = (label, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
   }
 
-  protected final case class NodeLabelEdgeRow(pageRank: Option[Int], objectNodeLabelLabel: String, subjectNodeLabelLabel: String)
+  protected final case class NodeLabelEdgeRow(objectNodeLabelLabel: String, subjectNodeLabelLabel: String)
   protected final class NodeLabelEdgeTable(tag: Tag) extends Table[NodeLabelEdgeRow](tag, "node_label_edge") {
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def objectNodeLabelLabel = column[String]("object_node_label_label")
     def subjectNodeLabelLabel = column[String]("subject_node_label_label")
 
-    def * = (id.?, objectNodeLabelLabel, subjectNodeLabelLabel) <> (NodeLabelEdgeRow.tupled, NodeLabelEdgeRow.unapply)
+    def * = (objectNodeLabelLabel, subjectNodeLabelLabel) <> (NodeLabelEdgeRow.tupled, NodeLabelEdgeRow.unapply)
 
     def objectNodeLabel = foreignKey("object_node_label_fk", objectNodeLabelLabel, nodeLabels)(_.label)
     def subjectNodeLabel = foreignKey("subject_node_label_fk", subjectNodeLabelLabel, nodeLabels)(_.label)
 
+    def pk = primaryKey("node_label_edge_pk", (objectNodeLabelLabel, subjectNodeLabelLabel))
+
     def unique_constraint = index("node_label_edge_unique_idx", (objectNodeLabelLabel, subjectNodeLabelLabel), unique = true)
   }
 
-  protected final case class NodeLabelEdgeSourceRow(nodeLabelEdgeId: Int, sourceId: String)
+  protected final case class NodeLabelEdgeSourceRow(nodeLabelEdgeObjectNodeLabelLabel: String, nodeLabelEdgeSubjectNodeLabelLabel: String, sourceId: String)
   protected final class NodeLabelEdgeSourceTable(tag: Tag) extends Table[NodeLabelEdgeSourceRow](tag, "node_label_edge_x_source") {
-    def nodeLabelEdgeId = column[Int]("node_label_edge_id")
+    def nodeLabelEdgeObjectNodeLabelLabel = column[String]("node_node_label_edge_object_node_label_label")
+    def nodeLabelEdgeSubjectNodeLabelLabel = column[String]("subject_node_label_edge_subject_node_label_label")
     def sourceId = column[String]("source_id")
 
-    def * = (nodeLabelEdgeId, sourceId) <> (NodeLabelEdgeSourceRow.tupled, NodeLabelEdgeSourceRow.unapply)
+    def * = (nodeLabelEdgeObjectNodeLabelLabel, nodeLabelEdgeSubjectNodeLabelLabel, sourceId) <> (NodeLabelEdgeSourceRow.tupled, NodeLabelEdgeSourceRow.unapply)
 
-    def nodeLabelEdge = foreignKey("node_label_edge_fk", nodeLabelEdgeId, nodeLabelEdges)(_.id)
+    def nodeLabelEdge = foreignKey("node_label_edge_fk", (nodeLabelEdgeObjectNodeLabelLabel, nodeLabelEdgeSubjectNodeLabelLabel), nodeLabelEdges)(nodeLabelEdgeTable => (nodeLabelEdgeTable.objectNodeLabelLabel, nodeLabelEdgeTable.subjectNodeLabelLabel))
     def source = foreignKey("source_fk", sourceId, sources)(_.id)
 
-    def pk = primaryKey("node_label_edge_source_pk", (nodeLabelEdgeId, sourceId))
+    def pk = primaryKey("node_label_edge_source_pk", (nodeLabelEdgeObjectNodeLabelLabel, nodeLabelEdgeSubjectNodeLabelLabel, sourceId))
   }
 
   protected final case class NodeLabelSourceRow(nodeLabelLabel: String, sourceId: String)

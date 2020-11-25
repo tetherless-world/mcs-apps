@@ -121,7 +121,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       for {
         nodeLabelEdgePairs <- nodeLabelEdgePairsAction
         _ <- nodeLabelEdges ++= nodeLabelEdgePairs.distinct.map { case (objectNodeLabelLabel, subjectNodeLabelLabel) =>
-          NodeLabelEdgeRow(Some(0), objectNodeLabelLabel, subjectNodeLabelLabel)
+          NodeLabelEdgeRow(objectNodeLabelLabel, subjectNodeLabelLabel)
         }
       } yield ()
     }
@@ -132,21 +132,21 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
         objectNodeLabel <- nodeLabelEdge.objectNodeLabel
         objectNodeLabelSourceSource <- nodeLabelSources if objectNodeLabelSourceSource.nodeLabelLabel === objectNodeLabel.label
         objectNodeLabelSource <- objectNodeLabelSourceSource.source
-      } yield (nodeLabelEdge.id, objectNodeLabelSource.id)
+      } yield (nodeLabelEdge.objectNodeLabelLabel, nodeLabelEdge.subjectNodeLabelLabel, objectNodeLabelSource.id)
 
       val subjectNodeLabelEdgeSourcesQuery = for {
         nodeLabelEdge <- nodeLabelEdges
         subjectNodeLabel <- nodeLabelEdge.subjectNodeLabel
         subjectNodeLabelSourceSource <- nodeLabelSources if subjectNodeLabelSourceSource.nodeLabelLabel === subjectNodeLabel.label
         subjectNodeLabelSource <- subjectNodeLabelSourceSource.source
-      } yield (nodeLabelEdge.id, subjectNodeLabelSource.id)
+      } yield (nodeLabelEdge.objectNodeLabelLabel, nodeLabelEdge.subjectNodeLabelLabel, subjectNodeLabelSource.id)
 
       val nodeLabelEdgeSourcesAction = (objectNodeLabelEdgeSourcesQuery ++ subjectNodeLabelEdgeSourcesQuery).result
 
       for {
         nodeLabelEdgeSourcesResult <- nodeLabelEdgeSourcesAction
         _ <- nodeLabelEdgeSources.insertOrUpdateAll(nodeLabelEdgeSourcesResult.map {
-          case (edgeId, sourceId) => NodeLabelEdgeSourceRow(edgeId, sourceId)
+          case (edgeObjectLabel, edgeSubjectLabel, sourceId) => NodeLabelEdgeSourceRow(edgeObjectLabel, edgeSubjectLabel, sourceId)
         })
       } yield ()
     }
