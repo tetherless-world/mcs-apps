@@ -74,12 +74,12 @@ jobs:
       - run:
           name: Build
           command: |
-            docker-compose build kg-app neo4j
+            docker-compose build kg-app neo4j postgres
       - run:
           name: Run
           background: true
           command: |
-            docker-compose up --abort-on-container-exit kg-app neo4j
+            docker-compose up --abort-on-container-exit kg-app neo4j postgres
       - run:
           name: Wait for the server to start
           command: |
@@ -103,6 +103,15 @@ jobs:
         environment:
           NEO4J_AUTH: neo4j/nC1aB4mji623s2Zs
           NEO4JLABS_PLUGINS: '["apoc","graph-data-science"]'
+      - image: library/postgres:12.4
+        auth:
+          username: $DOCKER_ID
+          password: $DOCKER_PASSWORD
+        name: mcs-postgres
+        environment:
+          POSTGRES_USER: "mcs"
+          POSTGRES_PASSWORD: "7EAdu7jJvZNxxrNZ"
+          POSTGRES_DB: "kg"
     steps:
       - attach_workspace:
           at: /tmp/workspace

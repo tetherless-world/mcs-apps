@@ -46,11 +46,15 @@ lazy val kgLib =
     .settings(
       libraryDependencies ++= Seq(
         // Implement search in the MemStore (and thus the TestStore)
+        "com.github.tminglei" %% "slick-pg" % "0.19.3",
         "com.outr" %% "lucene4s" % "1.9.1",
+        "com.typesafe.slick" %% "slick" % "3.3.3",
+        "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
         "io.github.tetherless-world" %% "twxplore-base" % twxploreVersion,
         "io.github.tetherless-world" %% "twxplore-test" % twxploreVersion % Test,
         "me.tongfei" % "progressbar" % "0.8.1",
-        "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1"
+        "org.neo4j.driver" % "neo4j-java-driver" % "4.0.1",
+        "org.postgresql" % "postgresql" % "42.2.18"
       ),
       maintainer := maintainerValue,
       name := "mcs-kg-lib"
