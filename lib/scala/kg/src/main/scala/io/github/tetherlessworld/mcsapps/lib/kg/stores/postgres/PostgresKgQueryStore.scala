@@ -92,7 +92,7 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
       val relatedNodeLabelQuery = (relatedObjectNodeLabelQuery ++ relatedSubjectNodeLabelQuery)
       val relatedNodeLabelWithNodeSourceAction = nodeLabels.withSourceNode(relatedNodeLabelQuery).map {
         case (nodeLabel, source, nodeLabelNode, nodeLabelNodeSource, nodeLabelNodeLabel) =>
-          (nodeLabel, source.id, nodeLabelNode, nodeLabelNodeSource.id, nodeLabelNodeLabel.label)
+          (nodeLabel, source.id, nodeLabelNode, nodeLabelNodeLabel.label, nodeLabelNodeSource.id)
       }.result
       
       val relatedNodeLabels = toKgNodeLabels(runSyncTransaction(relatedNodeLabelWithNodeSourceAction)).toList
@@ -135,7 +135,7 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
 
     val nodeLabelAction = nodeLabels.withSourceNode(nodeLabelQuery).map {
       case (nodeLabel, source, nodeLabelNode, nodeLabelNodeSource, nodeLabelNodeLabel) =>
-        (nodeLabel, source.id, nodeLabelNode, nodeLabelNodeSource.id, nodeLabelNodeLabel.label)
+        (nodeLabel, source.id, nodeLabelNode, nodeLabelNodeLabel.label, nodeLabelNodeSource.id)
     }.result
 
     toKgNodeLabels(runSyncTransaction(nodeLabelAction)).headOption
