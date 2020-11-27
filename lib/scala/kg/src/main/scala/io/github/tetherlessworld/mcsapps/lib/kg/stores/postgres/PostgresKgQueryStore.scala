@@ -16,22 +16,14 @@ import scala.concurrent.ExecutionContext
 final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigProvider)(implicit executionContext: ExecutionContext) extends AbstractPostgresKgStore(configProvider) with KgQueryStore {
   import profile.api._
 
-  private implicit val getStringList = GetResult[List[String]] (r =>
-    r.rs.getArray(r.skip.currentPos)
-      .getArray
-      .asInstanceOf[Array[Any]]
-      .toList
-      .map(_.toString())
-  )
-
   private implicit val getKgEdge = GetResult(r => KgEdge(
-    id = r.<<[String],
-    labels = r.<<[List[String]],
-    `object` = r.<<[String],
-    predicate = r.<<[String],
-    sentences = (r.<<[String]).split(SentencesDelimChar).toList,
-    sourceIds = r.<<[List[String]],
-    subject = r.<<[String]
+    id = r.rs.getString("id"),
+    labels = r.rs.getArray("labels").asInstanceOf[Array[Any]].toList.map(_.toString),
+    `object` = r.rs.getArray("object"),
+    predicate = r.rs.getString("predicate"),
+    sentences = (r.rs.getString("sentences")).split(SentencesDelimChar).toList,
+    sourceIds = r.rs.getArray("sourceIds").asInstanceOf[Array[Any]].toList.map(_.toString),
+    subject = r.rs.getString("subject")
   ))
 
   private def toKgNodeLabels(rows: Seq[(NodeLabelRow, String, NodeRow, String, String)]) =
@@ -101,13 +93,13 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
       val topEdgesQuery =
         sql"""
           SELECT
-            e_top.id,
-            array_agg(DISTINCT el.label),
-            e_top.object_node_id,
-            e_outer.predicate,
-            e_top.sentences,
-            array_agg(DISTINCT s.id),
-            e_top.subject_node_id
+            e_top.id AS id,
+            array_agg(DISTINCT el.label) AS labels,
+            e_top.object_node_id AS object,
+            e_outer.predicate AS predicate,
+            e_top.sentences AS sentences,
+            array_agg(DISTINCT s.id) AS sourceIds,
+            e_top.subject_node_id AS subject
           FROM edge e_outer
           JOIN LATERAL (
             SELECT * FROM edge e_inner
