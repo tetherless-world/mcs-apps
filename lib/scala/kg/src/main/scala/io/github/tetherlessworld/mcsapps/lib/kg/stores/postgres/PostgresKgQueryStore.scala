@@ -19,7 +19,7 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
   private implicit val getKgEdge = GetResult(r => KgEdge(
     id = r.rs.getString("id"),
     labels = r.rs.getArray("labels").asInstanceOf[Array[Any]].toList.map(_.toString),
-    `object` = r.rs.getArray("object"),
+    `object` = r.rs.getString("object"),
     predicate = r.rs.getString("predicate"),
     sentences = (r.rs.getString("sentences")).split(SentencesDelimChar).toList,
     sourceIds = r.rs.getArray("sourceIds").asInstanceOf[Array[Any]].toList.map(_.toString),
