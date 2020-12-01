@@ -9,6 +9,7 @@ import {QueryParamProvider} from "use-query-params";
 import {KgNodeLabelPage} from "kg/components/kg/node/KgNodeLabelPage";
 import {Hrefs} from "shared/Hrefs";
 import {HrefsContext} from "shared/HrefsContext";
+import {KgCreditsPage} from "kg/components/kg/KgCreditsPage";
 
 export const KgRoutes: React.FunctionComponent = () => {
   const hrefs = React.useContext<Hrefs>(HrefsContext);
@@ -28,6 +29,12 @@ export const KgRoutes: React.FunctionComponent = () => {
             exact
             path={hrefs.kg({id: kgId}).home}
             component={KgHomePage}
+          />
+
+          <Route
+            exact
+            path={hrefs.kg({id: kgId}).credits}
+            component={KgCreditsPage}
           />
 
           <Route

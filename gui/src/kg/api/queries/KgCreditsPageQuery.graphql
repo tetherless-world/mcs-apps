@@ -1,0 +1,9 @@
+#import "./KgSourceFragment.graphql"
+
+query KgCreditsPageQuery($kgId: String!) {
+  kgById(id: $kgId) {
+    sources {
+      ... KgSourceFragment
+    }
+  }
+}
