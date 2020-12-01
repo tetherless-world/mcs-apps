@@ -18,6 +18,10 @@ export class Hrefs {
       kwds.idEncoded ? kwds.id : encodeURIComponent(kwds.id)
     }/`;
     return {
+      get credits() {
+        return kgPrefix + "credits";
+      },
+
       get home() {
         return kgPrefix;
       },

@@ -18,18 +18,21 @@ import {kgId} from "shared/api/kgId";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    navbar: {
-      zIndex: 0, // Override z-index so search autocomplete will be on top navbar
+    activeNavButton: {
+      background: theme.palette.secondary.light,
     },
     brand: {
       marginRight: theme.spacing(2),
       color: theme.palette.primary.contrastText,
     },
+    navbar: {
+      zIndex: 0, // Override z-index so search autocomplete will be on top navbar
+    },
+    navbarLeft: {
+      flexGrow: 1,
+    },
     navButton: {
       color: theme.palette.primary.contrastText,
-    },
-    activeNavButton: {
-      background: theme.palette.secondary.light,
     },
   })
 );
@@ -42,7 +45,7 @@ export const KgNavbar: React.FunctionComponent<{
   const hrefs = React.useContext<Hrefs>(HrefsContext);
 
   return (
-    <AppBar className={classes.navbar} position="static" data-cy="naVbar">
+    <AppBar className={classes.navbar} position="static" data-cy="navbar">
       <Toolbar>
         <Button
           component={Link}
@@ -52,7 +55,7 @@ export const KgNavbar: React.FunctionComponent<{
           <Typography variant="h5">CSKG</Typography>
         </Button>
         {!hideNavbarSearchBox ? (
-          <KgSearchForm>
+          <KgSearchForm className={classes.navbarLeft}>
             {({onChangeSearchBoxValue, onSubmit}) => (
               <KgSearchBox
                 allSources={allSources}
@@ -63,7 +66,10 @@ export const KgNavbar: React.FunctionComponent<{
               />
             )}
           </KgSearchForm>
-        ) : null}
+        ) : (
+          <div className={classes.navbarLeft} />
+        )}
+        <Link to={hrefs.kg({id: kgId}).credits}>Credits</Link>
       </Toolbar>
     </AppBar>
   );

@@ -16,7 +16,8 @@ export const KgSearchForm: React.FunctionComponent<{
     onChangeSearchBoxValue: (value: KgSearchBoxValue | null) => void;
     onSubmit: () => void;
   }) => React.ReactNode;
-}> = ({children}) => {
+  className?: string;
+}> = ({children, className}) => {
   const apolloClient = useApolloClient();
   const history = useHistory();
   const hrefs = React.useContext<Hrefs>(HrefsContext);
@@ -120,6 +121,7 @@ export const KgSearchForm: React.FunctionComponent<{
 
   return (
     <form
+      className={className}
       onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         onSubmit();
