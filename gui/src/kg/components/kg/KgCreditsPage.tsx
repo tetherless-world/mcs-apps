@@ -6,9 +6,6 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
 } from "@material-ui/core";
 import {kgId} from "shared/api/kgId";
