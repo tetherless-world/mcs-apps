@@ -18,11 +18,11 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
 
   private implicit val getKgEdge = GetResult(r => KgEdge(
     id = r.rs.getString("id"),
-    labels = r.rs.getArray("labels").asInstanceOf[Array[Any]].toList.map(_.toString),
+    labels = r.rs.getArray("labels").getArray.asInstanceOf[Array[Any]].toList.map(_.toString),
     `object` = r.rs.getString("object"),
     predicate = r.rs.getString("predicate"),
-    sentences = (r.rs.getString("sentences")).split(SentencesDelimChar).toList,
-    sourceIds = r.rs.getArray("sourceIds").asInstanceOf[Array[Any]].toList.map(_.toString),
+    sentences = (r.rs.getString("sentences")).split(SentencesDelimChar).filter(!_.trim.isEmpty).toList,
+    sourceIds = r.rs.getArray("sourceIds").getArray.asInstanceOf[Array[Any]].toList.map(_.toString),
     subject = r.rs.getString("subject")
   ))
 
@@ -89,7 +89,17 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
       
       val relatedNodeLabels = toKgNodeLabels(runSyncTransaction(relatedNodeLabelWithNodeSourceAction)).toList
 
-      // TODO replace inner id order by with pageRank
+      // Returns the top edges of a given node grouped by predicate
+      //  based on the object node page ranks
+      // Here are the steps used in the below query:
+      // 1. Get all edges with with given node as subject (e_outer)
+      // 2. For each edge in e_outer
+      //   a. find edges with the same predicate
+      //   b. order by object node page rank
+      //   c. return top NodeContextTopEdgesLimit edges
+      //    (e_top)
+      // 3. Add source and label information
+      // 4. Eliminate duplicate edges
       val topEdgesQuery =
         sql"""
           SELECT
@@ -102,9 +112,12 @@ final class PostgresKgQueryStore @Inject()(configProvider: PostgresStoreConfigPr
             e_top.subject_node_id AS subject
           FROM edge e_outer
           JOIN LATERAL (
-            SELECT * FROM edge e_inner
+            SELECT e_inner.*
+            FROM edge e_inner
+            JOIN node e_inner_obj_node
+            ON e_inner.object_node_id = e_inner_obj_node.id
             WHERE e_inner.subject_node_id = ${id} AND e_inner.predicate = e_outer.predicate
-            ORDER BY e_inner.id
+            ORDER BY e_inner_obj_node.page_rank DESC, e_inner.id
             LIMIT #$NodeContextTopEdgesLimit
           ) e_top ON e_outer.subject_node_id = ${id}
           JOIN edge_x_source es ON es.edge_id = e_top.id

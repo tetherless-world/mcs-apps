@@ -84,7 +84,7 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
       labels = labels,
       `object` = objectNodeId,
       predicate = predicate,
-      sentences = sentences.split(SentencesDelimChar).toList,
+      sentences = sentences.split(SentencesDelimChar).filter(!_.trim.isEmpty).toList,
       sourceIds = sourceIds,
       subject = subjectNodeId
     )
