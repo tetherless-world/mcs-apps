@@ -139,7 +139,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     private def writeNodeLabelPageRank(convergenceThreshold: Double = 0.0000001, dampingFactor: Double = 0.85, maxIterations: Int = 20): Unit = {
       val numNodeLabelsAction = nodeLabels.size.result
       val initializeNodeLabelPageRanksAction = numNodeLabelsAction.flatMap {
-        case (numNodes) => nodes.map(_.pageRank).update(Some((1.0 / numNodes).toFloat))
+        case (numNodeLabels) => nodeLabels.map(_.pageRank).update(Some((1.0 / numNodeLabels).toFloat))
       }
       val numNodes = runSyncTransaction(DBIO.sequence(List(initializeNodeLabelPageRanksAction, writeNodeLabelDegreesAction)))(0)
 
@@ -215,7 +215,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
             SET
               page_rank = new.page_rank
             FROM #$temporaryTableName new
-            WHERE node.label = new.label
+            WHERE node_label.label = new.label
           """,
         sqlu"DROP TABLE #$temporaryTableName"
       ))
