@@ -61,7 +61,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       val stream = kgNodes.toStream
       List(
         nodes.insertOrUpdateAll(stream.map(_.toRow)),
-        nodeLabels.insertOrUpdateAll(stream.flatMap(_.labels.map(NodeLabelRow(_, None)))),
+        nodeLabels.insertOrUpdateAll(stream.flatMap(_.labels.map(NodeLabelRow(None, _, None, None)))),
         nodeNodeLabels.insertOrUpdateAll(stream.flatMap(node => node.labels.map(label => NodeNodeLabelRow(node.id, label)))),
         nodeLabelSources.insertOrUpdateAll(stream.flatMap(node => node.labels.flatMap(label => node.sourceIds.map(NodeLabelSourceRow(label, _))))),
         nodeSources.insertOrUpdateAll(stream.flatMap(node => node.sourceIds.map(NodeSourceRow(node.id, _))))
