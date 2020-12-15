@@ -79,7 +79,9 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     override final def close(): Unit = {
       runSyncTransaction(DBIO.seq(
         writeNodeLabelEdgesAction,
-        writeNodeLabelEdgeSourcesAction
+        writeNodeLabelEdgeSourcesAction,
+        writeNodeDegreesAction,
+        writeNodeLabelDegreesAction
       ))
     }
 
@@ -106,6 +108,48 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     override final def putSources(sources: Iterator[KgSource]): Unit =
       runSyncTransaction(DBIO.sequence(batchedSourceInserts(sources)))
+
+    private def writeNodeDegreesAction = {
+      sqlu"""
+        UPDATE node
+        SET
+          in_degree = in_edge.degree,
+          out_degree = out_edge.degree
+        FROM node n
+        JOIN (
+          SELECT n.id AS id, count(e.id) AS degree FROM node n
+          LEFT JOIN edge e ON e.subject_node_id = n.id
+          GROUP BY n.id
+        ) as out_edge on out_edge.id = n.id
+        JOIN (
+          SELECT n.id AS id, count(e.id) AS degree FROM node n
+          LEFT JOIN edge e ON e.object_node_id = n.id
+          GROUP BY n.id
+        ) as in_edge ON in_edge.id = n.id
+        WHERE node.id = n.id;
+          """
+    }
+
+    private def writeNodeLabelDegreesAction = {
+      sqlu"""
+        UPDATE node_label
+        SET
+          in_degree = in_edge.degree,
+          out_degree = out_edge.degree
+        FROM node_label nl
+        JOIN (
+          SELECT subject_node_label_label as label, count(*) AS degree
+          FROM node_label_edge e
+          GROUP BY e.subject_node_label_label
+        ) as out_edge on out_edge.label = nl.label
+        JOIN (
+          SELECT object_node_label_label as label, count(*) AS degree
+          FROM node_label_edge e
+          GROUP BY e.object_node_label_label
+        ) as in_edge on in_edge.label = nl.label
+        WHERE node_label.label = nl.label;
+          """
+    }
 
     private def writeNodeLabelEdgesAction = {
       val nodeLabelEdgePairsAction = (for {
