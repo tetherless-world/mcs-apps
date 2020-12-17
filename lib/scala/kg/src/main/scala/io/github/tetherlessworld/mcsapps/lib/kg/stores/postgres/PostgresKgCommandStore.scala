@@ -156,7 +156,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       }
     }
 
-    private def writeNodePageRankAction(dampingFactor: Float) = {
+    private def writeNodePageRankAction(dampingFactor: Float): DBIOAction[List[Any], NoStream, Effect] = {
       val temporaryTableName = "temp_node_page_rank"
       DBIO.sequence(List(
         // Calculates new page rank for each node and saves in a temporary table
@@ -191,7 +191,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       ))
     }
 
-    private def writeNodeLabelPageRankAction(dampingFactor: Float) = {
+    private def writeNodeLabelPageRankAction(dampingFactor: Float): DBIOAction[List[Any], NoStream, Effect] = {
       val temporaryTableName = "temp_node_label_page_rank"
       DBIO.sequence(List(
         sqlu"""
