@@ -127,7 +127,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 //        intellij shows writeNodePageRankAction returning a List[Double] but for some
 //         reason sbt compiles it as returning List[Any] so forced to convert to Double
 //        Update node page ranks and retrieve page rank delta value
-        val delta = runSyncTransaction(writeNodePageRankAction(dampingFactor.toFloat))(1).asInstanceOf[Number].doubleValue
+        val delta = runSyncTransaction(writeNodePageRankAction(dampingFactor.toFloat))(2).asInstanceOf[Number].doubleValue
 
 //        If page rank has converged, exit
         if (delta < convergenceThreshold) {
@@ -148,7 +148,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       }
 
       for (_ <- 1 to maxIterations) {
-        val delta = runSyncTransaction(writeNodeLabelPageRankAction(dampingFactor.toFloat))(1).asInstanceOf[Number].doubleValue
+        val delta = runSyncTransaction(writeNodeLabelPageRankAction(dampingFactor.toFloat))(2).asInstanceOf[Number].doubleValue
 
         if (delta < convergenceThreshold) {
           return
@@ -159,10 +159,17 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     private def writeNodePageRankAction(dampingFactor: Float): DBIOAction[List[Any], NoStream, Effect] = {
       val temporaryTableName = "temp_node_page_rank"
       DBIO.sequence(List(
+        // Create temporary table
+        sqlu"""
+              CREATE TEMP TABLE #$temporaryTableName (
+                node_id VARCHAR,
+                page_rank REAL
+              ) ON COMMIT DROP
+            """,
         // Calculates new page rank for each node and saves in a temporary table
         sqlu"""
+            INSERT INTO #$temporaryTableName (node_id, page_rank)
             SELECT n.id as node_id, ${dampingFactor} * sum(n_neighbor.page_rank / n.out_degree) + (1 - ${dampingFactor}) as page_rank
-            INTO #$temporaryTableName
             FROM node n
             JOIN edge e
             ON e.object_node_id = n.id
@@ -185,9 +192,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
               page_rank = new.page_rank
             FROM #$temporaryTableName new
             WHERE node.id = new.node_id
-          """,
-        // Drop the table
-        sqlu"DROP TABLE #$temporaryTableName"
+          """
       ))
     }
 
@@ -195,8 +200,14 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       val temporaryTableName = "temp_node_label_page_rank"
       DBIO.sequence(List(
         sqlu"""
+              CREATE TEMP TABLE #$temporaryTableName (
+                label VARCHAR,
+                page_rank REAL
+              ) ON COMMIT DROP
+            """,
+        sqlu"""
+            INSERT INTO #$temporaryTableName (label, page_rank)
             SELECT nl.label as label, ${dampingFactor} * sum(nl_neighbor.page_rank / nl.out_degree) + (1 - ${dampingFactor}) as page_rank
-            INTO #$temporaryTableName
             FROM node_label nl
             JOIN node_label_edge e
             ON e.object_node_label_label = nl.label
