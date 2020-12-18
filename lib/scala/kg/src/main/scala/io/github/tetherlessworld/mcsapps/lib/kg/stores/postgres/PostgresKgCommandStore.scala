@@ -61,7 +61,7 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
       val stream = kgNodes.toStream
       List(
         nodes.insertOrUpdateAll(stream.map(_.toRow)),
-        nodeLabels.insertOrUpdateAll(stream.flatMap(_.labels.map(NodeLabelRow(_, None)))),
+        nodeLabels.insertOrUpdateAll(stream.flatMap(_.labels.map(NodeLabelRow(None, _, None, None)))),
         nodeNodeLabels.insertOrUpdateAll(stream.flatMap(node => node.labels.map(label => NodeNodeLabelRow(node.id, label)))),
         nodeLabelSources.insertOrUpdateAll(stream.flatMap(node => node.labels.flatMap(label => node.sourceIds.map(NodeLabelSourceRow(label, _))))),
         nodeSources.insertOrUpdateAll(stream.flatMap(node => node.sourceIds.map(NodeSourceRow(node.id, _))))
@@ -79,8 +79,11 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
     override final def close(): Unit = {
       runSyncTransaction(DBIO.seq(
         writeNodeLabelEdgesAction,
-        writeNodeLabelEdgeSourcesAction
+        writeNodeLabelEdgeSourcesAction,
       ))
+
+      writeNodePageRank()
+      writeNodeLabelPageRank()
     }
 
     override final def putData(data: KgData) =
@@ -106,6 +109,170 @@ class PostgresKgCommandStore @Inject()(configProvider: PostgresStoreConfigProvid
 
     override final def putSources(sources: Iterator[KgSource]): Unit =
       runSyncTransaction(DBIO.sequence(batchedSourceInserts(sources)))
+
+    private def writeNodePageRank(convergenceThreshold: Double = 0.0000001, dampingFactor: Double = 0.85, maxIterations: Int = 20): Unit = {
+      val numNodesAction = nodes.size.result
+//      Initialize node page ranks to 1/n where n is the number of nodes
+      val initializeNodePageRanksAction = numNodesAction.flatMap {
+        case (numNodes) => nodes.map(_.pageRank).update(Some((1.0 / numNodes).toFloat))
+      }
+//      Initialize node in/out degrees and page ranks
+      val numNodes = runSyncTransaction(DBIO.sequence(List(initializeNodePageRanksAction, writeNodeDegreesAction)))(0)
+
+      if (numNodes == 0) {
+        return
+      }
+
+      for (_ <- 1 to maxIterations) {
+//        intellij shows writeNodePageRankAction returning a List[Double] but for some
+//         reason sbt compiles it as returning List[Any] so forced to convert to Double
+//        Update node page ranks and retrieve page rank delta value
+        val delta = runSyncTransaction(writeNodePageRankAction(dampingFactor.toFloat))(2).asInstanceOf[Number].doubleValue
+
+//        If page rank has converged, exit
+        if (delta < convergenceThreshold) {
+          return
+        }
+      }
+    }
+
+    private def writeNodeLabelPageRank(convergenceThreshold: Double = 0.0000001, dampingFactor: Double = 0.85, maxIterations: Int = 20): Unit = {
+      val numNodeLabelsAction = nodeLabels.size.result
+      val initializeNodeLabelPageRanksAction = numNodeLabelsAction.flatMap {
+        case (numNodeLabels) => nodeLabels.map(_.pageRank).update(Some((1.0 / numNodeLabels).toFloat))
+      }
+      val numNodes = runSyncTransaction(DBIO.sequence(List(initializeNodeLabelPageRanksAction, writeNodeLabelDegreesAction)))(0)
+
+      if (numNodes == 0) {
+        return
+      }
+
+      for (_ <- 1 to maxIterations) {
+        val delta = runSyncTransaction(writeNodeLabelPageRankAction(dampingFactor.toFloat))(2).asInstanceOf[Number].doubleValue
+
+        if (delta < convergenceThreshold) {
+          return
+        }
+      }
+    }
+
+    private def writeNodePageRankAction(dampingFactor: Float): DBIOAction[List[Any], NoStream, Effect] = {
+      val temporaryTableName = "temp_node_page_rank"
+      DBIO.sequence(List(
+        // Create temporary table
+        sqlu"""
+              CREATE TEMP TABLE #$temporaryTableName (
+                node_id VARCHAR,
+                page_rank REAL
+              ) ON COMMIT DROP
+            """,
+        // Calculates new page rank for each node and saves in a temporary table
+        sqlu"""
+            INSERT INTO #$temporaryTableName (node_id, page_rank)
+            SELECT n.id as node_id, ${dampingFactor} * sum(n_neighbor.page_rank / n.out_degree) + (1 - ${dampingFactor}) as page_rank
+            FROM node n
+            JOIN edge e
+            ON e.object_node_id = n.id
+            JOIN node n_neighbor
+            ON n_neighbor.id = e.subject_node_id
+            GROUP BY n.id
+          """,
+        // Check if page rank has converged by calculating the difference
+        //  between the new page ranks and the current page ranks
+        sql"""
+           SELECT sqrt(sum((new.page_rank - cur.page_rank)^2))
+           FROM #$temporaryTableName new
+           JOIN node cur
+           ON cur.id = new.node_id
+         """.as[Double].head,
+        // Update the nodes with the new page ranks
+        sqlu"""
+            UPDATE node
+            SET
+              page_rank = new.page_rank
+            FROM #$temporaryTableName new
+            WHERE node.id = new.node_id
+          """
+      ))
+    }
+
+    private def writeNodeLabelPageRankAction(dampingFactor: Float): DBIOAction[List[Any], NoStream, Effect] = {
+      val temporaryTableName = "temp_node_label_page_rank"
+      DBIO.sequence(List(
+        sqlu"""
+              CREATE TEMP TABLE #$temporaryTableName (
+                label VARCHAR,
+                page_rank REAL
+              ) ON COMMIT DROP
+            """,
+        sqlu"""
+            INSERT INTO #$temporaryTableName (label, page_rank)
+            SELECT nl.label as label, ${dampingFactor} * sum(nl_neighbor.page_rank / nl.out_degree) + (1 - ${dampingFactor}) as page_rank
+            FROM node_label nl
+            JOIN node_label_edge e
+            ON e.object_node_label_label = nl.label
+            JOIN node_label nl_neighbor
+            ON nl_neighbor.label = e.subject_node_label_label
+            GROUP BY nl.label
+          """,
+        sql"""
+           SELECT sqrt(sum((new.page_rank - cur.page_rank)^2))
+           FROM #$temporaryTableName new
+           JOIN node_label cur
+           ON cur.label = new.label
+         """.as[Double].head,
+        sqlu"""
+            UPDATE node_label
+            SET
+              page_rank = new.page_rank
+            FROM #$temporaryTableName new
+            WHERE node_label.label = new.label
+          """,
+        sqlu"DROP TABLE #$temporaryTableName"
+      ))
+    }
+
+    private def writeNodeDegreesAction = {
+      sqlu"""
+        UPDATE node
+        SET
+          in_degree = in_edge.degree,
+          out_degree = out_edge.degree
+        FROM node n
+        JOIN (
+          SELECT n.id AS id, count(e.id) AS degree FROM node n
+          LEFT JOIN edge e ON e.subject_node_id = n.id
+          GROUP BY n.id
+        ) as out_edge on out_edge.id = n.id
+        JOIN (
+          SELECT n.id AS id, count(e.id) AS degree FROM node n
+          LEFT JOIN edge e ON e.object_node_id = n.id
+          GROUP BY n.id
+        ) as in_edge ON in_edge.id = n.id
+        WHERE node.id = n.id;
+          """
+    }
+
+    private def writeNodeLabelDegreesAction = {
+      sqlu"""
+        UPDATE node_label
+        SET
+          in_degree = in_edge.degree,
+          out_degree = out_edge.degree
+        FROM node_label nl
+        JOIN (
+          SELECT subject_node_label_label as label, count(*) AS degree
+          FROM node_label_edge e
+          GROUP BY e.subject_node_label_label
+        ) as out_edge on out_edge.label = nl.label
+        JOIN (
+          SELECT object_node_label_label as label, count(*) AS degree
+          FROM node_label_edge e
+          GROUP BY e.object_node_label_label
+        ) as in_edge on in_edge.label = nl.label
+        WHERE node_label.label = nl.label;
+          """
+    }
 
     private def writeNodeLabelEdgesAction = {
       val nodeLabelEdgePairsAction = (for {

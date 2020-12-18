@@ -90,3 +90,4 @@ services:
 
 volumes:
   neo4j-data:
+  postgres-data:

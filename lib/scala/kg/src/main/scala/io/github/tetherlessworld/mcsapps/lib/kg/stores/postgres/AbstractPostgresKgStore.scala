@@ -84,7 +84,7 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
       labels = labels,
       `object` = objectNodeId,
       predicate = predicate,
-      sentences = sentences.split(SentencesDelimChar).toList,
+      sentences = sentences.split(SentencesDelimChar).filter(!_.trim.isEmpty).toList,
       sourceIds = sourceIds,
       subject = subjectNodeId
     )
@@ -151,7 +151,7 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     def * = (id, inDegree, outDegree, pageRank, pos, wordNetSenseNumber) <> (NodeRow.tupled, NodeRow.unapply)
   }
 
-  protected final case class NodeLabelRow(label: String, pageRank: Option[Float]) {
+  protected final case class NodeLabelRow(inDegree: Option[Short], label: String, outDegree: Option[Short], pageRank: Option[Float]) {
     def toKgNodeLabel(nodes: List[KgNode], sourceIds: List[String]) = KgNodeLabel(
       nodeLabel = label,
       nodes = nodes,
@@ -160,10 +160,12 @@ abstract class AbstractPostgresKgStore(protected val databaseConfigProvider: Pos
     )
   }
   protected final class NodeLabelTable(tag: Tag) extends Table[NodeLabelRow](tag, "node_label") {
+    def inDegree = column[Option[Short]]("in_degree")
     def label = column[String]("label", O.PrimaryKey)
+    def outDegree = column[Option[Short]]("out_degree")
     def pageRank = column[Option[Float]]("page_rank")
 
-    def * = (label, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
+    def * = (inDegree, label, outDegree, pageRank) <> (NodeLabelRow.tupled, NodeLabelRow.unapply)
   }
 
   protected final case class NodeLabelEdgeRow(objectNodeLabelLabel: String, subjectNodeLabelLabel: String)
